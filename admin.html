@@ -19,6 +19,11 @@
 <br><br>
 <button class="btn" id="addNoticeBtn">Add Notice</button>
 
+  <hr><br>
+
+<h2>📨 आलेल्या तक्रारी</h2>
+<ul id="complaintList"></ul>
+
 <hr><br>
 
 <h2>📋 सर्व सूचना</h2>
@@ -31,6 +36,44 @@
 
 <script type="module">
 
+const complaintList = document.getElementById("complaintList");
+
+async function loadComplaints(){
+  complaintList.innerHTML = "";
+
+  const querySnapshot = await getDocs(collection(db, "complaints"));
+
+  querySnapshot.forEach((docSnap) => {
+
+    const data = docSnap.data();
+
+    const li = document.createElement("li");
+
+    li.innerHTML = `
+      <strong>${data.name}</strong> (${data.phone})<br>
+      ${data.message}<br>
+      Status: <b>${data.status}</b>
+      <button onclick="markResolved('${docSnap.id}')">Mark Resolved</button>
+      <hr>
+    `;
+
+    complaintList.appendChild(li);
+  });
+}
+
+window.markResolved = async (id) => {
+  await updateDoc(doc(db, "complaints", id), {
+    status: "Resolved"
+  });
+  loadComplaints();
+};
+
+import { updateDoc } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+loadComplaints();
+
+  
 import { auth } from "./js/firebase.js";
 import { db } from "./js/firebase.js";
 
