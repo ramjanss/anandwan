@@ -19,9 +19,20 @@
 <h1>Admin Dashboard</h1>
 
 <h2>📢 नवीन सूचना जोडा</h2>
+
 <input type="text" id="noticeTitle" placeholder="सूचना शीर्षक" style="width:300px;padding:8px;">
 <br><br>
-<button class="btn" id="addNoticeBtn">Add Notice</button>
+
+<textarea id="noticeDesc" placeholder="सूचना तपशील" 
+style="width:300px;height:80px;padding:8px;"></textarea>
+<br><br>
+
+<input type="file" id="noticeFile" accept="application/pdf">
+<br><br>
+
+<button class="btn" id="addNoticeBtn">Upload Notice</button>
+
+<p id="noticeMsg"></p>
 
 <hr><br>
 
@@ -118,42 +129,65 @@ loadStats();
 
 // ================= NOTICE SYSTEM =================
 
+import { storage } from "./js/firebase.js";
+import { ref, uploadBytes, getDownloadURL } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
 const noticeTitle = document.getElementById("noticeTitle");
+const noticeDesc = document.getElementById("noticeDesc");
+const noticeFile = document.getElementById("noticeFile");
+const noticeMsg = document.getElementById("noticeMsg");
 const addNoticeBtn = document.getElementById("addNoticeBtn");
-const adminNoticeList = document.getElementById("adminNoticeList");
 
 addNoticeBtn.onclick = async () => {
-  if(noticeTitle.value.trim() === "") return;
 
-  await addDoc(collection(db, "notices"), {
-    title: noticeTitle.value,
-    created: new Date()
-  });
+  if(noticeTitle.value.trim() === ""){
+    alert("Title required");
+    return;
+  }
 
-  noticeTitle.value = "";
-  loadNotices();
+  addNoticeBtn.innerText = "Uploading...";
+  addNoticeBtn.disabled = true;
+
+  try {
+
+    let fileURL = "";
+
+    if(noticeFile.files[0]){
+
+      const file = noticeFile.files[0];
+
+      const storageRef = ref(storage, 
+        "notices/" + Date.now() + "_" + file.name);
+
+      await uploadBytes(storageRef, file);
+
+      fileURL = await getDownloadURL(storageRef);
+    }
+
+    await addDoc(collection(db,"notices"),{
+      title: noticeTitle.value,
+      description: noticeDesc.value,
+      fileUrl: fileURL,
+      created: new Date()
+    });
+
+    noticeMsg.innerHTML = "Notice uploaded successfully ✅";
+
+    noticeTitle.value = "";
+    noticeDesc.value = "";
+    noticeFile.value = "";
+
+    loadNotices();
+
+  } catch(error){
+    console.error(error);
+    noticeMsg.innerHTML = "Upload failed ❌";
+  }
+
+  addNoticeBtn.innerText = "Upload Notice";
+  addNoticeBtn.disabled = false;
 };
-
-async function loadNotices(){
-  adminNoticeList.innerHTML = "";
-  const snapshot = await getDocs(collection(db, "notices"));
-
-  snapshot.forEach(docSnap => {
-    const li = document.createElement("li");
-    li.innerHTML = `
-      ${docSnap.data().title}
-      <button onclick="deleteNotice('${docSnap.id}')">❌</button>
-    `;
-    adminNoticeList.appendChild(li);
-  });
-}
-
-window.deleteNotice = async (id) => {
-  await deleteDoc(doc(db, "notices", id));
-  loadNotices();
-};
-
-loadNotices();
 
 
 // ================= COMPLAINT SYSTEM =================
