@@ -10,30 +10,25 @@
 <body>
 
 <section class="section">
-<h1>Admin Dashboard ✅</h1>
+
+<h1>Admin Dashboard</h1>
+
+<h2>📢 नवीन सूचना जोडा</h2>
+
+<input type="text" id="noticeTitle" placeholder="सूचना शीर्षक" style="width:300px;padding:8px;">
+<br><br>
+<button class="btn" id="addNoticeBtn">Add Notice</button>
+
+<hr><br>
+
+<h2>📋 सर्व सूचना</h2>
+<ul id="adminNoticeList"></ul>
+
+<br>
 <button id="logoutBtn" class="btn">Logout</button>
+
 </section>
 
-<script type="module">
-
-import { auth } from "./js/firebase.js";
-import { onAuthStateChanged, signOut } from 
-"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-// Check if admin is logged in
-onAuthStateChanged(auth, (user) => {
-  if (!user) {
-    window.location.href = "login.html";
-  }
-});
-
-// Logout function
-document.getElementById("logoutBtn").onclick = async () => {
-  await signOut(auth);
-  window.location.href = "login.html";
-};
-
-</script>
 
 </body>
 </html>
