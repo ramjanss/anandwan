@@ -11,33 +11,41 @@ const galleryAdminList = document.getElementById("galleryAdminList");
 uploadBtn.onclick = async () => {
 
   const file = imageFile.files[0];
-  if(!file) return;
 
-  const storageRef = ref(storage, "gallery/" + Date.now() + file.name);
+  if(!file){
+    alert("Please select an image first.");
+    return;
+  }
 
-  await uploadBytes(storageRef, file);
-  const downloadURL = await getDownloadURL(storageRef);
+  uploadBtn.innerText = "Uploading...";
+  uploadBtn.disabled = true;
 
-  await addDoc(collection(db,"gallery"),{
-    imageUrl: downloadURL,
-    created: new Date()
-  });
+  try {
 
-  imageFile.value = "";
-  loadGalleryAdmin();
+    const storageRef = ref(storage, "gallery/" + Date.now() + "_" + file.name);
+
+    await uploadBytes(storageRef, file);
+
+    const downloadURL = await getDownloadURL(storageRef);
+
+    await addDoc(collection(db,"gallery"),{
+      imageUrl: downloadURL,
+      created: new Date()
+    });
+
+    alert("Image uploaded successfully ✅");
+
+    imageFile.value = "";   // Clear input
+    loadGalleryAdmin();
+
+  } catch(error){
+    alert("Upload failed ❌");
+    console.error(error);
+  }
+
+  uploadBtn.innerText = "Upload Image";
+  uploadBtn.disabled = false;
 };
-
-async function loadGalleryAdmin(){
-  galleryAdminList.innerHTML = "";
-
-  const snapshot = await getDocs(collection(db,"gallery"));
-
-  snapshot.forEach(docSnap=>{
-    const li = document.createElement("li");
-    li.innerHTML = `<img src="${docSnap.data().imageUrl}" width="150">`;
-    galleryAdminList.appendChild(li);
-  });
-}
 
 loadGalleryAdmin();
 
