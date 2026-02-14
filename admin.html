@@ -1,3 +1,45 @@
+import { storage } from "./js/firebase.js";
+import { ref, uploadBytes, getDownloadURL } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+const uploadBtn = document.getElementById("uploadImageBtn");
+const imageFile = document.getElementById("imageFile");
+const galleryAdminList = document.getElementById("galleryAdminList");
+
+uploadBtn.onclick = async () => {
+
+  const file = imageFile.files[0];
+  if(!file) return;
+
+  const storageRef = ref(storage, "gallery/" + Date.now() + file.name);
+
+  await uploadBytes(storageRef, file);
+  const downloadURL = await getDownloadURL(storageRef);
+
+  await addDoc(collection(db,"gallery"),{
+    imageUrl: downloadURL,
+    created: new Date()
+  });
+
+  imageFile.value = "";
+  loadGalleryAdmin();
+};
+
+async function loadGalleryAdmin(){
+  galleryAdminList.innerHTML = "";
+
+  const snapshot = await getDocs(collection(db,"gallery"));
+
+  snapshot.forEach(docSnap=>{
+    const li = document.createElement("li");
+    li.innerHTML = `<img src="${docSnap.data().imageUrl}" width="150">`;
+    galleryAdminList.appendChild(li);
+  });
+}
+
+loadGalleryAdmin();
+
+
 <h2>📊 Dashboard Overview</h2>
 
 <div id="statsContainer" style="display:flex;gap:20px;flex-wrap:wrap;"></div>
