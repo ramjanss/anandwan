@@ -1,80 +1,70 @@
 import { db } from "./firebase.js";
-
-import { 
-  collection, 
-  getDocs, 
-  query, 
-  orderBy 
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { collection, getDocs } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 
-// ======================
-// LOAD PUBLIC NOTICES
-// ======================
+// ================= LOAD STATS =================
 
-const noticeList = document.getElementById("noticeList");
+async function loadStats(){
 
-async function loadPublicNotices(){
+  const notices = await getDocs(collection(db,"notices"));
+  const complaints = await getDocs(collection(db,"complaints"));
 
-  if(!noticeList) return;
+  document.getElementById("noticeCount").innerText = notices.size;
+  document.getElementById("complaintCount").innerText = complaints.size;
 
-  noticeList.innerHTML = "";
+  let resolved = 0;
+  complaints.forEach(doc=>{
+    if(doc.data().status === "Resolved") resolved++;
+  });
 
-  // Sort by newest first
-  const q = query(
-    collection(db,"notices"),
-    orderBy("created","desc")
-  );
+  document.getElementById("resolvedCount").innerText = resolved;
+}
 
-  const snapshot = await getDocs(q);
+loadStats();
 
-  snapshot.forEach(docSnap => {
 
+// ================= LOAD NOTICES =================
+
+const noticeContainer = document.getElementById("noticeContainer");
+
+async function loadNotices(){
+
+  const snapshot = await getDocs(collection(db,"notices"));
+
+  snapshot.forEach(docSnap=>{
     const data = docSnap.data();
 
-    const li = document.createElement("li");
+    const div = document.createElement("div");
+    div.className = "notice-card";
 
-    li.innerHTML = `
+    div.innerHTML = `
       <strong>${data.title}</strong><br>
-      ${data.description ? `<p>${data.description}</p>` : ""}
+      ${data.description || ""}
       ${data.fileUrl ? 
-        `<a href="${data.fileUrl}" target="_blank" class="btn">📄 Download PDF</a>` 
-        : ""}
-      <hr>
+        `<br><a href="${data.fileUrl}" target="_blank" class="btn">Download PDF</a>`
+        : ""
+      }
     `;
 
-    noticeList.appendChild(li);
+    noticeContainer.appendChild(div);
   });
 }
 
-loadPublicNotices();
+loadNotices();
 
 
-// ======================
-// LOAD GALLERY
-// ======================
+// ================= LOAD GALLERY =================
 
 const galleryContainer = document.getElementById("galleryContainer");
 
 async function loadGallery(){
 
-  if(!galleryContainer) return;
-
-  galleryContainer.innerHTML = "";
-
   const snapshot = await getDocs(collection(db,"gallery"));
 
-  snapshot.forEach(docSnap => {
-
+  snapshot.forEach(docSnap=>{
     const img = document.createElement("img");
-
     img.src = docSnap.data().imageUrl;
-    img.style.width = "260px";
-    img.style.height = "160px";
-    img.style.objectFit = "cover";
-    img.style.borderRadius = "12px";
-    img.style.marginRight = "12px";
-
     galleryContainer.appendChild(img);
   });
 }
