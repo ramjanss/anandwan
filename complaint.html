@@ -42,13 +42,20 @@ document.getElementById("submitComplaint").onclick = async () => {
 
   if(!name || !phone || !message) return;
 
-  await addDoc(collection(db, "complaints"), {
-    name,
-    phone,
-    message,
-    status: "Pending",
-    created: new Date()
-  });
+  const trackingId = "GP" + Date.now();
+
+await addDoc(collection(db, "complaints"), {
+  trackingId,
+  name,
+  phone,
+  message,
+  status: "Pending",
+  created: new Date()
+});
+
+document.getElementById("successMsg").innerText =
+  "तक्रार नोंदवली! Tracking ID: " + trackingId;
+
 
   document.getElementById("successMsg").innerText = "तक्रार यशस्वीरित्या नोंदवली!";
   
