@@ -1,8 +1,195 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<section class="section">
+
+<h2>📊 Dashboard Overview</h2>
+<div id="statsContainer" style="display:flex;gap:20px;flex-wrap:wrap;"></div>
+
+<hr><br>
+
+<h1>Admin Dashboard</h1>
+
+<h2>📢 नवीन सूचना जोडा</h2>
+<input type="text" id="noticeTitle" placeholder="सूचना शीर्षक" style="width:300px;padding:8px;">
+<br><br>
+<button class="btn" id="addNoticeBtn">Add Notice</button>
+
+<hr><br>
+
+<h2>📨 आलेल्या तक्रारी</h2>
+<ul id="complaintList"></ul>
+
+<hr><br>
+
+<h2>🖼 Gallery Upload</h2>
+<input type="file" id="imageFile">
+<br><br>
+<button class="btn" id="uploadImageBtn">Upload Image</button>
+<ul id="galleryAdminList"></ul>
+
+<hr><br>
+
+<h2>📋 सर्व सूचना</h2>
+<ul id="adminNoticeList"></ul>
+
+<br>
+<button id="logoutBtn" class="btn">Logout</button>
+
+</section>
+
+<!-- ================= SCRIPT STARTS HERE ================= -->
 <script type="module">
 
-import { storage } from "./js/firebase.js";
-import { ref, uploadBytes, getDownloadURL } 
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+// 🔹 IMPORTS FIRST
+import { auth, db, storage } from "./js/firebase.js";
+
+import { 
+  onAuthStateChanged, 
+  signOut 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+import { 
+  collection, 
+  addDoc, 
+  getDocs, 
+  deleteDoc, 
+  doc,
+  updateDoc
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+import { 
+  ref, 
+  uploadBytes, 
+  getDownloadURL 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+
+// 🔐 Protect Page
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.href = "login.html";
+  }
+});
+
+// 🔓 Logout
+document.getElementById("logoutBtn").onclick = async () => {
+  await signOut(auth);
+  window.location.href = "login.html";
+};
+
+
+// ================= DASHBOARD STATS =================
+
+const statsContainer = document.getElementById("statsContainer");
+
+async function loadStats(){
+  const noticesSnapshot = await getDocs(collection(db,"notices"));
+  const complaintsSnapshot = await getDocs(collection(db,"complaints"));
+
+  let totalComplaints = 0;
+  let pending = 0;
+  let resolved = 0;
+
+  complaintsSnapshot.forEach(docSnap => {
+    totalComplaints++;
+    if(docSnap.data().status === "Pending") pending++;
+    if(docSnap.data().status === "Resolved") resolved++;
+  });
+
+  statsContainer.innerHTML = `
+    <div class="card">Total Notices: ${noticesSnapshot.size}</div>
+    <div class="card">Total Complaints: ${totalComplaints}</div>
+    <div class="card">Pending: ${pending}</div>
+    <div class="card">Resolved: ${resolved}</div>
+  `;
+}
+
+loadStats();
+
+
+// ================= NOTICE SYSTEM =================
+
+const noticeTitle = document.getElementById("noticeTitle");
+const addNoticeBtn = document.getElementById("addNoticeBtn");
+const adminNoticeList = document.getElementById("adminNoticeList");
+
+addNoticeBtn.onclick = async () => {
+  if(noticeTitle.value.trim() === "") return;
+
+  await addDoc(collection(db, "notices"), {
+    title: noticeTitle.value,
+    created: new Date()
+  });
+
+  noticeTitle.value = "";
+  loadNotices();
+};
+
+async function loadNotices(){
+  adminNoticeList.innerHTML = "";
+  const snapshot = await getDocs(collection(db, "notices"));
+
+  snapshot.forEach(docSnap => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      ${docSnap.data().title}
+      <button onclick="deleteNotice('${docSnap.id}')">❌</button>
+    `;
+    adminNoticeList.appendChild(li);
+  });
+}
+
+window.deleteNotice = async (id) => {
+  await deleteDoc(doc(db, "notices", id));
+  loadNotices();
+};
+
+loadNotices();
+
+
+// ================= COMPLAINT SYSTEM =================
+
+const complaintList = document.getElementById("complaintList");
+
+async function loadComplaints(){
+  complaintList.innerHTML = "";
+  const snapshot = await getDocs(collection(db, "complaints"));
+
+  snapshot.forEach(docSnap => {
+    const data = docSnap.data();
+
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <strong>${data.name}</strong> (${data.phone})<br>
+      ${data.message}<br>
+      Status: <b>${data.status}</b>
+      <button onclick="markResolved('${docSnap.id}')">Mark Resolved</button>
+      <hr>
+    `;
+    complaintList.appendChild(li);
+  });
+}
+
+window.markResolved = async (id) => {
+  await updateDoc(doc(db, "complaints", id), {
+    status: "Resolved"
+  });
+  loadComplaints();
+};
+
+loadComplaints();
+
+
+// ================= GALLERY SYSTEM =================
 
 const uploadBtn = document.getElementById("uploadImageBtn");
 const imageFile = document.getElementById("imageFile");
@@ -35,7 +222,7 @@ uploadBtn.onclick = async () => {
 
     alert("Image uploaded successfully ✅");
 
-    imageFile.value = "";   // Clear input
+    imageFile.value = "";
     loadGalleryAdmin();
 
   } catch(error){
@@ -47,205 +234,21 @@ uploadBtn.onclick = async () => {
   uploadBtn.disabled = false;
 };
 
+async function loadGalleryAdmin(){
+  galleryAdminList.innerHTML = "";
+  const snapshot = await getDocs(collection(db,"gallery"));
+
+  snapshot.forEach(docSnap=>{
+    const li = document.createElement("li");
+    li.innerHTML = `<img src="${docSnap.data().imageUrl}" width="150">`;
+    galleryAdminList.appendChild(li);
+  });
+}
+
 loadGalleryAdmin();
 
-<h2>📊 Dashboard Overview</h2>
-
-<div id="statsContainer" style="display:flex;gap:20px;flex-wrap:wrap;"></div>
-
-<hr><br>
-
-<!DOCTYPE html>
-<html lang="mr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard</title>
-<link rel="stylesheet" href="css/style.css">
-</head>
-
-<body>
-
-<section class="section">
-
-<h1>Admin Dashboard</h1>
-
-<h2>📢 नवीन सूचना जोडा</h2>
-
-<input type="text" id="noticeTitle" placeholder="सूचना शीर्षक" style="width:300px;padding:8px;">
-<br><br>
-<button class="btn" id="addNoticeBtn">Add Notice</button>
-
-  <hr><br>
-
-<h2>📨 आलेल्या तक्रारी</h2>
-<ul id="complaintList"></ul>
-
-  <hr><br>
-
-<h2>🖼 Gallery Upload</h2>
-
-<input type="file" id="imageFile">
-<br><br>
-<button class="btn" id="uploadImageBtn">Upload Image</button>
-
-<ul id="galleryAdminList"></ul>
-  
-<hr><br>
-
-<h2>📋 सर्व सूचना</h2>
-<ul id="adminNoticeList"></ul>
-
-<br>
-<button id="logoutBtn" class="btn">Logout</button>
-
-</section>
-
-
-  const statsContainer = document.getElementById("statsContainer");
-
-async function loadStats(){
-
-  const noticesSnapshot = await getDocs(collection(db,"notices"));
-  const complaintsSnapshot = await getDocs(collection(db,"complaints"));
-
-  let totalComplaints = 0;
-  let pending = 0;
-  let resolved = 0;
-
-  complaintsSnapshot.forEach(doc => {
-    totalComplaints++;
-    if(doc.data().status === "Pending") pending++;
-    if(doc.data().status === "Resolved") resolved++;
-  });
-
-  statsContainer.innerHTML = `
-    <div class="card">Total Notices: ${noticesSnapshot.size}</div>
-    <div class="card">Total Complaints: ${totalComplaints}</div>
-    <div class="card">Pending: ${pending}</div>
-    <div class="card">Resolved: ${resolved}</div>
-  `;
-}
-
-loadStats();
-  
-const complaintList = document.getElementById("complaintList");
-
-async function loadComplaints(){
-  complaintList.innerHTML = "";
-
-  const querySnapshot = await getDocs(collection(db, "complaints"));
-
-  querySnapshot.forEach((docSnap) => {
-
-    const data = docSnap.data();
-
-    const li = document.createElement("li");
-
-    li.innerHTML = `
-      <strong>${data.name}</strong> (${data.phone})<br>
-      ${data.message}<br>
-      Status: <b>${data.status}</b>
-      <button onclick="markResolved('${docSnap.id}')">Mark Resolved</button>
-      <hr>
-    `;
-
-    complaintList.appendChild(li);
-  });
-}
-
-window.markResolved = async (id) => {
-  await updateDoc(doc(db, "complaints", id), {
-    status: "Resolved"
-  });
-  loadComplaints();
-};
-
-import { updateDoc } 
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-loadComplaints();
-
-  
-import { auth } from "./js/firebase.js";
-import { db } from "./js/firebase.js";
-
-import { 
-  onAuthStateChanged, 
-  signOut 
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-import { 
-  collection, 
-  addDoc, 
-  getDocs, 
-  deleteDoc, 
-  doc 
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-
-// 🔐 Protect Page
-onAuthStateChanged(auth, (user) => {
-  if (!user) {
-    window.location.href = "login.html";
-  }
-});
-
-// 🔓 Logout
-document.getElementById("logoutBtn").onclick = async () => {
-  await signOut(auth);
-  window.location.href = "login.html";
-};
-
-
-// 📢 Add Notice
-const noticeTitle = document.getElementById("noticeTitle");
-const addNoticeBtn = document.getElementById("addNoticeBtn");
-const adminNoticeList = document.getElementById("adminNoticeList");
-
-addNoticeBtn.onclick = async () => {
-
-  if(noticeTitle.value.trim() === "") return;
-
-  await addDoc(collection(db, "notices"), {
-    title: noticeTitle.value,
-    created: new Date()
-  });
-
-  noticeTitle.value = "";
-  loadNotices();
-};
-
-
-// 📋 Load Notices
-async function loadNotices(){
-  adminNoticeList.innerHTML = "";
-
-  const querySnapshot = await getDocs(collection(db, "notices"));
-
-  querySnapshot.forEach((docSnap) => {
-
-    const li = document.createElement("li");
-
-    li.innerHTML = `
-      ${docSnap.data().title}
-      <button onclick="deleteNotice('${docSnap.id}')">❌</button>
-    `;
-
-    adminNoticeList.appendChild(li);
-  });
-}
-
-
-// ❌ Delete Notice
-window.deleteNotice = async (id) => {
-  await deleteDoc(doc(db, "notices", id));
-  loadNotices();
-};
-
-loadNotices();
-
 </script>
+<!-- ================= SCRIPT ENDS HERE ================= -->
 
 </body>
 </html>
