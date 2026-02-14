@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>तक्रार नोंदवा</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<section class="section">
+
+<h1>तक्रार नोंदवा</h1>
+
+<input type="text" id="name" placeholder="आपले नाव" style="width:300px;padding:8px;">
+<br><br>
+
+<input type="text" id="phone" placeholder="मोबाईल क्रमांक" style="width:300px;padding:8px;">
+<br><br>
+
+<textarea id="message" placeholder="तक्रार लिहा..." style="width:300px;height:100px;padding:8px;"></textarea>
+<br><br>
+
+<button class="btn" id="submitComplaint">Submit Complaint</button>
+
+<p id="successMsg" style="color:green;"></p>
+
+</section>
+
+<script type="module">
+
+import { db } from "./js/firebase.js";
+import { collection, addDoc } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+document.getElementById("submitComplaint").onclick = async () => {
+
+  const name = document.getElementById("name").value;
+  const phone = document.getElementById("phone").value;
+  const message = document.getElementById("message").value;
+
+  if(!name || !phone || !message) return;
+
+  await addDoc(collection(db, "complaints"), {
+    name,
+    phone,
+    message,
+    status: "Pending",
+    created: new Date()
+  });
+
+  document.getElementById("successMsg").innerText = "तक्रार यशस्वीरित्या नोंदवली!";
+  
+  document.getElementById("name").value = "";
+  document.getElementById("phone").value = "";
+  document.getElementById("message").value = "";
+};
+
+</script>
+
+</body>
+</html>
