@@ -17,3 +17,24 @@ async function loadNotices(){
 }
 
 loadNotices();
+
+import { collection, getDocs } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const galleryContainer = document.getElementById("galleryContainer");
+
+async function loadGallery(){
+  if(!galleryContainer) return;
+
+  galleryContainer.innerHTML = "";
+
+  const snapshot = await getDocs(collection(db,"gallery"));
+
+  snapshot.forEach(docSnap=>{
+    const img = document.createElement("img");
+    img.src = docSnap.data().imageUrl;
+    galleryContainer.appendChild(img);
+  });
+}
+
+loadGallery();
