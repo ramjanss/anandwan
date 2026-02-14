@@ -18,6 +18,8 @@
 
 <h1>Admin Dashboard</h1>
 
+<!-- ================= NOTICE SECTION ================= -->
+
 <h2>📢 नवीन सूचना जोडा</h2>
 
 <input type="text" id="noticeTitle" placeholder="सूचना शीर्षक" style="width:300px;padding:8px;">
@@ -36,10 +38,14 @@ style="width:300px;height:80px;padding:8px;"></textarea>
 
 <hr><br>
 
+<!-- ================= COMPLAINT SECTION ================= -->
+
 <h2>📨 आलेल्या तक्रारी</h2>
 <ul id="complaintList"></ul>
 
 <hr><br>
+
+<!-- ================= GALLERY SECTION ================= -->
 
 <h2>🖼 Gallery Upload</h2>
 <input type="file" id="imageFile">
@@ -49,6 +55,8 @@ style="width:300px;height:80px;padding:8px;"></textarea>
 
 <hr><br>
 
+<!-- ================= NOTICE LIST ================= -->
+
 <h2>📋 सर्व सूचना</h2>
 <ul id="adminNoticeList"></ul>
 
@@ -57,10 +65,11 @@ style="width:300px;height:80px;padding:8px;"></textarea>
 
 </section>
 
-<!-- ================= SCRIPT STARTS HERE ================= -->
+<!-- ================= SCRIPT ================= -->
 <script type="module">
 
-// 🔹 IMPORTS FIRST
+// ================= IMPORTS =================
+
 import { auth, db, storage } from "./js/firebase.js";
 
 import { 
@@ -84,14 +93,14 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
 
-// 🔐 Protect Page
+// ================= AUTH PROTECTION =================
+
 onAuthStateChanged(auth, (user) => {
   if (!user) {
     window.location.href = "login.html";
   }
 });
 
-// 🔓 Logout
 document.getElementById("logoutBtn").onclick = async () => {
   await signOut(auth);
   window.location.href = "login.html";
@@ -127,17 +136,14 @@ async function loadStats(){
 loadStats();
 
 
-// ================= NOTICE SYSTEM =================
-
-import { storage } from "./js/firebase.js";
-import { ref, uploadBytes, getDownloadURL } 
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+// ================= NOTICE UPLOAD =================
 
 const noticeTitle = document.getElementById("noticeTitle");
 const noticeDesc = document.getElementById("noticeDesc");
 const noticeFile = document.getElementById("noticeFile");
 const noticeMsg = document.getElementById("noticeMsg");
 const addNoticeBtn = document.getElementById("addNoticeBtn");
+const adminNoticeList = document.getElementById("adminNoticeList");
 
 addNoticeBtn.onclick = async () => {
 
@@ -154,14 +160,9 @@ addNoticeBtn.onclick = async () => {
     let fileURL = "";
 
     if(noticeFile.files[0]){
-
       const file = noticeFile.files[0];
-
-      const storageRef = ref(storage, 
-        "notices/" + Date.now() + "_" + file.name);
-
+      const storageRef = ref(storage, "notices/" + Date.now() + "_" + file.name);
       await uploadBytes(storageRef, file);
-
       fileURL = await getDownloadURL(storageRef);
     }
 
@@ -179,6 +180,7 @@ addNoticeBtn.onclick = async () => {
     noticeFile.value = "";
 
     loadNotices();
+    loadStats();
 
   } catch(error){
     console.error(error);
@@ -188,6 +190,28 @@ addNoticeBtn.onclick = async () => {
   addNoticeBtn.innerText = "Upload Notice";
   addNoticeBtn.disabled = false;
 };
+
+async function loadNotices(){
+  adminNoticeList.innerHTML = "";
+  const snapshot = await getDocs(collection(db,"notices"));
+
+  snapshot.forEach(docSnap => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <strong>${docSnap.data().title}</strong>
+      <button onclick="deleteNotice('${docSnap.id}')">❌</button>
+    `;
+    adminNoticeList.appendChild(li);
+  });
+}
+
+window.deleteNotice = async (id) => {
+  await deleteDoc(doc(db, "notices", id));
+  loadNotices();
+  loadStats();
+};
+
+loadNotices();
 
 
 // ================= COMPLAINT SYSTEM =================
@@ -218,6 +242,7 @@ window.markResolved = async (id) => {
     status: "Resolved"
   });
   loadComplaints();
+  loadStats();
 };
 
 loadComplaints();
@@ -260,8 +285,8 @@ uploadBtn.onclick = async () => {
     loadGalleryAdmin();
 
   } catch(error){
-    alert("Upload failed ❌");
     console.error(error);
+    alert("Upload failed ❌");
   }
 
   uploadBtn.innerText = "Upload Image";
@@ -282,7 +307,6 @@ async function loadGalleryAdmin(){
 loadGalleryAdmin();
 
 </script>
-<!-- ================= SCRIPT ENDS HERE ================= -->
 
 </body>
 </html>
