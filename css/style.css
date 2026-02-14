@@ -1,0 +1,42 @@
+:root{
+--primary:#1e3a8a;
+--secondary:#15803d;
+--accent:#f59e0b;
+--bg:#f8fafc;
+--card:#ffffff;
+--text:#0f172a;
+}
+
+body{
+margin:0;
+font-family:'Poppins','Noto Sans Devanagari',sans-serif;
+background:var(--bg);
+color:var(--text);
+}
+
+.section{
+padding:60px 20px;
+max-width:1200px;
+margin:auto;
+}
+
+.btn{
+background:var(--secondary);
+color:#fff;
+padding:12px 20px;
+border-radius:8px;
+text-decoration:none;
+display:inline-block;
+}
+
+.card{
+background:var(--card);
+padding:20px;
+border-radius:16px;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-6px);
+}
