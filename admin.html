@@ -29,6 +29,87 @@
 
 </section>
 
+<script type="module">
+
+import { auth } from "./js/firebase.js";
+import { db } from "./js/firebase.js";
+
+import { 
+  onAuthStateChanged, 
+  signOut 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+import { 
+  collection, 
+  addDoc, 
+  getDocs, 
+  deleteDoc, 
+  doc 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+
+// 🔐 Protect Page
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.href = "login.html";
+  }
+});
+
+// 🔓 Logout
+document.getElementById("logoutBtn").onclick = async () => {
+  await signOut(auth);
+  window.location.href = "login.html";
+};
+
+
+// 📢 Add Notice
+const noticeTitle = document.getElementById("noticeTitle");
+const addNoticeBtn = document.getElementById("addNoticeBtn");
+const adminNoticeList = document.getElementById("adminNoticeList");
+
+addNoticeBtn.onclick = async () => {
+
+  if(noticeTitle.value.trim() === "") return;
+
+  await addDoc(collection(db, "notices"), {
+    title: noticeTitle.value,
+    created: new Date()
+  });
+
+  noticeTitle.value = "";
+  loadNotices();
+};
+
+
+// 📋 Load Notices
+async function loadNotices(){
+  adminNoticeList.innerHTML = "";
+
+  const querySnapshot = await getDocs(collection(db, "notices"));
+
+  querySnapshot.forEach((docSnap) => {
+
+    const li = document.createElement("li");
+
+    li.innerHTML = `
+      ${docSnap.data().title}
+      <button onclick="deleteNotice('${docSnap.id}')">❌</button>
+    `;
+
+    adminNoticeList.appendChild(li);
+  });
+}
+
+
+// ❌ Delete Notice
+window.deleteNotice = async (id) => {
+  await deleteDoc(doc(db, "notices", id));
+  loadNotices();
+};
+
+loadNotices();
+
+</script>
 
 </body>
 </html>
