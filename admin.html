@@ -66,18 +66,26 @@ style="width:300px;height:80px;padding:8px;"></textarea>
 
 import { auth, db, storage } from "./js/firebase.js";
 
-import { onAuthStateChanged, signOut }
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { 
+  onAuthStateChanged, 
+  signOut 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 import { 
-  collection, addDoc, getDocs, deleteDoc, doc, updateDoc 
-}
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  collection, 
+  addDoc, 
+  getDocs, 
+  deleteDoc, 
+  doc,
+  updateDoc
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 import { 
-  ref, uploadBytes, getDownloadURL, deleteObject 
-}
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+  ref, 
+  uploadBytes, 
+  getDownloadURL,
+  deleteObject
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
 
 // ================= AUTH =================
