@@ -40,3 +40,23 @@ transition:0.3s;
 .card:hover{
 transform:translateY(-6px);
 }
+
+.gallery-container {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 10px 0;
+}
+
+.gallery-container img {
+  width: 260px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 12px;
+  flex-shrink: 0;
+  transition: 0.3s;
+}
+
+.gallery-container img:hover {
+  transform: scale(1.05);
+}
