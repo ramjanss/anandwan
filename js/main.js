@@ -101,7 +101,7 @@ loadNotices();
 
 async function loadGallery(){
 
-  const container = document.getElementById("galleryContainer");
+  const container = document.getElementById("galleryTrack");
   if(!container) return;
 
   container.innerHTML = "";
@@ -114,6 +114,9 @@ async function loadGallery(){
     img.className = "gallery-img";
     container.appendChild(img);
   });
+
 }
 
 loadGallery();
+
+
