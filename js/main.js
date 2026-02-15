@@ -4,13 +4,11 @@ import {
   collection,
   getDocs,
   query,
-  orderBy,
-  limit
+  orderBy
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 
-// ================= FADE IN ANIMATION =================
-
+// ================= FADE IN =================
 document.addEventListener("DOMContentLoaded", () => {
   document.body.style.opacity = "0";
   document.body.style.transition = "opacity 0.8s ease";
@@ -20,15 +18,20 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// ================= ANIMATED COUNTER =================
-
+// ================= COUNTER =================
 function animateCounter(element, target) {
+
+  if (target === 0) {
+    element.textContent = 0;
+    return;
+  }
+
   let start = 0;
   const duration = 800;
-  const stepTime = Math.abs(Math.floor(duration / target));
+  const stepTime = Math.max(Math.floor(duration / target), 20);
 
   const timer = setInterval(() => {
-    start += 1;
+    start++;
     element.textContent = start;
     if (start >= target) {
       clearInterval(timer);
@@ -38,15 +41,14 @@ function animateCounter(element, target) {
 }
 
 
-// ================= LOAD LIVE STATS =================
-
+// ================= LOAD STATS =================
 async function loadStats() {
 
-  const noticeCountEl = document.getElementById("noticeCount");
-  const complaintCountEl = document.getElementById("complaintCount");
-  const resolvedCountEl = document.getElementById("resolvedCount");
+  const noticeEl = document.getElementById("noticeCount");
+  const complaintEl = document.getElementById("complaintCount");
+  const resolvedEl = document.getElementById("resolvedCount");
 
-  if (!noticeCountEl || !complaintCountEl || !resolvedCountEl) return;
+  if (!noticeEl || !complaintEl || !resolvedEl) return;
 
   const noticesSnapshot = await getDocs(collection(db, "notices"));
   const complaintsSnapshot = await getDocs(collection(db, "complaints"));
@@ -57,14 +59,13 @@ async function loadStats() {
     if (docSnap.data().status === "Resolved") resolved++;
   });
 
-  animateCounter(noticeCountEl, noticesSnapshot.size);
-  animateCounter(complaintCountEl, complaintsSnapshot.size);
-  animateCounter(resolvedCountEl, resolved);
+  animateCounter(noticeEl, noticesSnapshot.size);
+  animateCounter(complaintEl, complaintsSnapshot.size);
+  animateCounter(resolvedEl, resolved);
 }
 
 
 // ================= LOAD NOTICES =================
-
 async function loadNotices() {
 
   const noticeList = document.getElementById("noticeList");
@@ -87,16 +88,6 @@ async function loadNotices() {
 
     const card = document.createElement("div");
     card.className = "notice-card";
-
-    card.style.transition = "transform 0.3s ease, box-shadow 0.3s ease";
-    card.onmouseenter = () => {
-      card.style.transform = "translateY(-6px)";
-      card.style.boxShadow = "0 15px 35px rgba(0,0,0,0.1)";
-    };
-    card.onmouseleave = () => {
-      card.style.transform = "translateY(0)";
-      card.style.boxShadow = "0 6px 20px rgba(0,0,0,0.05)";
-    };
 
     card.innerHTML = `
       <h3>
@@ -127,7 +118,6 @@ async function loadNotices() {
 
 
 // ================= LOAD GALLERY =================
-
 async function loadGallery() {
 
   const track = document.getElementById("galleryTrack");
@@ -143,59 +133,17 @@ async function loadGallery() {
     img.src = docSnap.data().imageUrl;
 
     img.style.transition = "transform 0.4s ease";
-
-    img.onmouseenter = () => {
-      img.style.transform = "scale(1.08)";
-    };
-
-    img.onmouseleave = () => {
-      img.style.transform = "scale(1)";
-    };
+    img.onmouseenter = () => img.style.transform = "scale(1.08)";
+    img.onmouseleave = () => img.style.transform = "scale(1)";
 
     track.appendChild(img);
   });
 
-  // duplicate images for smooth infinite scroll
   track.innerHTML += track.innerHTML;
 }
 
 
-// ================= INIT =================
-
-loadStats();
-loadNotices();
-loadGallery();
-
 // ================= LOAD MEMBERS =================
-
-async function loadMembers() {
-
-  const container = document.getElementById("membersGrid");
-  if (!container) return;
-
-  container.innerHTML = "";
-
-  const snapshot = await getDocs(
-    collection(db, "members")
-  );
-
-  snapshot.forEach(docSnap => {
-
-    const data = docSnap.data();
-
-    const card = document.createElement("div");
-    card.className = "member-card";
-
-    card.innerHTML = `
-      <img src="${data.photoUrl}" alt="${data.name}">
-      <h3>${data.name}</h3>
-      <p>${data.role}</p>
-    `;
-
-    container.appendChild(card);
-  });
-}
-
 async function loadMembers() {
 
   const container = document.getElementById("membersContainer");
@@ -212,7 +160,7 @@ async function loadMembers() {
   });
 
   // sort by display order
-  members.sort((a, b) => a.order - b.order);
+  members.sort((a, b) => (a.order || 0) - (b.order || 0));
 
   members.forEach(member => {
 
@@ -230,5 +178,9 @@ async function loadMembers() {
   });
 }
 
-loadMembers();
 
+// ================= INIT =================
+loadStats();
+loadNotices();
+loadGallery();
+loadMembers();
