@@ -90,30 +90,36 @@ if (noticeList) {
 }
 
 
-// ================= LIVE GALLERY =================
+// ================= AUTO SCROLL GALLERY =================
+
+import { collection, getDocs } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const galleryTrack = document.getElementById("galleryTrack");
 
-if(galleryTrack){
+async function loadGallery(){
 
-  onSnapshot(collection(db,"gallery"), (snapshot)=>{
+  if(!galleryTrack) return;
 
-    galleryTrack.innerHTML = "";
+  galleryTrack.innerHTML = "";
 
-    let images = [];
+  const snapshot = await getDocs(collection(db,"gallery"));
 
-    snapshot.forEach(docSnap=>{
-      images.push(docSnap.data().imageUrl);
-    });
+  let images = [];
 
-    const doubled = [...images, ...images];
+  snapshot.forEach(docSnap=>{
+    images.push(docSnap.data().imageUrl);
+  });
 
-    doubled.forEach(url=>{
-      const img = document.createElement("img");
-      img.src = url;
-      galleryTrack.appendChild(img);
-    });
+  // Duplicate images for infinite scroll
+  const fullList = [...images, ...images];
 
+  fullList.forEach(url=>{
+    const img = document.createElement("img");
+    img.src = url;
+    galleryTrack.appendChild(img);
   });
 
 }
+
+loadGallery();
