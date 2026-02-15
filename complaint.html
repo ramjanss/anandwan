@@ -4,29 +4,97 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>तक्रार नोंदवा</title>
-<link rel="stylesheet" href="css/style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:'Poppins','Noto Sans Devanagari',sans-serif;
+  background:#f4f6fb;
+}
+
+.section{
+  max-width:600px;
+  margin:80px auto;
+  background:white;
+  padding:40px;
+  border-radius:20px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.08);
+}
+
+h1{
+  text-align:center;
+  margin-bottom:30px;
+}
+
+input, textarea{
+  width:100%;
+  padding:12px;
+  margin-bottom:15px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  font-size:14px;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:30px;
+  background:#0048ff;
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+button:hover{
+  background:#0036c7;
+}
+
+.success-box{
+  background:#e6f7ee;
+  padding:15px;
+  border-radius:12px;
+  margin-top:20px;
+  display:none;
+}
+
+.success-box strong{
+  color:#0a7c42;
+}
+
+.home-link{
+  text-align:center;
+  margin-top:20px;
+}
+</style>
 </head>
 
 <body>
 
-<section class="section">
+<div class="section">
 
-<h1>तक्रार नोंदवा</h1>
+<h1>📨 तक्रार नोंदवा</h1>
 
-<input type="text" id="name" placeholder="आपले नाव" style="width:300px;padding:8px;">
-<br><br>
+<input type="text" id="name" placeholder="आपले नाव" required>
+<input type="text" id="phone" placeholder="मोबाईल नंबर" required>
+<textarea id="message" placeholder="आपली तक्रार लिहा" rows="4" required></textarea>
 
-<input type="text" id="phone" placeholder="मोबाईल क्रमांक" style="width:300px;padding:8px;">
-<br><br>
+<button id="submitBtn">Submit Complaint</button>
 
-<textarea id="message" placeholder="तक्रार लिहा..." style="width:300px;height:100px;padding:8px;"></textarea>
-<br><br>
+<div class="success-box" id="successBox">
+  ✅ तक्रार यशस्वीरित्या नोंदवली गेली! <br><br>
+  तुमचा Tracking ID: <strong id="trackingIdText"></strong>
+</div>
 
-<button class="btn" id="submitComplaint">Submit Complaint</button>
+<div class="home-link">
+  <a href="index.html">← Home</a>
+</div>
 
-<p id="successMsg" style="color:green;"></p>
+</div>
 
-</section>
 
 <script type="module">
 
@@ -34,32 +102,49 @@ import { db } from "./js/firebase.js";
 import { collection, addDoc } 
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-document.getElementById("submitComplaint").onclick = async () => {
+const submitBtn = document.getElementById("submitBtn");
 
-  const name = document.getElementById("name").value;
-  const phone = document.getElementById("phone").value;
-  const message = document.getElementById("message").value;
+submitBtn.onclick = async () => {
 
-  if(!name || !phone || !message) return;
+  const name = document.getElementById("name").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const message = document.getElementById("message").value.trim();
 
-  const trackingId = "GP" + Date.now();
+  if(name === "" || phone === "" || message === ""){
+    alert("Please fill all fields");
+    return;
+  }
 
-await addDoc(collection(db, "complaints"), {
-  name: nameInput.value,
-  phone: phoneInput.value,
-  message: messageInput.value,
-  status: "Pending",
-  trackingId: trackingId,
-  createdAt: new Date()
-});
+  submitBtn.innerText = "Submitting...";
+  submitBtn.disabled = true;
 
+  try{
 
-  document.getElementById("successMsg").innerHTML =
-    "तक्रार यशस्वीरित्या नोंदवली! <br><b>Tracking ID: " + trackingId + "</b>";
+    const trackingId = "GP" + Date.now();
 
-  document.getElementById("name").value = "";
-  document.getElementById("phone").value = "";
-  document.getElementById("message").value = "";
+    await addDoc(collection(db, "complaints"), {
+      name: name,
+      phone: phone,
+      message: message,
+      status: "Pending",
+      trackingId: trackingId,
+      createdAt: new Date()
+    });
+
+    document.getElementById("trackingIdText").innerText = trackingId;
+    document.getElementById("successBox").style.display = "block";
+
+    document.getElementById("name").value = "";
+    document.getElementById("phone").value = "";
+    document.getElementById("message").value = "";
+
+  }catch(error){
+    console.error(error);
+    alert("Something went wrong ❌");
+  }
+
+  submitBtn.innerText = "Submit Complaint";
+  submitBtn.disabled = false;
 };
 
 </script>
