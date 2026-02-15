@@ -33,16 +33,21 @@ async function loadNotices(){
   const snapshot = await getDocs(collection(db,"notices"));
 
   snapshot.forEach(docSnap=>{
-    const data = docSnap.data();
 
+    const data = docSnap.data();
     const div = document.createElement("div");
     div.className = "notice-card";
 
+    const isNew = data.created && 
+      (new Date() - data.created.toDate?.() < 7 * 24 * 60 * 60 * 1000);
+
     div.innerHTML = `
-      <strong>${data.title}</strong><br>
+      <strong>${data.title}</strong>
+      ${isNew ? '<span class="new-badge">NEW</span>' : ''}
+      <br><br>
       ${data.description || ""}
       ${data.fileUrl ? 
-        `<br><a href="${data.fileUrl}" target="_blank" class="btn">Download PDF</a>`
+        `<br><br><a href="${data.fileUrl}" target="_blank" class="btn btn-primary">Download PDF</a>`
         : ""
       }
     `;
@@ -56,7 +61,7 @@ loadNotices();
 
 // ================= LOAD GALLERY =================
 
-const galleryContainer = document.getElementById("galleryContainer");
+const galleryTrack = document.getElementById("galleryTrack");
 
 async function loadGallery(){
 
@@ -65,8 +70,11 @@ async function loadGallery(){
   snapshot.forEach(docSnap=>{
     const img = document.createElement("img");
     img.src = docSnap.data().imageUrl;
-    galleryContainer.appendChild(img);
+    galleryTrack.appendChild(img);
   });
+
+  // Duplicate images for infinite scroll illusion
+  galleryTrack.innerHTML += galleryTrack.innerHTML;
 }
 
 loadGallery();
