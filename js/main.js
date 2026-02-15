@@ -1,128 +1,94 @@
 // ================= IMPORTS =================
 import { db } from "./firebase.js";
 
-import { 
+import {
   collection,
-  onSnapshot
+  getDocs
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 
-// ================= LIVE STATS =================
+// ================= LOAD LIVE STATS =================
 
-const noticeCount = document.getElementById("noticeCount");
-const complaintCount = document.getElementById("complaintCount");
-const resolvedCount = document.getElementById("resolvedCount");
+async function loadStats() {
 
-onSnapshot(collection(db,"notices"), (snapshot)=>{
-  if(noticeCount){
-    noticeCount.innerText = snapshot.size;
-  }
-});
+  const noticeCountEl = document.getElementById("noticeCount");
+  const complaintCountEl = document.getElementById("complaintCount");
+  const resolvedCountEl = document.getElementById("resolvedCount");
 
-onSnapshot(collection(db,"complaints"), (snapshot)=>{
+  if (!noticeCountEl || !complaintCountEl || !resolvedCountEl) return;
 
-  if(!complaintCount || !resolvedCount) return;
+  const noticesSnapshot = await getDocs(collection(db, "notices"));
+  const complaintsSnapshot = await getDocs(collection(db, "complaints"));
 
-  let total = 0;
   let resolved = 0;
 
-  snapshot.forEach(docSnap=>{
-    total++;
-    if(docSnap.data().status === "Resolved"){
+  complaintsSnapshot.forEach(docSnap => {
+    if (docSnap.data().status === "Resolved") {
       resolved++;
     }
   });
 
-  complaintCount.innerText = total;
-  resolvedCount.innerText = resolved;
-});
-
-
-// ================= LIVE NOTICES WITH SAFE NEW BADGE =================
-
-const noticeList = document.getElementById("noticeList");
-
-if (noticeList) {
-
-  onSnapshot(collection(db, "notices"), (snapshot) => {
-
-    noticeList.innerHTML = "";
-
-    snapshot.forEach(docSnap => {
-
-      const data = docSnap.data();
-
-      // SAFELY handle Firestore Timestamp
-      let createdDate;
-
-      if (data.created && data.created.seconds) {
-        createdDate = new Date(data.created.seconds * 1000);
-      } else {
-        createdDate = new Date();
-      }
-
-      const diffDays =
-        (Date.now() - createdDate.getTime()) / (1000 * 60 * 60 * 24);
-
-      const div = document.createElement("div");
-      div.className = "notice-card";
-
-      div.innerHTML = `
-        <strong>
-          ${data.title}
-          ${diffDays <= 7
-            ? `<span class="new-badge">NEW</span>`
-            : ""}
-        </strong>
-        <br><br>
-        ${data.description || ""}
-        ${data.fileUrl
-          ? `<br><br><a href="${data.fileUrl}" target="_blank">📄 Download</a>`
-          : ""}
-      `;
-
-      noticeList.appendChild(div);
-
-    });
-
-  });
-
+  noticeCountEl.textContent = noticesSnapshot.size;
+  complaintCountEl.textContent = complaintsSnapshot.size;
+  resolvedCountEl.textContent = resolved;
 }
 
 
-// ================= INFINITE AUTO SCROLL GALLERY =================
+// ================= LOAD NOTICES =================
 
-import { collection, getDocs }
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+async function loadNotices() {
 
-const galleryTrack = document.getElementById("galleryTrack");
+  const noticeList = document.getElementById("noticeList");
+  if (!noticeList) return;
 
-async function loadGallery(){
+  noticeList.innerHTML = "";
 
-  if(!galleryTrack) return;
+  const snapshot = await getDocs(collection(db, "notices"));
 
-  galleryTrack.innerHTML = "";
+  snapshot.forEach(docSnap => {
 
-  const snapshot = await getDocs(collection(db,"gallery"));
-
-  let imageUrls = [];
-
-  snapshot.forEach(docSnap=>{
     const data = docSnap.data();
-    if(data.imageUrl){
-      imageUrls.push(data.imageUrl);
-    }
+
+    const card = document.createElement("div");
+    card.className = "notice-card";
+
+    card.innerHTML = `
+      <h3>${data.title} <span style="color:red;font-size:12px;">NEW</span></h3>
+      <p>${data.description || ""}</p>
+      ${data.fileUrl ? `<a href="${data.fileUrl}" target="_blank">📄 Download</a>` : ""}
+    `;
+
+    noticeList.appendChild(card);
   });
-
-  // IMPORTANT: Duplicate images for infinite loop
-  const fullList = [...imageUrls, ...imageUrls];
-
-  fullList.forEach(url=>{
-    const img = document.createElement("img");
-    img.src = url;
-    galleryTrack.appendChild(img);
-  });
-
 }
 
+
+// ================= LOAD GALLERY =================
+
+async function loadGallery() {
+
+  const track = document.getElementById("galleryTrack");
+  if (!track) return;
+
+  track.innerHTML = "";
+
+  const snapshot = await getDocs(collection(db, "gallery"));
+
+  snapshot.forEach(docSnap => {
+
+    const img = document.createElement("img");
+    img.src = docSnap.data().imageUrl;
+    track.appendChild(img);
+
+  });
+
+  // duplicate images for smooth auto scroll
+  track.innerHTML += track.innerHTML;
+}
+
+
+// ================= INIT =================
+
+loadStats();
+loadNotices();
 loadGallery();
