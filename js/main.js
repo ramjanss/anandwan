@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ================= COUNTER =================
 function animateCounter(element, target) {
-
   if (target === 0) {
     element.textContent = 0;
     return;
@@ -28,7 +27,7 @@ function animateCounter(element, target) {
 
   let start = 0;
   const duration = 800;
-  const stepTime = Math.max(Math.floor(duration / target), 20);
+  const stepTime = Math.floor(duration / target);
 
   const timer = setInterval(() => {
     start++;
@@ -43,12 +42,11 @@ function animateCounter(element, target) {
 
 // ================= LOAD STATS =================
 async function loadStats() {
+  const noticeCountEl = document.getElementById("noticeCount");
+  const complaintCountEl = document.getElementById("complaintCount");
+  const resolvedCountEl = document.getElementById("resolvedCount");
 
-  const noticeEl = document.getElementById("noticeCount");
-  const complaintEl = document.getElementById("complaintCount");
-  const resolvedEl = document.getElementById("resolvedCount");
-
-  if (!noticeEl || !complaintEl || !resolvedEl) return;
+  if (!noticeCountEl) return;
 
   const noticesSnapshot = await getDocs(collection(db, "notices"));
   const complaintsSnapshot = await getDocs(collection(db, "complaints"));
@@ -59,15 +57,14 @@ async function loadStats() {
     if (docSnap.data().status === "Resolved") resolved++;
   });
 
-  animateCounter(noticeEl, noticesSnapshot.size);
-  animateCounter(complaintEl, complaintsSnapshot.size);
-  animateCounter(resolvedEl, resolved);
+  animateCounter(noticeCountEl, noticesSnapshot.size);
+  animateCounter(complaintCountEl, complaintsSnapshot.size);
+  animateCounter(resolvedCountEl, resolved);
 }
 
 
 // ================= LOAD NOTICES =================
 async function loadNotices() {
-
   const noticeList = document.getElementById("noticeList");
   if (!noticeList) return;
 
@@ -80,46 +77,25 @@ async function loadNotices() {
 
   const snapshot = await getDocs(q);
 
-  let index = 0;
-
   snapshot.forEach(docSnap => {
-
     const data = docSnap.data();
 
     const card = document.createElement("div");
     card.className = "notice-card";
 
     card.innerHTML = `
-      <h3>
-        ${data.title}
-        ${index < 3 ? `<span style="
-          background:#ff4757;
-          color:white;
-          font-size:11px;
-          padding:4px 8px;
-          border-radius:20px;
-          margin-left:8px;
-        ">NEW</span>` : ""}
-      </h3>
-
+      <h3>${data.title}</h3>
       <p>${data.description || ""}</p>
-
-      ${data.fileUrl ? `
-        <a href="${data.fileUrl}" target="_blank"
-        style="color:#0048ff;font-weight:600;text-decoration:none;">
-          📄 Download PDF
-        </a>` : ""}
+      ${data.fileUrl ? `<a href="${data.fileUrl}" target="_blank">📄 Download</a>` : ""}
     `;
 
     noticeList.appendChild(card);
-    index++;
   });
 }
 
 
 // ================= LOAD GALLERY =================
 async function loadGallery() {
-
   const track = document.getElementById("galleryTrack");
   if (!track) return;
 
@@ -128,14 +104,8 @@ async function loadGallery() {
   const snapshot = await getDocs(collection(db, "gallery"));
 
   snapshot.forEach(docSnap => {
-
     const img = document.createElement("img");
     img.src = docSnap.data().imageUrl;
-
-    img.style.transition = "transform 0.4s ease";
-    img.onmouseenter = () => img.style.transform = "scale(1.08)";
-    img.onmouseleave = () => img.style.transform = "scale(1)";
-
     track.appendChild(img);
   });
 
@@ -145,7 +115,6 @@ async function loadGallery() {
 
 // ================= LOAD MEMBERS =================
 async function loadMembers() {
-
   const container = document.getElementById("membersContainer");
   if (!container) return;
 
@@ -159,11 +128,9 @@ async function loadMembers() {
     members.push(docSnap.data());
   });
 
-  // sort by display order
-  members.sort((a, b) => (a.order || 0) - (b.order || 0));
+  members.sort((a, b) => a.order - b.order);
 
   members.forEach(member => {
-
     const card = document.createElement("div");
     card.className = "member-card";
 
