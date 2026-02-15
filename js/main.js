@@ -1,114 +1,119 @@
 import { db } from "./firebase.js";
-import { collection, getDocs, query, orderBy } 
+import { collection, getDocs, query, orderBy, limit }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-async function loadPublicNotices(){
+// ================= COUNTER ANIMATION =================
 
-  const noticeList = document.getElementById("noticeList");
-  if(!noticeList) return;
+function animateCounter(element, target){
+  let start = 0;
+  const duration = 1000;
+  const increment = target / (duration / 16);
 
-  noticeList.innerHTML = "<p style='color:white'>Loading...</p>";
-
-  try{
-
-    const q = query(
-      collection(db,"notices"),
-      orderBy("created","desc")
-    );
-
-    const snapshot = await getDocs(q);
-
-    noticeList.innerHTML = "";
-
-    if(snapshot.empty){
-      noticeList.innerHTML = 
-        "<p style='color:white'>No notices available.</p>";
-      return;
+  function update(){
+    start += increment;
+    if(start >= target){
+      element.textContent = target;
+    } else {
+      element.textContent = Math.floor(start);
+      requestAnimationFrame(update);
     }
-
-    snapshot.forEach(docSnap => {
-
-      const data = docSnap.data();
-
-      const card = document.createElement("div");
-      card.className = "notice-card";
-
-      card.innerHTML = `
-        <div class="notice-title">${data.title || ""}</div>
-        <div class="notice-desc">${data.description || ""}</div>
-        ${
-          data.fileUrl 
-          ? `<a href="${data.fileUrl}" target="_blank" class="notice-btn">📄 Download</a>` 
-          : ""
-        }
-      `;
-
-      noticeList.appendChild(card);
-    });
-
-  }catch(error){
-    console.error("Notice load error:", error);
-    noticeList.innerHTML = 
-      "<p style='color:white'>Error loading notices.</p>";
   }
+
+  update();
 }
 
-loadPublicNotices();
+// ================= LOAD LIVE STATS =================
+
+async function loadStats(){
+
+  const noticesSnapshot = await getDocs(collection(db,"notices"));
+  const complaintsSnapshot = await getDocs(collection(db,"complaints"));
+
+  let totalComplaints = 0;
+  let resolved = 0;
+
+  complaintsSnapshot.forEach(docSnap=>{
+    totalComplaints++;
+    if(docSnap.data().status === "Resolved") resolved++;
+  });
+
+  const noticeCount = document.getElementById("noticeCount");
+  const complaintCount = document.getElementById("complaintCount");
+  const resolvedCount = document.getElementById("resolvedCount");
+
+  animateCounter(noticeCount, noticesSnapshot.size);
+  animateCounter(complaintCount, totalComplaints);
+  animateCounter(resolvedCount, resolved);
+}
+
+loadStats();
 
 
-// ================= SAFE LOAD NOTICES =================
+// ================= LOAD NOTICES (WITH NEW BADGE) =================
 
 async function loadNotices(){
 
-  const noticeContainer = document.getElementById("noticeContainer");
-  if(!noticeContainer) return;
+  const container = document.getElementById("noticeList");
+  container.innerHTML = "";
 
-  noticeContainer.innerHTML = "";
+  const q = query(
+    collection(db,"notices"),
+    orderBy("created","desc"),
+    limit(6)
+  );
 
-  const snapshot = await getDocs(collection(db,"notices"));
+  const snapshot = await getDocs(q);
+
+  let index = 0;
 
   snapshot.forEach(docSnap=>{
-
     const data = docSnap.data();
-    const div = document.createElement("div");
-    div.className = "notice-card";
 
-    div.innerHTML = `
-      <strong>${data.title}</strong>
-      <br><br>
-      ${data.description || ""}
+    const card = document.createElement("div");
+    card.className = "notice-card";
+
+    const isNew = index < 2; // first 2 notices marked NEW
+    index++;
+
+    card.innerHTML = `
+      <div class="notice-title">
+        ${data.title}
+        ${isNew ? '<span class="new-badge">NEW</span>' : ''}
+      </div>
+
+      <div class="notice-desc">
+        ${data.description || ""}
+      </div>
+
       ${data.fileUrl ? 
-        `<br><br><a href="${data.fileUrl}" target="_blank" class="btn btn-primary">Download PDF</a>`
-        : ""
-      }
+        `<a href="${data.fileUrl}" target="_blank" class="notice-btn">Download</a>`
+        : ""}
     `;
 
-    noticeContainer.appendChild(div);
+    container.appendChild(card);
   });
 }
 
 loadNotices();
 
 
-// ================= SAFE LOAD GALLERY =================
+// ================= LOAD GALLERY =================
 
 async function loadGallery(){
 
-  const galleryTrack = document.getElementById("galleryTrack");
-  if(!galleryTrack) return;
+  const container = document.getElementById("galleryContainer");
+  if(!container) return;
 
-  galleryTrack.innerHTML = "";
+  container.innerHTML = "";
 
   const snapshot = await getDocs(collection(db,"gallery"));
 
   snapshot.forEach(docSnap=>{
     const img = document.createElement("img");
     img.src = docSnap.data().imageUrl;
-    galleryTrack.appendChild(img);
+    img.className = "gallery-img";
+    container.appendChild(img);
   });
-
-  // Duplicate for smooth infinite scroll
-  galleryTrack.innerHTML += galleryTrack.innerHTML;
 }
 
 loadGallery();
