@@ -1,41 +1,60 @@
 import { db } from "./firebase.js";
-import { collection, getDocs } 
+import { collection, getDocs, query, orderBy } 
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-
-// ================= SAFE LOAD STATS =================
 
 async function loadPublicNotices(){
 
   const noticeList = document.getElementById("noticeList");
   if(!noticeList) return;
 
-  noticeList.innerHTML = "";
+  noticeList.innerHTML = "<p style='color:white'>Loading...</p>";
 
-  const snapshot = await getDocs(collection(db,"notices"));
+  try{
 
-  snapshot.forEach(docSnap => {
+    const q = query(
+      collection(db,"notices"),
+      orderBy("created","desc")
+    );
 
-    const data = docSnap.data();
+    const snapshot = await getDocs(q);
 
-    const card = document.createElement("div");
-    card.className = "notice-card";
+    noticeList.innerHTML = "";
 
-    card.innerHTML = `
-      <div class="notice-title">${data.title}</div>
-      <div class="notice-desc">${data.description || ""}</div>
-      ${
-        data.fileUrl 
-        ? `<a href="${data.fileUrl}" target="_blank" class="notice-btn">📄 Download</a>` 
-        : ""
-      }
-    `;
+    if(snapshot.empty){
+      noticeList.innerHTML = 
+        "<p style='color:white'>No notices available.</p>";
+      return;
+    }
 
-    noticeList.appendChild(card);
-  });
+    snapshot.forEach(docSnap => {
+
+      const data = docSnap.data();
+
+      const card = document.createElement("div");
+      card.className = "notice-card";
+
+      card.innerHTML = `
+        <div class="notice-title">${data.title || ""}</div>
+        <div class="notice-desc">${data.description || ""}</div>
+        ${
+          data.fileUrl 
+          ? `<a href="${data.fileUrl}" target="_blank" class="notice-btn">📄 Download</a>` 
+          : ""
+        }
+      `;
+
+      noticeList.appendChild(card);
+    });
+
+  }catch(error){
+    console.error("Notice load error:", error);
+    noticeList.innerHTML = 
+      "<p style='color:white'>Error loading notices.</p>";
+  }
 }
 
 loadPublicNotices();
+
 
 // ================= SAFE LOAD NOTICES =================
 
