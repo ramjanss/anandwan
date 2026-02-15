@@ -18,13 +18,14 @@
 
 <h1>Admin Dashboard</h1>
 
-<!-- NOTICE SECTION -->
+<!-- ================= NOTICE SECTION ================= -->
+
 <h2>📢 नवीन सूचना जोडा</h2>
 
 <input type="text" id="noticeTitle" placeholder="सूचना शीर्षक" style="width:300px;padding:8px;">
 <br><br>
 
-<textarea id="noticeDesc" placeholder="सूचना तपशील" 
+<textarea id="noticeDesc" placeholder="सूचना तपशील"
 style="width:300px;height:80px;padding:8px;"></textarea>
 <br><br>
 
@@ -36,13 +37,15 @@ style="width:300px;height:80px;padding:8px;"></textarea>
 
 <hr><br>
 
-<!-- COMPLAINT SECTION -->
+<!-- ================= COMPLAINT SECTION ================= -->
+
 <h2>📨 आलेल्या तक्रारी</h2>
-<ul id="complaintList"></ul>
+<div id="complaintList"></div>
 
 <hr><br>
 
-<!-- GALLERY SECTION -->
+<!-- ================= GALLERY SECTION ================= -->
+
 <h2>🖼 Gallery Upload</h2>
 <input type="file" id="imageFile">
 <br><br>
@@ -51,7 +54,8 @@ style="width:300px;height:80px;padding:8px;"></textarea>
 
 <hr><br>
 
-<!-- NOTICE LIST -->
+<!-- ================= NOTICE LIST ================= -->
+
 <h2>📋 सर्व सूचना</h2>
 <ul id="adminNoticeList"></ul>
 
@@ -62,40 +66,33 @@ style="width:300px;height:80px;padding:8px;"></textarea>
 
 <script type="module">
 
-// ================= IMPORTS =================
+/* ================= IMPORTS ================= */
 
 import { auth, db, storage } from "./js/firebase.js";
 
-import { 
-  onAuthStateChanged, 
-  signOut 
+import {
+  onAuthStateChanged,
+  signOut
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-import { 
-  collection, 
-  addDoc, 
-  getDocs, 
-  deleteDoc, 
+import {
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
   doc,
   updateDoc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-import { 
-  ref, 
-  uploadBytes, 
+import {
+  ref,
+  uploadBytes,
   getDownloadURL,
   deleteObject
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
 
-// ================= ADMIN SECURITY =================
-
-import { auth } from "./js/firebase.js";
-
-import { 
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+/* ================= AUTH PROTECTION ================= */
 
 const allowedAdminEmail = "ramjansocial@gmail.com";
 
@@ -106,37 +103,38 @@ onAuthStateChanged(auth, (user) => {
     return;
   }
 
-  // Restrict to only this email
   if (user.email !== allowedAdminEmail) {
     alert("Access Denied ❌ Admin only");
-    signOut(auth);
     window.location.href = "index.html";
   }
 
 });
 
+document.getElementById("logoutBtn").onclick = async () => {
+  await signOut(auth);
+  window.location.href = "login.html";
+};
 
 
-// ================= STATS =================
+/* ================= DASHBOARD STATS ================= */
 
 const statsContainer = document.getElementById("statsContainer");
 
-async function loadStats(){
-  const noticesSnapshot = await getDocs(collection(db,"notices"));
-  const complaintsSnapshot = await getDocs(collection(db,"complaints"));
+async function loadStats() {
 
-  let total = 0, pending = 0, resolved = 0;
+  const noticesSnapshot = await getDocs(collection(db, "notices"));
+  const complaintsSnapshot = await getDocs(collection(db, "complaints"));
 
-  complaintsSnapshot.forEach(docSnap=>{
-    total++;
-    if(docSnap.data().status==="Pending") pending++;
-    if(docSnap.data().status==="Resolved") resolved++;
+  let total = complaintsSnapshot.size;
+  let resolved = 0;
+
+  complaintsSnapshot.forEach(docSnap => {
+    if (docSnap.data().status === "Resolved") resolved++;
   });
 
   statsContainer.innerHTML = `
     <div class="card">Total Notices: ${noticesSnapshot.size}</div>
     <div class="card">Total Complaints: ${total}</div>
-    <div class="card">Pending: ${pending}</div>
     <div class="card">Resolved: ${resolved}</div>
   `;
 }
@@ -144,103 +142,104 @@ async function loadStats(){
 loadStats();
 
 
-// ================= NOTICE SYSTEM =================
+/* ================= NOTICE SYSTEM ================= */
 
 const noticeTitle = document.getElementById("noticeTitle");
 const noticeDesc = document.getElementById("noticeDesc");
 const noticeFile = document.getElementById("noticeFile");
 const noticeMsg = document.getElementById("noticeMsg");
 const adminNoticeList = document.getElementById("adminNoticeList");
-const addNoticeBtn = document.getElementById("addNoticeBtn");
 
-addNoticeBtn.onclick = async () => {
+document.getElementById("addNoticeBtn").onclick = async () => {
 
-  if(noticeTitle.value.trim()===""){
+  if (noticeTitle.value.trim() === "") {
     alert("Title required");
     return;
   }
 
-  addNoticeBtn.innerText="Uploading...";
-  addNoticeBtn.disabled=true;
+  try {
 
-  try{
+    let fileURL = "";
+    let storagePath = "";
 
-    let fileURL="";
-    let storagePath="";
-
-    if(noticeFile.files[0]){
-      const file=noticeFile.files[0];
-      const storageRef=ref(storage,"notices/"+Date.now()+"_"+file.name);
-      await uploadBytes(storageRef,file);
-      fileURL=await getDownloadURL(storageRef);
-      storagePath=storageRef.fullPath;
+    if (noticeFile.files[0]) {
+      const file = noticeFile.files[0];
+      const storageRef = ref(storage, "notices/" + Date.now() + "_" + file.name);
+      await uploadBytes(storageRef, file);
+      fileURL = await getDownloadURL(storageRef);
+      storagePath = storageRef.fullPath;
     }
 
-    await addDoc(collection(db,"notices"),{
-      title:noticeTitle.value,
-      description:noticeDesc.value,
-      fileUrl:fileURL,
-      storagePath:storagePath,
-      created:new Date()
+    await addDoc(collection(db, "notices"), {
+      title: noticeTitle.value,
+      description: noticeDesc.value,
+      fileUrl: fileURL,
+      storagePath: storagePath,
+      created: new Date()
     });
 
-    noticeMsg.innerHTML="Notice uploaded successfully ✅";
+    noticeMsg.innerHTML = "Notice uploaded successfully ✅";
 
-    noticeTitle.value="";
-    noticeDesc.value="";
-    noticeFile.value="";
+    noticeTitle.value = "";
+    noticeDesc.value = "";
+    noticeFile.value = "";
 
     loadNotices();
     loadStats();
 
-  }catch(error){
+  } catch (error) {
     console.error(error);
-    noticeMsg.innerHTML="Upload failed ❌";
+    noticeMsg.innerHTML = "Upload failed ❌";
   }
-
-  addNoticeBtn.innerText="Upload Notice";
-  addNoticeBtn.disabled=false;
 };
 
-async function loadNotices(){
-  adminNoticeList.innerHTML="";
-  const snapshot=await getDocs(collection(db,"notices"));
+async function loadNotices() {
 
-  snapshot.forEach(docSnap=>{
-    const data=docSnap.data();
+  adminNoticeList.innerHTML = "";
 
-    const li=document.createElement("li");
-    li.innerHTML=`
+  const snapshot = await getDocs(collection(db, "notices"));
+
+  snapshot.forEach(docSnap => {
+
+    const data = docSnap.data();
+
+    const li = document.createElement("li");
+
+    li.innerHTML = `
       <strong>${data.title}</strong>
-      <button onclick="deleteNotice('${docSnap.id}','${data.storagePath||""}')">❌</button>
+      <button data-id="${docSnap.id}" data-path="${data.storagePath || ""}">❌</button>
     `;
+
+    li.querySelector("button").addEventListener("click", async () => {
+
+      if (!confirm("Delete this notice?")) return;
+
+      try {
+        if (data.storagePath) {
+          await deleteObject(ref(storage, data.storagePath));
+        }
+        await deleteDoc(doc(db, "notices", docSnap.id));
+        loadNotices();
+        loadStats();
+      } catch (error) {
+        alert("Delete failed ❌");
+      }
+
+    });
+
     adminNoticeList.appendChild(li);
   });
 }
 
-window.deleteNotice=async(id,storagePath)=>{
-  if(!confirm("Delete this notice?")) return;
-
-  try{
-    if(storagePath){
-      const fileRef=ref(storage,storagePath);
-      await deleteObject(fileRef);
-    }
-    await deleteDoc(doc(db,"notices",id));
-    loadNotices();
-    loadStats();
-  }catch(error){
-    console.error(error);
-    alert("Delete failed ❌");
-  }
-};
-
 loadNotices();
 
 
-// ================= COMPLAINT SYSTEM =================
+/* ================= COMPLAINT SYSTEM ================= */
 
-async function loadComplaints(){
+const complaintList = document.getElementById("complaintList");
+
+async function loadComplaints() {
+
   complaintList.innerHTML = "";
 
   const snapshot = await getDocs(collection(db, "complaints"));
@@ -249,144 +248,115 @@ async function loadComplaints(){
 
     const data = docSnap.data();
 
-    const createdDate = data.createdAt?.toDate();
-    const formattedDate = createdDate
-      ? createdDate.toLocaleString()
-      : "N/A";
+    const box = document.createElement("div");
+    box.style.background = "#f9fafc";
+    box.style.padding = "15px";
+    box.style.marginBottom = "15px";
+    box.style.borderRadius = "12px";
 
-    const wrapper = document.createElement("div");
-    wrapper.style.background = "#f9fafc";
-    wrapper.style.padding = "15px";
-    wrapper.style.borderRadius = "12px";
-    wrapper.style.marginBottom = "15px";
-
-    wrapper.innerHTML = `
-      <strong>Tracking ID:</strong> ${data.trackingId || "Old Complaint"} <br>
+    box.innerHTML = `
+      <strong>Tracking ID:</strong> ${data.trackingId || "Old"} <br>
       <strong>Name:</strong> ${data.name} <br>
       <strong>Phone:</strong> ${data.phone} <br>
       <strong>Message:</strong> ${data.message} <br>
-      <strong>Date:</strong> ${formattedDate} <br>
       <strong>Status:</strong> ${data.status} <br><br>
     `;
 
-    // Create button dynamically (NO inline onclick)
-    if(data.status !== "Resolved"){
+    if (data.status !== "Resolved") {
 
       const btn = document.createElement("button");
       btn.innerText = "Mark Resolved";
-      btn.style.padding = "6px 12px";
-      btn.style.cursor = "pointer";
 
-      btn.addEventListener("click", async () => {
+      btn.onclick = async () => {
+        await updateDoc(doc(db, "complaints", docSnap.id), {
+          status: "Resolved"
+        });
+        loadComplaints();
+        loadStats();
+      };
 
-        try{
-          await updateDoc(doc(db, "complaints", docSnap.id), {
-            status: "Resolved"
-          });
-
-          loadComplaints();
-          if(typeof loadStats === "function"){
-            loadStats();
-          }
-
-        }catch(error){
-          console.error("Resolve error:", error);
-        }
-
-      });
-
-      wrapper.appendChild(btn);
+      box.appendChild(btn);
     }
 
-    complaintList.appendChild(wrapper);
-
+    complaintList.appendChild(box);
   });
 }
 
 loadComplaints();
 
-// ================= GALLERY SYSTEM =================
 
-const uploadBtn = document.getElementById("uploadImageBtn");
+/* ================= GALLERY SYSTEM ================= */
+
 const imageFile = document.getElementById("imageFile");
 const galleryAdminList = document.getElementById("galleryAdminList");
 
-uploadBtn.onclick = async () => {
+document.getElementById("uploadImageBtn").onclick = async () => {
 
-  const file = imageFile.files[0];
-
-  if(!file){
-    alert("Please select an image first.");
+  if (!imageFile.files[0]) {
+    alert("Select image first");
     return;
   }
 
-  uploadBtn.innerText = "Uploading...";
-  uploadBtn.disabled = true;
-
   try {
 
+    const file = imageFile.files[0];
     const storageRef = ref(storage, "gallery/" + Date.now() + "_" + file.name);
+
     await uploadBytes(storageRef, file);
     const downloadURL = await getDownloadURL(storageRef);
 
-    await addDoc(collection(db,"gallery"),{
+    await addDoc(collection(db, "gallery"), {
       imageUrl: downloadURL,
       storagePath: storageRef.fullPath,
       created: new Date()
     });
 
     alert("Image uploaded successfully ✅");
-
     imageFile.value = "";
     loadGalleryAdmin();
 
-  } catch(error){
-    console.error("Upload error:", error);
+  } catch (error) {
     alert("Upload failed ❌");
   }
-
-  uploadBtn.innerText = "Upload Image";
-  uploadBtn.disabled = false;
 };
 
-async function loadGalleryAdmin(){
+async function loadGalleryAdmin() {
+
   galleryAdminList.innerHTML = "";
-  const snapshot = await getDocs(collection(db,"gallery"));
 
-  snapshot.forEach(docSnap=>{
+  const snapshot = await getDocs(collection(db, "gallery"));
+
+  snapshot.forEach(docSnap => {
+
     const data = docSnap.data();
-
     const li = document.createElement("li");
 
     li.innerHTML = `
       <img src="${data.imageUrl}" width="150" style="border-radius:10px;">
       <br>
-      <button onclick="deleteGallery('${docSnap.id}','${data.storagePath||""}')">❌ Delete</button>
+      <button>❌ Delete</button>
       <hr>
     `;
+
+    li.querySelector("button").addEventListener("click", async () => {
+
+      if (!confirm("Delete image?")) return;
+
+      try {
+        if (data.storagePath) {
+          await deleteObject(ref(storage, data.storagePath));
+        }
+        await deleteDoc(doc(db, "gallery", docSnap.id));
+        loadGalleryAdmin();
+      } catch (error) {
+        alert("Delete failed ❌");
+      }
+
+    });
 
     galleryAdminList.appendChild(li);
   });
 }
-
-window.deleteGallery = async (docId, storagePath) => {
-
-  if(!confirm("Delete this image?")) return;
-
-  try{
-    if(storagePath){
-      const fileRef = ref(storage, storagePath);
-      await deleteObject(fileRef);
-    }
-
-    await deleteDoc(doc(db,"gallery",docId));
-    loadGalleryAdmin();
-
-  }catch(error){
-    console.error(error);
-    alert("Delete failed ❌");
-  }
-};
 
 loadGalleryAdmin();
 
