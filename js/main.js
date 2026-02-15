@@ -16,25 +16,20 @@ async function loadStats() {
 
   if (!noticeCountEl || !complaintCountEl || !resolvedCountEl) return;
 
-  try {
-    const noticesSnapshot = await getDocs(collection(db, "notices"));
-    const complaintsSnapshot = await getDocs(collection(db, "complaints"));
+  const noticesSnapshot = await getDocs(collection(db, "notices"));
+  const complaintsSnapshot = await getDocs(collection(db, "complaints"));
 
-    let resolved = 0;
+  let resolved = 0;
 
-    complaintsSnapshot.forEach(docSnap => {
-      if (docSnap.data().status === "Resolved") {
-        resolved++;
-      }
-    });
+  complaintsSnapshot.forEach(docSnap => {
+    if (docSnap.data().status === "Resolved") {
+      resolved++;
+    }
+  });
 
-    noticeCountEl.textContent = noticesSnapshot.size;
-    complaintCountEl.textContent = complaintsSnapshot.size;
-    resolvedCountEl.textContent = resolved;
-
-  } catch (error) {
-    console.error("Stats error:", error);
-  }
+  noticeCountEl.textContent = noticesSnapshot.size;
+  complaintCountEl.textContent = complaintsSnapshot.size;
+  resolvedCountEl.textContent = resolved;
 }
 
 
@@ -46,32 +41,27 @@ async function loadNotices() {
 
   noticeList.innerHTML = "";
 
-  try {
-    const snapshot = await getDocs(collection(db, "notices"));
+  const snapshot = await getDocs(collection(db, "notices"));
 
-    snapshot.forEach(docSnap => {
+  snapshot.forEach(docSnap => {
 
-      const data = docSnap.data();
+    const data = docSnap.data();
 
-      const card = document.createElement("div");
-      card.className = "notice-card";
+    const card = document.createElement("div");
+    card.className = "notice-card";
 
-      card.innerHTML = `
-        <h3>${data.title} 
-          <span style="color:red;font-size:12px;">NEW</span>
-        </h3>
-        <p>${data.description || ""}</p>
-        ${data.fileUrl 
-          ? `<a href="${data.fileUrl}" target="_blank">📄 Download</a>` 
-          : ""}
-      `;
+    card.innerHTML = `
+      <h3>${data.title} 
+        <span style="color:red;font-size:12px;">NEW</span>
+      </h3>
+      <p>${data.description || ""}</p>
+      ${data.fileUrl 
+        ? `<a href="${data.fileUrl}" target="_blank">📄 Download</a>` 
+        : ""}
+    `;
 
-      noticeList.appendChild(card);
-    });
-
-  } catch (error) {
-    console.error("Notice load error:", error);
-  }
+    noticeList.appendChild(card);
+  });
 }
 
 
@@ -83,22 +73,19 @@ async function loadGallery() {
 
   track.innerHTML = "";
 
-  try {
-    const snapshot = await getDocs(collection(db, "gallery"));
+  const snapshot = await getDocs(collection(db, "gallery"));
 
-    snapshot.forEach(docSnap => {
-      const img = document.createElement("img");
-      img.src = docSnap.data().imageUrl;
-      img.alt = "Village Image";
-      track.appendChild(img);
-    });
+  snapshot.forEach(docSnap => {
 
-    // Duplicate images for smooth infinite scroll
-    track.innerHTML += track.innerHTML;
+    const img = document.createElement("img");
+    img.src = docSnap.data().imageUrl;
+    img.alt = "Village Image";
 
-  } catch (error) {
-    console.error("Gallery load error:", error);
-  }
+    track.appendChild(img);
+  });
+
+  // duplicate for infinite scroll
+  track.innerHTML += track.innerHTML;
 }
 
 
