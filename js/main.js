@@ -3,32 +3,39 @@ import { collection, getDocs }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 
-// ================= LOAD STATS =================
+// ================= SAFE LOAD STATS =================
 
 async function loadStats(){
+
+  const noticeEl = document.getElementById("noticeCount");
+  const complaintEl = document.getElementById("complaintCount");
+  const resolvedEl = document.getElementById("resolvedCount");
+
+  if(!noticeEl || !complaintEl || !resolvedEl) return;
 
   const notices = await getDocs(collection(db,"notices"));
   const complaints = await getDocs(collection(db,"complaints"));
 
-  document.getElementById("noticeCount").innerText = notices.size;
-  document.getElementById("complaintCount").innerText = complaints.size;
+  noticeEl.innerText = notices.size;
+  complaintEl.innerText = complaints.size;
 
   let resolved = 0;
   complaints.forEach(doc=>{
     if(doc.data().status === "Resolved") resolved++;
   });
 
-  document.getElementById("resolvedCount").innerText = resolved;
+  resolvedEl.innerText = resolved;
 }
 
 loadStats();
 
 
-// ================= LOAD NOTICES =================
-
-const noticeContainer = document.getElementById("noticeContainer");
+// ================= SAFE LOAD NOTICES =================
 
 async function loadNotices(){
+
+  const noticeContainer = document.getElementById("noticeContainer");
+  if(!noticeContainer) return;
 
   noticeContainer.innerHTML = "";
 
@@ -57,12 +64,11 @@ async function loadNotices(){
 loadNotices();
 
 
-// ================= LOAD GALLERY =================
-
-const galleryTrack = document.getElementById("galleryTrack");
+// ================= SAFE LOAD GALLERY =================
 
 async function loadGallery(){
 
+  const galleryTrack = document.getElementById("galleryTrack");
   if(!galleryTrack) return;
 
   galleryTrack.innerHTML = "";
@@ -75,7 +81,7 @@ async function loadGallery(){
     galleryTrack.appendChild(img);
   });
 
-  // Duplicate for auto-scroll illusion
+  // Duplicate for smooth infinite scroll
   galleryTrack.innerHTML += galleryTrack.innerHTML;
 }
 
