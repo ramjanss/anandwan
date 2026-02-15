@@ -88,14 +88,16 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
 
-// ================= AUTH =================
+// ================= ADMIN SECURITY =================
 
-// ================= AUTH PROTECTION =================
+import { auth } from "./js/firebase.js";
 
-import { getAuth } 
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { 
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-const allowedAdminEmail = "ramjansocial@gmail.com";  // 👈 CHANGE THIS
+const allowedAdminEmail = "ramjansocial@gmail.com";
 
 onAuthStateChanged(auth, (user) => {
 
@@ -104,12 +106,13 @@ onAuthStateChanged(auth, (user) => {
     return;
   }
 
-  // Only allow specific admin email
+  // Restrict to only this email
   if (user.email !== allowedAdminEmail) {
     alert("Access Denied ❌ Admin only");
+    signOut(auth);
     window.location.href = "index.html";
   }
-  
+
 });
 
 
