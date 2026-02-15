@@ -5,39 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ग्रामपंचायत वंधली</title>
 
-<link rel="stylesheet" href="css/style.css">
-
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 body{
   margin:0;
   font-family:'Poppins','Noto Sans Devanagari',sans-serif;
-  background:#f5f7fb;
+  background:#f4f6fb;
   color:#222;
 }
 
+/* HERO */
 .hero{
-  background:linear-gradient(135deg,#0066ff,#00c6ff);
+  background:linear-gradient(135deg,#0048ff,#00c6ff);
   color:white;
-  padding:80px 20px;
+  padding:100px 20px;
   text-align:center;
 }
 
 .hero h1{
-  font-size:40px;
+  font-size:42px;
   margin:0;
 }
 
 .hero p{
+  margin:15px 0 30px;
   opacity:0.9;
-  margin:10px 0 30px;
 }
 
 .btn{
-  background:white;
-  color:#0066ff;
-  padding:12px 24px;
+  padding:12px 26px;
   border-radius:30px;
   text-decoration:none;
   font-weight:600;
@@ -46,51 +43,84 @@ body{
   transition:0.3s;
 }
 
-.btn:hover{
-  background:#e8f0ff;
+.btn-primary{
+  background:white;
+  color:#0048ff;
+}
+
+.btn-primary:hover{
+  background:#e6edff;
+}
+
+.btn-outline{
+  border:2px solid white;
+  color:white;
 }
 
 .section{
-  padding:60px 20px;
+  padding:70px 20px;
   max-width:1100px;
   margin:auto;
 }
 
-.cards{
+/* STATS */
+.stats{
   display:flex;
   gap:20px;
   flex-wrap:wrap;
 }
 
-.card{
-  background:white;
-  padding:25px;
-  border-radius:18px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+.stat-card{
   flex:1;
   min-width:220px;
+  background:white;
+  padding:30px;
+  border-radius:18px;
+  box-shadow:0 12px 30px rgba(0,0,0,0.08);
   text-align:center;
 }
 
-.card h2{
+.stat-card h2{
+  font-size:34px;
   margin:0;
-  font-size:32px;
-  color:#0066ff;
+  color:#0048ff;
+}
+
+/* DARK SECTION */
+.dark-section{
+  background:#111827;
+  color:white;
 }
 
 .notice-card{
   background:white;
   padding:20px;
   border-radius:15px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.05);
   margin-bottom:15px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.05);
 }
 
+.new-badge{
+  background:#ff3b3b;
+  color:white;
+  font-size:12px;
+  padding:3px 8px;
+  border-radius:12px;
+  margin-left:10px;
+}
+
+/* GALLERY */
 .gallery{
   display:flex;
   gap:15px;
-  overflow-x:auto;
-  scroll-behavior:smooth;
+  overflow:hidden;
+  position:relative;
+}
+
+.gallery-track{
+  display:flex;
+  gap:15px;
+  animation:scroll 20s linear infinite;
 }
 
 .gallery img{
@@ -100,14 +130,18 @@ body{
   border-radius:15px;
 }
 
+@keyframes scroll{
+  0%{transform:translateX(0);}
+  100%{transform:translateX(-50%);}
+}
+
 footer{
-  background:#111;
-  color:#ccc;
-  padding:30px;
+  background:#000;
+  color:#aaa;
+  padding:40px;
   text-align:center;
 }
 </style>
-
 </head>
 
 <body>
@@ -117,24 +151,23 @@ footer{
   <h1>ग्रामपंचायत वंधली</h1>
   <p>Smart • Transparent • Digital Governance</p>
 
-  <a href="complaint.html" class="btn">तक्रार नोंदवा</a>
-  <a href="track.html" class="btn">तक्रार ट्रॅक करा</a>
-  <a href="login.html" class="btn">Admin Login</a>
+  <a href="complaint.html" class="btn btn-primary">तक्रार नोंदवा</a>
+  <a href="track.html" class="btn btn-outline">तक्रार ट्रॅक करा</a>
 </section>
 
 <!-- STATS -->
 <section class="section">
   <h2>📊 Live Transparency</h2>
-  <div class="cards">
-    <div class="card">
+  <div class="stats">
+    <div class="stat-card">
       <h2 id="noticeCount">0</h2>
       <p>Notices</p>
     </div>
-    <div class="card">
+    <div class="stat-card">
       <h2 id="complaintCount">0</h2>
       <p>Total Complaints</p>
     </div>
-    <div class="card">
+    <div class="stat-card">
       <h2 id="resolvedCount">0</h2>
       <p>Resolved</p>
     </div>
@@ -142,22 +175,10 @@ footer{
 </section>
 
 <!-- NOTICES -->
-<section class="section">
+<section class="section dark-section">
   <h2>📢 Latest Notices</h2>
   <div id="noticeContainer"></div>
 </section>
 
 <!-- GALLERY -->
 <section class="section">
-  <h2>📸 Village Gallery</h2>
-  <div id="galleryContainer" class="gallery"></div>
-</section>
-
-<footer>
-  © 2026 Gram Panchayat Wandhali • Digital Smart Portal
-</footer>
-
-<script type="module" src="js/main.js"></script>
-
-</body>
-</html>
