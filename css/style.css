@@ -184,15 +184,28 @@ transform:translateY(-6px);
 
 /* Gallery */
 
-.gallery-img{
-  width:100%;
-  max-width:250px;
-  border-radius:12px;
-  margin:10px;
+.gallery{
+  overflow:hidden;
+}
+
+.gallery-track{
+  display:flex;
+  gap:18px;
+  animation:scroll 25s linear infinite;
+}
+
+.gallery:hover .gallery-track{
+  animation-play-state:paused;
+}
+
+.gallery img{
+  width:260px;
+  height:170px;
+  object-fit:cover;
+  border-radius:16px;
   transition:0.3s;
 }
 
-.gallery-img:hover{
-  transform:scale(1.05);
+.gallery img:hover{
+  transform:scale(1.08);
 }
-
