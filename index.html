@@ -15,24 +15,42 @@ body{
   color:#222;
 }
 
-.section{
-  padding:70px 20px;
-  max-width:1200px;
-  margin:auto;
+/* NAVBAR */
+.navbar{
+  position:sticky;
+  top:0;
+  background:white;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 40px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.08);
+  z-index:1000;
 }
 
-h2{
-  text-align:center;
-  margin-bottom:40px;
-  font-size:28px;
+.navbar h2{
+  margin:0;
+  color:#0048ff;
+}
+
+.nav-links a{
+  margin-left:20px;
+  text-decoration:none;
+  font-weight:600;
+  color:#333;
+  transition:0.3s;
+}
+
+.nav-links a:hover{
+  color:#0048ff;
 }
 
 /* HERO */
 .hero{
   background:linear-gradient(135deg,#0048ff,#00c6ff);
   color:white;
+  padding:100px 20px;
   text-align:center;
-  padding:120px 20px;
 }
 
 .hero h1{
@@ -41,19 +59,17 @@ h2{
 }
 
 .hero p{
-  margin:20px 0 35px;
-  font-size:18px;
+  margin:15px 0 30px;
   opacity:0.9;
 }
 
 .btn{
-  padding:12px 28px;
+  padding:12px 26px;
   border-radius:30px;
   text-decoration:none;
   font-weight:600;
-  margin:8px;
+  margin:5px;
   display:inline-block;
-  transition:0.3s;
 }
 
 .btn-primary{
@@ -66,12 +82,17 @@ h2{
   color:white;
 }
 
-/* STATS */
-.stats-container{
+/* SECTIONS */
+.section{
+  padding:70px 20px;
+  max-width:1100px;
+  margin:auto;
+}
+
+.stats{
   display:flex;
-  gap:25px;
+  gap:20px;
   flex-wrap:wrap;
-  justify-content:center;
 }
 
 .stat-card{
@@ -79,43 +100,24 @@ h2{
   min-width:220px;
   background:white;
   padding:30px;
-  border-radius:20px;
-  text-align:center;
+  border-radius:18px;
   box-shadow:0 12px 30px rgba(0,0,0,0.08);
-  transition:0.3s;
-}
-
-.stat-card:hover{
-  transform:translateY(-6px);
+  text-align:center;
 }
 
 .stat-card h1{
-  font-size:36px;
+  font-size:34px;
   margin:0;
   color:#0048ff;
 }
 
-/* NOTICES */
-.notice-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:20px;
-}
-
+/* NOTICE */
 .notice-card{
   background:white;
   padding:20px;
-  border-radius:18px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.05);
-  transition:0.3s;
-}
-
-.notice-card:hover{
-  transform:translateY(-4px);
-}
-
-.notice-card strong{
-  font-size:16px;
+  border-radius:15px;
+  margin-bottom:15px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.05);
 }
 
 /* GALLERY */
@@ -125,15 +127,15 @@ h2{
 
 .gallery-track{
   display:flex;
-  gap:18px;
-  animation:scroll 25s linear infinite;
+  gap:15px;
+  animation:scroll 30s linear infinite;
 }
 
 .gallery img{
   width:260px;
   height:170px;
   object-fit:cover;
-  border-radius:16px;
+  border-radius:15px;
 }
 
 @keyframes scroll{
@@ -141,25 +143,43 @@ h2{
   100%{transform:translateX(-50%);}
 }
 
-/* ABOUT */
-.about{
+/* CONTACT */
+.contact{
   background:#111827;
   color:white;
-  border-radius:20px;
-  padding:50px;
+  padding:70px 20px;
   text-align:center;
 }
 
+.contact p{
+  margin:10px 0;
+}
+
+/* FOOTER */
 footer{
   background:#000;
   color:#aaa;
-  padding:40px;
+  padding:30px;
   text-align:center;
 }
 </style>
 </head>
 
 <body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <h2>वंधली ग्रामपंचायत</h2>
+  <div class="nav-links">
+    <a href="#">Home</a>
+    <a href="complaint.html">Complaint</a>
+    <a href="track.html">Track</a>
+    <a href="#notices">Notices</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#contact">Contact</a>
+    <a href="login.html">Admin</a>
+  </div>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -168,14 +188,13 @@ footer{
 
   <a href="complaint.html" class="btn btn-primary">तक्रार नोंदवा</a>
   <a href="track.html" class="btn btn-outline">तक्रार ट्रॅक करा</a>
-  <a href="login.html" class="btn btn-outline">Admin Login</a>
 </section>
 
-<!-- STATS -->
+<!-- LIVE STATS -->
 <section class="section">
   <h2>📊 Live Transparency</h2>
 
-  <div class="stats-container">
+  <div class="stats">
     <div class="stat-card">
       <h1 id="noticeCount">0</h1>
       <p>Notices</p>
@@ -194,28 +213,27 @@ footer{
 </section>
 
 <!-- NOTICES -->
-<section class="section">
+<section class="section" id="notices">
   <h2>📢 Latest Notices</h2>
-  <div id="noticeList" class="notice-grid"></div>
+  <div id="noticeList"></div>
 </section>
 
 <!-- GALLERY -->
-<section class="section">
+<section class="section" id="gallery">
   <h2>📸 Village Gallery</h2>
   <div class="gallery">
     <div id="galleryTrack" class="gallery-track"></div>
   </div>
 </section>
 
-<!-- ABOUT -->
-<section class="section">
-  <div class="about">
-    <h2>🏛 About Gram Panchayat</h2>
-    <p>
-      वंधली ग्रामपंचायत डिजिटल प्रशासनाच्या माध्यमातून पारदर्शक व कार्यक्षम सेवा देण्यास कटिबद्ध आहे.
-      नागरिकांच्या तक्रारी, सूचना आणि विकासकामे ऑनलाइन प्रणालीद्वारे पारदर्शकपणे हाताळली जातात.
-    </p>
-  </div>
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <h2>📍 Contact Gram Panchayat</h2>
+  <p>Gram Panchayat Wandhali</p>
+  <p>Taluka: ______</p>
+  <p>District: ______</p>
+  <p>Phone: +91-XXXXXXXXXX</p>
+  <p>Email: gpwandhali@gmail.com</p>
 </section>
 
 <footer>
