@@ -114,7 +114,7 @@ async function loadGallery() {
 
 
 // ================= LOAD MEMBERS =================
-async function loadMembers() {
+async function loadVillageMembers() {
   const container = document.getElementById("membersContainer");
   if (!container) return;
 
@@ -149,4 +149,4 @@ async function loadMembers() {
 loadStats();
 loadNotices();
 loadGallery();
-loadMembers();
+loadVillageMembers();
