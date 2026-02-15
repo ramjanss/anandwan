@@ -1,85 +1,102 @@
+// ================= IMPORTS =================
 import { db } from "./firebase.js";
-import { collection, getDocs } 
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+import { 
+  collection,
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 
-// ================= LOAD STATS =================
+// ================= LIVE STATS =================
 
-async function loadStats(){
+const noticeCount = document.getElementById("noticeCount");
+const complaintCount = document.getElementById("complaintCount");
+const resolvedCount = document.getElementById("resolvedCount");
 
-  const noticesSnapshot = await getDocs(collection(db,"notices"));
-  const complaintsSnapshot = await getDocs(collection(db,"complaints"));
+// Notices Count
+onSnapshot(collection(db,"notices"), (snapshot)=>{
+  if(noticeCount){
+    noticeCount.innerText = snapshot.size;
+  }
+});
 
-  let totalComplaints = 0;
+// Complaints Count + Resolved Count
+onSnapshot(collection(db,"complaints"), (snapshot)=>{
+
+  if(!complaintCount || !resolvedCount) return;
+
+  let total = 0;
   let resolved = 0;
 
-  complaintsSnapshot.forEach(docSnap => {
-    totalComplaints++;
-    if(docSnap.data().status === "Resolved") resolved++;
+  snapshot.forEach(docSnap=>{
+    total++;
+    if(docSnap.data().status === "Resolved"){
+      resolved++;
+    }
   });
 
-  document.getElementById("noticeCount").innerText = noticesSnapshot.size;
-  document.getElementById("complaintCount").innerText = totalComplaints;
-  document.getElementById("resolvedCount").innerText = resolved;
-}
-
-loadStats();
+  complaintCount.innerText = total;
+  resolvedCount.innerText = resolved;
+});
 
 
-// ================= LOAD NOTICES =================
+// ================= LIVE NOTICES =================
 
-async function loadNotices(){
+const noticeList = document.getElementById("noticeList");
 
-  const container = document.getElementById("noticeList");
-  if(!container) return;
+if(noticeList){
 
-  container.innerHTML = "";
+  onSnapshot(collection(db,"notices"), (snapshot)=>{
 
-  const snapshot = await getDocs(collection(db,"notices"));
+    noticeList.innerHTML = "";
 
-  snapshot.forEach(docSnap => {
+    snapshot.forEach(docSnap=>{
 
-    const data = docSnap.data();
+      const data = docSnap.data();
 
-    const card = document.createElement("div");
-    card.className = "notice-card";
+      const div = document.createElement("div");
+      div.className = "notice-card";
 
-    card.innerHTML = `
-      <strong>${data.title}</strong><br>
-      ${data.description || ""}
-      ${data.fileUrl ? `<br><a href="${data.fileUrl}" target="_blank">📄 Download</a>` : ""}
-    `;
+      div.innerHTML = `
+        <strong>${data.title}</strong><br>
+        ${data.description || ""}<br>
+        ${data.fileUrl ? `<a href="${data.fileUrl}" target="_blank">📄 Download</a>` : ""}
+      `;
 
-    container.appendChild(card);
-  });
-}
+      noticeList.appendChild(div);
 
-loadNotices();
+    });
 
-
-// ================= LOAD GALLERY =================
-
-async function loadGallery(){
-
-  const track = document.getElementById("galleryTrack");
-  if(!track) return;
-
-  track.innerHTML = "";
-
-  const snapshot = await getDocs(collection(db,"gallery"));
-
-  snapshot.forEach(docSnap => {
-
-    const data = docSnap.data();
-
-    const img = document.createElement("img");
-    img.src = data.imageUrl;
-
-    track.appendChild(img);
   });
 
-  // Duplicate images for smooth infinite scroll
-  track.innerHTML += track.innerHTML;
 }
 
-loadGallery();
+
+// ================= LIVE GALLERY =================
+
+const galleryTrack = document.getElementById("galleryTrack");
+
+if(galleryTrack){
+
+  onSnapshot(collection(db,"gallery"), (snapshot)=>{
+
+    galleryTrack.innerHTML = "";
+
+    let images = [];
+
+    snapshot.forEach(docSnap=>{
+      images.push(docSnap.data().imageUrl);
+    });
+
+    // Duplicate images for infinite scroll
+    const doubled = [...images, ...images];
+
+    doubled.forEach(url=>{
+      const img = document.createElement("img");
+      img.src = url;
+      galleryTrack.appendChild(img);
+    });
+
+  });
+
+}
