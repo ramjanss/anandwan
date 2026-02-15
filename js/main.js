@@ -51,13 +51,9 @@ async function loadNotices() {
     card.className = "notice-card";
 
     card.innerHTML = `
-      <h3>${data.title} 
-        <span style="color:red;font-size:12px;">NEW</span>
-      </h3>
+      <h3>${data.title} <span style="color:red;font-size:12px;">NEW</span></h3>
       <p>${data.description || ""}</p>
-      ${data.fileUrl 
-        ? `<a href="${data.fileUrl}" target="_blank">📄 Download</a>` 
-        : ""}
+      ${data.fileUrl ? `<a href="${data.fileUrl}" target="_blank">📄 Download</a>` : ""}
     `;
 
     noticeList.appendChild(card);
@@ -79,12 +75,10 @@ async function loadGallery() {
 
     const img = document.createElement("img");
     img.src = docSnap.data().imageUrl;
-    img.alt = "Village Image";
-
     track.appendChild(img);
+
   });
 
-  // duplicate for infinite scroll
   track.innerHTML += track.innerHTML;
 }
 
