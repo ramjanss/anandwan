@@ -244,31 +244,80 @@ async function loadComplaints() {
 
   const snapshot = await getDocs(collection(db, "complaints"));
 
-  snapshot.forEach(docSnap => {
+  // Convert snapshot to array for sorting
+  let complaints = [];
 
-    const data = docSnap.data();
+  snapshot.forEach(docSnap => {
+    complaints.push({
+      id: docSnap.id,
+      ...docSnap.data()
+    });
+  });
+
+  // Sort by createdAt newest first
+  complaints.sort((a, b) => {
+    if (!a.createdAt || !b.createdAt) return 0;
+    return b.createdAt.seconds - a.createdAt.seconds;
+  });
+
+  complaints.forEach(data => {
+
+    const createdDate = data.createdAt?.toDate();
+    const formattedDate = createdDate
+      ? createdDate.toLocaleString()
+      : "N/A";
 
     const box = document.createElement("div");
-    box.style.background = "#f9fafc";
-    box.style.padding = "15px";
-    box.style.marginBottom = "15px";
-    box.style.borderRadius = "12px";
+    box.style.background = "#ffffff";
+    box.style.padding = "20px";
+    box.style.marginBottom = "20px";
+    box.style.borderRadius = "15px";
+    box.style.boxShadow = "0 8px 20px rgba(0,0,0,0.05)";
+
+    const statusColor = data.status === "Resolved" ? "#d4edda" : "#fff3cd";
+    const statusTextColor = data.status === "Resolved" ? "#155724" : "#856404";
 
     box.innerHTML = `
-      <strong>Tracking ID:</strong> ${data.trackingId || "Old"} <br>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <strong>Tracking ID: ${data.trackingId || "Old"}</strong>
+        <span style="
+          padding:6px 12px;
+          border-radius:20px;
+          font-size:12px;
+          background:${statusColor};
+          color:${statusTextColor};
+          font-weight:600;
+        ">
+          ${data.status}
+        </span>
+      </div>
+
+      <hr style="margin:10px 0;">
+
       <strong>Name:</strong> ${data.name} <br>
       <strong>Phone:</strong> ${data.phone} <br>
-      <strong>Message:</strong> ${data.message} <br>
-      <strong>Status:</strong> ${data.status} <br><br>
+      <strong>Date:</strong> ${formattedDate} <br><br>
+
+      <strong>Message:</strong><br>
+      <div style="margin-top:5px;padding:10px;background:#f9fafc;border-radius:8px;">
+        ${data.message}
+      </div>
+      <br>
     `;
 
     if (data.status !== "Resolved") {
 
       const btn = document.createElement("button");
       btn.innerText = "Mark Resolved";
+      btn.style.padding = "8px 16px";
+      btn.style.borderRadius = "20px";
+      btn.style.border = "none";
+      btn.style.background = "#0048ff";
+      btn.style.color = "white";
+      btn.style.cursor = "pointer";
 
       btn.onclick = async () => {
-        await updateDoc(doc(db, "complaints", docSnap.id), {
+        await updateDoc(doc(db, "complaints", data.id), {
           status: "Resolved"
         });
         loadComplaints();
