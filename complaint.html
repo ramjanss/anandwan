@@ -44,14 +44,15 @@ document.getElementById("submitComplaint").onclick = async () => {
 
   const trackingId = "GP" + Date.now();
 
-  await addDoc(collection(db, "complaints"), {
-    trackingId: trackingId,
-    name: name,
-    phone: phone,
-    message: message,
-    status: "Pending",
-    created: new Date()
-  });
+await addDoc(collection(db, "complaints"), {
+  name: nameInput.value,
+  phone: phoneInput.value,
+  message: messageInput.value,
+  status: "Pending",
+  trackingId: trackingId,
+  createdAt: new Date()
+});
+
 
   document.getElementById("successMsg").innerHTML =
     "तक्रार यशस्वीरित्या नोंदवली! <br><b>Tracking ID: " + trackingId + "</b>";
