@@ -157,6 +157,15 @@ transform:translateY(-6px);
   font-size:13px;
 }
 
+.new-badge{
+  background:red;
+  color:white;
+  font-size:11px;
+  padding:4px 8px;
+  border-radius:12px;
+  margin-left:8px;
+}
+
 
 /* ================= STATS ================= */
 
@@ -203,9 +212,14 @@ transform:translateY(-6px);
   height:170px;
   object-fit:cover;
   border-radius:16px;
-  transition:0.3s;
+  transition:transform 0.3s ease;
 }
 
 .gallery img:hover{
   transform:scale(1.08);
+}
+
+@keyframes scroll{
+  0%{transform:translateX(0);}
+  100%{transform:translateX(-50%);}
 }
