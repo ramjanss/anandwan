@@ -54,6 +54,29 @@ style="width:300px;height:80px;padding:8px;"></textarea>
 
 <hr><br>
 
+  <hr><br>
+
+<h2>👥 ग्रामपंचायत सदस्य</h2>
+
+<input type="text" id="memberName" placeholder="Member Name" style="width:250px;padding:8px;">
+<br><br>
+
+<input type="text" id="memberRole" placeholder="Role (Sarpanch / Member)" style="width:250px;padding:8px;">
+<br><br>
+
+<input type="text" id="memberPhone" placeholder="Phone Number" style="width:250px;padding:8px;">
+<br><br>
+
+<input type="number" id="memberOrder" placeholder="Display Order (1,2,3)" style="width:250px;padding:8px;">
+<br><br>
+
+<button class="btn" id="addMemberBtn">Add Member</button>
+
+<ul id="memberList"></ul>
+
+<hr><br>
+
+  
 <!-- ================= NOTICE LIST ================= -->
 
 <h2>📋 सर्व सूचना</h2>
@@ -409,6 +432,76 @@ async function loadGalleryAdmin() {
 
 loadGalleryAdmin();
 
+  // ================= MEMBER SYSTEM =================
+
+const memberName = document.getElementById("memberName");
+const memberRole = document.getElementById("memberRole");
+const memberPhone = document.getElementById("memberPhone");
+const memberOrder = document.getElementById("memberOrder");
+const addMemberBtn = document.getElementById("addMemberBtn");
+const memberList = document.getElementById("memberList");
+
+addMemberBtn.onclick = async () => {
+
+  if(memberName.value.trim() === ""){
+    alert("Member name required");
+    return;
+  }
+
+  try {
+
+    await addDoc(collection(db, "members"), {
+      name: memberName.value,
+      role: memberRole.value,
+      phone: memberPhone.value,
+      order: Number(memberOrder.value) || 0,
+      created: new Date()
+    });
+
+    memberName.value = "";
+    memberRole.value = "";
+    memberPhone.value = "";
+    memberOrder.value = "";
+
+    loadMembersAdmin();
+
+  } catch(error){
+    console.error(error);
+    alert("Failed to add member ❌");
+  }
+
+};
+
+async function loadMembersAdmin(){
+  memberList.innerHTML = "";
+
+  const snapshot = await getDocs(collection(db, "members"));
+
+  snapshot.forEach(docSnap => {
+
+    const data = docSnap.data();
+
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <strong>${data.name}</strong> - ${data.role}
+      <button onclick="deleteMember('${docSnap.id}')">❌</button>
+    `;
+
+    memberList.appendChild(li);
+  });
+}
+
+window.deleteMember = async (id) => {
+
+  if(!confirm("Delete this member?")) return;
+
+  await deleteDoc(doc(db, "members", id));
+  loadMembersAdmin();
+};
+
+loadMembersAdmin();
+
+  
 </script>
 
 </body>
