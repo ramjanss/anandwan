@@ -23,16 +23,6 @@ body{
   text-align:center;
 }
 
-.hero h1{
-  font-size:40px;
-  margin:0;
-}
-
-.hero p{
-  margin:15px 0 30px;
-  opacity:0.9;
-}
-
 .btn{
   padding:12px 26px;
   border-radius:30px;
@@ -40,7 +30,6 @@ body{
   font-weight:600;
   margin:5px;
   display:inline-block;
-  transition:0.3s;
 }
 
 .btn-primary{
@@ -53,6 +42,7 @@ body{
   color:white;
 }
 
+/* SECTION */
 .section{
   padding:60px 20px;
   max-width:1100px;
@@ -60,10 +50,11 @@ body{
 }
 
 /* STATS */
-.stats{
+.stats-container{
   display:flex;
   gap:20px;
   flex-wrap:wrap;
+  justify-content:center;
 }
 
 .stat-card{
@@ -76,25 +67,28 @@ body{
   text-align:center;
 }
 
-.stat-card h2{
+.stat-card h1{
   font-size:32px;
   margin:0;
   color:#0048ff;
 }
 
-/* DARK SECTION */
-.dark-section{
-  background:#111827;
-  color:white;
-  padding:60px 20px;
-}
-
+/* NOTICES */
 .notice-card{
   background:white;
   padding:20px;
   border-radius:15px;
   margin-bottom:15px;
   box-shadow:0 6px 20px rgba(0,0,0,0.05);
+}
+
+.new-badge{
+  background:red;
+  color:white;
+  font-size:10px;
+  padding:3px 6px;
+  border-radius:4px;
+  margin-left:6px;
 }
 
 /* GALLERY */
@@ -135,12 +129,9 @@ footer{
   <h1>ग्रामपंचायत वंधली</h1>
   <p>Smart • Transparent • Digital Governance</p>
 
- <div class="hero-buttons">
   <a href="complaint.html" class="btn btn-primary">तक्रार नोंदवा</a>
   <a href="track.html" class="btn btn-outline">तक्रार ट्रॅक करा</a>
   <a href="login.html" class="btn btn-outline">Admin Login</a>
-</div>
-
 </section>
 
 <section class="section">
@@ -164,14 +155,10 @@ footer{
   </div>
 </section>
 
-
-<section class="notices-section">
-  <div class="container">
-    <h2 class="section-title">📢 Latest Notices</h2>
-    <div id="noticeList" class="notice-grid"></div>
-  </div>
+<section class="section">
+  <h2>📢 Latest Notices</h2>
+  <div id="noticeList"></div>
 </section>
-
 
 <section class="section">
   <h2>📸 Village Gallery</h2>
