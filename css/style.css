@@ -199,8 +199,9 @@ transform:translateY(-6px);
 
 .gallery-track{
   display:flex;
-  gap:18px;
-  animation:scroll 25s linear infinite;
+  gap:20px;
+  animation:scroll 30s linear infinite;
+  width:max-content;
 }
 
 .gallery:hover .gallery-track{
@@ -211,8 +212,8 @@ transform:translateY(-6px);
   width:260px;
   height:170px;
   object-fit:cover;
-  border-radius:16px;
-  transition:transform 0.3s ease;
+  border-radius:15px;
+  transition:transform 0.4s ease;
 }
 
 .gallery img:hover{
