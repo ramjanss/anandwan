@@ -90,9 +90,9 @@ if (noticeList) {
 }
 
 
-// ================= AUTO SCROLL GALLERY =================
+// ================= INFINITE AUTO SCROLL GALLERY =================
 
-import { collection, getDocs } 
+import { collection, getDocs }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const galleryTrack = document.getElementById("galleryTrack");
@@ -105,14 +105,17 @@ async function loadGallery(){
 
   const snapshot = await getDocs(collection(db,"gallery"));
 
-  let images = [];
+  let imageUrls = [];
 
   snapshot.forEach(docSnap=>{
-    images.push(docSnap.data().imageUrl);
+    const data = docSnap.data();
+    if(data.imageUrl){
+      imageUrls.push(data.imageUrl);
+    }
   });
 
-  // Duplicate images for infinite scroll
-  const fullList = [...images, ...images];
+  // IMPORTANT: Duplicate images for infinite loop
+  const fullList = [...imageUrls, ...imageUrls];
 
   fullList.forEach(url=>{
     const img = document.createElement("img");
