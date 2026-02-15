@@ -441,66 +441,54 @@ const memberName = document.getElementById("memberName");
 const memberRole = document.getElementById("memberRole");
 const memberPhone = document.getElementById("memberPhone");
 const memberOrder = document.getElementById("memberOrder");
+const memberPhoto = document.getElementById("memberPhoto");
 const addMemberBtn = document.getElementById("addMemberBtn");
-const memberList = document.getElementById("memberList");
 
-addMemberBtn.onclick = async () => {
+addMemberBtn.addEventListener("click", async () => {
 
-  if(memberName.value.trim() === ""){
-    alert("Member name required");
+  if (!memberName.value || !memberRole.value) {
+    alert("Name and Role required");
     return;
   }
 
   try {
 
+    let photoURL = "";
+    let storagePath = "";
+
+    if (memberPhoto.files[0]) {
+
+      const file = memberPhoto.files[0];
+      const storageRef = ref(storage, "members/" + Date.now() + "_" + file.name);
+
+      await uploadBytes(storageRef, file);
+      photoURL = await getDownloadURL(storageRef);
+      storagePath = storageRef.fullPath;
+    }
+
     await addDoc(collection(db, "members"), {
       name: memberName.value,
       role: memberRole.value,
-      phone: memberPhone.value,
+      phone: memberPhone.value || "",
       order: Number(memberOrder.value) || 0,
+      photoUrl: photoURL,
+      storagePath: storagePath,
       created: new Date()
     });
+
+    alert("Member added successfully ✅");
 
     memberName.value = "";
     memberRole.value = "";
     memberPhone.value = "";
     memberOrder.value = "";
+    memberPhoto.value = "";
 
-    loadMembersAdmin();
-
-  } catch(error){
+  } catch (error) {
     console.error(error);
     alert("Failed to add member ❌");
   }
-
-};
-
-async function loadMembersAdmin(){
-  memberList.innerHTML = "";
-
-  const snapshot = await getDocs(collection(db, "members"));
-
-  snapshot.forEach(docSnap => {
-
-    const data = docSnap.data();
-
-    const li = document.createElement("li");
-    li.innerHTML = `
-      <strong>${data.name}</strong> - ${data.role}
-      <button onclick="deleteMember('${docSnap.id}')">❌</button>
-    `;
-
-    memberList.appendChild(li);
-  });
-}
-
-window.deleteMember = async (id) => {
-
-  if(!confirm("Delete this member?")) return;
-
-  await deleteDoc(doc(db, "members", id));
-  loadMembersAdmin();
-};
+});
 
 loadMembersAdmin();
 
