@@ -13,14 +13,12 @@ const noticeCount = document.getElementById("noticeCount");
 const complaintCount = document.getElementById("complaintCount");
 const resolvedCount = document.getElementById("resolvedCount");
 
-// Notices Count
 onSnapshot(collection(db,"notices"), (snapshot)=>{
   if(noticeCount){
     noticeCount.innerText = snapshot.size;
   }
 });
 
-// Complaints Count + Resolved Count
 onSnapshot(collection(db,"complaints"), (snapshot)=>{
 
   if(!complaintCount || !resolvedCount) return;
@@ -40,7 +38,7 @@ onSnapshot(collection(db,"complaints"), (snapshot)=>{
 });
 
 
-// ================= LIVE NOTICES =================
+// ================= LIVE NOTICES WITH NEW BADGE =================
 
 const noticeList = document.getElementById("noticeList");
 
@@ -53,18 +51,22 @@ if(noticeList){
     snapshot.forEach(docSnap=>{
 
       const data = docSnap.data();
+      const createdDate = data.created?.toDate ? data.created.toDate() : new Date(data.created);
+      const daysOld = (Date.now() - createdDate.getTime()) / (1000 * 60 * 60 * 24);
 
       const div = document.createElement("div");
       div.className = "notice-card";
 
       div.innerHTML = `
-        <strong>${data.title}</strong><br>
-        ${data.description || ""}<br>
-        ${data.fileUrl ? `<a href="${data.fileUrl}" target="_blank">📄 Download</a>` : ""}
+        <strong>
+          ${data.title}
+          ${daysOld <= 7 ? `<span style="color:white;background:red;padding:3px 8px;border-radius:12px;font-size:12px;margin-left:8px;">NEW</span>` : ""}
+        </strong><br><br>
+        ${data.description || ""}
+        ${data.fileUrl ? `<br><br><a href="${data.fileUrl}" target="_blank">📄 Download</a>` : ""}
       `;
 
       noticeList.appendChild(div);
-
     });
 
   });
@@ -88,7 +90,6 @@ if(galleryTrack){
       images.push(docSnap.data().imageUrl);
     });
 
-    // Duplicate images for infinite scroll
     const doubled = [...images, ...images];
 
     doubled.forEach(url=>{
