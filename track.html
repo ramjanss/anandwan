@@ -3,55 +3,188 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>तक्रार स्थिती तपासा</title>
-<link rel="stylesheet" href="css/style.css">
+<title>तक्रार ट्रॅक करा</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:'Poppins','Noto Sans Devanagari',sans-serif;
+  background:#f4f6fb;
+}
+
+.section{
+  max-width:700px;
+  margin:80px auto;
+  background:white;
+  padding:40px;
+  border-radius:20px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.08);
+}
+
+h1{
+  text-align:center;
+  margin-bottom:30px;
+}
+
+input{
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  margin-bottom:15px;
+  font-size:14px;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:30px;
+  background:#0048ff;
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+button:hover{
+  background:#0036c7;
+}
+
+.result-card{
+  margin-top:30px;
+  padding:20px;
+  border-radius:15px;
+  background:#f9fafc;
+  display:none;
+}
+
+.status{
+  padding:6px 12px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:600;
+  display:inline-block;
+  margin-bottom:10px;
+}
+
+.pending{
+  background:#fff3cd;
+  color:#856404;
+}
+
+.resolved{
+  background:#d4edda;
+  color:#155724;
+}
+
+.error-box{
+  margin-top:20px;
+  color:red;
+  display:none;
+}
+
+.home-link{
+  text-align:center;
+  margin-top:20px;
+}
+</style>
 </head>
 
 <body>
 
-<section class="section">
+<div class="section">
 
-<h1>तक्रार स्थिती तपासा</h1>
+<h1>🔎 तक्रार ट्रॅक करा</h1>
 
-<input type="text" id="trackId" placeholder="Tracking ID" style="width:300px;padding:8px;">
-<br><br>
+<input type="text" id="trackingInput" placeholder="आपला Tracking ID टाका (उदा. GP16984563)">
+<button id="trackBtn">Track Complaint</button>
 
-<button class="btn" id="trackBtn">Check Status</button>
+<div class="error-box" id="errorBox">
+  ❌ Tracking ID सापडला नाही
+</div>
 
-<p id="result"></p>
+<div class="result-card" id="resultCard">
 
-</section>
+  <div id="statusBadge"></div>
+
+  <p><strong>Tracking ID:</strong> <span id="showId"></span></p>
+  <p><strong>नाव:</strong> <span id="showName"></span></p>
+  <p><strong>मोबाईल:</strong> <span id="showPhone"></span></p>
+  <p><strong>तक्रार:</strong> <span id="showMessage"></span></p>
+  <p><strong>नोंद तारीख:</strong> <span id="showDate"></span></p>
+
+</div>
+
+<div class="home-link">
+  <a href="index.html">← Home</a>
+</div>
+
+</div>
 
 <script type="module">
 
 import { db } from "./js/firebase.js";
-import { collection, getDocs, query, where }
+import { collection, getDocs } 
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-document.getElementById("trackBtn").onclick = async () => {
+const trackBtn = document.getElementById("trackBtn");
 
-  const trackId = document.getElementById("trackId").value;
-  const result = document.getElementById("result");
+trackBtn.onclick = async () => {
 
-  const q = query(
-    collection(db, "complaints"),
-    where("trackingId", "==", trackId)
-  );
+  const inputId = document.getElementById("trackingInput").value.trim();
 
-  const snapshot = await getDocs(q);
+  const errorBox = document.getElementById("errorBox");
+  const resultCard = document.getElementById("resultCard");
 
-  if(snapshot.empty){
-    result.innerText = "तक्रार सापडली नाही.";
+  errorBox.style.display = "none";
+  resultCard.style.display = "none";
+
+  if(inputId === ""){
+    alert("Please enter Tracking ID");
     return;
   }
 
-  snapshot.forEach(doc => {
-    const data = doc.data();
-    result.innerHTML = `
-      <strong>Status:</strong> ${data.status}<br>
-      <strong>Message:</strong> ${data.message}
-    `;
+  const snapshot = await getDocs(collection(db, "complaints"));
+
+  let found = false;
+
+  snapshot.forEach(docSnap => {
+
+    const data = docSnap.data();
+
+    if(data.trackingId === inputId){
+
+      found = true;
+
+      document.getElementById("showId").innerText = data.trackingId;
+      document.getElementById("showName").innerText = data.name;
+      document.getElementById("showPhone").innerText = data.phone;
+      document.getElementById("showMessage").innerText = data.message;
+
+      const date = data.createdAt?.toDate();
+      document.getElementById("showDate").innerText =
+        date ? date.toLocaleString() : "N/A";
+
+      const badge = document.getElementById("statusBadge");
+
+      if(data.status === "Resolved"){
+        badge.innerHTML = `<span class="status resolved">Resolved</span>`;
+      }else{
+        badge.innerHTML = `<span class="status pending">Pending</span>`;
+      }
+
+      resultCard.style.display = "block";
+    }
+
   });
+
+  if(!found){
+    errorBox.style.display = "block";
+  }
+
 };
 
 </script>
