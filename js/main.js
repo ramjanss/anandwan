@@ -1,76 +1,53 @@
 import { db } from "./firebase.js";
-import { collection, getDocs, query, orderBy }
+import { collection, getDocs } 
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-/* ================= COUNTER ================= */
 
-function animateCounter(el, target){
-  let start = 0;
-  const increment = Math.ceil(target / 50);
-
-  const timer = setInterval(()=>{
-    start += increment;
-    if(start >= target){
-      el.textContent = target;
-      clearInterval(timer);
-    } else {
-      el.textContent = start;
-    }
-  },20);
-}
-
-/* ================= LOAD STATS ================= */
+// ================= LOAD STATS =================
 
 async function loadStats(){
 
-  const notices = await getDocs(collection(db,"notices"));
-  const complaints = await getDocs(collection(db,"complaints"));
+  const noticesSnapshot = await getDocs(collection(db,"notices"));
+  const complaintsSnapshot = await getDocs(collection(db,"complaints"));
 
-  let total = 0;
+  let totalComplaints = 0;
   let resolved = 0;
 
-  complaints.forEach(doc=>{
-    total++;
-    if(doc.data().status === "Resolved") resolved++;
+  complaintsSnapshot.forEach(docSnap => {
+    totalComplaints++;
+    if(docSnap.data().status === "Resolved") resolved++;
   });
 
-  animateCounter(document.getElementById("noticeCount"), notices.size);
-  animateCounter(document.getElementById("complaintCount"), total);
-  animateCounter(document.getElementById("resolvedCount"), resolved);
+  document.getElementById("noticeCount").innerText = noticesSnapshot.size;
+  document.getElementById("complaintCount").innerText = totalComplaints;
+  document.getElementById("resolvedCount").innerText = resolved;
 }
 
 loadStats();
 
-/* ================= LOAD NOTICES ================= */
+
+// ================= LOAD NOTICES =================
 
 async function loadNotices(){
 
   const container = document.getElementById("noticeList");
+  if(!container) return;
+
   container.innerHTML = "";
 
-  const q = query(
-    collection(db,"notices"),
-    orderBy("created","desc")
-  );
+  const snapshot = await getDocs(collection(db,"notices"));
 
-  const snapshot = await getDocs(q);
+  snapshot.forEach(docSnap => {
 
-  let index = 0;
-
-  snapshot.forEach(doc=>{
-    const data = doc.data();
+    const data = docSnap.data();
 
     const card = document.createElement("div");
     card.className = "notice-card";
 
-    const isNew = index < 2;
-    index++;
-
     card.innerHTML = `
-      <strong>${data.title}</strong>
-      ${isNew ? '<span class="new-badge">NEW</span>' : ''}
-      <p>${data.description || ""}</p>
-      ${data.fileUrl ? `<a href="${data.fileUrl}" target="_blank">Download</a>` : ""}
+      <strong>${data.title}</strong><br>
+      ${data.description || ""}
+      ${data.fileUrl ? `<br><a href="${data.fileUrl}" target="_blank">📄 Download</a>` : ""}
     `;
 
     container.appendChild(card);
@@ -79,32 +56,30 @@ async function loadNotices(){
 
 loadNotices();
 
-/* ================= LOAD GALLERY ================= */
+
+// ================= LOAD GALLERY =================
 
 async function loadGallery(){
 
-  const container = document.getElementById("galleryTrack");
-  if(!container) return;
+  const track = document.getElementById("galleryTrack");
+  if(!track) return;
 
-  container.innerHTML = "";
+  track.innerHTML = "";
 
   const snapshot = await getDocs(collection(db,"gallery"));
 
-  let images = [];
+  snapshot.forEach(docSnap => {
 
-  snapshot.forEach(doc=>{
-    images.push(doc.data().imageUrl);
-  });
+    const data = docSnap.data();
 
-  // duplicate images for smooth infinite scroll
-  const allImages = images.concat(images);
-
-  allImages.forEach(url=>{
     const img = document.createElement("img");
-    img.src = url;
-    container.appendChild(img);
+    img.src = data.imageUrl;
+
+    track.appendChild(img);
   });
 
+  // Duplicate images for smooth infinite scroll
+  track.innerHTML += track.innerHTML;
 }
 
 loadGallery();
