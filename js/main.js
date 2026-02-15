@@ -196,5 +196,39 @@ async function loadMembers() {
   });
 }
 
+async function loadMembers() {
+
+  const container = document.getElementById("membersContainer");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  const snapshot = await getDocs(collection(db, "members"));
+
+  const members = [];
+
+  snapshot.forEach(docSnap => {
+    members.push(docSnap.data());
+  });
+
+  // sort by display order
+  members.sort((a, b) => a.order - b.order);
+
+  members.forEach(member => {
+
+    const card = document.createElement("div");
+    card.className = "member-card";
+
+    card.innerHTML = `
+      <img src="${member.photoUrl}" width="120" height="120" style="border-radius:50%;">
+      <h3>${member.name}</h3>
+      <p>${member.role}</p>
+      <p>${member.phone}</p>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
 loadMembers();
 
