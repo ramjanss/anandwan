@@ -30,6 +30,8 @@ const noticeContainer = document.getElementById("noticeContainer");
 
 async function loadNotices(){
 
+  noticeContainer.innerHTML = "";
+
   const snapshot = await getDocs(collection(db,"notices"));
 
   snapshot.forEach(docSnap=>{
@@ -38,12 +40,8 @@ async function loadNotices(){
     const div = document.createElement("div");
     div.className = "notice-card";
 
-    const isNew = data.created && 
-      (new Date() - data.created.toDate?.() < 7 * 24 * 60 * 60 * 1000);
-
     div.innerHTML = `
       <strong>${data.title}</strong>
-      ${isNew ? '<span class="new-badge">NEW</span>' : ''}
       <br><br>
       ${data.description || ""}
       ${data.fileUrl ? 
@@ -65,6 +63,10 @@ const galleryTrack = document.getElementById("galleryTrack");
 
 async function loadGallery(){
 
+  if(!galleryTrack) return;
+
+  galleryTrack.innerHTML = "";
+
   const snapshot = await getDocs(collection(db,"gallery"));
 
   snapshot.forEach(docSnap=>{
@@ -73,7 +75,7 @@ async function loadGallery(){
     galleryTrack.appendChild(img);
   });
 
-  // Duplicate images for infinite scroll illusion
+  // Duplicate for auto-scroll illusion
   galleryTrack.innerHTML += galleryTrack.innerHTML;
 }
 
