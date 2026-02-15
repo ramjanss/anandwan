@@ -231,3 +231,32 @@ transform:translateY(-6px);
   }
 }
 
+.members-grid{
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+.member-card{
+  background:white;
+  padding:20px;
+  border-radius:15px;
+  width:220px;
+  text-align:center;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+  transition:0.3s;
+}
+
+.member-card:hover{
+  transform:translateY(-5px);
+}
+
+.member-card img{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  object-fit:cover;
+  margin-bottom:10px;
+}
+
