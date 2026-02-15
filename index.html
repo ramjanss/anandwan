@@ -15,21 +15,45 @@ body{
   color:#222;
 }
 
+.section{
+  padding:70px 20px;
+  max-width:1200px;
+  margin:auto;
+}
+
+h2{
+  text-align:center;
+  margin-bottom:40px;
+  font-size:28px;
+}
+
 /* HERO */
 .hero{
   background:linear-gradient(135deg,#0048ff,#00c6ff);
   color:white;
-  padding:100px 20px;
   text-align:center;
+  padding:120px 20px;
+}
+
+.hero h1{
+  font-size:42px;
+  margin:0;
+}
+
+.hero p{
+  margin:20px 0 35px;
+  font-size:18px;
+  opacity:0.9;
 }
 
 .btn{
-  padding:12px 26px;
+  padding:12px 28px;
   border-radius:30px;
   text-decoration:none;
   font-weight:600;
-  margin:5px;
+  margin:8px;
   display:inline-block;
+  transition:0.3s;
 }
 
 .btn-primary{
@@ -42,17 +66,10 @@ body{
   color:white;
 }
 
-/* SECTION */
-.section{
-  padding:60px 20px;
-  max-width:1100px;
-  margin:auto;
-}
-
 /* STATS */
 .stats-container{
   display:flex;
-  gap:20px;
+  gap:25px;
   flex-wrap:wrap;
   justify-content:center;
 }
@@ -62,33 +79,43 @@ body{
   min-width:220px;
   background:white;
   padding:30px;
-  border-radius:18px;
-  box-shadow:0 12px 30px rgba(0,0,0,0.08);
+  border-radius:20px;
   text-align:center;
+  box-shadow:0 12px 30px rgba(0,0,0,0.08);
+  transition:0.3s;
+}
+
+.stat-card:hover{
+  transform:translateY(-6px);
 }
 
 .stat-card h1{
-  font-size:32px;
+  font-size:36px;
   margin:0;
   color:#0048ff;
 }
 
 /* NOTICES */
+.notice-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;
+}
+
 .notice-card{
   background:white;
   padding:20px;
-  border-radius:15px;
-  margin-bottom:15px;
-  box-shadow:0 6px 20px rgba(0,0,0,0.05);
+  border-radius:18px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.05);
+  transition:0.3s;
 }
 
-.new-badge{
-  background:red;
-  color:white;
-  font-size:10px;
-  padding:3px 6px;
-  border-radius:4px;
-  margin-left:6px;
+.notice-card:hover{
+  transform:translateY(-4px);
+}
+
+.notice-card strong{
+  font-size:16px;
 }
 
 /* GALLERY */
@@ -98,7 +125,7 @@ body{
 
 .gallery-track{
   display:flex;
-  gap:15px;
+  gap:18px;
   animation:scroll 25s linear infinite;
 }
 
@@ -106,12 +133,21 @@ body{
   width:260px;
   height:170px;
   object-fit:cover;
-  border-radius:15px;
+  border-radius:16px;
 }
 
 @keyframes scroll{
   0%{transform:translateX(0);}
   100%{transform:translateX(-50%);}
+}
+
+/* ABOUT */
+.about{
+  background:#111827;
+  color:white;
+  border-radius:20px;
+  padding:50px;
+  text-align:center;
 }
 
 footer{
@@ -125,6 +161,7 @@ footer{
 
 <body>
 
+<!-- HERO -->
 <section class="hero">
   <h1>ग्रामपंचायत वंधली</h1>
   <p>Smart • Transparent • Digital Governance</p>
@@ -134,6 +171,7 @@ footer{
   <a href="login.html" class="btn btn-outline">Admin Login</a>
 </section>
 
+<!-- STATS -->
 <section class="section">
   <h2>📊 Live Transparency</h2>
 
@@ -155,15 +193,28 @@ footer{
   </div>
 </section>
 
+<!-- NOTICES -->
 <section class="section">
   <h2>📢 Latest Notices</h2>
-  <div id="noticeList"></div>
+  <div id="noticeList" class="notice-grid"></div>
 </section>
 
+<!-- GALLERY -->
 <section class="section">
   <h2>📸 Village Gallery</h2>
   <div class="gallery">
     <div id="galleryTrack" class="gallery-track"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section">
+  <div class="about">
+    <h2>🏛 About Gram Panchayat</h2>
+    <p>
+      वंधली ग्रामपंचायत डिजिटल प्रशासनाच्या माध्यमातून पारदर्शक व कार्यक्षम सेवा देण्यास कटिबद्ध आहे.
+      नागरिकांच्या तक्रारी, सूचना आणि विकासकामे ऑनलाइन प्रणालीद्वारे पारदर्शकपणे हाताळली जातात.
+    </p>
   </div>
 </section>
 
