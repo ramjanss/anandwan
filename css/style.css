@@ -192,16 +192,17 @@ transform:translateY(-6px);
 
 
 /* Gallery */
-
 .gallery{
   overflow:hidden;
+  position:relative;
+  width:100%;
 }
 
 .gallery-track{
   display:flex;
   gap:20px;
-  animation:scroll 30s linear infinite;
   width:max-content;
+  animation:scroll 35s linear infinite;
 }
 
 .gallery:hover .gallery-track{
@@ -212,15 +213,21 @@ transform:translateY(-6px);
   width:260px;
   height:170px;
   object-fit:cover;
-  border-radius:15px;
+  border-radius:18px;
   transition:transform 0.4s ease;
+  flex-shrink:0;
 }
 
 .gallery img:hover{
-  transform:scale(1.08);
+  transform:scale(1.1);
 }
 
 @keyframes scroll{
-  0%{transform:translateX(0);}
-  100%{transform:translateX(-50%);}
+  0%{
+    transform:translateX(0);
+  }
+  100%{
+    transform:translateX(-50%);
+  }
 }
+
