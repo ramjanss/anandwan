@@ -1,55 +1,47 @@
 import { db } from "./firebase.js";
-import { collection, getDocs, query, orderBy, limit }
+import { collection, getDocs, query, orderBy }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// ================= COUNTER ANIMATION =================
+/* ================= COUNTER ================= */
 
-function animateCounter(element, target){
+function animateCounter(el, target){
   let start = 0;
-  const duration = 1000;
-  const increment = target / (duration / 16);
+  const increment = Math.ceil(target / 50);
 
-  function update(){
+  const timer = setInterval(()=>{
     start += increment;
     if(start >= target){
-      element.textContent = target;
+      el.textContent = target;
+      clearInterval(timer);
     } else {
-      element.textContent = Math.floor(start);
-      requestAnimationFrame(update);
+      el.textContent = start;
     }
-  }
-
-  update();
+  },20);
 }
 
-// ================= LOAD LIVE STATS =================
+/* ================= LOAD STATS ================= */
 
 async function loadStats(){
 
-  const noticesSnapshot = await getDocs(collection(db,"notices"));
-  const complaintsSnapshot = await getDocs(collection(db,"complaints"));
+  const notices = await getDocs(collection(db,"notices"));
+  const complaints = await getDocs(collection(db,"complaints"));
 
-  let totalComplaints = 0;
+  let total = 0;
   let resolved = 0;
 
-  complaintsSnapshot.forEach(docSnap=>{
-    totalComplaints++;
-    if(docSnap.data().status === "Resolved") resolved++;
+  complaints.forEach(doc=>{
+    total++;
+    if(doc.data().status === "Resolved") resolved++;
   });
 
-  const noticeCount = document.getElementById("noticeCount");
-  const complaintCount = document.getElementById("complaintCount");
-  const resolvedCount = document.getElementById("resolvedCount");
-
-  animateCounter(noticeCount, noticesSnapshot.size);
-  animateCounter(complaintCount, totalComplaints);
-  animateCounter(resolvedCount, resolved);
+  animateCounter(document.getElementById("noticeCount"), notices.size);
+  animateCounter(document.getElementById("complaintCount"), total);
+  animateCounter(document.getElementById("resolvedCount"), resolved);
 }
 
 loadStats();
 
-
-// ================= LOAD NOTICES (WITH NEW BADGE) =================
+/* ================= LOAD NOTICES ================= */
 
 async function loadNotices(){
 
@@ -58,36 +50,27 @@ async function loadNotices(){
 
   const q = query(
     collection(db,"notices"),
-    orderBy("created","desc"),
-    limit(6)
+    orderBy("created","desc")
   );
 
   const snapshot = await getDocs(q);
 
   let index = 0;
 
-  snapshot.forEach(docSnap=>{
-    const data = docSnap.data();
+  snapshot.forEach(doc=>{
+    const data = doc.data();
 
     const card = document.createElement("div");
     card.className = "notice-card";
 
-    const isNew = index < 2; // first 2 notices marked NEW
+    const isNew = index < 2;
     index++;
 
     card.innerHTML = `
-      <div class="notice-title">
-        ${data.title}
-        ${isNew ? '<span class="new-badge">NEW</span>' : ''}
-      </div>
-
-      <div class="notice-desc">
-        ${data.description || ""}
-      </div>
-
-      ${data.fileUrl ? 
-        `<a href="${data.fileUrl}" target="_blank" class="notice-btn">Download</a>`
-        : ""}
+      <strong>${data.title}</strong>
+      ${isNew ? '<span class="new-badge">NEW</span>' : ''}
+      <p>${data.description || ""}</p>
+      ${data.fileUrl ? `<a href="${data.fileUrl}" target="_blank">Download</a>` : ""}
     `;
 
     container.appendChild(card);
@@ -96,8 +79,7 @@ async function loadNotices(){
 
 loadNotices();
 
-
-// ================= LOAD GALLERY =================
+/* ================= LOAD GALLERY ================= */
 
 async function loadGallery(){
 
@@ -108,15 +90,21 @@ async function loadGallery(){
 
   const snapshot = await getDocs(collection(db,"gallery"));
 
-  snapshot.forEach(docSnap=>{
+  let images = [];
+
+  snapshot.forEach(doc=>{
+    images.push(doc.data().imageUrl);
+  });
+
+  // duplicate images for smooth infinite scroll
+  const allImages = images.concat(images);
+
+  allImages.forEach(url=>{
     const img = document.createElement("img");
-    img.src = docSnap.data().imageUrl;
-    img.className = "gallery-img";
+    img.src = url;
     container.appendChild(img);
   });
 
 }
 
 loadGallery();
-
-
