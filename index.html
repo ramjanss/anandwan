@@ -24,7 +24,7 @@ body{
 }
 
 .hero h1{
-  font-size:42px;
+  font-size:40px;
   margin:0;
 }
 
@@ -48,17 +48,13 @@ body{
   color:#0048ff;
 }
 
-.btn-primary:hover{
-  background:#e6edff;
-}
-
 .btn-outline{
   border:2px solid white;
   color:white;
 }
 
 .section{
-  padding:70px 20px;
+  padding:60px 20px;
   max-width:1100px;
   margin:auto;
 }
@@ -81,7 +77,7 @@ body{
 }
 
 .stat-card h2{
-  font-size:34px;
+  font-size:32px;
   margin:0;
   color:#0048ff;
 }
@@ -90,6 +86,7 @@ body{
 .dark-section{
   background:#111827;
   color:white;
+  padding:60px 20px;
 }
 
 .notice-card{
@@ -100,27 +97,15 @@ body{
   box-shadow:0 6px 20px rgba(0,0,0,0.05);
 }
 
-.new-badge{
-  background:#ff3b3b;
-  color:white;
-  font-size:12px;
-  padding:3px 8px;
-  border-radius:12px;
-  margin-left:10px;
-}
-
 /* GALLERY */
 .gallery{
-  display:flex;
-  gap:15px;
   overflow:hidden;
-  position:relative;
 }
 
 .gallery-track{
   display:flex;
   gap:15px;
-  animation:scroll 20s linear infinite;
+  animation:scroll 25s linear infinite;
 }
 
 .gallery img{
@@ -146,7 +131,6 @@ footer{
 
 <body>
 
-<!-- HERO -->
 <section class="hero">
   <h1>ग्रामपंचायत वंधली</h1>
   <p>Smart • Transparent • Digital Governance</p>
@@ -155,7 +139,6 @@ footer{
   <a href="track.html" class="btn btn-outline">तक्रार ट्रॅक करा</a>
 </section>
 
-<!-- STATS -->
 <section class="section">
   <h2>📊 Live Transparency</h2>
   <div class="stats">
@@ -174,13 +157,13 @@ footer{
   </div>
 </section>
 
-<!-- NOTICES -->
-<section class="section dark-section">
-  <h2>📢 Latest Notices</h2>
-  <div id="noticeContainer"></div>
+<section class="dark-section">
+  <div class="section">
+    <h2>📢 Latest Notices</h2>
+    <div id="noticeContainer"></div>
+  </div>
 </section>
 
-<!-- GALLERY -->
 <section class="section">
   <h2>📸 Village Gallery</h2>
   <div class="gallery">
