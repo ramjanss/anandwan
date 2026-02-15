@@ -165,3 +165,36 @@ async function loadGallery() {
 loadStats();
 loadNotices();
 loadGallery();
+
+// ================= LOAD MEMBERS =================
+
+async function loadMembers() {
+
+  const container = document.getElementById("membersGrid");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  const snapshot = await getDocs(
+    collection(db, "members")
+  );
+
+  snapshot.forEach(docSnap => {
+
+    const data = docSnap.data();
+
+    const card = document.createElement("div");
+    card.className = "member-card";
+
+    card.innerHTML = `
+      <img src="${data.photoUrl}" alt="${data.name}">
+      <h3>${data.name}</h3>
+      <p>${data.role}</p>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+loadMembers();
+
