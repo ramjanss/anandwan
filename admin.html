@@ -237,36 +237,46 @@ loadNotices();
 
 // ================= COMPLAINT SYSTEM =================
 
-const complaintList=document.getElementById("complaintList");
+const complaintList = document.getElementById("complaintList");
 
 async function loadComplaints(){
-  complaintList.innerHTML="";
-  const snapshot=await getDocs(collection(db,"complaints"));
+  complaintList.innerHTML = "";
 
-  snapshot.forEach(docSnap=>{
-    const data=docSnap.data();
-    const li=document.createElement("li");
+  const snapshot = await getDocs(collection(db, "complaints"));
 
-    li.innerHTML=`
-      <strong>${data.name}</strong> (${data.phone})<br>
-      ${data.message}<br>
-      Status: <b>${data.status}</b>
-      <button onclick="markResolved('${docSnap.id}')">Mark Resolved</button>
-      <hr>
+  snapshot.forEach(docSnap => {
+
+    const data = docSnap.data();
+
+    const createdDate = data.createdAt?.toDate();
+    const formattedDate = createdDate
+      ? createdDate.toLocaleString()
+      : "N/A";
+
+    const li = document.createElement("li");
+
+    li.innerHTML = `
+      <div style="background:#f9fafc;padding:15px;border-radius:12px;margin-bottom:15px;">
+        <strong>Tracking ID:</strong> ${data.trackingId || "Old Complaint"} <br>
+        <strong>Name:</strong> ${data.name} <br>
+        <strong>Phone:</strong> ${data.phone} <br>
+        <strong>Message:</strong> ${data.message} <br>
+        <strong>Date:</strong> ${formattedDate} <br>
+        <strong>Status:</strong> ${data.status} <br><br>
+
+        ${
+          data.status !== "Resolved"
+          ? `<button onclick="markResolved('${docSnap.id}')">Mark Resolved</button>`
+          : ""
+        }
+      </div>
     `;
 
     complaintList.appendChild(li);
   });
 }
 
-window.markResolved=async(id)=>{
-  await updateDoc(doc(db,"complaints",id),{status:"Resolved"});
-  loadComplaints();
-  loadStats();
-};
-
 loadComplaints();
-
 
 // ================= GALLERY SYSTEM =================
 
