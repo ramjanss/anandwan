@@ -237,8 +237,6 @@ loadNotices();
 
 // ================= COMPLAINT SYSTEM =================
 
-const complaintList = document.getElementById("complaintList");
-
 async function loadComplaints(){
   complaintList.innerHTML = "";
 
@@ -253,26 +251,52 @@ async function loadComplaints(){
       ? createdDate.toLocaleString()
       : "N/A";
 
-    const li = document.createElement("li");
+    const wrapper = document.createElement("div");
+    wrapper.style.background = "#f9fafc";
+    wrapper.style.padding = "15px";
+    wrapper.style.borderRadius = "12px";
+    wrapper.style.marginBottom = "15px";
 
-    li.innerHTML = `
-      <div style="background:#f9fafc;padding:15px;border-radius:12px;margin-bottom:15px;">
-        <strong>Tracking ID:</strong> ${data.trackingId || "Old Complaint"} <br>
-        <strong>Name:</strong> ${data.name} <br>
-        <strong>Phone:</strong> ${data.phone} <br>
-        <strong>Message:</strong> ${data.message} <br>
-        <strong>Date:</strong> ${formattedDate} <br>
-        <strong>Status:</strong> ${data.status} <br><br>
-
-        ${
-          data.status !== "Resolved"
-          ? `<button onclick="markResolved('${docSnap.id}')">Mark Resolved</button>`
-          : ""
-        }
-      </div>
+    wrapper.innerHTML = `
+      <strong>Tracking ID:</strong> ${data.trackingId || "Old Complaint"} <br>
+      <strong>Name:</strong> ${data.name} <br>
+      <strong>Phone:</strong> ${data.phone} <br>
+      <strong>Message:</strong> ${data.message} <br>
+      <strong>Date:</strong> ${formattedDate} <br>
+      <strong>Status:</strong> ${data.status} <br><br>
     `;
 
-    complaintList.appendChild(li);
+    // Create button dynamically (NO inline onclick)
+    if(data.status !== "Resolved"){
+
+      const btn = document.createElement("button");
+      btn.innerText = "Mark Resolved";
+      btn.style.padding = "6px 12px";
+      btn.style.cursor = "pointer";
+
+      btn.addEventListener("click", async () => {
+
+        try{
+          await updateDoc(doc(db, "complaints", docSnap.id), {
+            status: "Resolved"
+          });
+
+          loadComplaints();
+          if(typeof loadStats === "function"){
+            loadStats();
+          }
+
+        }catch(error){
+          console.error("Resolve error:", error);
+        }
+
+      });
+
+      wrapper.appendChild(btn);
+    }
+
+    complaintList.appendChild(wrapper);
+
   });
 }
 
