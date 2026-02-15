@@ -38,21 +38,31 @@ onSnapshot(collection(db,"complaints"), (snapshot)=>{
 });
 
 
-// ================= LIVE NOTICES WITH NEW BADGE =================
+// ================= LIVE NOTICES WITH SAFE NEW BADGE =================
 
 const noticeList = document.getElementById("noticeList");
 
-if(noticeList){
+if (noticeList) {
 
-  onSnapshot(collection(db,"notices"), (snapshot)=>{
+  onSnapshot(collection(db, "notices"), (snapshot) => {
 
     noticeList.innerHTML = "";
 
-    snapshot.forEach(docSnap=>{
+    snapshot.forEach(docSnap => {
 
       const data = docSnap.data();
-      const createdDate = data.created?.toDate ? data.created.toDate() : new Date(data.created);
-      const daysOld = (Date.now() - createdDate.getTime()) / (1000 * 60 * 60 * 24);
+
+      // SAFELY handle Firestore Timestamp
+      let createdDate;
+
+      if (data.created && data.created.seconds) {
+        createdDate = new Date(data.created.seconds * 1000);
+      } else {
+        createdDate = new Date();
+      }
+
+      const diffDays =
+        (Date.now() - createdDate.getTime()) / (1000 * 60 * 60 * 24);
 
       const div = document.createElement("div");
       div.className = "notice-card";
@@ -60,13 +70,19 @@ if(noticeList){
       div.innerHTML = `
         <strong>
           ${data.title}
-          ${daysOld <= 7 ? `<span style="color:white;background:red;padding:3px 8px;border-radius:12px;font-size:12px;margin-left:8px;">NEW</span>` : ""}
-        </strong><br><br>
+          ${diffDays <= 7
+            ? `<span class="new-badge">NEW</span>`
+            : ""}
+        </strong>
+        <br><br>
         ${data.description || ""}
-        ${data.fileUrl ? `<br><br><a href="${data.fileUrl}" target="_blank">📄 Download</a>` : ""}
+        ${data.fileUrl
+          ? `<br><br><a href="${data.fileUrl}" target="_blank">📄 Download</a>`
+          : ""}
       `;
 
       noticeList.appendChild(div);
+
     });
 
   });
