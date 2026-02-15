@@ -5,30 +5,37 @@ from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 // ================= SAFE LOAD STATS =================
 
-async function loadStats(){
+async function loadPublicNotices(){
 
-  const noticeEl = document.getElementById("noticeCount");
-  const complaintEl = document.getElementById("complaintCount");
-  const resolvedEl = document.getElementById("resolvedCount");
+  const noticeList = document.getElementById("noticeList");
+  if(!noticeList) return;
 
-  if(!noticeEl || !complaintEl || !resolvedEl) return;
+  noticeList.innerHTML = "";
 
-  const notices = await getDocs(collection(db,"notices"));
-  const complaints = await getDocs(collection(db,"complaints"));
+  const snapshot = await getDocs(collection(db,"notices"));
 
-  noticeEl.innerText = notices.size;
-  complaintEl.innerText = complaints.size;
+  snapshot.forEach(docSnap => {
 
-  let resolved = 0;
-  complaints.forEach(doc=>{
-    if(doc.data().status === "Resolved") resolved++;
+    const data = docSnap.data();
+
+    const card = document.createElement("div");
+    card.className = "notice-card";
+
+    card.innerHTML = `
+      <div class="notice-title">${data.title}</div>
+      <div class="notice-desc">${data.description || ""}</div>
+      ${
+        data.fileUrl 
+        ? `<a href="${data.fileUrl}" target="_blank" class="notice-btn">📄 Download</a>` 
+        : ""
+      }
+    `;
+
+    noticeList.appendChild(card);
   });
-
-  resolvedEl.innerText = resolved;
 }
 
-loadStats();
-
+loadPublicNotices();
 
 // ================= SAFE LOAD NOTICES =================
 
