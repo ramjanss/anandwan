@@ -18,81 +18,59 @@
 
 <h1>Admin Dashboard</h1>
 
-<!-- ================= NOTICE SECTION ================= -->
-
+<!-- NOTICE SECTION -->
 <h2>📢 नवीन सूचना जोडा</h2>
-
-<input type="text" id="noticeTitle" placeholder="सूचना शीर्षक" style="width:300px;padding:8px;">
+<input type="text" id="noticeTitle" placeholder="सूचना शीर्षक">
 <br><br>
-
-<textarea id="noticeDesc" placeholder="सूचना तपशील"
-style="width:300px;height:80px;padding:8px;"></textarea>
+<textarea id="noticeDesc" placeholder="सूचना तपशील"></textarea>
 <br><br>
-
 <input type="file" id="noticeFile" accept="application/pdf">
 <br><br>
-
-<button class="btn" id="addNoticeBtn">Upload Notice</button>
+<button id="addNoticeBtn">Upload Notice</button>
 <p id="noticeMsg"></p>
 
 <hr><br>
 
-<!-- ================= COMPLAINT SECTION ================= -->
-
+<!-- COMPLAINT SECTION -->
 <h2>📨 आलेल्या तक्रारी</h2>
 <div id="complaintList"></div>
 
 <hr><br>
 
-<!-- ================= GALLERY SECTION ================= -->
-
+<!-- GALLERY SECTION -->
 <h2>🖼 Gallery Upload</h2>
 <input type="file" id="imageFile">
 <br><br>
-<button class="btn" id="uploadImageBtn">Upload Image</button>
+<button id="uploadImageBtn">Upload Image</button>
 <ul id="galleryAdminList"></ul>
 
 <hr><br>
 
-  <hr><br>
-
+<!-- MEMBER SECTION -->
 <h2>👥 ग्रामपंचायत सदस्य</h2>
 
-<input type="text" id="memberName" placeholder="Member Name" style="width:250px;padding:8px;">
-<br><br>
+<input type="text" id="memberName" placeholder="Member Name"><br><br>
+<input type="text" id="memberRole" placeholder="Role"><br><br>
+<input type="text" id="memberPhone" placeholder="Phone"><br><br>
+<input type="number" id="memberOrder" placeholder="Display Order"><br><br>
+<input type="file" id="memberPhoto" accept="image/*"><br><br>
 
-<input type="text" id="memberRole" placeholder="Role (Sarpanch / Member)" style="width:250px;padding:8px;">
-<br><br>
-
-<input type="text" id="memberPhone" placeholder="Phone Number" style="width:250px;padding:8px;">
-<br><br>
- 
-<input type="number" id="memberOrder" placeholder="Display Order (1,2,3)" style="width:250px;padding:8px;">
-<br><br>
-  
-  <input type="file" id="memberPhoto" accept="image/*">
-<br><br>
-  
-<button class="btn" id="addMemberBtn">Add Member</button>
+<button id="addMemberBtn">Add Member</button>
 
 <ul id="memberList"></ul>
 
 <hr><br>
 
-  
-<!-- ================= NOTICE LIST ================= -->
-
 <h2>📋 सर्व सूचना</h2>
 <ul id="adminNoticeList"></ul>
 
 <br>
-<button id="logoutBtn" class="btn">Logout</button>
+<button id="logoutBtn">Logout</button>
 
 </section>
 
-<script type="module">
 
-/* ================= IMPORTS ================= */
+<script type="module">
 
 import { auth, db, storage } from "./js/firebase.js";
 
@@ -118,7 +96,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
 
-/* ================= AUTH PROTECTION ================= */
+/* ================= AUTH ================= */
 
 const allowedAdminEmail = "ramjansocial@gmail.com";
 
@@ -130,7 +108,7 @@ onAuthStateChanged(auth, (user) => {
   }
 
   if (user.email !== allowedAdminEmail) {
-    alert("Access Denied ❌ Admin only");
+    alert("Access Denied ❌");
     window.location.href = "index.html";
   }
 
@@ -142,86 +120,74 @@ document.getElementById("logoutBtn").onclick = async () => {
 };
 
 
-/* ================= DASHBOARD STATS ================= */
-
-const statsContainer = document.getElementById("statsContainer");
+/* ================= STATS ================= */
 
 async function loadStats() {
 
-  const noticesSnapshot = await getDocs(collection(db, "notices"));
-  const complaintsSnapshot = await getDocs(collection(db, "complaints"));
+  const notices = await getDocs(collection(db, "notices"));
+  const complaints = await getDocs(collection(db, "complaints"));
 
-  let total = complaintsSnapshot.size;
   let resolved = 0;
-
-  complaintsSnapshot.forEach(docSnap => {
-    if (docSnap.data().status === "Resolved") resolved++;
+  complaints.forEach(d => {
+    if (d.data().status === "Resolved") resolved++;
   });
 
-  statsContainer.innerHTML = `
-    <div class="card">Total Notices: ${noticesSnapshot.size}</div>
-    <div class="card">Total Complaints: ${total}</div>
-    <div class="card">Resolved: ${resolved}</div>
+  document.getElementById("statsContainer").innerHTML = `
+    <div>Total Notices: ${notices.size}</div>
+    <div>Total Complaints: ${complaints.size}</div>
+    <div>Resolved: ${resolved}</div>
   `;
 }
 
 loadStats();
 
 
-/* ================= NOTICE SYSTEM ================= */
+/* ================= NOTICE ================= */
 
 const noticeTitle = document.getElementById("noticeTitle");
 const noticeDesc = document.getElementById("noticeDesc");
 const noticeFile = document.getElementById("noticeFile");
-const noticeMsg = document.getElementById("noticeMsg");
-const adminNoticeList = document.getElementById("adminNoticeList");
 
 document.getElementById("addNoticeBtn").onclick = async () => {
 
-  if (noticeTitle.value.trim() === "") {
+  if (!noticeTitle.value.trim()) {
     alert("Title required");
     return;
   }
 
-  try {
+  let fileURL = "";
+  let storagePath = "";
 
-    let fileURL = "";
-    let storagePath = "";
-
-    if (noticeFile.files[0]) {
-      const file = noticeFile.files[0];
-      const storageRef = ref(storage, "notices/" + Date.now() + "_" + file.name);
-      await uploadBytes(storageRef, file);
-      fileURL = await getDownloadURL(storageRef);
-      storagePath = storageRef.fullPath;
-    }
-
-    await addDoc(collection(db, "notices"), {
-      title: noticeTitle.value,
-      description: noticeDesc.value,
-      fileUrl: fileURL,
-      storagePath: storagePath,
-      created: new Date()
-    });
-
-    noticeMsg.innerHTML = "Notice uploaded successfully ✅";
-
-    noticeTitle.value = "";
-    noticeDesc.value = "";
-    noticeFile.value = "";
-
-    loadNotices();
-    loadStats();
-
-  } catch (error) {
-    console.error(error);
-    noticeMsg.innerHTML = "Upload failed ❌";
+  if (noticeFile.files[0]) {
+    const file = noticeFile.files[0];
+    const storageRef = ref(storage, "notices/" + Date.now() + "_" + file.name);
+    await uploadBytes(storageRef, file);
+    fileURL = await getDownloadURL(storageRef);
+    storagePath = storageRef.fullPath;
   }
+
+  await addDoc(collection(db, "notices"), {
+    title: noticeTitle.value,
+    description: noticeDesc.value,
+    fileUrl: fileURL,
+    storagePath: storagePath,
+    created: new Date()
+  });
+
+  alert("Notice Uploaded ✅");
+
+  noticeTitle.value = "";
+  noticeDesc.value = "";
+  noticeFile.value = "";
+
+  loadNotices();
+  loadStats();
 };
 
 async function loadNotices() {
 
-  adminNoticeList.innerHTML = "";
+  const list = document.getElementById("adminNoticeList");
+  list.innerHTML = "";
 
   const snapshot = await getDocs(collection(db, "notices"));
 
@@ -232,118 +198,57 @@ async function loadNotices() {
     const li = document.createElement("li");
 
     li.innerHTML = `
-      <strong>${data.title}</strong>
-      <button data-id="${docSnap.id}" data-path="${data.storagePath || ""}">❌</button>
+      ${data.title}
+      <button>❌</button>
     `;
 
-    li.querySelector("button").addEventListener("click", async () => {
+    li.querySelector("button").onclick = async () => {
 
-      if (!confirm("Delete this notice?")) return;
+      if (!confirm("Delete notice?")) return;
 
-      try {
-        if (data.storagePath) {
-          await deleteObject(ref(storage, data.storagePath));
-        }
-        await deleteDoc(doc(db, "notices", docSnap.id));
-        loadNotices();
-        loadStats();
-      } catch (error) {
-        alert("Delete failed ❌");
+      if (data.storagePath) {
+        await deleteObject(ref(storage, data.storagePath));
       }
 
-    });
+      await deleteDoc(doc(db, "notices", docSnap.id));
+      loadNotices();
+      loadStats();
+    };
 
-    adminNoticeList.appendChild(li);
+    list.appendChild(li);
   });
 }
 
 loadNotices();
 
 
-/* ================= COMPLAINT SYSTEM ================= */
-
-const complaintList = document.getElementById("complaintList");
+/* ================= COMPLAINTS ================= */
 
 async function loadComplaints() {
 
-  complaintList.innerHTML = "";
+  const container = document.getElementById("complaintList");
+  container.innerHTML = "";
 
   const snapshot = await getDocs(collection(db, "complaints"));
 
-  // Convert snapshot to array for sorting
-  let complaints = [];
-
   snapshot.forEach(docSnap => {
-    complaints.push({
-      id: docSnap.id,
-      ...docSnap.data()
-    });
-  });
 
-  // Sort by createdAt newest first
-  complaints.sort((a, b) => {
-    if (!a.createdAt || !b.createdAt) return 0;
-    return b.createdAt.seconds - a.createdAt.seconds;
-  });
-
-  complaints.forEach(data => {
-
-    const createdDate = data.createdAt?.toDate();
-    const formattedDate = createdDate
-      ? createdDate.toLocaleString()
-      : "N/A";
+    const data = docSnap.data();
 
     const box = document.createElement("div");
-    box.style.background = "#ffffff";
-    box.style.padding = "20px";
-    box.style.marginBottom = "20px";
-    box.style.borderRadius = "15px";
-    box.style.boxShadow = "0 8px 20px rgba(0,0,0,0.05)";
-
-    const statusColor = data.status === "Resolved" ? "#d4edda" : "#fff3cd";
-    const statusTextColor = data.status === "Resolved" ? "#155724" : "#856404";
-
     box.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <strong>Tracking ID: ${data.trackingId || "Old"}</strong>
-        <span style="
-          padding:6px 12px;
-          border-radius:20px;
-          font-size:12px;
-          background:${statusColor};
-          color:${statusTextColor};
-          font-weight:600;
-        ">
-          ${data.status}
-        </span>
-      </div>
-
-      <hr style="margin:10px 0;">
-
-      <strong>Name:</strong> ${data.name} <br>
-      <strong>Phone:</strong> ${data.phone} <br>
-      <strong>Date:</strong> ${formattedDate} <br><br>
-
-      <strong>Message:</strong><br>
-      <div style="margin-top:5px;padding:10px;background:#f9fafc;border-radius:8px;">
-        ${data.message}
-      </div>
-      <br>
+      <strong>${data.trackingId}</strong> - ${data.status}<br>
+      ${data.name} - ${data.phone}<br>
+      ${data.message}<br>
     `;
 
     if (data.status !== "Resolved") {
 
       const btn = document.createElement("button");
       btn.innerText = "Mark Resolved";
-      btn.style.padding = "8px 16px";
-      btn.style.borderRadius = "20px";
-      btn.style.border = "none";
-      btn.style.background = "#0048ff";
-      btn.style.color = "white";
-      btn.style.cursor = "pointer";
 
       btn.onclick = async () => {
-        await updateDoc(doc(db, "complaints", data.id), {
+        await updateDoc(doc(db, "complaints", docSnap.id), {
           status: "Resolved"
         });
         loadComplaints();
@@ -353,146 +258,141 @@ async function loadComplaints() {
       box.appendChild(btn);
     }
 
-    complaintList.appendChild(box);
+    container.appendChild(box);
   });
 }
 
 loadComplaints();
 
 
-/* ================= GALLERY SYSTEM ================= */
-
-const imageFile = document.getElementById("imageFile");
-const galleryAdminList = document.getElementById("galleryAdminList");
+/* ================= GALLERY ================= */
 
 document.getElementById("uploadImageBtn").onclick = async () => {
 
-  if (!imageFile.files[0]) {
-    alert("Select image first");
-    return;
-  }
+  const file = document.getElementById("imageFile").files[0];
+  if (!file) return alert("Select image");
 
-  try {
+  const storageRef = ref(storage, "gallery/" + Date.now() + "_" + file.name);
 
-    const file = imageFile.files[0];
-    const storageRef = ref(storage, "gallery/" + Date.now() + "_" + file.name);
+  await uploadBytes(storageRef, file);
+  const url = await getDownloadURL(storageRef);
 
-    await uploadBytes(storageRef, file);
-    const downloadURL = await getDownloadURL(storageRef);
+  await addDoc(collection(db, "gallery"), {
+    imageUrl: url,
+    storagePath: storageRef.fullPath,
+    created: new Date()
+  });
 
-    await addDoc(collection(db, "gallery"), {
-      imageUrl: downloadURL,
-      storagePath: storageRef.fullPath,
-      created: new Date()
-    });
-
-    alert("Image uploaded successfully ✅");
-    imageFile.value = "";
-    loadGalleryAdmin();
-
-  } catch (error) {
-    alert("Upload failed ❌");
-  }
+  alert("Uploaded ✅");
+  loadGalleryAdmin();
 };
 
 async function loadGalleryAdmin() {
 
-  galleryAdminList.innerHTML = "";
+  const list = document.getElementById("galleryAdminList");
+  list.innerHTML = "";
 
   const snapshot = await getDocs(collection(db, "gallery"));
 
   snapshot.forEach(docSnap => {
 
     const data = docSnap.data();
+
     const li = document.createElement("li");
 
     li.innerHTML = `
-      <img src="${data.imageUrl}" width="150" style="border-radius:10px;">
-      <br>
-      <button>❌ Delete</button>
-      <hr>
+      <img src="${data.imageUrl}" width="120">
+      <button>❌</button>
     `;
 
-    li.querySelector("button").addEventListener("click", async () => {
+    li.querySelector("button").onclick = async () => {
 
       if (!confirm("Delete image?")) return;
 
-      try {
-        if (data.storagePath) {
-          await deleteObject(ref(storage, data.storagePath));
-        }
-        await deleteDoc(doc(db, "gallery", docSnap.id));
-        loadGalleryAdmin();
-      } catch (error) {
-        alert("Delete failed ❌");
-      }
+      await deleteObject(ref(storage, data.storagePath));
+      await deleteDoc(doc(db, "gallery", docSnap.id));
+      loadGalleryAdmin();
+    };
 
-    });
-
-    galleryAdminList.appendChild(li);
+    list.appendChild(li);
   });
 }
 
 loadGalleryAdmin();
 
-  // ================= MEMBER SYSTEM =================
 
-const memberName = document.getElementById("memberName");
-const memberRole = document.getElementById("memberRole");
-const memberPhone = document.getElementById("memberPhone");
-const memberOrder = document.getElementById("memberOrder");
-const memberPhoto = document.getElementById("memberPhoto");
-const addMemberBtn = document.getElementById("addMemberBtn");
+/* ================= MEMBERS ================= */
 
-addMemberBtn.addEventListener("click", async () => {
+document.getElementById("addMemberBtn").onclick = async () => {
 
-  if (!memberName.value || !memberRole.value) {
-    alert("Name and Role required");
-    return;
+  const name = document.getElementById("memberName").value;
+  const role = document.getElementById("memberRole").value;
+  const phone = document.getElementById("memberPhone").value;
+  const order = Number(document.getElementById("memberOrder").value);
+  const file = document.getElementById("memberPhoto").files[0];
+
+  if (!name || !role) return alert("Name & Role required");
+
+  let photoURL = "";
+  let storagePath = "";
+
+  if (file) {
+    const storageRef = ref(storage, "members/" + Date.now() + "_" + file.name);
+    await uploadBytes(storageRef, file);
+    photoURL = await getDownloadURL(storageRef);
+    storagePath = storageRef.fullPath;
   }
 
-  try {
+  await addDoc(collection(db, "members"), {
+    name,
+    role,
+    phone,
+    order,
+    photoUrl: photoURL,
+    storagePath,
+    created: new Date()
+  });
 
-    let photoURL = "";
-    let storagePath = "";
+  alert("Member added ✅");
+  loadMembersAdmin();
+};
 
-    if (memberPhoto.files[0]) {
+async function loadMembersAdmin() {
 
-      const file = memberPhoto.files[0];
-      const storageRef = ref(storage, "members/" + Date.now() + "_" + file.name);
+  const list = document.getElementById("memberList");
+  list.innerHTML = "";
 
-      await uploadBytes(storageRef, file);
-      photoURL = await getDownloadURL(storageRef);
-      storagePath = storageRef.fullPath;
-    }
+  const snapshot = await getDocs(collection(db, "members"));
 
-    await addDoc(collection(db, "members"), {
-      name: memberName.value,
-      role: memberRole.value,
-      phone: memberPhone.value || "",
-      order: Number(memberOrder.value) || 0,
-      photoUrl: photoURL,
-      storagePath: storagePath,
-      created: new Date()
-    });
+  snapshot.forEach(docSnap => {
 
-    alert("Member added successfully ✅");
+    const data = docSnap.data();
 
-    memberName.value = "";
-    memberRole.value = "";
-    memberPhone.value = "";
-    memberOrder.value = "";
-    memberPhoto.value = "";
+    const li = document.createElement("li");
 
-  } catch (error) {
-    console.error(error);
-    alert("Failed to add member ❌");
-  }
-});
+    li.innerHTML = `
+      ${data.name} - ${data.role}
+      <button>❌</button>
+    `;
+
+    li.querySelector("button").onclick = async () => {
+
+      if (!confirm("Delete member?")) return;
+
+      if (data.storagePath) {
+        await deleteObject(ref(storage, data.storagePath));
+      }
+
+      await deleteDoc(doc(db, "members", docSnap.id));
+      loadMembersAdmin();
+    };
+
+    list.appendChild(li);
+  });
+}
 
 loadMembersAdmin();
 
-  
 </script>
 
 </body>
