@@ -321,73 +321,185 @@ async function loadGalleryAdmin() {
 loadGalleryAdmin();
 
 
-/* ================= MEMBERS ================= */
+/* ================= MEMBERS SYSTEM (PRO VERSION) ================= */
 
-document.getElementById("addMemberBtn").onclick = async () => {
+const memberName = document.getElementById("memberName");
+const memberRole = document.getElementById("memberRole");
+const memberPhone = document.getElementById("memberPhone");
+const memberOrder = document.getElementById("memberOrder");
+const memberPhoto = document.getElementById("memberPhoto");
+const addMemberBtn = document.getElementById("addMemberBtn");
+const memberList = document.getElementById("memberList");
 
-  const name = document.getElementById("memberName").value;
-  const role = document.getElementById("memberRole").value;
-  const phone = document.getElementById("memberPhone").value;
-  const order = Number(document.getElementById("memberOrder").value);
-  const file = document.getElementById("memberPhoto").files[0];
+let editingMemberId = null;
 
-  if (!name || !role) return alert("Name & Role required");
+/* ===== ADD / UPDATE MEMBER ===== */
 
-  let photoURL = "";
-  let storagePath = "";
+addMemberBtn.onclick = async () => {
 
-  if (file) {
-    const storageRef = ref(storage, "members/" + Date.now() + "_" + file.name);
-    await uploadBytes(storageRef, file);
-    photoURL = await getDownloadURL(storageRef);
-    storagePath = storageRef.fullPath;
+  const name = memberName.value.trim();
+  const role = memberRole.value.trim();
+  const phone = memberPhone.value.trim();
+  const order = Number(memberOrder.value) || 0;
+
+  if (!name || !role) {
+    alert("Name & Role required");
+    return;
   }
 
-  await addDoc(collection(db, "members"), {
-    name,
-    role,
-    phone,
-    order,
-    photoUrl: photoURL,
-    storagePath,
-    created: new Date()
-  });
+  try {
 
-  alert("Member added ✅");
-  loadMembersAdmin();
+    // 🔒 Prevent duplicate names (only when adding new)
+    if (!editingMemberId) {
+      const snapshot = await getDocs(collection(db, "members"));
+      let duplicate = false;
+      snapshot.forEach(docSnap => {
+        if (docSnap.data().name.toLowerCase() === name.toLowerCase()) {
+          duplicate = true;
+        }
+      });
+      if (duplicate) {
+        alert("Member with same name already exists ❌");
+        return;
+      }
+    }
+
+    let photoURL = "";
+    let storagePath = "";
+
+    // If new photo uploaded
+    if (memberPhoto.files[0]) {
+
+      const file = memberPhoto.files[0];
+      const storageRef = ref(storage, "members/" + Date.now() + "_" + file.name);
+
+      await uploadBytes(storageRef, file);
+      photoURL = await getDownloadURL(storageRef);
+      storagePath = storageRef.fullPath;
+    }
+
+    if (editingMemberId) {
+
+      // UPDATE MODE
+      const updateData = {
+        name,
+        role,
+        phone,
+        order
+      };
+
+      if (photoURL) {
+        updateData.photoUrl = photoURL;
+        updateData.storagePath = storagePath;
+      }
+
+      await updateDoc(doc(db, "members", editingMemberId), updateData);
+
+      alert("Member updated ✅");
+      editingMemberId = null;
+      addMemberBtn.innerText = "Add Member";
+
+    } else {
+
+      // ADD MODE
+      await addDoc(collection(db, "members"), {
+        name,
+        role,
+        phone,
+        order,
+        photoUrl: photoURL,
+        storagePath,
+        created: new Date()
+      });
+
+      alert("Member added ✅");
+    }
+
+    // Clear form
+    memberName.value = "";
+    memberRole.value = "";
+    memberPhone.value = "";
+    memberOrder.value = "";
+    memberPhoto.value = "";
+
+    loadMembersAdmin();
+
+  } catch (error) {
+    console.error(error);
+    alert("Operation failed ❌");
+  }
 };
+
+
+/* ===== LOAD MEMBERS (SORTED BY ORDER) ===== */
 
 async function loadMembersAdmin() {
 
-  const list = document.getElementById("memberList");
-  list.innerHTML = "";
+  memberList.innerHTML = "";
 
   const snapshot = await getDocs(collection(db, "members"));
 
-  snapshot.forEach(docSnap => {
+  let members = [];
 
-    const data = docSnap.data();
+  snapshot.forEach(docSnap => {
+    members.push({
+      id: docSnap.id,
+      ...docSnap.data()
+    });
+  });
+
+  // 🔥 Sort by display order
+  members.sort((a, b) => a.order - b.order);
+
+  members.forEach(member => {
 
     const li = document.createElement("li");
+    li.style.marginBottom = "15px";
+    li.style.padding = "10px";
+    li.style.background = "#f4f6fb";
+    li.style.borderRadius = "8px";
 
     li.innerHTML = `
-      ${data.name} - ${data.role}
-      <button>❌</button>
+      <strong>${member.name}</strong> (${member.role})<br>
+      📞 ${member.phone || "-"}<br><br>
+      <button class="editBtn">✏ Edit</button>
+      <button class="deleteBtn">❌ Delete</button>
     `;
 
-    li.querySelector("button").onclick = async () => {
+    // ===== DELETE =====
+    li.querySelector(".deleteBtn").onclick = async () => {
 
-      if (!confirm("Delete member?")) return;
+      if (!confirm("Delete this member?")) return;
 
-      if (data.storagePath) {
-        await deleteObject(ref(storage, data.storagePath));
+      try {
+
+        if (member.storagePath) {
+          await deleteObject(ref(storage, member.storagePath));
+        }
+
+        await deleteDoc(doc(db, "members", member.id));
+        loadMembersAdmin();
+
+      } catch (error) {
+        alert("Delete failed ❌");
       }
-
-      await deleteDoc(doc(db, "members", docSnap.id));
-      loadMembersAdmin();
     };
 
-    list.appendChild(li);
+    // ===== EDIT =====
+    li.querySelector(".editBtn").onclick = () => {
+
+      memberName.value = member.name;
+      memberRole.value = member.role;
+      memberPhone.value = member.phone;
+      memberOrder.value = member.order;
+
+      editingMemberId = member.id;
+      addMemberBtn.innerText = "Update Member";
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    memberList.appendChild(li);
   });
 }
 
