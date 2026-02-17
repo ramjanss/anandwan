@@ -114,39 +114,72 @@ async function loadGallery() {
 
 
 // ================= LOAD MEMBERS =================
-async function loadVillageMembers() {
-  const container = document.getElementById("membersContainer");
-  if (!container) return;
+async function loadMembers() {
 
-  container.innerHTML = "";
+  const leaderContainer = document.getElementById("leadersContainer");
+  const bodyContainer = document.getElementById("bodyMembersContainer");
+  const employeeContainer = document.getElementById("employeesContainer");
+
+  if (!leaderContainer) return;
+
+  leaderContainer.innerHTML = "";
+  bodyContainer.innerHTML = "";
+  employeeContainer.innerHTML = "";
 
   const snapshot = await getDocs(collection(db, "members"));
 
-  const members = [];
+  const leaders = [];
+  const body = [];
+  const employees = [];
 
   snapshot.forEach(docSnap => {
-    members.push(docSnap.data());
+    const data = docSnap.data();
+
+    if (data.type === "leader") leaders.push(data);
+    else if (data.type === "body") body.push(data);
+    else if (data.type === "employee") employees.push(data);
   });
 
-  members.sort((a, b) => a.order - b.order);
+  leaders.sort((a,b)=>a.order-b.order);
+  body.sort((a,b)=>a.order-b.order);
+  employees.sort((a,b)=>a.order-b.order);
 
-  members.forEach(member => {
-    const card = document.createElement("div");
-    card.className = "member-card";
-
-    card.innerHTML = `
-      <img src="${member.photoUrl}" width="120" height="120" style="border-radius:50%;">
-      <h3>${member.name}</h3>
-      <p>${member.role}</p>
-      <p>${member.phone}</p>
+  leaders.forEach(member => {
+    leaderContainer.innerHTML += `
+      <div class="leader-card">
+        <img src="${member.photoUrl}">
+        <h3>${member.name}</h3>
+        <p>${member.role}</p>
+        <span>${member.phone || ""}</span>
+      </div>
     `;
+  });
 
-    container.appendChild(card);
+  body.forEach(member => {
+    bodyContainer.innerHTML += `
+      <div class="member-card">
+        <img src="${member.photoUrl}">
+        <h4>${member.name}</h4>
+        <p>${member.role}</p>
+      </div>
+    `;
+  });
+
+  employees.forEach(member => {
+    employeeContainer.innerHTML += `
+      <div class="member-card">
+        <img src="${member.photoUrl}">
+        <h4>${member.name}</h4>
+        <p>${member.role}</p>
+      </div>
+    `;
   });
 }
+
+loadMembers();
 
 // ================= INIT =================
 loadStats();
 loadNotices();
 loadGallery();
-loadVillageMembers();
+loadMembers();
