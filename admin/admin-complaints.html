@@ -5,27 +5,123 @@
 <title>Admin - Complaints</title>
 <link rel="stylesheet" href="admin.css">
 </head>
+
 <body>
 
-<h1>📨 Manage Complaints</h1>
+<div class="admin-container">
 
-<p>Complaint management section coming here...</p>
+  <aside class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="admin-dashboard.html">Dashboard</a>
+    <a href="admin-members.html">Members</a>
+    <a href="admin-notices.html">Notices</a>
+    <a href="admin-gallery.html">Gallery</a>
+    <a href="admin-complaints.html" class="active">Complaints</a>
+    <button id="logoutBtn">Logout</button>
+  </aside>
+
+  <main class="content">
+    <h1>📨 Manage Complaints</h1>
+    <div id="complaintList"></div>
+  </main>
+
+</div>
 
 <script type="module" src="admin-auth.js"></script>
 
-<button onclick="logout()">Logout</button>
-
 <script type="module">
-import { auth } from "../js/firebase.js";
-import { signOut } from 
-"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-window.logout = async () => {
-  await signOut(auth);
-  window.location.href = "../login.html";
-};
+import { db } from "../js/firebase.js";
+import { collection, getDocs, updateDoc, doc, query, orderBy } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+async function loadComplaints(){
+
+  const container = document.getElementById("complaintList");
+  container.innerHTML = "";
+
+  const q = query(
+    collection(db,"complaints"),
+    orderBy("createdAt","desc")
+  );
+
+  const snapshot = await getDocs(q);
+
+  if(snapshot.empty){
+    container.innerHTML = "<p>No complaints found.</p>";
+    return;
+  }
+
+  snapshot.forEach(docSnap => {
+
+    const data = docSnap.data();
+    const createdDate = data.createdAt?.toDate();
+    const formattedDate = createdDate
+      ? createdDate.toLocaleString()
+      : "N/A";
+
+    const statusColor = data.status === "Resolved" ? "#16a34a" : "#f59e0b";
+
+    const card = document.createElement("div");
+    card.className = "card";
+    card.style.marginBottom = "20px";
+
+    card.innerHTML = `
+      <strong>Tracking ID:</strong> ${data.trackingId || "Old"} <br>
+      <strong>Name:</strong> ${data.name} <br>
+      <strong>Phone:</strong> ${data.phone} <br>
+      <strong>Date:</strong> ${formattedDate} <br>
+      <strong>Status:</strong> 
+      <span style="
+        padding:4px 10px;
+        border-radius:20px;
+        background:${statusColor};
+        color:white;
+        font-size:12px;
+      ">
+        ${data.status}
+      </span>
+      <br><br>
+      <strong>Message:</strong>
+      <div style="
+        margin-top:5px;
+        padding:10px;
+        background:#f1f5f9;
+        border-radius:8px;
+      ">
+        ${data.message}
+      </div>
+      <br>
+    `;
+
+    if(data.status !== "Resolved"){
+
+      const btn = document.createElement("button");
+      btn.textContent = "Mark Resolved";
+      btn.style.padding = "8px 14px";
+      btn.style.background = "#1e3a8a";
+      btn.style.color = "white";
+      btn.style.border = "none";
+      btn.style.borderRadius = "6px";
+      btn.style.cursor = "pointer";
+
+      btn.onclick = async () => {
+        await updateDoc(doc(db,"complaints",docSnap.id),{
+          status:"Resolved"
+        });
+        loadComplaints();
+      };
+
+      card.appendChild(btn);
+    }
+
+    container.appendChild(card);
+  });
+}
+
+loadComplaints();
+
 </script>
 
-  
 </body>
 </html>
