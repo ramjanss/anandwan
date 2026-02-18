@@ -25,27 +25,26 @@
     <h1>📨 Manage Complaints</h1>
 
     <div style="margin-bottom:20px; display:flex; gap:15px; flex-wrap:wrap; align-items:center;">
-      <input type="text" id="searchInput"
+
+      <input 
+        type="text" 
+        id="searchInput"
         placeholder="Search by Tracking ID or Name"
-        style="padding:8px 12px; border-radius:6px; border:1px solid #ccc; width:250px;">
+        style="padding:8px 12px; border-radius:6px; border:1px solid #ccc; width:250px;"
+      >
 
       <button onclick="filterComplaints('all')" class="filter-btn">All</button>
-      <button onclick="filterComplaints('Pending')" class="filter-btn">Pending</button>
-      <button onclick="filterComplaints('Replied')" class="filter-btn">Replied</button>
+      <button onclick="filterComplaints('Submitted')" class="filter-btn">Submitted</button>
+      <button onclick="filterComplaints('Accepted')" class="filter-btn">Accepted</button>
+      <button onclick="filterComplaints('In Review')" class="filter-btn">In Review</button>
       <button onclick="filterComplaints('Resolved')" class="filter-btn">Resolved</button>
+
     </div>
 
     <div id="complaintsContainer"></div>
 
   </main>
-</div>
 
-<!-- MODAL -->
-<div id="complaintModal" class="modal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeModal()">&times;</span>
-    <div id="modalBody"></div>
-  </div>
 </div>
 
 <script type="module" src="admin-auth.js"></script>
@@ -53,30 +52,25 @@
 <script type="module">
 
 import { db } from "../js/firebase.js";
-import {
-  collection,
-  getDocs,
-  updateDoc,
-  doc,
-  query,
-  orderBy
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { collection, getDocs, updateDoc, doc, query, orderBy }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const container = document.getElementById("complaintsContainer");
-const modal = document.getElementById("complaintModal");
-const modalBody = document.getElementById("modalBody");
 
 let allComplaints = [];
 let currentFilter = "all";
 
 /* ================= LOAD ================= */
+
 async function loadComplaints(){
+
   container.innerHTML = "Loading...";
 
   const q = query(collection(db,"complaints"), orderBy("createdAt","desc"));
   const snapshot = await getDocs(q);
 
   allComplaints = [];
+
   snapshot.forEach(docSnap=>{
     allComplaints.push({
       id: docSnap.id,
@@ -87,18 +81,25 @@ async function loadComplaints(){
   renderComplaints("all");
 }
 
+
 /* ================= FILTER ================= */
+
 window.filterComplaints = function(status){
   renderComplaints(status);
 };
 
+
 /* ================= RENDER ================= */
+
 function renderComplaints(filter){
 
   currentFilter = filter;
   container.innerHTML = "";
 
-  const searchValue = document.getElementById("searchInput").value.toLowerCase();
+  const searchValue = document
+    .getElementById("searchInput")
+    .value
+    .toLowerCase();
 
   let filtered = filter === "all"
     ? allComplaints
@@ -117,201 +118,101 @@ function renderComplaints(filter){
   }
 
   filtered.forEach(c=>{
+
+    const createdDate = c.createdAt?.toDate();
+    const formattedDate = createdDate
+      ? createdDate.toLocaleString()
+      : "N/A";
+
+    const statusColor = 
+      c.status === "Resolved" ? "#16a34a" :
+      c.status === "Accepted" ? "#2563eb" :
+      c.status === "In Review" ? "#f59e0b" :
+      "#6b7280";
+
     const card = document.createElement("div");
-    card.className = "complaint-card";
+    card.style.background = "#fff";
+    card.style.padding = "20px";
+    card.style.borderRadius = "12px";
+    card.style.marginBottom = "20px";
+    card.style.boxShadow = "0 10px 25px rgba(0,0,0,0.08)";
 
     card.innerHTML = `
-      <strong>${c.trackingId}</strong> - ${c.name}
-      <span class="status-badge ${c.status}">
-        ${c.status}
-      </span>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <strong>Tracking ID: ${c.trackingId || "N/A"}</strong>
+        <span style="
+          padding:6px 12px;
+          border-radius:20px;
+          font-size:12px;
+          background:${statusColor};
+          color:white;
+        ">
+          ${c.status}
+        </span>
+      </div>
+
+      <hr style="margin:12px 0;">
+
+      <strong>Name:</strong> ${c.name} <br>
+      <strong>Phone:</strong> ${c.phone} <br>
+      <strong>Date:</strong> ${formattedDate} <br><br>
+
+      <strong>Message:</strong>
+      <div style="
+        background:#f3f4f6;
+        padding:10px;
+        border-radius:8px;
+        margin-top:5px;
+      ">
+        ${c.message}
+      </div>
+
+      <br>
+
+      <label><strong>Change Status:</strong></label>
+      <select data-id="${c.id}" class="status-select"
+        style="padding:6px 10px;border-radius:6px;margin-top:5px;">
+        <option value="Submitted" ${c.status==="Submitted"?"selected":""}>Submitted</option>
+        <option value="Accepted" ${c.status==="Accepted"?"selected":""}>Accepted</option>
+        <option value="In Review" ${c.status==="In Review"?"selected":""}>In Review</option>
+        <option value="Resolved" ${c.status==="Resolved"?"selected":""}>Resolved</option>
+      </select>
     `;
 
-    card.onclick = () => openModal(c);
     container.appendChild(card);
+  });
+
+  // Attach event listeners
+  document.querySelectorAll(".status-select").forEach(select=>{
+    select.addEventListener("change", async (e)=>{
+      const id = e.target.getAttribute("data-id");
+      const newStatus = e.target.value;
+
+      await updateDoc(doc(db,"complaints",id),{
+        status:newStatus
+      });
+
+      loadComplaints();
+    });
   });
 }
 
-/* ================= MODAL ================= */
-window.openModal = function(c){
 
-  const createdDate = c.createdAt?.toDate();
-  const formattedDate = createdDate
-    ? createdDate.toLocaleString()
-    : "N/A";
+/* ================= SEARCH LISTENER ================= */
 
-  modalBody.innerHTML = `
-    <h2>Complaint Details</h2>
-    <p><strong>Tracking ID:</strong> ${c.trackingId}</p>
-    <p><strong>Name:</strong> ${c.name}</p>
-    <p><strong>Phone:</strong> ${c.phone}</p>
-    <p><strong>Date:</strong> ${formattedDate}</p>
-    <p><strong>Status:</strong> ${c.status}</p>
-    <hr>
-    <p><strong>Message:</strong></p>
-    <div class="message-box">${c.message}</div>
-    <hr>
-  `;
-
-  // Show reply if exists
-  if(c.reply){
-    modalBody.innerHTML += `
-      <p><strong>Admin Reply:</strong></p>
-      <div class="reply-box">${c.reply}</div>
-      <br>
-    `;
-  }
-
-  /* ===== Reply Button ===== */
-  if(c.status === "Pending"){
-
-    const textarea = document.createElement("textarea");
-    textarea.placeholder = "Write reply...";
-    textarea.style.width = "100%";
-    textarea.style.height = "80px";
-    textarea.style.marginTop = "10px";
-
-    const replyBtn = document.createElement("button");
-    replyBtn.innerText = "Send Reply";
-    replyBtn.className = "action-btn";
-
-    replyBtn.onclick = async () => {
-
-      if(textarea.value.trim() === ""){
-        alert("Reply cannot be empty");
-        return;
-      }
-
-      await updateDoc(doc(db,"complaints",c.id),{
-        reply: textarea.value,
-        status: "Replied",
-        replyDate: new Date()
-      });
-
-      closeModal();
-      loadComplaints();
-    };
-
-    modalBody.appendChild(textarea);
-    modalBody.appendChild(replyBtn);
-  }
-
-  /* ===== Resolve Button ===== */
-  if(c.status !== "Resolved"){
-
-    const resolveBtn = document.createElement("button");
-    resolveBtn.innerText = "Mark as Resolved";
-    resolveBtn.className = "resolve-btn";
-
-    resolveBtn.onclick = async () => {
-
-      await updateDoc(doc(db,"complaints",c.id),{
-        status: "Resolved"
-      });
-
-      closeModal();
-      loadComplaints();
-    };
-
-    modalBody.appendChild(resolveBtn);
-  }
-
-  modal.style.display = "flex";
-};
-
-window.closeModal = function(){
-  modal.style.display = "none";
-};
-
-/* ================= SEARCH ================= */
 document.getElementById("searchInput")
   .addEventListener("input", () => {
     renderComplaints(currentFilter);
 });
+
+
+/* ================= INIT ================= */
 
 loadComplaints();
 
 </script>
 
 <style>
-
-.complaint-card{
-  background:#fff;
-  padding:15px 20px;
-  border-radius:10px;
-  margin-bottom:15px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.08);
-  cursor:pointer;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  transition:0.3s;
-}
-.complaint-card:hover{
-  transform:translateY(-3px);
-}
-
-.status-badge{
-  padding:5px 10px;
-  border-radius:20px;
-  font-size:12px;
-  color:white;
-}
-.status-badge.Pending{ background:#f59e0b; }
-.status-badge.Replied{ background:#2563eb; }
-.status-badge.Resolved{ background:#16a34a; }
-
-.modal{
-  display:none;
-  position:fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background:rgba(0,0,0,0.5);
-  justify-content:center;
-  align-items:center;
-}
-.modal-content{
-  background:white;
-  padding:30px;
-  border-radius:15px;
-  width:500px;
-  max-width:90%;
-  position:relative;
-}
-.close-btn{
-  position:absolute;
-  top:10px;
-  right:15px;
-  font-size:20px;
-  cursor:pointer;
-}
-.message-box, .reply-box{
-  background:#f3f4f6;
-  padding:10px;
-  border-radius:8px;
-}
-
-.action-btn{
-  background:#2563eb;
-  color:white;
-  padding:10px 15px;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-  margin-top:10px;
-  margin-right:10px;
-}
-
-.resolve-btn{
-  background:#16a34a;
-  color:white;
-  padding:10px 15px;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-  margin-top:10px;
-}
-
 .filter-btn{
   padding:8px 14px;
   border:none;
@@ -320,8 +221,9 @@ loadComplaints();
   color:white;
   cursor:pointer;
 }
-.filter-btn:hover{ opacity:0.8; }
-
+.filter-btn:hover{
+  opacity:0.8;
+}
 </style>
 
 </body>
