@@ -5,24 +5,167 @@
 <title>Admin - Notices</title>
 <link rel="stylesheet" href="admin.css">
 </head>
+
 <body>
 
-<h1>📢 Manage Notices</h1>
+<div class="admin-container">
 
-<p>Notice management section coming here...</p>
+  <aside class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="admin-dashboard.html">Dashboard</a>
+    <a href="admin-members.html">Members</a>
+    <a href="admin-notices.html" class="active">Notices</a>
+    <a href="admin-gallery.html">Gallery</a>
+    <a href="admin-complaints.html">Complaints</a>
+    <button id="logoutBtn">Logout</button>
+  </aside>
+
+  <main class="content">
+    <h1>📢 Manage Notices</h1>
+
+    <div class="card" style="margin-bottom:30px;">
+      <h3>Add Notice</h3>
+
+      <input type="text" id="noticeTitle" placeholder="Notice Title" style="width:100%;padding:10px;margin-bottom:10px;">
+      
+      <textarea id="noticeDesc" placeholder="Description" style="width:100%;padding:10px;height:80px;margin-bottom:10px;"></textarea>
+      
+      <input type="file" id="noticeFile" accept="application/pdf">
+      <br><br>
+
+      <button id="addNoticeBtn" style="padding:10px 18px;background:#1e3a8a;color:white;border:none;border-radius:6px;">
+        Upload Notice
+      </button>
+
+      <p id="noticeMsg"></p>
+    </div>
+
+    <h3>All Notices</h3>
+    <div id="noticeList"></div>
+
+  </main>
+
+</div>
 
 <script type="module" src="admin-auth.js"></script>
-<button onclick="logout()">Logout</button>
 
 <script type="module">
-import { auth } from "../js/firebase.js";
-import { signOut } from 
-"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-window.logout = async () => {
-  await signOut(auth);
-  window.location.href = "../login.html";
+import { db, storage } from "../js/firebase.js";
+import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { ref, uploadBytes, getDownloadURL, deleteObject } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+const titleInput = document.getElementById("noticeTitle");
+const descInput = document.getElementById("noticeDesc");
+const fileInput = document.getElementById("noticeFile");
+const msg = document.getElementById("noticeMsg");
+const noticeList = document.getElementById("noticeList");
+
+document.getElementById("addNoticeBtn").onclick = async () => {
+
+  if(titleInput.value.trim() === ""){
+    alert("Title required");
+    return;
+  }
+
+  try {
+
+    let fileURL = "";
+    let storagePath = "";
+
+    if(fileInput.files[0]){
+
+      const file = fileInput.files[0];
+      const storageRef = ref(storage,"notices/"+Date.now()+"_"+file.name);
+
+      await uploadBytes(storageRef,file);
+      fileURL = await getDownloadURL(storageRef);
+      storagePath = storageRef.fullPath;
+    }
+
+    await addDoc(collection(db,"notices"),{
+      title:titleInput.value,
+      description:descInput.value,
+      fileUrl:fileURL,
+      storagePath:storagePath,
+      created:new Date()
+    });
+
+    msg.textContent = "Notice uploaded successfully ✅";
+
+    titleInput.value="";
+    descInput.value="";
+    fileInput.value="";
+
+    loadNotices();
+
+  } catch(error){
+    console.error(error);
+    msg.textContent = "Upload failed ❌";
+  }
 };
+
+async function loadNotices(){
+
+  noticeList.innerHTML="";
+
+  const q = query(collection(db,"notices"),orderBy("created","desc"));
+  const snapshot = await getDocs(q);
+
+  if(snapshot.empty){
+    noticeList.innerHTML="<p>No notices found.</p>";
+    return;
+  }
+
+  snapshot.forEach(docSnap=>{
+
+    const data = docSnap.data();
+
+    const card = document.createElement("div");
+    card.className="card";
+    card.style.marginBottom="20px";
+
+    card.innerHTML=`
+      <strong>${data.title}</strong><br>
+      ${data.description || ""}<br>
+      ${data.fileUrl ? `<a href="${data.fileUrl}" target="_blank">📄 Download</a>` : ""}
+      <br><br>
+      <button style="
+        background:#ef4444;
+        color:white;
+        border:none;
+        padding:6px 12px;
+        border-radius:6px;
+        cursor:pointer;
+      ">Delete</button>
+    `;
+
+    card.querySelector("button").onclick = async () => {
+
+      if(!confirm("Delete this notice?")) return;
+
+      try{
+
+        if(data.storagePath){
+          await deleteObject(ref(storage,data.storagePath));
+        }
+
+        await deleteDoc(doc(db,"notices",docSnap.id));
+        loadNotices();
+
+      }catch(error){
+        alert("Delete failed ❌");
+      }
+    };
+
+    noticeList.appendChild(card);
+  });
+}
+
+loadNotices();
+
 </script>
 
 </body>
