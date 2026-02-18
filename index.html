@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
+
 body{
   margin:0;
   font-family:'Poppins','Noto Sans Devanagari',sans-serif;
@@ -28,17 +29,11 @@ body{
   z-index:1000;
 }
 
-.navbar h2{
-  margin:0;
-  color:white;
-}
-
 .nav-links a{
   margin-left:20px;
   text-decoration:none;
   font-weight:600;
   color:white;
-  transition:0.3s;
 }
 
 .nav-links a:hover{
@@ -68,7 +63,6 @@ body{
   font-weight:600;
   margin:5px;
   display:inline-block;
-  backdrop-filter:blur(10px);
   background:rgba(255,255,255,0.15);
   color:white;
   transition:0.3s;
@@ -81,25 +75,39 @@ body{
 /* SECTION */
 .section{
   padding:80px 20px;
-  max-width:1100px;
+  max-width:1200px;
   margin:auto;
 }
 
-/* GLASS CARD */
-.glass-card{
+/* LEADERS GRID */
+.leaders-grid{
+  display:flex;
+  gap:40px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:40px;
+}
+
+.leader-card{
+  width:320px;
+  text-align:center;
   background:rgba(255,255,255,0.08);
+  padding:40px 25px;
+  border-radius:30px;
   backdrop-filter:blur(20px);
-  border-radius:25px;
-  padding:30px;
-  box-shadow:0 20px 40px rgba(0,0,0,0.3);
-  transition:0.3s;
+  box-shadow:0 20px 40px rgba(0,0,0,0.4);
 }
 
-.glass-card:hover{
-  transform:translateY(-10px);
+.leader-card img{
+  width:160px;
+  height:160px;
+  border-radius:50%;
+  object-fit:cover;
+  margin-bottom:20px;
+  border:5px solid rgba(255,255,255,0.2);
 }
 
-/* MEMBERS */
+/* BODY + EMPLOYEE GRID */
 .members-grid{
   display:flex;
   gap:30px;
@@ -109,25 +117,25 @@ body{
 }
 
 .member-card{
-  background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(20px);
-  width:260px;
+  width:250px;
   padding:30px 20px;
   border-radius:25px;
   text-align:center;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(20px);
   box-shadow:0 20px 40px rgba(0,0,0,0.3);
-  transition:all 0.3s ease;
+  transition:0.3s;
 }
 
 .member-card:hover{
-  transform:translateY(-10px);
+  transform:translateY(-8px);
 }
 
 .member-card img{
-  width:120px;
-  height:120px;
-  object-fit:cover;
+  width:110px;
+  height:110px;
   border-radius:50%;
+  object-fit:cover;
   margin-bottom:15px;
   border:4px solid rgba(255,255,255,0.2);
 }
@@ -147,23 +155,17 @@ body{
   text-align:center;
   background:rgba(255,255,255,0.08);
   backdrop-filter:blur(20px);
-  box-shadow:0 20px 40px rgba(0,0,0,0.3);
 }
 
-/* NOTICES */
+/* NOTICE */
 .notice-card{
   background:rgba(255,255,255,0.08);
   padding:25px;
   border-radius:20px;
   margin-bottom:20px;
-  backdrop-filter:blur(20px);
 }
 
 /* GALLERY */
-.gallery{
-  overflow:hidden;
-}
-
 .gallery-track{
   display:flex;
   gap:20px;
@@ -187,7 +189,6 @@ body{
   padding:80px 20px;
   text-align:center;
   background:rgba(255,255,255,0.05);
-  backdrop-filter:blur(15px);
 }
 
 footer{
@@ -220,65 +221,36 @@ footer{
   <h1>ग्रामपंचायत वंधली</h1>
   <p>Smart • Transparent • Digital Governance</p>
 
-  <a href="complaint.html" class="btn btn-primary">तक्रार नोंदवा</a>
-  <a href="track.html" class="btn btn-outline">तक्रार ट्रॅक करा</a>
+  <a href="complaint.html" class="btn">तक्रार नोंदवा</a>
+  <a href="track.html" class="btn">तक्रार ट्रॅक करा</a>
 </section>
 
-<!-- MEMBERS SECTION (NOW CORRECTLY PLACED) -->
+<!-- MEMBERS -->
 <section class="section">
 
- <h2>👑 Leadership</h2>
-<div id="leadershipContainer" class="leadership-grid"></div>
+<h2>👑 Leadership</h2>
+<div id="leadersContainer" class="leaders-grid"></div>
 
-<h2>🗳 Elected Body Members</h2>
-<div id="bodyMembersContainer" class="member-grid"></div>
+<h2 style="margin-top:80px;">🗳 Elected Body Members</h2>
+<div id="bodyMembersContainer" class="members-grid"></div>
 
-<h2>🏢 Gram Panchayat Employees</h2>
-<div id="employeesContainer" class="member-grid"></div>
-
+<h2 style="margin-top:80px;">🏢 Gram Panchayat Employees</h2>
+<div id="employeesContainer" class="members-grid"></div>
 
 </section>
 
-
-<section class="section">
-  <h2 style="text-align:center;">🏛 Government Schemes</h2>
-
-  <div class="members-grid">
-
-    <div class="glass-card">
-      <h3>PM Awas Yojana</h3>
-      <p>Financial support for rural housing.</p>
-    </div>
-
-    <div class="glass-card">
-      <h3>Jal Jeevan Mission</h3>
-      <p>Safe drinking water for every home.</p>
-    </div>
-
-    <div class="glass-card">
-      <h3>Swachh Bharat Mission</h3>
-      <p>Clean and healthy village initiative.</p>
-    </div>
-
-  </div>
-</section>
-
-  
 <!-- LIVE STATS -->
 <section class="section">
   <h2>📊 Live Transparency</h2>
-
   <div class="stats">
     <div class="stat-card">
       <h1 id="noticeCount">0</h1>
       <p>Notices</p>
     </div>
-
     <div class="stat-card">
       <h1 id="complaintCount">0</h1>
       <p>Total Complaints</p>
     </div>
-
     <div class="stat-card">
       <h1 id="resolvedCount">0</h1>
       <p>Resolved</p>
