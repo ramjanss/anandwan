@@ -4,6 +4,24 @@
 <meta charset="UTF-8">
 <title>Admin - Complaints</title>
 <link rel="stylesheet" href="admin.css">
+
+<style>
+.filter-btn{
+  padding:8px 14px;
+  border:none;
+  border-radius:6px;
+  background:#1e3a8a;
+  color:white;
+  cursor:pointer;
+}
+.filter-btn:hover{
+  opacity:0.8;
+}
+.export-btn{
+  background:#16a34a;
+}
+</style>
+
 </head>
 
 <body>
@@ -34,10 +52,12 @@
       >
 
       <button onclick="filterComplaints('all')" class="filter-btn">All</button>
-      <button onclick="filterComplaints('Submitted')" class="filter-btn">Submitted</button>
-      <button onclick="filterComplaints('Accepted')" class="filter-btn">Accepted</button>
-      <button onclick="filterComplaints('In Review')" class="filter-btn">In Review</button>
+      <button onclick="filterComplaints('Pending')" class="filter-btn">Pending</button>
       <button onclick="filterComplaints('Resolved')" class="filter-btn">Resolved</button>
+
+      <button id="exportBtn" class="filter-btn export-btn">
+        Export to Excel
+      </button>
 
     </div>
 
@@ -47,7 +67,8 @@
 
 </div>
 
-<script type="module" src="admin-auth.js"></script>
+<!-- Excel Library -->
+<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
 <script type="module">
 
@@ -81,13 +102,11 @@ async function loadComplaints(){
   renderComplaints("all");
 }
 
-
 /* ================= FILTER ================= */
 
 window.filterComplaints = function(status){
   renderComplaints(status);
 };
-
 
 /* ================= RENDER ================= */
 
@@ -124,11 +143,7 @@ function renderComplaints(filter){
       ? createdDate.toLocaleString()
       : "N/A";
 
-    const statusColor = 
-      c.status === "Resolved" ? "#16a34a" :
-      c.status === "Accepted" ? "#2563eb" :
-      c.status === "In Review" ? "#f59e0b" :
-      "#6b7280";
+    const statusColor = c.status === "Resolved" ? "#16a34a" : "#f59e0b";
 
     const card = document.createElement("div");
     card.style.background = "#fff";
@@ -166,65 +181,69 @@ function renderComplaints(filter){
       ">
         ${c.message}
       </div>
-
       <br>
-
-      <label><strong>Change Status:</strong></label>
-      <select data-id="${c.id}" class="status-select"
-        style="padding:6px 10px;border-radius:6px;margin-top:5px;">
-        <option value="Submitted" ${c.status==="Submitted"?"selected":""}>Submitted</option>
-        <option value="Accepted" ${c.status==="Accepted"?"selected":""}>Accepted</option>
-        <option value="In Review" ${c.status==="In Review"?"selected":""}>In Review</option>
-        <option value="Resolved" ${c.status==="Resolved"?"selected":""}>Resolved</option>
-      </select>
     `;
+
+    if(c.status !== "Resolved"){
+      const btn = document.createElement("button");
+      btn.innerText = "Mark Resolved";
+      btn.style.background = "#1e3a8a";
+      btn.style.color = "white";
+      btn.style.padding = "8px 14px";
+      btn.style.border = "none";
+      btn.style.borderRadius = "6px";
+      btn.style.cursor = "pointer";
+
+      btn.onclick = async () => {
+        await updateDoc(doc(db,"complaints",c.id),{
+          status:"Resolved"
+        });
+        loadComplaints();
+      };
+
+      card.appendChild(btn);
+    }
 
     container.appendChild(card);
   });
-
-  // Attach event listeners
-  document.querySelectorAll(".status-select").forEach(select=>{
-    select.addEventListener("change", async (e)=>{
-      const id = e.target.getAttribute("data-id");
-      const newStatus = e.target.value;
-
-      await updateDoc(doc(db,"complaints",id),{
-        status:newStatus
-      });
-
-      loadComplaints();
-    });
-  });
 }
 
-
-/* ================= SEARCH LISTENER ================= */
+/* ================= SEARCH ================= */
 
 document.getElementById("searchInput")
   .addEventListener("input", () => {
     renderComplaints(currentFilter);
 });
 
+/* ================= EXPORT ================= */
+
+document.getElementById("exportBtn")
+  .addEventListener("click", () => {
+
+    let filtered = currentFilter === "all"
+      ? allComplaints
+      : allComplaints.filter(c => c.status === currentFilter);
+
+    const data = filtered.map(c => ({
+      "Tracking ID": c.trackingId || "",
+      "Name": c.name || "",
+      "Phone": c.phone || "",
+      "Status": c.status || "",
+      "Date": c.createdAt?.toDate().toLocaleString() || ""
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Complaints");
+
+    XLSX.writeFile(workbook, "Complaints.xlsx");
+});
 
 /* ================= INIT ================= */
 
 loadComplaints();
 
 </script>
-
-<style>
-.filter-btn{
-  padding:8px 14px;
-  border:none;
-  border-radius:6px;
-  background:#1e3a8a;
-  color:white;
-  cursor:pointer;
-}
-.filter-btn:hover{
-  opacity:0.8;
-}
-</style>
 
 </body>
 </html>
