@@ -16,11 +16,15 @@ onAuthStateChanged(auth, (user)=>{
   }
 });
 
-const logoutBtn = document.getElementById("logoutBtn");
+<button onclick="logout()">Logout</button>
 
-if(logoutBtn){
-  logoutBtn.onclick = async ()=>{
-    await signOut(auth);
-    window.location.href = "../login.html";
-  };
-}
+<script type="module">
+import { auth } from "../js/firebase.js";
+import { signOut } from 
+"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+window.logout = async () => {
+  await signOut(auth);
+  window.location.href = "../login.html";
+};
+</script>
