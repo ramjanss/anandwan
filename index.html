@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gram Panchayat Wandhali | Government of Maharashtra</title>
+<title>Gram Panchayat Wandhali | Government of India</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -12,24 +12,20 @@
 /* ================= ROOT ================= */
 :root{
   --primary:#003366;
+  --secondary:#0b3d91;
   --accent:#f59e0b;
   --green:#046a38;
-  --light:#f4f6f9;
+  --light:#f5f7fa;
 }
 
-/* ================= GLOBAL ================= */
 body{
   margin:0;
   font-family:'Poppins',sans-serif;
-  background:#ffffff;
+  background:white;
   color:#1f2937;
 }
 
-a{
-  text-decoration:none;
-}
-
-/* ================= TRICOLOR STRIP ================= */
+/* ================= TOP STRIP ================= */
 .top-strip{
   height:6px;
   background:linear-gradient(to right,#ff9933 33%,white 33%,white 66%,#138808 66%);
@@ -37,10 +33,10 @@ a{
 
 /* ================= HEADER ================= */
 .header{
-  background:#ffffff;
+  background:white;
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   padding:15px 40px;
   border-bottom:1px solid #e5e7eb;
 }
@@ -48,7 +44,7 @@ a{
 .logo-area{
   display:flex;
   align-items:center;
-  gap:15px;
+  gap:20px;
 }
 
 .logo-area img{
@@ -71,6 +67,7 @@ a{
   margin-left:25px;
   font-weight:600;
   color:#333;
+  text-decoration:none;
 }
 
 .nav-links a:hover{
@@ -79,15 +76,10 @@ a{
 
 /* ================= MARQUEE ================= */
 .marquee{
-  background:#003366;
+  background:var(--primary);
   color:white;
   padding:8px 20px;
   font-size:14px;
-}
-
-.marquee span{
-  color:#ffdd57;
-  font-weight:600;
 }
 
 /* ================= HERO ================= */
@@ -116,6 +108,7 @@ a{
   font-weight:600;
   margin:8px;
   display:inline-block;
+  text-decoration:none;
 }
 
 .btn-primary{
@@ -152,103 +145,40 @@ a{
   margin:10px auto 0;
 }
 
-/* ================= LEADERS ================= */
-.leadership-grid{
+/* ================= DISTRICT MAP ================= */
+.map-section{
   display:flex;
-  gap:40px;
-  justify-content:center;
+  gap:50px;
+  align-items:center;
   flex-wrap:wrap;
 }
 
-.leader-card{
-  background:white;
+.map-section img{
+  width:350px;
+}
+
+.map-info{
+  flex:1;
+}
+
+/* ================= SCHEMES ================= */
+.scheme-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:30px;
+}
+
+.scheme-card{
+  background:#f9fafb;
   padding:25px;
-  width:300px;
-  text-align:center;
-  border-radius:12px;
-  box-shadow:0 15px 35px rgba(0,0,0,0.08);
+  border-radius:10px;
+  border-left:4px solid var(--primary);
+  box-shadow:0 10px 25px rgba(0,0,0,0.05);
   transition:0.3s;
 }
 
-.leader-card:hover{
-  transform:translateY(-6px);
-}
-
-.leader-card img{
-  width:220px;
-  height:240px;
-  object-fit:cover;
-  border-radius:10px;
-  margin-bottom:15px;
-}
-
-/* ================= MEMBERS ================= */
-.member-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:25px;
-}
-
-.member-card{
-  background:white;
-  padding:20px;
-  text-align:center;
-  border-radius:12px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.06);
-}
-
-.member-card img{
-  width:110px;
-  height:110px;
-  border-radius:50%;
-  object-fit:cover;
-  margin-bottom:10px;
-}
-
-/* ================= STATS ================= */
-.stats{
-  display:flex;
-  gap:30px;
-  justify-content:center;
-  flex-wrap:wrap;
-}
-
-.stat-card{
-  background:#f9fafb;
-  padding:30px;
-  width:240px;
-  text-align:center;
-  border-radius:10px;
-  border-top:4px solid var(--primary);
-}
-
-.stat-card h1{
-  margin:0;
-  color:var(--primary);
-}
-
-/* ================= NOTICES ================= */
-.notice-card{
-  background:white;
-  padding:20px;
-  border-left:5px solid var(--primary);
-  border-radius:8px;
-  margin-bottom:20px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.05);
-}
-
-/* ================= GALLERY ================= */
-.gallery{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:20px;
-}
-
-.gallery img{
-  width:100%;
-  height:200px;
-  object-fit:cover;
-  border-radius:8px;
+.scheme-card:hover{
+  transform:translateY(-5px);
 }
 
 /* ================= FOOTER ================= */
@@ -266,14 +196,6 @@ footer{
   gap:40px;
 }
 
-footer h3{
-  margin-top:0;
-}
-
-footer p{
-  font-size:14px;
-}
-
 .bottom-footer{
   text-align:center;
   margin-top:30px;
@@ -288,12 +210,19 @@ footer p{
 
 <div class="top-strip"></div>
 
+<!-- ================= HEADER ================= -->
 <div class="header">
   <div class="logo-area">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Emblem_of_India.svg/1200px-Emblem_of_India.svg.png">
+
+    <!-- INDIA EMBLEM -->
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Emblem_of_India.svg/512px-Emblem_of_India.svg.png">
+
+    <!-- MAHARASHTRA LOGO -->
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Seal_of_Maharashtra.svg">
+
     <div class="logo-text">
       <h2>Gram Panchayat Wandhali</h2>
-      <p>Government of Maharashtra</p>
+      <p>Government of India | Government of Maharashtra</p>
     </div>
   </div>
 
@@ -301,17 +230,17 @@ footer p{
     <a href="#">Home</a>
     <a href="complaint.html">Complaint</a>
     <a href="track.html">Track</a>
-    <a href="#notices">Notices</a>
-    <a href="#gallery">Gallery</a>
+    <a href="#schemes">Schemes</a>
     <a href="#contact">Contact</a>
     <a href="login.html">Admin</a>
   </div>
 </div>
 
 <div class="marquee">
-  <marquee>📢 <span>Gram Sabha on 25th February</span> | Water Supply Notice | Clean Village Initiative</marquee>
+  📢 Gram Sabha on 25th February | Water Supply Notice | Swachh Bharat Abhiyan
 </div>
 
+<!-- ================= HERO ================= -->
 <section class="hero">
   <h1>Welcome to Gram Panchayat Wandhali</h1>
   <p>Smart • Transparent • Digital Governance</p>
@@ -319,49 +248,47 @@ footer p{
   <a href="track.html" class="btn btn-outline">Track Complaint</a>
 </section>
 
+<!-- ================= DISTRICT MAP ================= -->
 <section class="section">
-  <h2 class="section-title">Leadership</h2>
-  <div id="leadershipContainer" class="leadership-grid"></div>
-</section>
-
-<section class="section">
-  <h2 class="section-title">Elected Body Members</h2>
-  <div id="bodyMembersContainer" class="member-grid"></div>
-</section>
-
-<section class="section">
-  <h2 class="section-title">Gram Panchayat Employees</h2>
-  <div id="employeesContainer" class="member-grid"></div>
-</section>
-
-<section class="section">
-  <h2 class="section-title">Live Transparency</h2>
-  <div class="stats">
-    <div class="stat-card">
-      <h1 id="noticeCount">0</h1>
-      <p>Notices</p>
-    </div>
-    <div class="stat-card">
-      <h1 id="complaintCount">0</h1>
-      <p>Total Complaints</p>
-    </div>
-    <div class="stat-card">
-      <h1 id="resolvedCount">0</h1>
-      <p>Resolved</p>
+  <h2 class="section-title">Our District</h2>
+  <div class="map-section">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Maharashtra_districts_map.png">
+    <div class="map-info">
+      <h3>Chandrapur District</h3>
+      <p>Wandhali Gram Panchayat is located in Warora Taluka of Chandrapur district in Maharashtra.</p>
+      <p>The district is known for forests, coal mines and Tadoba Tiger Reserve.</p>
     </div>
   </div>
 </section>
 
-<section class="section" id="notices">
-  <h2 class="section-title">Latest Notices</h2>
-  <div id="noticeList"></div>
+<!-- ================= SCHEMES ================= -->
+<section class="section" id="schemes">
+  <h2 class="section-title">Government Schemes</h2>
+
+  <div class="scheme-grid">
+    <div class="scheme-card">
+      <h3>PM Awas Yojana</h3>
+      <p>Financial assistance for rural housing development.</p>
+    </div>
+
+    <div class="scheme-card">
+      <h3>Jal Jeevan Mission</h3>
+      <p>Safe drinking water supply to every rural household.</p>
+    </div>
+
+    <div class="scheme-card">
+      <h3>Swachh Bharat Mission</h3>
+      <p>Clean and healthy village initiative under Government of India.</p>
+    </div>
+
+    <div class="scheme-card">
+      <h3>MGNREGA</h3>
+      <p>Employment guarantee scheme for rural households.</p>
+    </div>
+  </div>
 </section>
 
-<section class="section" id="gallery">
-  <h2 class="section-title">Village Gallery</h2>
-  <div id="galleryTrack" class="gallery"></div>
-</section>
-
+<!-- ================= FOOTER ================= -->
 <footer id="contact">
   <div class="footer-container">
     <div>
@@ -373,10 +300,10 @@ footer p{
     </div>
 
     <div>
-      <h3>Quick Links</h3>
-      <p>Complaint Registration</p>
-      <p>Track Complaint</p>
-      <p>Notices</p>
+      <h3>Important Links</h3>
+      <p>Government of India</p>
+      <p>Government of Maharashtra</p>
+      <p>District Portal</p>
     </div>
 
     <div>
@@ -388,11 +315,9 @@ footer p{
   </div>
 
   <div class="bottom-footer">
-    © 2026 Gram Panchayat Wandhali | Government of Maharashtra
+    © 2026 Gram Panchayat Wandhali | All Rights Reserved
   </div>
 </footer>
-
-<script type="module" src="js/main.js"></script>
 
 </body>
 </html>
