@@ -3,55 +3,112 @@
 <head>
 <meta charset="UTF-8">
 <title>Track Complaint</title>
-<link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(135deg,#1e3a8a,#0f172a);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  color:white;
+}
+
+.track-container{
+  background:white;
+  color:#111;
+  padding:40px;
+  border-radius:20px;
+  width:420px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.3);
+  text-align:center;
+}
+
+.track-container h2{
+  margin-bottom:25px;
+}
+
+input{
+  width:100%;
+  padding:12px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  margin-bottom:15px;
+  font-size:14px;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  border:none;
+  background:#1e3a8a;
+  color:white;
+  border-radius:8px;
+  font-size:14px;
+  cursor:pointer;
+}
+
+button:hover{
+  opacity:0.9;
+}
+
+.result-card{
+  margin-top:25px;
+  padding:20px;
+  background:#f3f4f6;
+  border-radius:12px;
+  text-align:left;
+}
+
+.status-badge{
+  display:inline-block;
+  padding:6px 12px;
+  border-radius:20px;
+  font-size:12px;
+  color:white;
+}
+
+</style>
 </head>
 
 <body>
 
-<section class="section" style="max-width:600px;margin:auto;">
+<div class="track-container">
 
-  <h1>🔍 Track Your Complaint</h1>
+  <h2>🔎 Track Your Complaint</h2>
 
-  <input 
-    type="text" 
-    id="trackingInput" 
-    placeholder="Enter Tracking ID"
-    style="width:100%;padding:12px;border-radius:8px;border:1px solid #ccc;margin-top:20px;"
-  >
+  <input type="text" id="trackingIdInput" placeholder="Enter Tracking ID">
+  <button id="trackBtn">Track</button>
 
-  <button 
-    id="trackBtn"
-    style="margin-top:15px;padding:10px 20px;border:none;background:#1e3a8a;color:white;border-radius:6px;cursor:pointer;"
-  >
-    Track
-  </button>
+  <div id="result"></div>
 
-  <div id="resultBox" style="margin-top:30px;"></div>
-
-</section>
+</div>
 
 <script type="module">
 
 import { db } from "./js/firebase.js";
-import { collection, getDocs, query, where }
+import { collection, query, where, getDocs }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-const trackBtn = document.getElementById("trackBtn");
-const resultBox = document.getElementById("resultBox");
+const resultDiv = document.getElementById("result");
 
-trackBtn.onclick = async () => {
+document.getElementById("trackBtn").onclick = async () => {
 
   const trackingId = document
-    .getElementById("trackingInput")
+    .getElementById("trackingIdInput")
     .value
     .trim();
 
   if(!trackingId){
-    alert("Please enter Tracking ID");
+    alert("Please enter tracking ID");
     return;
   }
 
-  resultBox.innerHTML = "Checking...";
+  resultDiv.innerHTML = "Checking...";
 
   const q = query(
     collection(db,"complaints"),
@@ -61,14 +118,9 @@ trackBtn.onclick = async () => {
   const snapshot = await getDocs(q);
 
   if(snapshot.empty){
-    resultBox.innerHTML = `
-      <div style="
-        background:#fee2e2;
-        padding:20px;
-        border-radius:10px;
-        color:#991b1b;
-      ">
-        ❌ Complaint not found.
+    resultDiv.innerHTML = `
+      <div class="result-card">
+        ❌ Complaint not found
       </div>
     `;
     return;
@@ -83,74 +135,28 @@ trackBtn.onclick = async () => {
       ? createdDate.toLocaleString()
       : "N/A";
 
-    const replyDate = data.replyDate?.toDate();
-    const formattedReplyDate = replyDate
-      ? replyDate.toLocaleString()
-      : "";
+    const statusColor = data.status === "Resolved"
+      ? "#16a34a"
+      : "#f59e0b";
 
-    let statusColor = "#f59e0b";
-    if(data.status === "Replied") statusColor = "#2563eb";
-    if(data.status === "Resolved") statusColor = "#16a34a";
-
-    resultBox.innerHTML = `
-      <div style="
-        background:#fff;
-        padding:25px;
-        border-radius:15px;
-        box-shadow:0 10px 25px rgba(0,0,0,0.08);
-      ">
-
-        <div style="display:flex;justify-content:space-between;">
-          <strong>Tracking ID: ${data.trackingId}</strong>
-          <span style="
-            background:${statusColor};
-            color:white;
-            padding:6px 12px;
-            border-radius:20px;
-            font-size:12px;
-          ">
-            ${data.status}
-          </span>
-        </div>
-
-        <hr style="margin:15px 0;">
-
-        <p><strong>Name:</strong> ${data.name}</p>
-        <p><strong>Phone:</strong> ${data.phone}</p>
-        <p><strong>Date Submitted:</strong> ${formattedDate}</p>
-
-        <hr style="margin:15px 0;">
-
-        <p><strong>Your Complaint:</strong></p>
-        <div style="
-          background:#f3f4f6;
-          padding:10px;
-          border-radius:8px;
-        ">
+    resultDiv.innerHTML = `
+      <div class="result-card">
+        <strong>Tracking ID:</strong> ${data.trackingId}<br><br>
+        <strong>Name:</strong> ${data.name}<br>
+        <strong>Date:</strong> ${formattedDate}<br><br>
+        <strong>Status:</strong> 
+        <span class="status-badge" style="background:${statusColor};">
+          ${data.status}
+        </span>
+        <br><br>
+        <strong>Message:</strong>
+        <div style="margin-top:5px;">
           ${data.message}
         </div>
-
-        ${data.reply ? `
-          <hr style="margin:15px 0;">
-
-          <p><strong>Admin Reply:</strong></p>
-          <div style="
-            background:#ecfdf5;
-            padding:10px;
-            border-radius:8px;
-            border-left:4px solid #16a34a;
-          ">
-            ${data.reply}
-          </div>
-
-          <p style="font-size:12px;color:#555;margin-top:5px;">
-            Replied on: ${formattedReplyDate}
-          </p>
-        ` : ""}
-
       </div>
     `;
   });
+
 };
 
 </script>
