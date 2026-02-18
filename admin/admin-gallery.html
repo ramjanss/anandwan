@@ -5,24 +5,175 @@
 <title>Admin - Gallery</title>
 <link rel="stylesheet" href="admin.css">
 </head>
+
 <body>
 
-<h1>🖼 Manage Gallery</h1>
+<div class="admin-container">
 
-<p>Gallery management section coming here...</p>
+  <aside class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="admin-dashboard.html">Dashboard</a>
+    <a href="admin-members.html">Members</a>
+    <a href="admin-notices.html">Notices</a>
+    <a href="admin-gallery.html" class="active">Gallery</a>
+    <a href="admin-complaints.html">Complaints</a>
+    <button id="logoutBtn">Logout</button>
+  </aside>
+
+  <main class="content">
+    <h1>🖼 Manage Gallery</h1>
+
+    <div class="card" style="margin-bottom:30px;">
+      <h3>Upload Image</h3>
+
+      <input type="file" id="imageFile" accept="image/*">
+      <br><br>
+
+      <button id="uploadBtn" style="
+        padding:10px 18px;
+        background:#1e3a8a;
+        color:white;
+        border:none;
+        border-radius:6px;
+      ">
+        Upload Image
+      </button>
+
+      <p id="msg"></p>
+    </div>
+
+    <h3>All Images</h3>
+    <div id="galleryGrid" style="
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+      gap:20px;
+    "></div>
+
+  </main>
+
+</div>
 
 <script type="module" src="admin-auth.js"></script>
-<button onclick="logout()">Logout</button>
 
 <script type="module">
-import { auth } from "../js/firebase.js";
-import { signOut } from 
-"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-window.logout = async () => {
-  await signOut(auth);
-  window.location.href = "../login.html";
+import { db, storage } from "../js/firebase.js";
+import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { ref, uploadBytes, getDownloadURL, deleteObject } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+const imageFile = document.getElementById("imageFile");
+const uploadBtn = document.getElementById("uploadBtn");
+const galleryGrid = document.getElementById("galleryGrid");
+const msg = document.getElementById("msg");
+
+uploadBtn.onclick = async () => {
+
+  if(!imageFile.files[0]){
+    alert("Select image first");
+    return;
+  }
+
+  try{
+
+    uploadBtn.innerText = "Uploading...";
+    uploadBtn.disabled = true;
+
+    const file = imageFile.files[0];
+    const storageRef = ref(storage,"gallery/"+Date.now()+"_"+file.name);
+
+    await uploadBytes(storageRef,file);
+    const downloadURL = await getDownloadURL(storageRef);
+
+    await addDoc(collection(db,"gallery"),{
+      imageUrl:downloadURL,
+      storagePath:storageRef.fullPath,
+      created:new Date()
+    });
+
+    msg.textContent="Image uploaded successfully ✅";
+    imageFile.value="";
+
+    loadGallery();
+
+  }catch(error){
+    console.error(error);
+    msg.textContent="Upload failed ❌";
+  }
+
+  uploadBtn.innerText = "Upload Image";
+  uploadBtn.disabled = false;
 };
+
+async function loadGallery(){
+
+  galleryGrid.innerHTML="";
+
+  const q = query(collection(db,"gallery"),orderBy("created","desc"));
+  const snapshot = await getDocs(q);
+
+  if(snapshot.empty){
+    galleryGrid.innerHTML="<p>No images found.</p>";
+    return;
+  }
+
+  snapshot.forEach(docSnap=>{
+
+    const data = docSnap.data();
+
+    const card = document.createElement("div");
+    card.style.background="#fff";
+    card.style.padding="10px";
+    card.style.borderRadius="10px";
+    card.style.boxShadow="0 8px 20px rgba(0,0,0,0.1)";
+    card.style.textAlign="center";
+
+    card.innerHTML=`
+      <img src="${data.imageUrl}" style="
+        width:100%;
+        height:150px;
+        object-fit:cover;
+        border-radius:8px;
+        margin-bottom:10px;
+      ">
+      <button style="
+        background:#ef4444;
+        color:white;
+        border:none;
+        padding:6px 12px;
+        border-radius:6px;
+        cursor:pointer;
+      ">
+        Delete
+      </button>
+    `;
+
+    card.querySelector("button").onclick = async () => {
+
+      if(!confirm("Delete this image?")) return;
+
+      try{
+
+        if(data.storagePath){
+          await deleteObject(ref(storage,data.storagePath));
+        }
+
+        await deleteDoc(doc(db,"gallery",docSnap.id));
+        loadGallery();
+
+      }catch(error){
+        alert("Delete failed ❌");
+      }
+    };
+
+    galleryGrid.appendChild(card);
+
+  });
+}
+
+loadGallery();
+
 </script>
 
 </body>
