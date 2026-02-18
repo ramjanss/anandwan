@@ -57,6 +57,9 @@ const container = document.getElementById("complaintsContainer");
 
 let allComplaints = [];
 let currentFilter = "all";
+  let currentPage = 1;
+const itemsPerPage = 5;
+
 
 /* ================= LOAD ================= */
 
@@ -79,6 +82,40 @@ async function loadComplaints(){
   renderComplaints("all");
 }
 
+  function renderPagination(totalPages){
+
+  const existing = document.getElementById("pagination");
+  if(existing) existing.remove();
+
+  const pagination = document.createElement("div");
+  pagination.id = "pagination";
+  pagination.style.marginTop = "20px";
+  pagination.style.display = "flex";
+  pagination.style.gap = "10px";
+
+  const prevBtn = document.createElement("button");
+  prevBtn.innerText = "Previous";
+  prevBtn.disabled = currentPage === 1;
+  prevBtn.onclick = () => {
+    currentPage--;
+    renderComplaints(currentFilter);
+  };
+
+  const nextBtn = document.createElement("button");
+  nextBtn.innerText = "Next";
+  nextBtn.disabled = currentPage === totalPages;
+  nextBtn.onclick = () => {
+    currentPage++;
+    renderComplaints(currentFilter);
+  };
+
+  pagination.appendChild(prevBtn);
+  pagination.appendChild(nextBtn);
+
+  container.appendChild(pagination);
+}
+
+  
 /* ================= FILTER FUNCTION ================= */
 
 window.filterComplaints = function(status){
@@ -86,7 +123,6 @@ window.filterComplaints = function(status){
 };
 
 /* ================= RENDER ================= */
-
 function renderComplaints(filter){
 
   currentFilter = filter;
@@ -101,7 +137,6 @@ function renderComplaints(filter){
     ? allComplaints
     : allComplaints.filter(c => c.status === filter);
 
-  // Search filter
   if(searchValue){
     filtered = filtered.filter(c =>
       (c.trackingId && c.trackingId.toLowerCase().includes(searchValue)) ||
@@ -109,12 +144,22 @@ function renderComplaints(filter){
     );
   }
 
-  if(filtered.length === 0){
+  // ===== Pagination Logic =====
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
+
+  if(currentPage > totalPages) currentPage = 1;
+
+  const start = (currentPage - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+
+  const paginatedData = filtered.slice(start, end);
+
+  if(paginatedData.length === 0){
     container.innerHTML = "<p>No complaints found.</p>";
     return;
   }
 
-  filtered.forEach(c=>{
+  paginatedData.forEach(c=>{
 
     const createdDate = c.createdAt?.toDate();
     const formattedDate = createdDate
@@ -184,7 +229,10 @@ function renderComplaints(filter){
 
     container.appendChild(card);
   });
+
+  renderPagination(totalPages);
 }
+
 
 /* ================= SEARCH LISTENER ================= */
 
