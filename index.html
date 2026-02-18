@@ -3,19 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gram Panchayat Wandhali | Government of India</title>
+<title>Gram Panchayat Wandhali</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 
-/* ================= ROOT ================= */
 :root{
   --primary:#003366;
-  --secondary:#0b3d91;
   --accent:#f59e0b;
-  --green:#046a38;
-  --light:#f5f7fa;
 }
 
 body{
@@ -25,13 +21,12 @@ body{
   color:#1f2937;
 }
 
-/* ================= TOP STRIP ================= */
 .top-strip{
   height:6px;
   background:linear-gradient(to right,#ff9933 33%,white 33%,white 66%,#138808 66%);
 }
 
-/* ================= HEADER ================= */
+/* HEADER */
 .header{
   background:white;
   display:flex;
@@ -48,7 +43,7 @@ body{
 }
 
 .logo-area img{
-  height:60px;
+  height:55px;
 }
 
 .logo-text h2{
@@ -63,26 +58,29 @@ body{
   color:#555;
 }
 
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:20px;
+}
+
 .nav-links a{
-  margin-left:25px;
   font-weight:600;
-  color:#333;
   text-decoration:none;
+  color:#333;
 }
 
-.nav-links a:hover{
+.lang-btn{
+  padding:6px 12px;
+  border:1px solid var(--primary);
+  background:white;
   color:var(--primary);
+  border-radius:4px;
+  cursor:pointer;
+  font-weight:600;
 }
 
-/* ================= MARQUEE ================= */
-.marquee{
-  background:var(--primary);
-  color:white;
-  padding:8px 20px;
-  font-size:14px;
-}
-
-/* ================= HERO ================= */
+/* HERO */
 .hero{
   background:linear-gradient(rgba(0,51,102,0.85),rgba(0,51,102,0.85)),
   url('https://images.unsplash.com/photo-1598514983318-2f64f8f4796c');
@@ -94,7 +92,7 @@ body{
 }
 
 .hero h1{
-  font-size:40px;
+  font-size:38px;
   margin:0;
 }
 
@@ -121,7 +119,7 @@ body{
   color:white;
 }
 
-/* ================= SECTION ================= */
+/* SECTION */
 .section{
   padding:70px 20px;
   max-width:1200px;
@@ -130,38 +128,11 @@ body{
 
 .section-title{
   text-align:center;
-  margin-bottom:50px;
+  margin-bottom:40px;
   font-size:24px;
   color:var(--primary);
-  position:relative;
 }
 
-.section-title::after{
-  content:'';
-  width:80px;
-  height:3px;
-  background:var(--accent);
-  display:block;
-  margin:10px auto 0;
-}
-
-/* ================= DISTRICT MAP ================= */
-.map-section{
-  display:flex;
-  gap:50px;
-  align-items:center;
-  flex-wrap:wrap;
-}
-
-.map-section img{
-  width:350px;
-}
-
-.map-info{
-  flex:1;
-}
-
-/* ================= SCHEMES ================= */
 .scheme-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
@@ -174,33 +145,14 @@ body{
   border-radius:10px;
   border-left:4px solid var(--primary);
   box-shadow:0 10px 25px rgba(0,0,0,0.05);
-  transition:0.3s;
 }
 
-.scheme-card:hover{
-  transform:translateY(-5px);
-}
-
-/* ================= FOOTER ================= */
+/* FOOTER */
 footer{
   background:var(--primary);
   color:white;
   padding:50px 20px;
-}
-
-.footer-container{
-  max-width:1200px;
-  margin:auto;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:40px;
-}
-
-.bottom-footer{
   text-align:center;
-  margin-top:30px;
-  font-size:13px;
-  opacity:0.8;
 }
 
 </style>
@@ -210,19 +162,16 @@ footer{
 
 <div class="top-strip"></div>
 
-<!-- ================= HEADER ================= -->
+<!-- HEADER -->
 <div class="header">
   <div class="logo-area">
 
-    <!-- INDIA EMBLEM -->
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Emblem_of_India.svg/512px-Emblem_of_India.svg.png">
-
-    <!-- MAHARASHTRA LOGO -->
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Seal_of_Maharashtra.svg">
 
     <div class="logo-text">
-      <h2>Gram Panchayat Wandhali</h2>
-      <p>Government of India | Government of Maharashtra</p>
+      <h2 id="siteTitle">ग्रामपंचायत वंधली</h2>
+      <p id="govText">भारत सरकार | महाराष्ट्र शासन</p>
     </div>
   </div>
 
@@ -230,94 +179,92 @@ footer{
     <a href="#">Home</a>
     <a href="complaint.html">Complaint</a>
     <a href="track.html">Track</a>
-    <a href="#schemes">Schemes</a>
-    <a href="#contact">Contact</a>
     <a href="login.html">Admin</a>
+    <button class="lang-btn" onclick="toggleLanguage()">EN</button>
   </div>
 </div>
 
-<div class="marquee">
-  📢 Gram Sabha on 25th February | Water Supply Notice | Swachh Bharat Abhiyan
-</div>
-
-<!-- ================= HERO ================= -->
+<!-- HERO -->
 <section class="hero">
-  <h1>Welcome to Gram Panchayat Wandhali</h1>
-  <p>Smart • Transparent • Digital Governance</p>
-  <a href="complaint.html" class="btn btn-primary">Register Complaint</a>
-  <a href="track.html" class="btn btn-outline">Track Complaint</a>
+  <h1 id="heroTitle">ग्रामपंचायत वंधली मध्ये आपले स्वागत आहे</h1>
+  <p id="heroTag">स्मार्ट • पारदर्शक • डिजिटल प्रशासन</p>
+
+  <a href="complaint.html" class="btn btn-primary" id="btnComplaint">
+    तक्रार नोंदवा
+  </a>
+
+  <a href="track.html" class="btn btn-outline" id="btnTrack">
+    तक्रार ट्रॅक करा
+  </a>
 </section>
 
-<!-- ================= DISTRICT MAP ================= -->
+<!-- SCHEMES -->
 <section class="section">
-  <h2 class="section-title">Our District</h2>
-  <div class="map-section">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Maharashtra_districts_map.png">
-    <div class="map-info">
-      <h3>Chandrapur District</h3>
-      <p>Wandhali Gram Panchayat is located in Warora Taluka of Chandrapur district in Maharashtra.</p>
-      <p>The district is known for forests, coal mines and Tadoba Tiger Reserve.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ================= SCHEMES ================= -->
-<section class="section" id="schemes">
-  <h2 class="section-title">Government Schemes</h2>
+  <h2 class="section-title" id="schemeTitle">शासकीय योजना</h2>
 
   <div class="scheme-grid">
     <div class="scheme-card">
-      <h3>PM Awas Yojana</h3>
-      <p>Financial assistance for rural housing development.</p>
+      <h3 id="scheme1Title">प्रधानमंत्री आवास योजना</h3>
+      <p id="scheme1Desc">ग्रामीण घरकुलासाठी आर्थिक मदत.</p>
     </div>
 
     <div class="scheme-card">
-      <h3>Jal Jeevan Mission</h3>
-      <p>Safe drinking water supply to every rural household.</p>
-    </div>
-
-    <div class="scheme-card">
-      <h3>Swachh Bharat Mission</h3>
-      <p>Clean and healthy village initiative under Government of India.</p>
-    </div>
-
-    <div class="scheme-card">
-      <h3>MGNREGA</h3>
-      <p>Employment guarantee scheme for rural households.</p>
+      <h3 id="scheme2Title">जल जीवन मिशन</h3>
+      <p id="scheme2Desc">प्रत्येक घराला सुरक्षित पिण्याचे पाणी.</p>
     </div>
   </div>
 </section>
 
-<!-- ================= FOOTER ================= -->
-<footer id="contact">
-  <div class="footer-container">
-    <div>
-      <h3>Contact</h3>
-      <p>Gram Panchayat Wandhali</p>
-      <p>Taluka Warora</p>
-      <p>District Chandrapur</p>
-      <p>Phone: +91-9764444266</p>
-    </div>
-
-    <div>
-      <h3>Important Links</h3>
-      <p>Government of India</p>
-      <p>Government of Maharashtra</p>
-      <p>District Portal</p>
-    </div>
-
-    <div>
-      <h3>Digital Governance</h3>
-      <p>Transparency Portal</p>
-      <p>Citizen Services</p>
-      <p>Public Information</p>
-    </div>
-  </div>
-
-  <div class="bottom-footer">
-    © 2026 Gram Panchayat Wandhali | All Rights Reserved
-  </div>
+<footer>
+  <p id="footerText">© 2026 ग्रामपंचायत वंधली | सर्व हक्क राखीव</p>
 </footer>
+
+<script>
+
+let currentLang = "mr";
+
+function toggleLanguage(){
+
+  if(currentLang === "mr"){
+    currentLang = "en";
+
+    document.getElementById("siteTitle").innerText = "Gram Panchayat Wandhali";
+    document.getElementById("govText").innerText = "Government of India | Government of Maharashtra";
+    document.getElementById("heroTitle").innerText = "Welcome to Gram Panchayat Wandhali";
+    document.getElementById("heroTag").innerText = "Smart • Transparent • Digital Governance";
+    document.getElementById("btnComplaint").innerText = "Register Complaint";
+    document.getElementById("btnTrack").innerText = "Track Complaint";
+    document.getElementById("schemeTitle").innerText = "Government Schemes";
+    document.getElementById("scheme1Title").innerText = "PM Awas Yojana";
+    document.getElementById("scheme1Desc").innerText = "Financial assistance for rural housing.";
+    document.getElementById("scheme2Title").innerText = "Jal Jeevan Mission";
+    document.getElementById("scheme2Desc").innerText = "Safe drinking water to every home.";
+    document.getElementById("footerText").innerText = "© 2026 Gram Panchayat Wandhali | All Rights Reserved";
+
+    document.querySelector(".lang-btn").innerText = "मराठी";
+
+  } else {
+
+    currentLang = "mr";
+
+    document.getElementById("siteTitle").innerText = "ग्रामपंचायत वंधली";
+    document.getElementById("govText").innerText = "भारत सरकार | महाराष्ट्र शासन";
+    document.getElementById("heroTitle").innerText = "ग्रामपंचायत वंधली मध्ये आपले स्वागत आहे";
+    document.getElementById("heroTag").innerText = "स्मार्ट • पारदर्शक • डिजिटल प्रशासन";
+    document.getElementById("btnComplaint").innerText = "तक्रार नोंदवा";
+    document.getElementById("btnTrack").innerText = "तक्रार ट्रॅक करा";
+    document.getElementById("schemeTitle").innerText = "शासकीय योजना";
+    document.getElementById("scheme1Title").innerText = "प्रधानमंत्री आवास योजना";
+    document.getElementById("scheme1Desc").innerText = "ग्रामीण घरकुलासाठी आर्थिक मदत.";
+    document.getElementById("scheme2Title").innerText = "जल जीवन मिशन";
+    document.getElementById("scheme2Desc").innerText = "प्रत्येक घराला सुरक्षित पिण्याचे पाणी.";
+    document.getElementById("footerText").innerText = "© 2026 ग्रामपंचायत वंधली | सर्व हक्क राखीव";
+
+    document.querySelector(".lang-btn").innerText = "EN";
+  }
+}
+
+</script>
 
 </body>
 </html>
