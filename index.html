@@ -293,5 +293,15 @@ footer{
 
 <script type="module" src="js/main.js"></script>
 
+<script>
+const menuToggle = document.getElementById("menuToggle");
+const navLinks = document.getElementById("navLinks");
+
+menuToggle.addEventListener("click", ()=>{
+  navLinks.style.display =
+    navLinks.style.display === "flex" ? "none" : "flex";
+});
+</script>
+
 </body>
 </html>
