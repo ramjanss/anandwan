@@ -5,507 +5,243 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Dashboard</title>
 <link rel="stylesheet" href="css/style.css">
+
+<style>
+.admin-nav{
+  display:flex;
+  gap:20px;
+  margin-bottom:30px;
+  flex-wrap:wrap;
+}
+.admin-nav button{
+  padding:10px 20px;
+  border:none;
+  background:#1e3a8a;
+  color:white;
+  border-radius:8px;
+  cursor:pointer;
+}
+.admin-section{
+  display:none;
+}
+.admin-section.active{
+  display:block;
+}
+</style>
 </head>
 
 <body>
 
 <section class="section">
 
-<h2>📊 Dashboard Overview</h2>
-<div id="statsContainer" style="display:flex;gap:20px;flex-wrap:wrap;"></div>
-
-<hr><br>
-
 <h1>Admin Dashboard</h1>
 
-<!-- NOTICE SECTION -->
-<h2>📢 नवीन सूचना जोडा</h2>
-<input type="text" id="noticeTitle" placeholder="सूचना शीर्षक">
-<br><br>
-<textarea id="noticeDesc" placeholder="सूचना तपशील"></textarea>
-<br><br>
-<input type="file" id="noticeFile" accept="application/pdf">
-<br><br>
-<button id="addNoticeBtn">Upload Notice</button>
-<p id="noticeMsg"></p>
+<div class="admin-nav">
+  <button onclick="showSection('stats')">Dashboard</button>
+  <button onclick="showSection('complaints')">Complaints</button>
+  <button onclick="showSection('notices')">Notices</button>
+  <button onclick="showSection('gallery')">Gallery</button>
+  <button onclick="showSection('members')">Members</button>
+  <button id="logoutBtn">Logout</button>
+</div>
 
-<hr><br>
+<!-- ================= DASHBOARD ================= -->
+<div id="stats" class="admin-section active">
+  <h2>📊 Overview</h2>
+  <div id="statsContainer" style="display:flex;gap:20px;flex-wrap:wrap;"></div>
+</div>
 
-<!-- COMPLAINT SECTION -->
-<h2>📨 आलेल्या तक्रारी</h2>
-<div id="complaintList"></div>
+<!-- ================= COMPLAINTS ================= -->
+<div id="complaints" class="admin-section">
+  <h2>📨 Complaints</h2>
+  <div id="complaintList"></div>
+</div>
 
-<hr><br>
+<!-- ================= NOTICES ================= -->
+<div id="notices" class="admin-section">
+  <h2>📢 Add Notice</h2>
 
-<!-- GALLERY SECTION -->
-<h2>🖼 Gallery Upload</h2>
-<input type="file" id="imageFile">
-<br><br>
-<button id="uploadImageBtn">Upload Image</button>
-<ul id="galleryAdminList"></ul>
+  <input type="text" id="noticeTitle" placeholder="Title" style="width:250px;padding:8px;">
+  <br><br>
+  <textarea id="noticeDesc" placeholder="Description" style="width:250px;height:80px;padding:8px;"></textarea>
+  <br><br>
+  <input type="file" id="noticeFile" accept="application/pdf">
+  <br><br>
+  <button id="addNoticeBtn">Upload Notice</button>
+  <p id="noticeMsg"></p>
 
-<hr><br>
+  <hr><br>
+  <h3>All Notices</h3>
+  <ul id="adminNoticeList"></ul>
+</div>
 
-<!-- MEMBER SECTION -->
-<h2>👥 ग्रामपंचायत सदस्य</h2>
+<!-- ================= GALLERY ================= -->
+<div id="gallery" class="admin-section">
+  <h2>🖼 Upload Image</h2>
 
-<input type="text" id="memberName" placeholder="Member Name"><br><br>
-<input type="text" id="memberRole" placeholder="Role"><br><br>
-<input type="text" id="memberPhone" placeholder="Phone"><br><br>
-<input type="number" id="memberOrder" placeholder="Display Order"><br><br>
-<input type="file" id="memberPhoto" accept="image/*"><br><br>
+  <input type="file" id="imageFile">
+  <br><br>
+  <button id="uploadImageBtn">Upload Image</button>
 
-<button id="addMemberBtn">Add Member</button>
+  <ul id="galleryAdminList"></ul>
+</div>
 
-<ul id="memberList"></ul>
+<!-- ================= MEMBERS ================= -->
+<div id="members" class="admin-section">
 
-<hr><br>
+  <h2>👥 Add Member</h2>
 
-<h2>📋 सर्व सूचना</h2>
-<ul id="adminNoticeList"></ul>
+  <input type="text" id="memberName" placeholder="Name">
+  <br><br>
 
-<br>
-<button id="logoutBtn">Logout</button>
+  <input type="text" id="memberRole" placeholder="Role">
+  <br><br>
+
+  <input type="text" id="memberPhone" placeholder="Phone">
+  <br><br>
+
+  <select id="memberType">
+    <option value="leader">Leader (Sarpanch/Upsarpanch)</option>
+    <option value="body">Body Member</option>
+    <option value="employee">Employee</option>
+  </select>
+  <br><br>
+
+  <input type="number" id="memberOrder" placeholder="Display Order">
+  <br><br>
+
+  <input type="file" id="memberPhoto" accept="image/*">
+  <br><br>
+
+  <button id="addMemberBtn">Add Member</button>
+
+  <hr><br>
+
+  <h3>Existing Members</h3>
+  <div id="memberList"></div>
+
+</div>
 
 </section>
 
-
 <script type="module">
 
+/* ================= IMPORTS ================= */
 import { auth, db, storage } from "./js/firebase.js";
-
-import {
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-import {
-  collection,
-  addDoc,
-  getDocs,
-  deleteDoc,
-  doc,
-  updateDoc
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-import {
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  deleteObject
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
-
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
 /* ================= AUTH ================= */
 
 const allowedAdminEmail = "ramjansocial@gmail.com";
 
-onAuthStateChanged(auth, (user) => {
-
-  if (!user) {
-    window.location.href = "login.html";
+onAuthStateChanged(auth, (user)=>{
+  if(!user){
+    window.location.href="login.html";
     return;
   }
-
-  if (user.email !== allowedAdminEmail) {
-    alert("Access Denied ❌");
-    window.location.href = "index.html";
+  if(user.email!==allowedAdminEmail){
+    alert("Access Denied");
+    window.location.href="index.html";
   }
-
 });
 
-document.getElementById("logoutBtn").onclick = async () => {
+document.getElementById("logoutBtn").onclick=async()=>{
   await signOut(auth);
-  window.location.href = "login.html";
+  window.location.href="login.html";
 };
 
+/* ================= SECTION SWITCH ================= */
 
-/* ================= STATS ================= */
+window.showSection = (id)=>{
+  document.querySelectorAll(".admin-section").forEach(sec=>{
+    sec.classList.remove("active");
+  });
+  document.getElementById(id).classList.add("active");
+};
 
-async function loadStats() {
+/* ================= LOAD STATS ================= */
 
-  const notices = await getDocs(collection(db, "notices"));
-  const complaints = await getDocs(collection(db, "complaints"));
+async function loadStats(){
+  const notices = await getDocs(collection(db,"notices"));
+  const complaints = await getDocs(collection(db,"complaints"));
 
-  let resolved = 0;
-  complaints.forEach(d => {
-    if (d.data().status === "Resolved") resolved++;
+  let resolved=0;
+  complaints.forEach(d=>{
+    if(d.data().status==="Resolved") resolved++;
   });
 
-  document.getElementById("statsContainer").innerHTML = `
-    <div>Total Notices: ${notices.size}</div>
-    <div>Total Complaints: ${complaints.size}</div>
-    <div>Resolved: ${resolved}</div>
+  document.getElementById("statsContainer").innerHTML=`
+    <div class="card">Notices: ${notices.size}</div>
+    <div class="card">Complaints: ${complaints.size}</div>
+    <div class="card">Resolved: ${resolved}</div>
   `;
 }
-
 loadStats();
 
+/* ================= MEMBER SYSTEM ================= */
 
-/* ================= NOTICE ================= */
+const memberList=document.getElementById("memberList");
 
-const noticeTitle = document.getElementById("noticeTitle");
-const noticeDesc = document.getElementById("noticeDesc");
-const noticeFile = document.getElementById("noticeFile");
+async function loadMembersAdmin(){
+  memberList.innerHTML="";
+  const q=query(collection(db,"members"),orderBy("order"));
+  const snapshot=await getDocs(q);
 
-document.getElementById("addNoticeBtn").onclick = async () => {
+  snapshot.forEach(docSnap=>{
+    const m=docSnap.data();
 
-  if (!noticeTitle.value.trim()) {
-    alert("Title required");
-    return;
-  }
-
-  let fileURL = "";
-  let storagePath = "";
-
-  if (noticeFile.files[0]) {
-    const file = noticeFile.files[0];
-    const storageRef = ref(storage, "notices/" + Date.now() + "_" + file.name);
-    await uploadBytes(storageRef, file);
-    fileURL = await getDownloadURL(storageRef);
-    storagePath = storageRef.fullPath;
-  }
-
-  await addDoc(collection(db, "notices"), {
-    title: noticeTitle.value,
-    description: noticeDesc.value,
-    fileUrl: fileURL,
-    storagePath: storagePath,
-    created: new Date()
-  });
-
-  alert("Notice Uploaded ✅");
-
-  noticeTitle.value = "";
-  noticeDesc.value = "";
-  noticeFile.value = "";
-
-  loadNotices();
-  loadStats();
-};
-
-async function loadNotices() {
-
-  const list = document.getElementById("adminNoticeList");
-  list.innerHTML = "";
-
-  const snapshot = await getDocs(collection(db, "notices"));
-
-  snapshot.forEach(docSnap => {
-
-    const data = docSnap.data();
-
-    const li = document.createElement("li");
-
-    li.innerHTML = `
-      ${data.title}
-      <button>❌</button>
+    const div=document.createElement("div");
+    div.style.marginBottom="20px";
+    div.innerHTML=`
+      <img src="${m.photoUrl}" width="80" style="border-radius:50%;">
+      <strong>${m.name}</strong> (${m.role})
+      <button data-id="${docSnap.id}" data-path="${m.storagePath}">Delete</button>
     `;
 
-    li.querySelector("button").onclick = async () => {
-
-      if (!confirm("Delete notice?")) return;
-
-      if (data.storagePath) {
-        await deleteObject(ref(storage, data.storagePath));
+    div.querySelector("button").onclick=async()=>{
+      if(!confirm("Delete member?")) return;
+      if(m.storagePath){
+        await deleteObject(ref(storage,m.storagePath));
       }
-
-      await deleteDoc(doc(db, "notices", docSnap.id));
-      loadNotices();
-      loadStats();
+      await deleteDoc(doc(db,"members",docSnap.id));
+      loadMembersAdmin();
     };
 
-    list.appendChild(li);
+    memberList.appendChild(div);
   });
 }
-
-loadNotices();
-
-
-/* ================= COMPLAINTS ================= */
-
-async function loadComplaints() {
-
-  const container = document.getElementById("complaintList");
-  container.innerHTML = "";
-
-  const snapshot = await getDocs(collection(db, "complaints"));
-
-  snapshot.forEach(docSnap => {
-
-    const data = docSnap.data();
-
-    const box = document.createElement("div");
-    box.innerHTML = `
-      <strong>${data.trackingId}</strong> - ${data.status}<br>
-      ${data.name} - ${data.phone}<br>
-      ${data.message}<br>
-    `;
-
-    if (data.status !== "Resolved") {
-
-      const btn = document.createElement("button");
-      btn.innerText = "Mark Resolved";
-
-      btn.onclick = async () => {
-        await updateDoc(doc(db, "complaints", docSnap.id), {
-          status: "Resolved"
-        });
-        loadComplaints();
-        loadStats();
-      };
-
-      box.appendChild(btn);
-    }
-
-    container.appendChild(box);
-  });
-}
-
-loadComplaints();
-
-
-/* ================= GALLERY ================= */
-
-document.getElementById("uploadImageBtn").onclick = async () => {
-
-  const file = document.getElementById("imageFile").files[0];
-  if (!file) return alert("Select image");
-
-  const storageRef = ref(storage, "gallery/" + Date.now() + "_" + file.name);
-
-  await uploadBytes(storageRef, file);
-  const url = await getDownloadURL(storageRef);
-
-  await addDoc(collection(db, "gallery"), {
-    imageUrl: url,
-    storagePath: storageRef.fullPath,
-    created: new Date()
-  });
-
-  alert("Uploaded ✅");
-  loadGalleryAdmin();
-};
-
-async function loadGalleryAdmin() {
-
-  const list = document.getElementById("galleryAdminList");
-  list.innerHTML = "";
-
-  const snapshot = await getDocs(collection(db, "gallery"));
-
-  snapshot.forEach(docSnap => {
-
-    const data = docSnap.data();
-
-    const li = document.createElement("li");
-
-    li.innerHTML = `
-      <img src="${data.imageUrl}" width="120">
-      <button>❌</button>
-    `;
-
-    li.querySelector("button").onclick = async () => {
-
-      if (!confirm("Delete image?")) return;
-
-      await deleteObject(ref(storage, data.storagePath));
-      await deleteDoc(doc(db, "gallery", docSnap.id));
-      loadGalleryAdmin();
-    };
-
-    list.appendChild(li);
-  });
-}
-
-loadGalleryAdmin();
-
-
-/* ================= MEMBERS SYSTEM (PRO VERSION) ================= */
-
-const memberName = document.getElementById("memberName");
-const memberRole = document.getElementById("memberRole");
-const memberPhone = document.getElementById("memberPhone");
-const memberOrder = document.getElementById("memberOrder");
-const memberPhoto = document.getElementById("memberPhoto");
-const addMemberBtn = document.getElementById("addMemberBtn");
-const memberList = document.getElementById("memberList");
-
-let editingMemberId = null;
-
-/* ===== ADD / UPDATE MEMBER ===== */
-
-addMemberBtn.onclick = async () => {
-
-  const name = memberName.value.trim();
-  const role = memberRole.value.trim();
-  const phone = memberPhone.value.trim();
-  const order = Number(memberOrder.value) || 0;
-
-  if (!name || !role) {
-    alert("Name & Role required");
-    return;
-  }
-
-  try {
-
-    // 🔒 Prevent duplicate names (only when adding new)
-    if (!editingMemberId) {
-      const snapshot = await getDocs(collection(db, "members"));
-      let duplicate = false;
-      snapshot.forEach(docSnap => {
-        if (docSnap.data().name.toLowerCase() === name.toLowerCase()) {
-          duplicate = true;
-        }
-      });
-      if (duplicate) {
-        alert("Member with same name already exists ❌");
-        return;
-      }
-    }
-
-    let photoURL = "";
-    let storagePath = "";
-
-    // If new photo uploaded
-    if (memberPhoto.files[0]) {
-
-      const file = memberPhoto.files[0];
-      const storageRef = ref(storage, "members/" + Date.now() + "_" + file.name);
-
-      await uploadBytes(storageRef, file);
-      photoURL = await getDownloadURL(storageRef);
-      storagePath = storageRef.fullPath;
-    }
-
-    if (editingMemberId) {
-
-      // UPDATE MODE
-      const updateData = {
-        name,
-        role,
-        phone,
-        order
-      };
-
-      if (photoURL) {
-        updateData.photoUrl = photoURL;
-        updateData.storagePath = storagePath;
-      }
-
-      await updateDoc(doc(db, "members", editingMemberId), updateData);
-
-      alert("Member updated ✅");
-      editingMemberId = null;
-      addMemberBtn.innerText = "Add Member";
-
-    } else {
-
-      // ADD MODE
-      await addDoc(collection(db, "members"), {
-        name,
-        role,
-        phone,
-        order,
-        photoUrl: photoURL,
-        storagePath,
-        created: new Date()
-      });
-
-      alert("Member added ✅");
-    }
-
-    // Clear form
-    memberName.value = "";
-    memberRole.value = "";
-    memberPhone.value = "";
-    memberOrder.value = "";
-    memberPhoto.value = "";
-
-    loadMembersAdmin();
-
-  } catch (error) {
-    console.error(error);
-    alert("Operation failed ❌");
-  }
-};
-
-
-/* ===== LOAD MEMBERS (SORTED BY ORDER) ===== */
-
-async function loadMembersAdmin() {
-
-  memberList.innerHTML = "";
-
-  const snapshot = await getDocs(collection(db, "members"));
-
-  let members = [];
-
-  snapshot.forEach(docSnap => {
-    members.push({
-      id: docSnap.id,
-      ...docSnap.data()
-    });
-  });
-
-  // 🔥 Sort by display order
-  members.sort((a, b) => a.order - b.order);
-
-  members.forEach(member => {
-
-    const li = document.createElement("li");
-    li.style.marginBottom = "15px";
-    li.style.padding = "10px";
-    li.style.background = "#f4f6fb";
-    li.style.borderRadius = "8px";
-
-    li.innerHTML = `
-      <strong>${member.name}</strong> (${member.role})<br>
-      📞 ${member.phone || "-"}<br><br>
-      <button class="editBtn">✏ Edit</button>
-      <button class="deleteBtn">❌ Delete</button>
-    `;
-
-    // ===== DELETE =====
-    li.querySelector(".deleteBtn").onclick = async () => {
-
-      if (!confirm("Delete this member?")) return;
-
-      try {
-
-        if (member.storagePath) {
-          await deleteObject(ref(storage, member.storagePath));
-        }
-
-        await deleteDoc(doc(db, "members", member.id));
-        loadMembersAdmin();
-
-      } catch (error) {
-        alert("Delete failed ❌");
-      }
-    };
-
-    // ===== EDIT =====
-    li.querySelector(".editBtn").onclick = () => {
-
-      memberName.value = member.name;
-      memberRole.value = member.role;
-      memberPhone.value = member.phone;
-      memberOrder.value = member.order;
-
-      editingMemberId = member.id;
-      addMemberBtn.innerText = "Update Member";
-
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    };
-
-    memberList.appendChild(li);
-  });
-}
-
 loadMembersAdmin();
 
-</script>
+document.getElementById("addMemberBtn").onclick=async()=>{
+  const name=document.getElementById("memberName").value;
+  const role=document.getElementById("memberRole").value;
+  const phone=document.getElementById("memberPhone").value;
+  const type=document.getElementById("memberType").value;
+  const order=Number(document.getElementById("memberOrder").value);
+  const file=document.getElementById("memberPhoto").files[0];
 
+  if(!name||!role){alert("Fill required fields");return;}
+
+  let photoUrl="";
+  let storagePath="";
+
+  if(file){
+    const storageRef=ref(storage,"members/"+Date.now()+"_"+file.name);
+    await uploadBytes(storageRef,file);
+    photoUrl=await getDownloadURL(storageRef);
+    storagePath=storageRef.fullPath;
+  }
+
+  await addDoc(collection(db,"members"),{
+    name,role,phone,type,order,photoUrl,storagePath,created:new Date()
+  });
+
+  alert("Member Added");
+  loadMembersAdmin();
+};
+
+</script>
 </body>
 </html>
