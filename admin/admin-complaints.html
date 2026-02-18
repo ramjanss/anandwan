@@ -24,21 +24,20 @@
 
     <h1>📨 Manage Complaints</h1>
 
-  <div style="margin-bottom:20px; display:flex; gap:15px; flex-wrap:wrap; align-items:center;">
+    <div style="margin-bottom:20px; display:flex; gap:15px; flex-wrap:wrap; align-items:center;">
 
-  <input 
-    type="text" 
-    id="searchInput"
-    placeholder="Search by Tracking ID or Name"
-    style="padding:8px 12px; border-radius:6px; border:1px solid #ccc; width:250px;"
-  >
+      <input 
+        type="text" 
+        id="searchInput"
+        placeholder="Search by Tracking ID or Name"
+        style="padding:8px 12px; border-radius:6px; border:1px solid #ccc; width:250px;"
+      >
 
-  <button onclick="filterComplaints('all')" class="filter-btn">All</button>
-  <button onclick="filterComplaints('Pending')" class="filter-btn">Pending</button>
-  <button onclick="filterComplaints('Resolved')" class="filter-btn">Resolved</button>
+      <button onclick="filterComplaints('all')" class="filter-btn">All</button>
+      <button onclick="filterComplaints('Pending')" class="filter-btn">Pending</button>
+      <button onclick="filterComplaints('Resolved')" class="filter-btn">Resolved</button>
 
-</div>
-
+    </div>
 
     <div id="complaintsContainer"></div>
 
@@ -59,6 +58,8 @@ const container = document.getElementById("complaintsContainer");
 let allComplaints = [];
 let currentFilter = "all";
 
+/* ================= LOAD ================= */
+
 async function loadComplaints(){
 
   container.innerHTML = "Loading...";
@@ -78,10 +79,17 @@ async function loadComplaints(){
   renderComplaints("all");
 }
 
+/* ================= FILTER FUNCTION ================= */
+
+window.filterComplaints = function(status){
+  renderComplaints(status);
+};
+
+/* ================= RENDER ================= */
+
 function renderComplaints(filter){
 
   currentFilter = filter;
-
   container.innerHTML = "";
 
   const searchValue = document
@@ -93,7 +101,7 @@ function renderComplaints(filter){
     ? allComplaints
     : allComplaints.filter(c => c.status === filter);
 
-  // Apply search filter
+  // Search filter
   if(searchValue){
     filtered = filtered.filter(c =>
       (c.trackingId && c.trackingId.toLowerCase().includes(searchValue)) ||
@@ -168,10 +176,6 @@ function renderComplaints(filter){
         await updateDoc(doc(db,"complaints",c.id),{
           status:"Resolved"
         });
-document.getElementById("searchInput")
-  .addEventListener("input", () => {
-    renderComplaints(currentFilter);
-});    
         loadComplaints();
       };
 
@@ -182,13 +186,22 @@ document.getElementById("searchInput")
   });
 }
 
+/* ================= SEARCH LISTENER ================= */
+
+document.getElementById("searchInput")
+  .addEventListener("input", () => {
+    renderComplaints(currentFilter);
+});
+
+/* ================= INIT ================= */
+
+loadComplaints();
 
 </script>
 
 <style>
 .filter-btn{
   padding:8px 14px;
-  margin-right:10px;
   border:none;
   border-radius:6px;
   background:#1e3a8a;
