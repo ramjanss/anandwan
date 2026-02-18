@@ -24,11 +24,21 @@
 
     <h1>📨 Manage Complaints</h1>
 
-    <div style="margin-bottom:20px;">
-      <button onclick="filterComplaints('all')" class="filter-btn">All</button>
-      <button onclick="filterComplaints('Pending')" class="filter-btn">Pending</button>
-      <button onclick="filterComplaints('Resolved')" class="filter-btn">Resolved</button>
-    </div>
+  <div style="margin-bottom:20px; display:flex; gap:15px; flex-wrap:wrap; align-items:center;">
+
+  <input 
+    type="text" 
+    id="searchInput"
+    placeholder="Search by Tracking ID or Name"
+    style="padding:8px 12px; border-radius:6px; border:1px solid #ccc; width:250px;"
+  >
+
+  <button onclick="filterComplaints('all')" class="filter-btn">All</button>
+  <button onclick="filterComplaints('Pending')" class="filter-btn">Pending</button>
+  <button onclick="filterComplaints('Resolved')" class="filter-btn">Resolved</button>
+
+</div>
+
 
     <div id="complaintsContainer"></div>
 
@@ -47,6 +57,7 @@ from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 const container = document.getElementById("complaintsContainer");
 
 let allComplaints = [];
+let currentFilter = "all";
 
 async function loadComplaints(){
 
@@ -69,11 +80,26 @@ async function loadComplaints(){
 
 function renderComplaints(filter){
 
+  currentFilter = filter;
+
   container.innerHTML = "";
 
-  const filtered = filter === "all"
+  const searchValue = document
+    .getElementById("searchInput")
+    .value
+    .toLowerCase();
+
+  let filtered = filter === "all"
     ? allComplaints
     : allComplaints.filter(c => c.status === filter);
+
+  // Apply search filter
+  if(searchValue){
+    filtered = filtered.filter(c =>
+      (c.trackingId && c.trackingId.toLowerCase().includes(searchValue)) ||
+      (c.name && c.name.toLowerCase().includes(searchValue))
+    );
+  }
 
   if(filtered.length === 0){
     container.innerHTML = "<p>No complaints found.</p>";
@@ -129,7 +155,6 @@ function renderComplaints(filter){
     `;
 
     if(c.status !== "Resolved"){
-
       const btn = document.createElement("button");
       btn.innerText = "Mark Resolved";
       btn.style.background = "#1e3a8a";
@@ -150,15 +175,9 @@ function renderComplaints(filter){
     }
 
     container.appendChild(card);
-
   });
 }
 
-window.filterComplaints = (status)=>{
-  renderComplaints(status);
-};
-
-loadComplaints();
 
 </script>
 
