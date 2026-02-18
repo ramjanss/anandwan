@@ -1,0 +1,64 @@
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#f4f6fb;
+}
+
+.admin-container{
+  display:flex;
+  min-height:100vh;
+}
+
+.sidebar{
+  width:220px;
+  background:#1e3a8a;
+  color:white;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+.sidebar h2{
+  margin-bottom:20px;
+}
+
+.sidebar a{
+  color:white;
+  text-decoration:none;
+  padding:8px;
+  border-radius:6px;
+}
+
+.sidebar a:hover,
+.sidebar a.active{
+  background:#2563eb;
+}
+
+.sidebar button{
+  margin-top:auto;
+  padding:10px;
+  border:none;
+  background:#ef4444;
+  color:white;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.content{
+  flex:1;
+  padding:40px;
+}
+
+.stats-grid{
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+.card{
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 6px 15px rgba(0,0,0,0.1);
+}
