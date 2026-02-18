@@ -3,58 +3,72 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gram Panchayat Wandhali</title>
+<title>Gram Panchayat Wandhali | Government of Maharashtra</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 
-/* ===== ROOT COLORS ===== */
+/* ================= ROOT ================= */
 :root{
-  --primary:#0b3d91;
-  --secondary:#f59e0b;
+  --primary:#003366;
+  --accent:#f59e0b;
+  --green:#046a38;
   --light:#f4f6f9;
-  --text:#1f2937;
 }
 
-/* ===== GLOBAL ===== */
+/* ================= GLOBAL ================= */
 body{
   margin:0;
   font-family:'Poppins',sans-serif;
-  background:var(--light);
-  color:var(--text);
+  background:#ffffff;
+  color:#1f2937;
 }
 
 a{
   text-decoration:none;
 }
 
-/* ===== TOP GOVERNMENT BAR ===== */
-.top-bar{
-  background:var(--primary);
-  color:white;
-  text-align:center;
-  padding:8px;
-  font-size:14px;
+/* ================= TRICOLOR STRIP ================= */
+.top-strip{
+  height:6px;
+  background:linear-gradient(to right,#ff9933 33%,white 33%,white 66%,#138808 66%);
 }
 
-/* ===== NAVBAR ===== */
-.navbar{
-  background:white;
+/* ================= HEADER ================= */
+.header{
+  background:#ffffff;
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
   padding:15px 40px;
-  box-shadow:0 4px 15px rgba(0,0,0,0.08);
+  border-bottom:1px solid #e5e7eb;
 }
 
-.navbar h2{
+.logo-area{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.logo-area img{
+  height:60px;
+}
+
+.logo-text h2{
   margin:0;
+  font-size:20px;
   color:var(--primary);
 }
 
+.logo-text p{
+  margin:0;
+  font-size:13px;
+  color:#555;
+}
+
 .nav-links a{
-  margin-left:20px;
+  margin-left:25px;
   font-weight:600;
   color:#333;
 }
@@ -63,22 +77,37 @@ a{
   color:var(--primary);
 }
 
-/* ===== HERO ===== */
+/* ================= MARQUEE ================= */
+.marquee{
+  background:#003366;
+  color:white;
+  padding:8px 20px;
+  font-size:14px;
+}
+
+.marquee span{
+  color:#ffdd57;
+  font-weight:600;
+}
+
+/* ================= HERO ================= */
 .hero{
-  background:white;
+  background:linear-gradient(rgba(0,51,102,0.85),rgba(0,51,102,0.85)),
+  url('https://images.unsplash.com/photo-1598514983318-2f64f8f4796c');
+  background-size:cover;
+  background-position:center;
   text-align:center;
-  padding:80px 20px;
+  padding:120px 20px;
+  color:white;
 }
 
 .hero h1{
-  font-size:38px;
+  font-size:40px;
   margin:0;
-  color:var(--primary);
 }
 
 .hero p{
   margin:20px 0;
-  font-size:16px;
 }
 
 .btn{
@@ -90,29 +119,40 @@ a{
 }
 
 .btn-primary{
-  background:var(--primary);
+  background:var(--accent);
   color:white;
 }
 
 .btn-outline{
-  border:2px solid var(--primary);
-  color:var(--primary);
+  border:2px solid white;
+  color:white;
 }
 
-/* ===== SECTION ===== */
+/* ================= SECTION ================= */
 .section{
   padding:70px 20px;
   max-width:1200px;
   margin:auto;
 }
 
-.section h2{
+.section-title{
   text-align:center;
-  margin-bottom:40px;
+  margin-bottom:50px;
+  font-size:24px;
   color:var(--primary);
+  position:relative;
 }
 
-/* ===== LEADERS ===== */
+.section-title::after{
+  content:'';
+  width:80px;
+  height:3px;
+  background:var(--accent);
+  display:block;
+  margin:10px auto 0;
+}
+
+/* ================= LEADERS ================= */
 .leadership-grid{
   display:flex;
   gap:40px;
@@ -123,23 +163,29 @@ a{
 .leader-card{
   background:white;
   padding:25px;
-  width:280px;
+  width:300px;
   text-align:center;
   border-radius:12px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+  box-shadow:0 15px 35px rgba(0,0,0,0.08);
+  transition:0.3s;
+}
+
+.leader-card:hover{
+  transform:translateY(-6px);
 }
 
 .leader-card img{
-  width:200px;
-  height:220px;
+  width:220px;
+  height:240px;
   object-fit:cover;
-  border-radius:8px;
+  border-radius:10px;
   margin-bottom:15px;
 }
 
+/* ================= MEMBERS ================= */
 .member-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:25px;
 }
 
@@ -148,51 +194,50 @@ a{
   padding:20px;
   text-align:center;
   border-radius:12px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+  box-shadow:0 10px 25px rgba(0,0,0,0.06);
 }
 
 .member-card img{
-  width:100px;
-  height:100px;
+  width:110px;
+  height:110px;
   border-radius:50%;
   object-fit:cover;
   margin-bottom:10px;
 }
 
-/* ===== STATS ===== */
+/* ================= STATS ================= */
 .stats{
   display:flex;
   gap:30px;
-  flex-wrap:wrap;
   justify-content:center;
+  flex-wrap:wrap;
 }
 
 .stat-card{
-  background:white;
+  background:#f9fafb;
   padding:30px;
-  width:220px;
+  width:240px;
   text-align:center;
-  border-radius:12px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+  border-radius:10px;
+  border-top:4px solid var(--primary);
 }
 
 .stat-card h1{
   margin:0;
   color:var(--primary);
-  font-size:32px;
 }
 
-/* ===== NOTICES ===== */
+/* ================= NOTICES ================= */
 .notice-card{
   background:white;
   padding:20px;
   border-left:5px solid var(--primary);
   border-radius:8px;
   margin-bottom:20px;
-  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+  box-shadow:0 8px 20px rgba(0,0,0,0.05);
 }
 
-/* ===== GALLERY ===== */
+/* ================= GALLERY ================= */
 .gallery{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
@@ -201,18 +246,39 @@ a{
 
 .gallery img{
   width:100%;
-  height:180px;
+  height:200px;
   object-fit:cover;
   border-radius:8px;
 }
 
-/* ===== FOOTER ===== */
+/* ================= FOOTER ================= */
 footer{
   background:var(--primary);
   color:white;
+  padding:50px 20px;
+}
+
+.footer-container{
+  max-width:1200px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:40px;
+}
+
+footer h3{
+  margin-top:0;
+}
+
+footer p{
+  font-size:14px;
+}
+
+.bottom-footer{
   text-align:center;
-  padding:30px;
-  margin-top:60px;
+  margin-top:30px;
+  font-size:13px;
+  opacity:0.8;
 }
 
 </style>
@@ -220,12 +286,17 @@ footer{
 
 <body>
 
-<div class="top-bar">
-  Government of Maharashtra | Gram Panchayat Wandhali | Taluka Warora | District Chandrapur
-</div>
+<div class="top-strip"></div>
 
-<div class="navbar">
-  <h2>Gram Panchayat Wandhali</h2>
+<div class="header">
+  <div class="logo-area">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Emblem_of_India.svg/1200px-Emblem_of_India.svg.png">
+    <div class="logo-text">
+      <h2>Gram Panchayat Wandhali</h2>
+      <p>Government of Maharashtra</p>
+    </div>
+  </div>
+
   <div class="nav-links">
     <a href="#">Home</a>
     <a href="complaint.html">Complaint</a>
@@ -237,6 +308,10 @@ footer{
   </div>
 </div>
 
+<div class="marquee">
+  <marquee>📢 <span>Gram Sabha on 25th February</span> | Water Supply Notice | Clean Village Initiative</marquee>
+</div>
+
 <section class="hero">
   <h1>Welcome to Gram Panchayat Wandhali</h1>
   <p>Smart • Transparent • Digital Governance</p>
@@ -245,22 +320,22 @@ footer{
 </section>
 
 <section class="section">
-  <h2>Leadership</h2>
+  <h2 class="section-title">Leadership</h2>
   <div id="leadershipContainer" class="leadership-grid"></div>
 </section>
 
 <section class="section">
-  <h2>Elected Body Members</h2>
+  <h2 class="section-title">Elected Body Members</h2>
   <div id="bodyMembersContainer" class="member-grid"></div>
 </section>
 
 <section class="section">
-  <h2>Gram Panchayat Employees</h2>
+  <h2 class="section-title">Gram Panchayat Employees</h2>
   <div id="employeesContainer" class="member-grid"></div>
 </section>
 
 <section class="section">
-  <h2>Live Transparency</h2>
+  <h2 class="section-title">Live Transparency</h2>
   <div class="stats">
     <div class="stat-card">
       <h1 id="noticeCount">0</h1>
@@ -278,24 +353,43 @@ footer{
 </section>
 
 <section class="section" id="notices">
-  <h2>Latest Notices</h2>
+  <h2 class="section-title">Latest Notices</h2>
   <div id="noticeList"></div>
 </section>
 
 <section class="section" id="gallery">
-  <h2>Village Gallery</h2>
+  <h2 class="section-title">Village Gallery</h2>
   <div id="galleryTrack" class="gallery"></div>
 </section>
 
-<section class="section" id="contact">
-  <h2>Contact Gram Panchayat</h2>
-  <p><strong>Address:</strong> Wandhali, Taluka Warora, District Chandrapur</p>
-  <p><strong>Phone:</strong> +91-9764444266</p>
-  <p><strong>Email:</strong> gpwandhali@gmail.com</p>
-</section>
+<footer id="contact">
+  <div class="footer-container">
+    <div>
+      <h3>Contact</h3>
+      <p>Gram Panchayat Wandhali</p>
+      <p>Taluka Warora</p>
+      <p>District Chandrapur</p>
+      <p>Phone: +91-9764444266</p>
+    </div>
 
-<footer>
-  © 2026 Gram Panchayat Wandhali | All Rights Reserved
+    <div>
+      <h3>Quick Links</h3>
+      <p>Complaint Registration</p>
+      <p>Track Complaint</p>
+      <p>Notices</p>
+    </div>
+
+    <div>
+      <h3>Digital Governance</h3>
+      <p>Transparency Portal</p>
+      <p>Citizen Services</p>
+      <p>Public Information</p>
+    </div>
+  </div>
+
+  <div class="bottom-footer">
+    © 2026 Gram Panchayat Wandhali | Government of Maharashtra
+  </div>
 </footer>
 
 <script type="module" src="js/main.js"></script>
