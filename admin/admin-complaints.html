@@ -168,6 +168,10 @@ function renderComplaints(filter){
         await updateDoc(doc(db,"complaints",c.id),{
           status:"Resolved"
         });
+document.getElementById("searchInput")
+  .addEventListener("input", () => {
+    renderComplaints(currentFilter);
+});    
         loadComplaints();
       };
 
