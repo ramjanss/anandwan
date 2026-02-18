@@ -6,7 +6,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-
 body{
   margin:0;
   font-family:'Poppins',sans-serif;
@@ -14,7 +13,7 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  height:100vh;
+  min-height:100vh;
   color:white;
 }
 
@@ -23,14 +22,11 @@ body{
   color:#111;
   padding:40px;
   border-radius:20px;
-  width:480px;
+  width:520px;
   box-shadow:0 20px 50px rgba(0,0,0,0.3);
-  text-align:center;
 }
 
-.track-container h2{
-  margin-bottom:25px;
-}
+h2{text-align:center;margin-bottom:25px;}
 
 input{
   width:100%;
@@ -38,7 +34,6 @@ input{
   border-radius:8px;
   border:1px solid #ccc;
   margin-bottom:15px;
-  font-size:14px;
 }
 
 button{
@@ -48,20 +43,17 @@ button{
   background:#1e3a8a;
   color:white;
   border-radius:8px;
-  font-size:14px;
   cursor:pointer;
+  margin-bottom:10px;
 }
 
-button:hover{
-  opacity:0.9;
-}
+button:hover{opacity:0.9;}
 
 .result-card{
-  margin-top:25px;
+  margin-top:20px;
   padding:20px;
   background:#f3f4f6;
   border-radius:12px;
-  text-align:left;
 }
 
 .timeline{
@@ -97,19 +89,14 @@ button:hover{
   margin:auto;
   line-height:30px;
   color:white;
-  font-size:14px;
+  font-size:13px;
 }
 
-.step.active .step-circle{
-  background:#1e3a8a;
-}
-
-.step.completed .step-circle{
-  background:#16a34a;
-}
+.step.active .step-circle{background:#1e3a8a;}
+.step.completed .step-circle{background:#16a34a;}
 
 .step-label{
-  font-size:12px;
+  font-size:11px;
   margin-top:6px;
 }
 
@@ -121,6 +108,21 @@ button:hover{
   color:white;
 }
 
+.rating{
+  margin-top:15px;
+}
+
+.star{
+  font-size:20px;
+  cursor:pointer;
+  color:#ccc;
+}
+
+.star.active{color:#f59e0b;}
+
+.print-btn{
+  background:#16a34a;
+}
 </style>
 </head>
 
@@ -128,123 +130,125 @@ button:hover{
 
 <div class="track-container">
 
-  <h2>🔎 Track Your Complaint</h2>
+<h2>🔎 Track Your Complaint</h2>
 
-  <input type="text" id="trackingIdInput" placeholder="Enter Tracking ID">
-  <button id="trackBtn">Track</button>
+<input type="text" id="trackingIdInput" placeholder="Enter Tracking ID">
+<button id="trackBtn">Track</button>
 
-  <div id="result"></div>
+<div id="result"></div>
 
 </div>
 
 <script type="module">
 
 import { db } from "./js/firebase.js";
-import { collection, query, where, getDocs }
+import { collection, query, where, getDocs, updateDoc, doc }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const resultDiv = document.getElementById("result");
 
 document.getElementById("trackBtn").onclick = async () => {
 
-  const trackingId = document
-    .getElementById("trackingIdInput")
-    .value
-    .trim();
-
-  if(!trackingId){
-    alert("Please enter tracking ID");
-    return;
-  }
+  const trackingId = document.getElementById("trackingIdInput").value.trim();
+  if(!trackingId){ alert("Enter tracking ID"); return; }
 
   resultDiv.innerHTML = "Checking...";
 
-  const q = query(
-    collection(db,"complaints"),
-    where("trackingId","==",trackingId)
-  );
-
+  const q = query(collection(db,"complaints"), where("trackingId","==",trackingId));
   const snapshot = await getDocs(q);
 
   if(snapshot.empty){
-    resultDiv.innerHTML = `
-      <div class="result-card">
-        ❌ Complaint not found
-      </div>
-    `;
+    resultDiv.innerHTML = `<div class="result-card">❌ Complaint not found</div>`;
     return;
   }
 
   snapshot.forEach(docSnap=>{
-
     const data = docSnap.data();
+    const id = docSnap.id;
 
     const createdDate = data.createdAt?.toDate();
-    const formattedDate = createdDate
-      ? createdDate.toLocaleString()
-      : "N/A";
+    const formattedDate = createdDate ? createdDate.toLocaleString() : "N/A";
+    const status = data.status || "Submitted";
 
-    const status = data.status || "Pending";
+    let steps = {
+      submitted:"completed",
+      accepted:"",
+      review:"",
+      resolved:""
+    };
 
-    let step1 = "completed";
-    let step2 = "";
-    let step3 = "";
-
-    if(status === "Pending"){
-      step2 = "active";
+    if(status==="Accepted"){ steps.accepted="active"; }
+    if(status==="In Review"){ steps.accepted="completed"; steps.review="active"; }
+    if(status==="Resolved"){
+      steps.accepted="completed";
+      steps.review="completed";
+      steps.resolved="completed";
     }
 
-    if(status === "Resolved"){
-      step2 = "completed";
-      step3 = "completed";
-    }
-
-    const statusColor = status === "Resolved"
-      ? "#16a34a"
-      : "#f59e0b";
+    const statusColor = status==="Resolved" ? "#16a34a" : "#f59e0b";
 
     resultDiv.innerHTML = `
-      <div class="result-card">
+    <div class="result-card">
 
-        <strong>Tracking ID:</strong> ${data.trackingId}<br>
-        <strong>Name:</strong> ${data.name}<br>
-        <strong>Date:</strong> ${formattedDate}<br><br>
+      <strong>Tracking ID:</strong> ${data.trackingId}<br>
+      <strong>Name:</strong> ${data.name}<br>
+      <strong>Date:</strong> ${formattedDate}<br><br>
 
-        <div class="timeline">
-
-          <div class="step completed">
-            <div class="step-circle">1</div>
-            <div class="step-label">Submitted</div>
-          </div>
-
-          <div class="step ${step2}">
-            <div class="step-circle">2</div>
-            <div class="step-label">In Review</div>
-          </div>
-
-          <div class="step ${step3}">
-            <div class="step-circle">3</div>
-            <div class="step-label">Resolved</div>
-          </div>
-
+      <div class="timeline">
+        <div class="step completed">
+          <div class="step-circle">1</div>
+          <div class="step-label">Submitted</div>
         </div>
 
-        <strong>Status:</strong> 
-        <span class="status-badge" style="background:${statusColor};">
-          ${status}
-        </span>
-
-        <br><br>
-
-        <strong>Message:</strong>
-        <div style="margin-top:5px;">
-          ${data.message}
+        <div class="step ${steps.accepted}">
+          <div class="step-circle">2</div>
+          <div class="step-label">Accepted</div>
         </div>
 
+        <div class="step ${steps.review}">
+          <div class="step-circle">3</div>
+          <div class="step-label">In Review</div>
+        </div>
+
+        <div class="step ${steps.resolved}">
+          <div class="step-circle">4</div>
+          <div class="step-label">Resolved</div>
+        </div>
       </div>
-    `;
-  });
 
+      <strong>Status:</strong>
+      <span class="status-badge" style="background:${statusColor}">
+        ${status}
+      </span>
+
+      <br><br>
+
+      <strong>Message:</strong>
+      <div>${data.message}</div>
+
+      ${status==="Resolved" ? `
+      <div class="rating">
+        <p>Rate our service:</p>
+        ${[1,2,3,4,5].map(n=>`<span class="star" data-rate="${n}">★</span>`).join("")}
+      </div>
+      `:""}
+
+      <button class="print-btn" onclick="window.print()">Print Receipt</button>
+
+    </div>
+    `;
+
+    if(status==="Resolved"){
+      document.querySelectorAll(".star").forEach(star=>{
+        star.onclick = async ()=>{
+          const rating = star.getAttribute("data-rate");
+          await updateDoc(doc(db,"complaints",id),{rating:Number(rating)});
+          alert("Thanks for rating!");
+        };
+      });
+    }
+
+  });
 };
 
 </script>
