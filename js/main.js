@@ -20,6 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ================= COUNTER =================
 function animateCounter(element, target) {
+  if (!element) return;
+
   if (target === 0) {
     element.textContent = 0;
     return;
@@ -27,7 +29,7 @@ function animateCounter(element, target) {
 
   let start = 0;
   const duration = 800;
-  const stepTime = Math.floor(duration / target);
+  const stepTime = Math.max(Math.floor(duration / target), 20);
 
   const timer = setInterval(() => {
     start++;
@@ -42,6 +44,7 @@ function animateCounter(element, target) {
 
 // ================= LOAD STATS =================
 async function loadStats() {
+
   const noticeCountEl = document.getElementById("noticeCount");
   const complaintCountEl = document.getElementById("complaintCount");
   const resolvedCountEl = document.getElementById("resolvedCount");
@@ -65,6 +68,7 @@ async function loadStats() {
 
 // ================= LOAD NOTICES =================
 async function loadNotices() {
+
   const noticeList = document.getElementById("noticeList");
   if (!noticeList) return;
 
@@ -96,6 +100,7 @@ async function loadNotices() {
 
 // ================= LOAD GALLERY =================
 async function loadGallery() {
+
   const track = document.getElementById("galleryTrack");
   if (!track) return;
 
@@ -106,9 +111,11 @@ async function loadGallery() {
   snapshot.forEach(docSnap => {
     const img = document.createElement("img");
     img.src = docSnap.data().imageUrl;
+    img.alt = "Village Image";
     track.appendChild(img);
   });
 
+  // duplicate for smooth scroll
   track.innerHTML += track.innerHTML;
 }
 
@@ -133,6 +140,7 @@ async function loadMembers() {
   const snapshot = await getDocs(q);
 
   snapshot.forEach(docSnap => {
+
     const member = docSnap.data();
 
     const leaderCard = `
@@ -159,11 +167,12 @@ async function loadMembers() {
       bodyContainer.innerHTML += normalCard;
     }
     else if (member.type === "employee") {
-      employeeContainer.innerHTML += normalCard;
+      employeeContainer.innerHTML += normalCard; // ✅ fixed
     }
 
   });
 }
+
 
 // ================= INIT =================
 loadStats();
