@@ -1,153 +1,279 @@
 <!DOCTYPE html>
-<html lang="mr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>तक्रार नोंदवा</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
-
-<style>
-body{
-  margin:0;
-  font-family:'Poppins','Noto Sans Devanagari',sans-serif;
-  background:#f4f6fb;
-}
-
-.section{
-  max-width:600px;
-  margin:80px auto;
-  background:white;
-  padding:40px;
-  border-radius:20px;
-  box-shadow:0 15px 40px rgba(0,0,0,0.08);
-}
-
-h1{
-  text-align:center;
-  margin-bottom:30px;
-}
-
-input, textarea{
-  width:100%;
-  padding:12px;
-  margin-bottom:15px;
-  border-radius:10px;
-  border:1px solid #ccc;
-  font-size:14px;
-}
-
-button{
-  width:100%;
-  padding:12px;
-  border:none;
-  border-radius:30px;
-  background:#0048ff;
-  color:white;
-  font-weight:600;
-  cursor:pointer;
-  transition:0.3s;
-}
-
-button:hover{
-  background:#0036c7;
-}
-
-.success-box{
-  background:#e6f7ee;
-  padding:15px;
-  border-radius:12px;
-  margin-top:20px;
-  display:none;
-}
-
-.success-box strong{
-  color:#0a7c42;
-}
-
-.home-link{
-  text-align:center;
-  margin-top:20px;
-}
-</style>
+<title>Admin - Complaints</title>
+<link rel="stylesheet" href="admin.css">
 </head>
 
 <body>
 
-<div class="section">
+<div class="admin-container">
 
-<h1>📨 तक्रार नोंदवा</h1>
+  <aside class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="admin-dashboard.html">Dashboard</a>
+    <a href="admin-members.html">Members</a>
+    <a href="admin-notices.html">Notices</a>
+    <a href="admin-gallery.html">Gallery</a>
+    <a href="admin-complaints.html" class="active">Complaints</a>
+    <button id="logoutBtn">Logout</button>
+  </aside>
 
-<input type="text" id="name" placeholder="आपले नाव" required>
-<input type="text" id="phone" placeholder="मोबाईल नंबर" required>
-<textarea id="message" placeholder="आपली तक्रार लिहा" rows="4" required></textarea>
+  <main class="content">
 
-<button id="submitBtn">Submit Complaint</button>
+    <h1>📨 Manage Complaints</h1>
 
-<div class="success-box" id="successBox">
-  ✅ तक्रार यशस्वीरित्या नोंदवली गेली! <br><br>
-  तुमचा Tracking ID: <strong id="trackingIdText"></strong>
+    <div style="margin-bottom:20px; display:flex; gap:15px; flex-wrap:wrap; align-items:center;">
+
+      <input 
+        type="text" 
+        id="searchInput"
+        placeholder="Search by Tracking ID or Name"
+        style="padding:8px 12px; border-radius:6px; border:1px solid #ccc; width:250px;"
+      >
+
+      <button onclick="filterComplaints('all')" class="filter-btn">All</button>
+      <button onclick="filterComplaints('Pending')" class="filter-btn">Pending</button>
+      <button onclick="filterComplaints('Resolved')" class="filter-btn">Resolved</button>
+
+    </div>
+
+    <div id="complaintsContainer"></div>
+
+  </main>
+
 </div>
 
-<div class="home-link">
-  <a href="index.html">← Home</a>
-</div>
-
-</div>
-
+<script type="module" src="admin-auth.js"></script>
 
 <script type="module">
 
-import { db } from "./js/firebase.js";
-import { collection, addDoc } 
+import { db } from "../js/firebase.js";
+import { collection, getDocs, updateDoc, doc, query, orderBy, addDoc }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-const submitBtn = document.getElementById("submitBtn");
+const container = document.getElementById("complaintsContainer");
 
-submitBtn.onclick = async () => {
+let allComplaints = [];
+let currentFilter = "all";
+let currentPage = 1;
+const itemsPerPage = 5;
 
-  const name = document.getElementById("name").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const message = document.getElementById("message").value.trim();
+/* ================= LOAD ================= */
 
-  if(name === "" || phone === "" || message === ""){
-    alert("Please fill all fields");
+async function loadComplaints(){
+
+  container.innerHTML = "Loading...";
+
+  const q = query(collection(db,"complaints"), orderBy("createdAt","desc"));
+  const snapshot = await getDocs(q);
+
+  allComplaints = [];
+
+  snapshot.forEach(docSnap=>{
+    allComplaints.push({
+      id: docSnap.id,
+      ...docSnap.data()
+    });
+  });
+
+  currentPage = 1;
+  renderComplaints("all");
+}
+
+/* ================= FILTER FUNCTION ================= */
+
+window.filterComplaints = function(status){
+  currentPage = 1;
+  renderComplaints(status);
+};
+
+/* ================= RENDER ================= */
+
+function renderComplaints(filter){
+
+  currentFilter = filter;
+  container.innerHTML = "";
+
+  const searchValue = document
+    .getElementById("searchInput")
+    .value
+    .toLowerCase();
+
+  let filtered = filter === "all"
+    ? allComplaints
+    : allComplaints.filter(c => c.status === filter);
+
+  if(searchValue){
+    filtered = filtered.filter(c =>
+      (c.trackingId && c.trackingId.toLowerCase().includes(searchValue)) ||
+      (c.name && c.name.toLowerCase().includes(searchValue))
+    );
+  }
+
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
+  if(currentPage > totalPages) currentPage = 1;
+
+  const start = (currentPage - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  const paginatedData = filtered.slice(start, end);
+
+  if(paginatedData.length === 0){
+    container.innerHTML = "<p>No complaints found.</p>";
     return;
   }
 
-  submitBtn.innerText = "Submitting...";
-  submitBtn.disabled = true;
+  paginatedData.forEach(c=>{
 
-  try{
+    const createdDate = c.createdAt?.toDate();
+    const formattedDate = createdDate
+      ? createdDate.toLocaleString()
+      : "N/A";
 
-    const trackingId = "GP" + Date.now();
+    const statusColor = c.status === "Resolved" ? "#16a34a" : "#f59e0b";
 
-    await addDoc(collection(db, "complaints"), {
-      name: name,
-      phone: phone,
-      message: message,
-      status: "Pending",
-      trackingId: trackingId,
-      createdAt: new Date()
-    });
+    const card = document.createElement("div");
+    card.style.background = "#fff";
+    card.style.padding = "20px";
+    card.style.borderRadius = "12px";
+    card.style.marginBottom = "20px";
+    card.style.boxShadow = "0 10px 25px rgba(0,0,0,0.08)";
 
-    document.getElementById("trackingIdText").innerText = trackingId;
-    document.getElementById("successBox").style.display = "block";
+    card.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <strong>Tracking ID: ${c.trackingId || "N/A"}</strong>
+        <span style="
+          padding:6px 12px;
+          border-radius:20px;
+          font-size:12px;
+          background:${statusColor};
+          color:white;
+        ">
+          ${c.status}
+        </span>
+      </div>
 
-    document.getElementById("name").value = "";
-    document.getElementById("phone").value = "";
-    document.getElementById("message").value = "";
+      <hr style="margin:12px 0;">
 
-  }catch(error){
-    console.error(error);
-    alert("Something went wrong ❌");
-  }
+      <strong>Name:</strong> ${c.name} <br>
+      <strong>Phone:</strong> ${c.phone} <br>
+      <strong>Date:</strong> ${formattedDate} <br><br>
 
-  submitBtn.innerText = "Submit Complaint";
-  submitBtn.disabled = false;
-};
+      <strong>Message:</strong>
+      <div style="
+        background:#f3f4f6;
+        padding:10px;
+        border-radius:8px;
+        margin-top:5px;
+      ">
+        ${c.message}
+      </div>
+      <br>
+    `;
+
+    if(c.status !== "Resolved"){
+
+      const btn = document.createElement("button");
+      btn.innerText = "Mark Resolved";
+      btn.style.background = "#1e3a8a";
+      btn.style.color = "white";
+      btn.style.padding = "8px 14px";
+      btn.style.border = "none";
+      btn.style.borderRadius = "6px";
+      btn.style.cursor = "pointer";
+
+      btn.onclick = async () => {
+
+        await updateDoc(doc(db,"complaints",c.id),{
+          status:"Resolved"
+        });
+
+        // SMS Simulation Log
+        await addDoc(collection(db,"smsLogs"),{
+          complaintId: c.trackingId,
+          phone: c.phone,
+          message: `Your complaint ${c.trackingId} has been resolved.`,
+          status: "Sent (Simulated)",
+          created: new Date()
+        });
+
+        loadComplaints();
+      };
+
+      card.appendChild(btn);
+    }
+
+    container.appendChild(card);
+  });
+
+  renderPagination(totalPages);
+}
+
+/* ================= PAGINATION ================= */
+
+function renderPagination(totalPages){
+
+  const existing = document.getElementById("pagination");
+  if(existing) existing.remove();
+
+  if(totalPages <= 1) return;
+
+  const pagination = document.createElement("div");
+  pagination.id = "pagination";
+  pagination.style.marginTop = "20px";
+  pagination.style.display = "flex";
+  pagination.style.gap = "10px";
+
+  const prevBtn = document.createElement("button");
+  prevBtn.innerText = "Previous";
+  prevBtn.disabled = currentPage === 1;
+  prevBtn.onclick = () => {
+    currentPage--;
+    renderComplaints(currentFilter);
+  };
+
+  const nextBtn = document.createElement("button");
+  nextBtn.innerText = "Next";
+  nextBtn.disabled = currentPage === totalPages;
+  nextBtn.onclick = () => {
+    currentPage++;
+    renderComplaints(currentFilter);
+  };
+
+  pagination.appendChild(prevBtn);
+  pagination.appendChild(nextBtn);
+
+  container.appendChild(pagination);
+}
+
+/* ================= SEARCH ================= */
+
+document.getElementById("searchInput")
+  .addEventListener("input", () => {
+    currentPage = 1;
+    renderComplaints(currentFilter);
+});
+
+/* ================= INIT ================= */
+
+loadComplaints();
 
 </script>
+
+<style>
+.filter-btn{
+  padding:8px 14px;
+  border:none;
+  border-radius:6px;
+  background:#1e3a8a;
+  color:white;
+  cursor:pointer;
+}
+.filter-btn:hover{
+  opacity:0.8;
+}
+</style>
 
 </body>
 </html>
