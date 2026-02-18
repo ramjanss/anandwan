@@ -436,4 +436,8 @@ transform:translateY(-6px);
 
 }
 
+.logo-area img{
+  height:60px;
+  object-fit:contain;
+}
 
