@@ -120,63 +120,50 @@ async function loadMembers() {
   const bodyContainer = document.getElementById("bodyMembersContainer");
   const employeeContainer = document.getElementById("employeesContainer");
 
-  if (!leaderContainer) return;
+  if (!leaderContainer || !bodyContainer || !employeeContainer) {
+    console.error("Member containers not found in HTML");
+    return;
+  }
 
   leaderContainer.innerHTML = "";
   bodyContainer.innerHTML = "";
   employeeContainer.innerHTML = "";
 
-  const snapshot = await getDocs(collection(db, "members"));
-
-  const leaders = [];
-  const body = [];
-  const employees = [];
+  const q = query(collection(db, "members"), orderBy("order"));
+  const snapshot = await getDocs(q);
 
   snapshot.forEach(docSnap => {
-    const data = docSnap.data();
+    const member = docSnap.data();
 
-    if (data.type === "leader") leaders.push(data);
-    else if (data.type === "body") body.push(data);
-    else if (data.type === "employee") employees.push(data);
-  });
-
-  leaders.sort((a,b)=>a.order-b.order);
-  body.sort((a,b)=>a.order-b.order);
-  employees.sort((a,b)=>a.order-b.order);
-
-  leaders.forEach(member => {
-    leaderContainer.innerHTML += `
+    const leaderCard = `
       <div class="leader-card">
-        <img src="${member.photoUrl}">
+        <img src="${member.photoUrl}" alt="${member.name}">
         <h3>${member.name}</h3>
         <p>${member.role}</p>
         <span>${member.phone || ""}</span>
       </div>
     `;
-  });
 
-  body.forEach(member => {
-    bodyContainer.innerHTML += `
+    const normalCard = `
       <div class="member-card">
-        <img src="${member.photoUrl}">
+        <img src="${member.photoUrl}" alt="${member.name}">
         <h4>${member.name}</h4>
         <p>${member.role}</p>
       </div>
     `;
-  });
 
-  employees.forEach(member => {
-    employeeContainer.innerHTML += `
-      <div class="member-card">
-        <img src="${member.photoUrl}">
-        <h4>${member.name}</h4>
-        <p>${member.role}</p>
-      </div>
-    `;
+    if (member.type === "leader") {
+      leaderContainer.innerHTML += leaderCard;
+    }
+    else if (member.type === "body") {
+      bodyContainer.innerHTML += normalCard;
+    }
+    else if (member.type === "employee") {
+      employeeContainer.innerHTML += normalCard;
+    }
+
   });
 }
-
-loadMembers();
 
 // ================= INIT =================
 loadStats();
