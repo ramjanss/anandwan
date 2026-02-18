@@ -9,109 +9,61 @@
 <style>
 .admin-nav{
   display:flex;
-  gap:20px;
+  gap:15px;
   margin-bottom:30px;
   flex-wrap:wrap;
 }
 .admin-nav button{
-  padding:10px 20px;
+  padding:10px 18px;
   border:none;
   background:#1e3a8a;
   color:white;
   border-radius:8px;
   cursor:pointer;
+  transition:0.3s;
 }
-.admin-section{
-  display:none;
+.admin-nav button:hover{
+  background:#2563eb;
 }
-.admin-section.active{
-  display:block;
-}
+.admin-section{ display:none; }
+.admin-section.active{ display:block; }
 </style>
 </head>
 
 <body>
-
 <section class="section">
 
 <h1>Admin Dashboard</h1>
 
 <div class="admin-nav">
   <button onclick="showSection('stats')">Dashboard</button>
-  <button onclick="showSection('complaints')">Complaints</button>
-  <button onclick="showSection('notices')">Notices</button>
-  <button onclick="showSection('gallery')">Gallery</button>
   <button onclick="showSection('members')">Members</button>
   <button id="logoutBtn">Logout</button>
 </div>
 
-<!-- ================= DASHBOARD ================= -->
+<!-- DASHBOARD -->
 <div id="stats" class="admin-section active">
   <h2>📊 Overview</h2>
   <div id="statsContainer" style="display:flex;gap:20px;flex-wrap:wrap;"></div>
 </div>
 
-<!-- ================= COMPLAINTS ================= -->
-<div id="complaints" class="admin-section">
-  <h2>📨 Complaints</h2>
-  <div id="complaintList"></div>
-</div>
-
-<!-- ================= NOTICES ================= -->
-<div id="notices" class="admin-section">
-  <h2>📢 Add Notice</h2>
-
-  <input type="text" id="noticeTitle" placeholder="Title" style="width:250px;padding:8px;">
-  <br><br>
-  <textarea id="noticeDesc" placeholder="Description" style="width:250px;height:80px;padding:8px;"></textarea>
-  <br><br>
-  <input type="file" id="noticeFile" accept="application/pdf">
-  <br><br>
-  <button id="addNoticeBtn">Upload Notice</button>
-  <p id="noticeMsg"></p>
-
-  <hr><br>
-  <h3>All Notices</h3>
-  <ul id="adminNoticeList"></ul>
-</div>
-
-<!-- ================= GALLERY ================= -->
-<div id="gallery" class="admin-section">
-  <h2>🖼 Upload Image</h2>
-
-  <input type="file" id="imageFile">
-  <br><br>
-  <button id="uploadImageBtn">Upload Image</button>
-
-  <ul id="galleryAdminList"></ul>
-</div>
-
-<!-- ================= MEMBERS ================= -->
+<!-- MEMBERS -->
 <div id="members" class="admin-section">
 
   <h2>👥 Add Member</h2>
 
-  <input type="text" id="memberName" placeholder="Name">
-  <br><br>
-
-  <input type="text" id="memberRole" placeholder="Role">
-  <br><br>
-
-  <input type="text" id="memberPhone" placeholder="Phone">
-  <br><br>
+  <input type="text" id="memberName" placeholder="Name"><br><br>
+  <input type="text" id="memberRole" placeholder="Role"><br><br>
+  <input type="text" id="memberPhone" placeholder="Phone"><br><br>
 
   <select id="memberType">
-    <option value="leader">Leader (Sarpanch/Upsarpanch)</option>
+    <option value="leader">Leader</option>
     <option value="body">Body Member</option>
     <option value="employee">Employee</option>
-  </select>
-  <br><br>
+  </select><br><br>
 
-  <input type="number" id="memberOrder" placeholder="Display Order">
-  <br><br>
-
-  <input type="file" id="memberPhoto" accept="image/*">
-  <br><br>
+  <input type="number" id="memberOrder" placeholder="Display Order"><br><br>
+  <input type="file" id="memberPhoto" accept="image/*"><br><br>
 
   <button id="addMemberBtn">Add Member</button>
 
@@ -126,11 +78,13 @@
 
 <script type="module">
 
-/* ================= IMPORTS ================= */
 import { auth, db, storage } from "./js/firebase.js";
-import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+import { onAuthStateChanged, signOut } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { ref, uploadBytes, getDownloadURL, deleteObject } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
 /* ================= AUTH ================= */
 
@@ -161,7 +115,7 @@ window.showSection = (id)=>{
   document.getElementById(id).classList.add("active");
 };
 
-/* ================= LOAD STATS ================= */
+/* ================= DASHBOARD STATS ================= */
 
 async function loadStats(){
   const notices = await getDocs(collection(db,"notices"));
@@ -185,9 +139,17 @@ loadStats();
 const memberList=document.getElementById("memberList");
 
 async function loadMembersAdmin(){
-  memberList.innerHTML="";
+  memberList.innerHTML="Loading...";
+
   const q=query(collection(db,"members"),orderBy("order"));
   const snapshot=await getDocs(q);
+
+  memberList.innerHTML="";
+
+  if(snapshot.empty){
+    memberList.innerHTML="No Members Found";
+    return;
+  }
 
   snapshot.forEach(docSnap=>{
     const m=docSnap.data();
@@ -195,18 +157,24 @@ async function loadMembersAdmin(){
     const div=document.createElement("div");
     div.style.marginBottom="20px";
     div.innerHTML=`
-      <img src="${m.photoUrl}" width="80" style="border-radius:50%;">
-      <strong>${m.name}</strong> (${m.role})
-      <button data-id="${docSnap.id}" data-path="${m.storagePath}">Delete</button>
+      <img src="${m.photoUrl || ''}" width="80" style="border-radius:50%;object-fit:cover;">
+      <strong>${m.name}</strong> (${m.role}) - ${m.type}
+      <button style="margin-left:10px;">Delete</button>
+      <hr>
     `;
 
     div.querySelector("button").onclick=async()=>{
       if(!confirm("Delete member?")) return;
-      if(m.storagePath){
-        await deleteObject(ref(storage,m.storagePath));
+
+      try{
+        if(m.storagePath){
+          await deleteObject(ref(storage,m.storagePath));
+        }
+        await deleteDoc(doc(db,"members",docSnap.id));
+        loadMembersAdmin();
+      }catch(error){
+        alert("Delete failed");
       }
-      await deleteDoc(doc(db,"members",docSnap.id));
-      loadMembersAdmin();
     };
 
     memberList.appendChild(div);
@@ -214,32 +182,54 @@ async function loadMembersAdmin(){
 }
 loadMembersAdmin();
 
+/* ================= ADD MEMBER ================= */
+
 document.getElementById("addMemberBtn").onclick=async()=>{
-  const name=document.getElementById("memberName").value;
-  const role=document.getElementById("memberRole").value;
-  const phone=document.getElementById("memberPhone").value;
+
+  const name=document.getElementById("memberName").value.trim();
+  const role=document.getElementById("memberRole").value.trim();
+  const phone=document.getElementById("memberPhone").value.trim();
   const type=document.getElementById("memberType").value;
   const order=Number(document.getElementById("memberOrder").value);
   const file=document.getElementById("memberPhoto").files[0];
 
-  if(!name||!role){alert("Fill required fields");return;}
+  if(!name||!role){
+    alert("Fill required fields");
+    return;
+  }
 
   let photoUrl="";
   let storagePath="";
 
-  if(file){
-    const storageRef=ref(storage,"members/"+Date.now()+"_"+file.name);
-    await uploadBytes(storageRef,file);
-    photoUrl=await getDownloadURL(storageRef);
-    storagePath=storageRef.fullPath;
+  try{
+
+    if(file){
+      const storageRef=ref(storage,"members/"+Date.now()+"_"+file.name);
+      await uploadBytes(storageRef,file);
+      photoUrl=await getDownloadURL(storageRef);
+      storagePath=storageRef.fullPath;
+    }
+
+    await addDoc(collection(db,"members"),{
+      name,role,phone,type,order,
+      photoUrl,storagePath,
+      created:new Date()
+    });
+
+    alert("Member Added Successfully");
+
+    document.getElementById("memberName").value="";
+    document.getElementById("memberRole").value="";
+    document.getElementById("memberPhone").value="";
+    document.getElementById("memberOrder").value="";
+    document.getElementById("memberPhoto").value="";
+
+    loadMembersAdmin();
+
+  }catch(error){
+    alert("Upload Failed");
   }
 
-  await addDoc(collection(db,"members"),{
-    name,role,phone,type,order,photoUrl,storagePath,created:new Date()
-  });
-
-  alert("Member Added");
-  loadMembersAdmin();
 };
 
 </script>
