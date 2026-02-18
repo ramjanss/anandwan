@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="mr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +8,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-
 :root{
   --primary:#003366;
   --accent:#f59e0b;
@@ -133,28 +132,27 @@ body{
   color:var(--primary);
 }
 
-.scheme-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:30px;
-}
-
-.scheme-card{
+.notice-card{
   background:#f9fafb;
-  padding:25px;
+  padding:20px;
   border-radius:10px;
   border-left:4px solid var(--primary);
-  box-shadow:0 10px 25px rgba(0,0,0,0.05);
+  margin-bottom:20px;
 }
 
-/* FOOTER */
+.rti-card{
+  background:#eef2ff;
+  padding:25px;
+  border-radius:12px;
+  margin-bottom:20px;
+}
+
 footer{
   background:var(--primary);
   color:white;
   padding:50px 20px;
   text-align:center;
 }
-
 </style>
 </head>
 
@@ -170,8 +168,8 @@ footer{
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Seal_of_Maharashtra.svg">
 
     <div class="logo-text">
-      <h2 id="siteTitle">ग्रामपंचायत वंधली</h2>
-      <p id="govText">भारत सरकार | महाराष्ट्र शासन</p>
+      <h2 id="siteTitle">Gram Panchayat Wandhali</h2>
+      <p id="govText">Government of India | Government of Maharashtra</p>
     </div>
   </div>
 
@@ -180,89 +178,116 @@ footer{
     <a href="complaint.html">Complaint</a>
     <a href="track.html">Track</a>
     <a href="login.html">Admin</a>
-    <button class="lang-btn" onclick="toggleLanguage()">EN</button>
+    <button class="lang-btn" onclick="toggleLanguage()">मराठी</button>
   </div>
 </div>
 
 <!-- HERO -->
 <section class="hero">
-  <h1 id="heroTitle">ग्रामपंचायत वंधली मध्ये आपले स्वागत आहे</h1>
-  <p id="heroTag">स्मार्ट • पारदर्शक • डिजिटल प्रशासन</p>
+  <h1 id="heroTitle">Welcome to Gram Panchayat Wandhali</h1>
+  <p id="heroTag">Smart • Transparent • Digital Governance</p>
 
   <a href="complaint.html" class="btn btn-primary" id="btnComplaint">
-    तक्रार नोंदवा
+    Register Complaint
   </a>
 
   <a href="track.html" class="btn btn-outline" id="btnTrack">
-    तक्रार ट्रॅक करा
+    Track Complaint
   </a>
 </section>
 
-<!-- SCHEMES -->
+<!-- NOTICES -->
 <section class="section">
-  <h2 class="section-title" id="schemeTitle">शासकीय योजना</h2>
+  <h2 class="section-title">Latest Notices</h2>
+  <div id="noticeContainer"></div>
+</section>
 
-  <div class="scheme-grid">
-    <div class="scheme-card">
-      <h3 id="scheme1Title">प्रधानमंत्री आवास योजना</h3>
-      <p id="scheme1Desc">ग्रामीण घरकुलासाठी आर्थिक मदत.</p>
-    </div>
+<!-- RTI SECTION -->
+<section class="section">
+  <h2 class="section-title">RTI & Citizen Charter</h2>
 
-    <div class="scheme-card">
-      <h3 id="scheme2Title">जल जीवन मिशन</h3>
-      <p id="scheme2Desc">प्रत्येक घराला सुरक्षित पिण्याचे पाणी.</p>
-    </div>
+  <div class="rti-card">
+    <h3>Right to Information (RTI)</h3>
+    <p>Citizens may request official information under RTI Act 2005.</p>
+    <p><strong>Public Information Officer:</strong> Gramsevak Wandhali</p>
+  </div>
+
+  <div class="rti-card">
+    <h3>Citizen Charter</h3>
+    <p>Time-bound service delivery commitment of Gram Panchayat.</p>
   </div>
 </section>
 
 <footer>
-  <p id="footerText">© 2026 ग्रामपंचायत वंधली | सर्व हक्क राखीव</p>
+  © 2026 Gram Panchayat Wandhali | All Rights Reserved
 </footer>
 
-<script>
+<!-- FIREBASE -->
+<script type="module">
 
-let currentLang = "mr";
+import { db } from "./js/firebase.js";
+import { collection, getDocs, query, orderBy }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-function toggleLanguage(){
+/* ================= LOAD NOTICES ================= */
+
+async function loadNotices(){
+  const container = document.getElementById("noticeContainer");
+  container.innerHTML = "Loading...";
+
+  const q = query(collection(db,"notices"), orderBy("created","desc"));
+  const snapshot = await getDocs(q);
+
+  container.innerHTML = "";
+
+  snapshot.forEach(docSnap=>{
+    const data = docSnap.data();
+
+    const card = document.createElement("div");
+    card.className="notice-card";
+
+    card.innerHTML = `
+      <h3>${data.title}</h3>
+      <p>${data.description || ""}</p>
+      ${data.fileUrl ? `<a href="${data.fileUrl}" target="_blank">Download</a>` : ""}
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+loadNotices();
+
+/* ================= LANGUAGE SYSTEM ================= */
+
+let currentLang = localStorage.getItem("lang") || "en";
+
+function applyLanguage(){
 
   if(currentLang === "mr"){
-    currentLang = "en";
-
-    document.getElementById("siteTitle").innerText = "Gram Panchayat Wandhali";
-    document.getElementById("govText").innerText = "Government of India | Government of Maharashtra";
-    document.getElementById("heroTitle").innerText = "Welcome to Gram Panchayat Wandhali";
-    document.getElementById("heroTag").innerText = "Smart • Transparent • Digital Governance";
-    document.getElementById("btnComplaint").innerText = "Register Complaint";
-    document.getElementById("btnTrack").innerText = "Track Complaint";
-    document.getElementById("schemeTitle").innerText = "Government Schemes";
-    document.getElementById("scheme1Title").innerText = "PM Awas Yojana";
-    document.getElementById("scheme1Desc").innerText = "Financial assistance for rural housing.";
-    document.getElementById("scheme2Title").innerText = "Jal Jeevan Mission";
-    document.getElementById("scheme2Desc").innerText = "Safe drinking water to every home.";
-    document.getElementById("footerText").innerText = "© 2026 Gram Panchayat Wandhali | All Rights Reserved";
-
-    document.querySelector(".lang-btn").innerText = "मराठी";
-
-  } else {
-
-    currentLang = "mr";
-
-    document.getElementById("siteTitle").innerText = "ग्रामपंचायत वंधली";
-    document.getElementById("govText").innerText = "भारत सरकार | महाराष्ट्र शासन";
-    document.getElementById("heroTitle").innerText = "ग्रामपंचायत वंधली मध्ये आपले स्वागत आहे";
-    document.getElementById("heroTag").innerText = "स्मार्ट • पारदर्शक • डिजिटल प्रशासन";
-    document.getElementById("btnComplaint").innerText = "तक्रार नोंदवा";
-    document.getElementById("btnTrack").innerText = "तक्रार ट्रॅक करा";
-    document.getElementById("schemeTitle").innerText = "शासकीय योजना";
-    document.getElementById("scheme1Title").innerText = "प्रधानमंत्री आवास योजना";
-    document.getElementById("scheme1Desc").innerText = "ग्रामीण घरकुलासाठी आर्थिक मदत.";
-    document.getElementById("scheme2Title").innerText = "जल जीवन मिशन";
-    document.getElementById("scheme2Desc").innerText = "प्रत्येक घराला सुरक्षित पिण्याचे पाणी.";
-    document.getElementById("footerText").innerText = "© 2026 ग्रामपंचायत वंधली | सर्व हक्क राखीव";
-
-    document.querySelector(".lang-btn").innerText = "EN";
+    document.getElementById("siteTitle").innerText="ग्रामपंचायत वंधली";
+    document.getElementById("heroTitle").innerText="ग्रामपंचायत वंधली मध्ये आपले स्वागत आहे";
+    document.getElementById("heroTag").innerText="स्मार्ट • पारदर्शक • डिजिटल प्रशासन";
+    document.getElementById("btnComplaint").innerText="तक्रार नोंदवा";
+    document.getElementById("btnTrack").innerText="तक्रार ट्रॅक करा";
+    document.querySelector(".lang-btn").innerText="EN";
+  }else{
+    document.getElementById("siteTitle").innerText="Gram Panchayat Wandhali";
+    document.getElementById("heroTitle").innerText="Welcome to Gram Panchayat Wandhali";
+    document.getElementById("heroTag").innerText="Smart • Transparent • Digital Governance";
+    document.getElementById("btnComplaint").innerText="Register Complaint";
+    document.getElementById("btnTrack").innerText="Track Complaint";
+    document.querySelector(".lang-btn").innerText="मराठी";
   }
 }
+
+window.toggleLanguage=function(){
+  currentLang = currentLang==="en"?"mr":"en";
+  localStorage.setItem("lang",currentLang);
+  applyLanguage();
+};
+
+applyLanguage();
 
 </script>
 
