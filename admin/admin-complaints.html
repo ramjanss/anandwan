@@ -31,8 +31,8 @@
 
       <button onclick="filterComplaints('all')" class="filter-btn">All</button>
       <button onclick="filterComplaints('Pending')" class="filter-btn">Pending</button>
-      <button onclick="filterComplaints('Resolved')" class="filter-btn">Resolved</button>
       <button onclick="filterComplaints('Replied')" class="filter-btn">Replied</button>
+      <button onclick="filterComplaints('Resolved')" class="filter-btn">Resolved</button>
     </div>
 
     <div id="complaintsContainer"></div>
@@ -69,7 +69,7 @@ const modalBody = document.getElementById("modalBody");
 let allComplaints = [];
 let currentFilter = "all";
 
-/* LOAD */
+/* ================= LOAD ================= */
 async function loadComplaints(){
   container.innerHTML = "Loading...";
 
@@ -87,12 +87,12 @@ async function loadComplaints(){
   renderComplaints("all");
 }
 
-/* FILTER */
+/* ================= FILTER ================= */
 window.filterComplaints = function(status){
   renderComplaints(status);
 };
 
-/* RENDER */
+/* ================= RENDER ================= */
 function renderComplaints(filter){
 
   currentFilter = filter;
@@ -132,7 +132,7 @@ function renderComplaints(filter){
   });
 }
 
-/* MODAL */
+/* ================= MODAL ================= */
 window.openModal = function(c){
 
   const createdDate = c.createdAt?.toDate();
@@ -153,7 +153,7 @@ window.openModal = function(c){
     <hr>
   `;
 
-  // SHOW EXISTING REPLY
+  // Show reply if exists
   if(c.reply){
     modalBody.innerHTML += `
       <p><strong>Admin Reply:</strong></p>
@@ -162,19 +162,20 @@ window.openModal = function(c){
     `;
   }
 
-  // ADD REPLY OPTION
-  if(c.status !== "Resolved"){
+  /* ===== Reply Button ===== */
+  if(c.status === "Pending"){
+
     const textarea = document.createElement("textarea");
-    textarea.placeholder = "Write reply to citizen...";
+    textarea.placeholder = "Write reply...";
     textarea.style.width = "100%";
     textarea.style.height = "80px";
     textarea.style.marginTop = "10px";
 
-    const btn = document.createElement("button");
-    btn.innerText = "Send Reply";
-    btn.className = "resolve-btn";
+    const replyBtn = document.createElement("button");
+    replyBtn.innerText = "Send Reply";
+    replyBtn.className = "action-btn";
 
-    btn.onclick = async () => {
+    replyBtn.onclick = async () => {
 
       if(textarea.value.trim() === ""){
         alert("Reply cannot be empty");
@@ -192,7 +193,27 @@ window.openModal = function(c){
     };
 
     modalBody.appendChild(textarea);
-    modalBody.appendChild(btn);
+    modalBody.appendChild(replyBtn);
+  }
+
+  /* ===== Resolve Button ===== */
+  if(c.status !== "Resolved"){
+
+    const resolveBtn = document.createElement("button");
+    resolveBtn.innerText = "Mark as Resolved";
+    resolveBtn.className = "resolve-btn";
+
+    resolveBtn.onclick = async () => {
+
+      await updateDoc(doc(db,"complaints",c.id),{
+        status: "Resolved"
+      });
+
+      closeModal();
+      loadComplaints();
+    };
+
+    modalBody.appendChild(resolveBtn);
   }
 
   modal.style.display = "flex";
@@ -202,7 +223,7 @@ window.closeModal = function(){
   modal.style.display = "none";
 };
 
-/* SEARCH */
+/* ================= SEARCH ================= */
 document.getElementById("searchInput")
   .addEventListener("input", () => {
     renderComplaints(currentFilter);
@@ -237,8 +258,8 @@ loadComplaints();
   color:white;
 }
 .status-badge.Pending{ background:#f59e0b; }
-.status-badge.Resolved{ background:#16a34a; }
 .status-badge.Replied{ background:#2563eb; }
+.status-badge.Resolved{ background:#16a34a; }
 
 .modal{
   display:none;
@@ -269,8 +290,20 @@ loadComplaints();
   padding:10px;
   border-radius:8px;
 }
+
+.action-btn{
+  background:#2563eb;
+  color:white;
+  padding:10px 15px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  margin-top:10px;
+  margin-right:10px;
+}
+
 .resolve-btn{
-  background:#1e3a8a;
+  background:#16a34a;
   color:white;
   padding:10px 15px;
   border:none;
@@ -278,6 +311,7 @@ loadComplaints();
   cursor:pointer;
   margin-top:10px;
 }
+
 .filter-btn{
   padding:8px 14px;
   border:none;
