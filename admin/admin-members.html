@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Manage Members</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<h2>Manage Members</h2>
+
+<form id="memberForm">
+  <input type="text" id="name" placeholder="Full Name" required>
+  <input type="text" id="role" placeholder="Role" required>
+  <input type="text" id="phone" placeholder="Phone">
+
+  <select id="type" required>
+    <option value="">Select Type</option>
+    <option value="leader">Leader</option>
+    <option value="body">Body Member</option>
+    <option value="employee">Employee</option>
+  </select>
+
+  <input type="number" id="order" placeholder="Order" required>
+  <input type="file" id="photo" required>
+
+  <button type="submit">Add Member</button>
+</form>
+
+<hr>
+
+<h3>Existing Members</h3>
+<div id="membersList"></div>
+
+<script type="module" src="admin-members.js"></script>
+</body>
+</html>
