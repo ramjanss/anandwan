@@ -1,143 +1,116 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="mr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gram Panchayat Wandhali</title>
+<title>ग्रामपंचायत वंधली | Official Portal</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
+
+/* ================= ROOT ================= */
 :root{
-  --primary:#0b3d91;
-  --accent:#f97316;
-  --bg:#f5f7fa;
-  --text:#1e293b;
+  --gov-blue:#0b3d91;
+  --light-bg:#f4f6f9;
+  --text-dark:#1e293b;
+  --border-light:#e2e8f0;
 }
 
+/* ================= GLOBAL ================= */
 body{
   margin:0;
-  font-family:'Poppins',sans-serif;
-  background:var(--bg);
-  color:var(--text);
+  font-family:'Poppins','Noto Sans Devanagari',sans-serif;
+  background:var(--light-bg);
+  color:var(--text-dark);
 }
 
-/* TOP STRIP */
-.top-strip{
-  background:var(--primary);
-  color:white;
-  padding:6px 20px;
-  font-size:14px;
-  text-align:right;
-}
-
-/* HEADER */
-.header{
-  background:white;
-  padding:15px 20px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  border-bottom:3px solid var(--primary);
-}
-
-.logo-section{
-  display:flex;
-  align-items:center;
-  gap:15px;
-}
-
-.logo-section img{
-  height:60px;
-}
-
-.title h1{
-  margin:0;
-  font-size:22px;
-  color:var(--primary);
-}
-
-.title span{
-  font-size:14px;
-  color:#555;
-}
-
-/* NAVBAR */
-.navbar{
-  background:var(--primary);
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-}
-
-.navbar a{
-  color:white;
-  text-decoration:none;
-  padding:12px 20px;
-  font-weight:500;
-}
-
-.navbar a:hover{
-  background:var(--accent);
-}
-
-/* HERO */
-.hero{
-  background:white;
-  padding:60px 20px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  flex-wrap:wrap;
-}
-
-.hero-text{
-  max-width:500px;
-}
-
-.hero-text h2{
-  color:var(--primary);
-  font-size:32px;
-  margin-bottom:15px;
-}
-
-.hero-text p{
-  margin-bottom:20px;
-}
-
-.hero-text a{
-  background:var(--primary);
-  color:white;
-  padding:12px 20px;
-  text-decoration:none;
-  border-radius:6px;
-  margin-right:10px;
-}
-
-.hero-text a.secondary{
-  background:var(--accent);
-}
-
-.hero img{
-  width:350px;
-  border-radius:12px;
-}
-
-/* SECTION */
 .section{
-  padding:60px 20px;
+  padding:70px 20px;
   max-width:1200px;
   margin:auto;
 }
 
-.section h2{
-  text-align:center;
-  color:var(--primary);
-  margin-bottom:40px;
+/* ================= TOP BAR ================= */
+.topbar{
+  background:var(--gov-blue);
+  color:white;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:8px 40px;
+  font-size:14px;
 }
 
-/* LEADERS */
-.leadership{
+.topbar img{
+  height:32px;
+}
+
+/* ================= HEADER ================= */
+.header{
+  background:white;
+  padding:20px 40px;
+  border-bottom:1px solid var(--border-light);
+  text-align:center;
+}
+
+.header h1{
+  margin:0;
+  font-size:32px;
+  font-weight:700;
+}
+
+.header p{
+  margin:5px 0 0;
+  font-size:14px;
+  color:#64748b;
+}
+
+/* ================= NAVIGATION ================= */
+.navbar{
+  background:white;
+  display:flex;
+  justify-content:center;
+  gap:40px;
+  padding:15px;
+  border-bottom:1px solid var(--border-light);
+}
+
+.navbar a{
+  text-decoration:none;
+  font-weight:600;
+  color:var(--text-dark);
+  transition:0.3s;
+}
+
+.navbar a:hover{
+  color:var(--gov-blue);
+}
+
+/* ================= HERO ================= */
+.hero{
+  background:white;
+  text-align:center;
+  padding:60px 20px;
+}
+
+.hero h2{
+  font-size:28px;
+  margin-bottom:15px;
+}
+
+.hero-buttons a{
+  background:var(--gov-blue);
+  color:white;
+  padding:12px 22px;
+  border-radius:6px;
+  text-decoration:none;
+  margin:5px;
+  display:inline-block;
+}
+
+/* ================= LEADERSHIP ================= */
+.leadership-grid{
   display:flex;
   justify-content:center;
   gap:40px;
@@ -146,22 +119,44 @@ body{
 
 .leader-card{
   background:white;
+  width:300px;
   padding:25px;
-  border-radius:10px;
-  width:280px;
+  border-radius:12px;
   text-align:center;
-  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+  border:1px solid var(--border-light);
+  transition:0.3s;
+}
+
+.leader-card:hover{
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+  transform:translateY(-5px);
 }
 
 .leader-card img{
-  width:150px;
-  height:180px;
+  width:180px;
+  height:220px;
   object-fit:cover;
-  border-radius:10px;
+  border-radius:8px;
   margin-bottom:15px;
 }
 
-/* SCHEMES */
+/* ================= MEMBERS ================= */
+.member-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:25px;
+  margin-top:30px;
+}
+
+.member-card{
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  text-align:center;
+  border:1px solid var(--border-light);
+}
+
+/* ================= SCHEMES ================= */
 .scheme-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
@@ -171,105 +166,113 @@ body{
 .scheme-card{
   background:white;
   padding:25px;
-  border-radius:10px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+  border-radius:12px;
+  border:1px solid var(--border-light);
   transition:0.3s;
 }
 
 .scheme-card:hover{
-  transform:translateY(-5px);
+  box-shadow:0 8px 20px rgba(0,0,0,0.08);
 }
 
-/* STATS */
+/* ================= STATS ================= */
 .stats{
   display:flex;
   gap:30px;
   flex-wrap:wrap;
-  justify-content:center;
 }
 
-.stat-box{
+.stat-card{
+  flex:1;
+  min-width:220px;
   background:white;
   padding:30px;
-  width:220px;
+  border-radius:12px;
   text-align:center;
-  border-radius:10px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+  border:1px solid var(--border-light);
 }
 
-/* FOOTER */
-footer{
-  background:var(--primary);
-  color:white;
-  padding:25px;
-  text-align:center;
-  margin-top:40px;
+.stat-card h1{
+  margin:0;
+  color:var(--gov-blue);
 }
+
+/* ================= FOOTER ================= */
+footer{
+  background:var(--gov-blue);
+  color:white;
+  text-align:center;
+  padding:25px;
+  margin-top:60px;
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="top-strip">
-  Government of Maharashtra | Gram Panchayat Portal
+<!-- TOP BAR -->
+<div class="topbar">
+  <img src="assets/india-emblem.png" alt="India Emblem">
+  <div>Government of Maharashtra</div>
+  <img src="assets/maharashtra-logo.png" alt="Maharashtra Logo">
 </div>
 
-<header class="header">
-  <div class="logo-section">
-    <img src="assets/india-emblem.png">
-    <img src="assets/maharashtra-logo.png">
-    <div class="title">
-      <h1>Gram Panchayat Wandhali</h1>
-      <span>Taluka Warora | District Chandrapur</span>
-    </div>
-  </div>
-</header>
+<!-- HEADER -->
+<div class="header">
+  <h1>ग्रामपंचायत वंधली</h1>
+  <p>Taluka: Warora | District: Chandrapur</p>
+</div>
 
-<nav class="navbar">
+<!-- NAVIGATION -->
+<div class="navbar">
   <a href="#">Home</a>
-  <a href="#leadership">Leadership</a>
-  <a href="#schemes">Schemes</a>
   <a href="complaint.html">Complaint</a>
   <a href="track.html">Track Complaint</a>
+  <a href="#notices">Notices</a>
+  <a href="#gallery">Gallery</a>
   <a href="#contact">Contact</a>
-</nav>
+  <a href="login.html">Admin</a>
+</div>
 
+<!-- HERO -->
 <section class="hero">
-  <div class="hero-text">
-    <h2>Transparent & Citizen-Centric Governance</h2>
-    <p>Empowering citizens through digital services and government schemes.</p>
+  <h2>Smart • Transparent • Citizen-Focused Governance</h2>
+  <div class="hero-buttons">
     <a href="complaint.html">Register Complaint</a>
-    <a href="track.html" class="secondary">Track Status</a>
-  </div>
-  <img src="assets/village.jpg">
-</section>
-
-<section class="section" id="leadership">
-  <h2>Leadership</h2>
-  <div class="leadership">
-    <div class="leader-card">
-      <img src="assets/sarpanch.jpg">
-      <h3>Sarpanch Name</h3>
-      <p>Village Head</p>
-    </div>
-    <div class="leader-card">
-      <img src="assets/upsarpanch.jpg">
-      <h3>Upsarpanch Name</h3>
-      <p>Deputy Head</p>
-    </div>
+    <a href="track.html">Track Complaint</a>
   </div>
 </section>
 
-<section class="section" id="schemes">
-  <h2>Government Schemes</h2>
+<!-- LEADERSHIP -->
+<section class="section">
+  <h2 style="text-align:center;">👑 Leadership</h2>
+  <div id="leadershipContainer" class="leadership-grid"></div>
+</section>
+
+<!-- BODY MEMBERS -->
+<section class="section">
+  <h2 style="text-align:center;">🗳 Elected Body Members</h2>
+  <div id="bodyMembersContainer" class="member-grid"></div>
+</section>
+
+<!-- EMPLOYEES -->
+<section class="section">
+  <h2 style="text-align:center;">🏢 Gram Panchayat Employees</h2>
+  <div id="employeesContainer" class="member-grid"></div>
+</section>
+
+<!-- GOVERNMENT SCHEMES -->
+<section class="section">
+  <h2 style="text-align:center;">🏛 Government Schemes</h2>
   <div class="scheme-grid">
     <div class="scheme-card">
       <h3>PM Awas Yojana</h3>
-      <p>Financial support for rural housing.</p>
+      <p>Financial assistance for rural housing development.</p>
     </div>
     <div class="scheme-card">
       <h3>Jal Jeevan Mission</h3>
-      <p>Safe drinking water for every home.</p>
+      <p>Safe drinking water supply for every household.</p>
     </div>
     <div class="scheme-card">
       <h3>Swachh Bharat Mission</h3>
@@ -278,29 +281,30 @@ footer{
   </div>
 </section>
 
+<!-- LIVE STATS -->
 <section class="section">
-  <h2>Transparency Dashboard</h2>
+  <h2 style="text-align:center;">📊 Transparency Dashboard</h2>
   <div class="stats">
-    <div class="stat-box">
-      <h3>25</h3>
+    <div class="stat-card">
+      <h1 id="noticeCount">0</h1>
       <p>Notices</p>
     </div>
-    <div class="stat-box">
-      <h3>120</h3>
-      <p>Complaints</p>
+    <div class="stat-card">
+      <h1 id="complaintCount">0</h1>
+      <p>Total Complaints</p>
     </div>
-    <div class="stat-box">
-      <h3>98</h3>
+    <div class="stat-card">
+      <h1 id="resolvedCount">0</h1>
       <p>Resolved</p>
     </div>
   </div>
 </section>
 
-<footer id="contact">
-  Gram Panchayat Wandhali  
-  <br>Contact: +91-9764444266  
-  <br>Email: gpwandhali@gmail.com
+<footer>
+  © 2026 Gram Panchayat Wandhali | Official Government Portal
 </footer>
+
+<script type="module" src="js/main.js"></script>
 
 </body>
 </html>
