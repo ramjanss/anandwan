@@ -9,29 +9,40 @@
 
 <style>
 
-/* ===== TOP GOV RIBBON ===== */
+/* ================= GOVERNMENT TOP RIBBON ================= */
+
 .gov-ribbon{
   background:#0b3d91;
   color:white;
-  font-size:14px;
-  padding:6px 25px;
+  font-size:13px;
+  padding:6px 30px;
   display:flex;
   justify-content:space-between;
   align-items:center;
+  border-bottom:3px solid #ff9933; /* saffron accent */
 }
 
 .gov-left{
   display:flex;
   align-items:center;
-  gap:15px;
+  gap:18px;
 }
 
 .gov-left img{
-  height:42px;
+  height:44px;
   background:white;
-  padding:5px;
-  border-radius:6px;
-  box-shadow:0 2px 6px rgba(0,0,0,0.2);
+  padding:6px;
+  border-radius:4px;
+}
+
+.gov-left span{
+  font-weight:500;
+  letter-spacing:0.5px;
+}
+
+.gov-right{
+  font-size:12px;
+  opacity:0.9;
 }
 
 /* ===== NAVBAR ===== */
@@ -161,8 +172,8 @@ footer p{
     <img src="assets/maharashtra-logo.png" alt="Maharashtra Logo">
     <span>Government of Maharashtra</span>
   </div>
-  <div>
-    Official Digital Portal of Gram Panchayat Wandhali
+  <div class="gov-right">
+    Official Website of Gram Panchayat Wandhali
   </div>
 </div>
 
