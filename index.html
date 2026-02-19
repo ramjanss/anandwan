@@ -11,38 +11,90 @@
 
 /* ================= GOVERNMENT TOP RIBBON ================= */
 
-.gov-ribbon{
+/* ================= TRICOLOR STRIP ================= */
+
+.tricolor-strip{
+  height:6px;
+  background:linear-gradient(
+    to right,
+    #ff9933 0%,
+    #ff9933 33%,
+    white 33%,
+    white 66%,
+    #138808 66%,
+    #138808 100%
+  );
+}
+
+/* ================= GOV HEADER ================= */
+
+.gov-header{
   background:#0b3d91;
   color:white;
-  font-size:13px;
-  padding:6px 30px;
+  padding:15px 40px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  border-bottom:3px solid #ff9933; /* saffron accent */
+  box-shadow:0 4px 15px rgba(0,0,0,0.2);
 }
+
+/* LEFT SIDE */
 
 .gov-left{
   display:flex;
   align-items:center;
-  gap:18px;
+  gap:20px;
 }
 
 .gov-left img{
-  height:44px;
+  height:60px;
   background:white;
-  padding:6px;
-  border-radius:4px;
+  padding:8px;
+  border-radius:6px;
 }
 
-.gov-left span{
-  font-weight:500;
-  letter-spacing:0.5px;
+.gov-text h3{
+  margin:0;
+  font-size:18px;
+  font-weight:600;
 }
+
+.gov-text p{
+  margin:2px 0 0;
+  font-size:13px;
+  opacity:0.9;
+}
+
+/* RIGHT SIDE */
 
 .gov-right{
-  font-size:12px;
-  opacity:0.9;
+  display:flex;
+  align-items:center;
+  gap:25px;
+}
+
+.gov-right img{
+  height:60px;
+  background:white;
+  padding:8px;
+  border-radius:6px;
+}
+
+/* DIGITAL INDIA BADGE */
+
+.digital-badge{
+  text-align:right;
+  background:#ff9933;
+  padding:8px 15px;
+  border-radius:6px;
+  color:#000;
+  font-weight:600;
+}
+
+.digital-badge small{
+  display:block;
+  font-size:11px;
+  font-weight:500;
 }
 
 /* ===== NAVBAR ===== */
@@ -166,16 +218,31 @@ footer p{
 <body>
 
 <!-- GOV RIBBON -->
-<div class="gov-ribbon">
+<!-- ================= GOV TOP BAR ================= -->
+<div class="tricolor-strip"></div>
+
+<div class="gov-header">
+
   <div class="gov-left">
     <img src="assets/india-emblem.png" alt="India Emblem">
-    <img src="assets/maharashtra-logo.png" alt="Maharashtra Logo">
-    <span>Government of Maharashtra</span>
+    
+    <div class="gov-text">
+      <h3>Government of Maharashtra</h3>
+      <p>Gram Panchayat Wandhali • Official Website</p>
+    </div>
   </div>
+
   <div class="gov-right">
-    Official Website of Gram Panchayat Wandhali
+    <img src="assets/maharashtra-logo.png" alt="Maharashtra Logo">
+    
+    <div class="digital-badge">
+      <span>Digital India</span>
+      <small>Power To Empower</small>
+    </div>
   </div>
+
 </div>
+
 
 <!-- NAVBAR -->
 <div class="navbar">
