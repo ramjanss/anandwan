@@ -3,239 +3,146 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gram Panchayat Wandhali</title>
+<title>Gram Panchayat Wandhali | Government of Maharashtra</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
 
 <style>
 
-/* ================= ROOT COLORS ================= */
-
-:root{
---primary:#0b3d91;
---secondary:#138808;
---accent:#ff9933;
---bg:#f4f6fb;
---card:#ffffff;
---text:#1a1a1a;
+/* ===== TOP GOV RIBBON ===== */
+.gov-ribbon{
+  background:#0b3d91;
+  color:white;
+  font-size:14px;
+  padding:6px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-body{
-margin:0;
-font-family:'Poppins',sans-serif;
-background:var(--bg);
-color:var(--text);
+.gov-left{
+  display:flex;
+  align-items:center;
+  gap:15px;
 }
 
-/* ================= TOP TRICOLOR BAR ================= */
-
-.top-strip{
-height:6px;
-background:linear-gradient(to right,#ff9933,#ffffff,#138808);
+.gov-left img{
+  height:40px;
 }
 
-/* ================= HEADER ================= */
-
-.header{
-background:white;
-box-shadow:0 4px 15px rgba(0,0,0,0.08);
-padding:15px 40px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-flex-wrap:wrap;
-}
-
-.logo-area{
-display:flex;
-align-items:center;
-gap:20px;
-}
-
-.logo-area img{
-height:65px;
-}
-
-.logo-text h2{
-margin:0;
-font-size:22px;
-color:var(--primary);
-}
-
-.logo-text p{
-margin:0;
-font-size:12px;
-color:#555;
-}
-
-.lang-toggle{
-display:flex;
-gap:10px;
-}
-
-.lang-toggle button{
-padding:6px 12px;
-border:none;
-background:var(--primary);
-color:white;
-border-radius:4px;
-cursor:pointer;
-font-size:12px;
-}
-
-/* ================= NAVBAR ================= */
-
+/* ===== NAVBAR ===== */
 .navbar{
-background:var(--primary);
-padding:12px 40px;
-display:flex;
-gap:25px;
-flex-wrap:wrap;
+  background:white;
+  padding:15px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 3px 10px rgba(0,0,0,0.08);
 }
 
-.navbar a{
-color:white;
-text-decoration:none;
-font-weight:500;
+.nav-links a{
+  margin-left:25px;
+  text-decoration:none;
+  color:#1e3a8a;
+  font-weight:600;
 }
 
-.navbar a:hover{
-text-decoration:underline;
+.nav-links a:hover{
+  color:#15803d;
 }
 
-/* ================= ANNOUNCEMENT BAR ================= */
-
-.announcement{
-background:var(--accent);
-color:black;
-padding:8px 0;
-overflow:hidden;
-white-space:nowrap;
-}
-
-.announcement span{
-display:inline-block;
-padding-left:100%;
-animation:scrollText 18s linear infinite;
-font-weight:600;
-}
-
-@keyframes scrollText{
-0%{transform:translateX(0);}
-100%{transform:translateX(-100%);}
-}
-
-/* ================= HERO ================= */
-
+/* ===== HERO ===== */
 .hero{
-background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
-url('assets/flag-wave.png');
-background-size:cover;
-background-position:center;
-color:white;
-text-align:center;
-padding:120px 20px;
+  background:url("assets/village-bg.jpg") center/cover no-repeat;
+  padding:120px 20px;
+  text-align:center;
+  color:white;
+  position:relative;
+}
+
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.55);
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
 }
 
 .hero h1{
-font-size:40px;
-margin:0;
+  font-size:40px;
+  margin-bottom:10px;
 }
 
 .hero p{
-margin:20px 0;
-opacity:0.9;
+  font-size:18px;
+  margin-bottom:25px;
 }
 
 .btn{
-padding:12px 25px;
-background:var(--secondary);
-color:white;
-border:none;
-border-radius:6px;
-cursor:pointer;
-margin:5px;
-text-decoration:none;
-display:inline-block;
+  padding:12px 24px;
+  border-radius:6px;
+  text-decoration:none;
+  margin:5px;
+  display:inline-block;
+  font-weight:600;
 }
 
-/* ================= SECTION ================= */
-
-.section{
-padding:70px 20px;
-max-width:1200px;
-margin:auto;
+.btn-primary{
+  background:#15803d;
+  color:white;
 }
 
-/* ================= STATS ================= */
-
-.stats{
-display:flex;
-gap:20px;
-flex-wrap:wrap;
+.btn-secondary{
+  background:#1e3a8a;
+  color:white;
 }
 
-.stat-card{
-flex:1;
-min-width:220px;
-background:white;
-padding:30px;
-border-radius:12px;
-box-shadow:0 10px 25px rgba(0,0,0,0.08);
-text-align:center;
+/* ===== ANNOUNCEMENT BAR ===== */
+.announcement{
+  background:#facc15;
+  padding:10px 20px;
+  font-weight:600;
+  overflow:hidden;
 }
 
-.stat-card h1{
-margin:0;
-color:var(--primary);
-}
-
-/* ================= NOTICE ================= */
-
-.notice-card{
-background:white;
-padding:20px;
-border-radius:12px;
-margin-bottom:15px;
-box-shadow:0 8px 20px rgba(0,0,0,0.08);
-}
-
-/* ================= GALLERY ================= */
-
-.gallery{
-overflow:hidden;
-}
-
-.gallery-track{
-display:flex;
-gap:20px;
-animation:scroll 35s linear infinite;
-}
-
-.gallery:hover .gallery-track{
-animation-play-state:paused;
-}
-
-.gallery img{
-width:260px;
-height:170px;
-object-fit:cover;
-border-radius:12px;
+.announcement span{
+  display:inline-block;
+  white-space:nowrap;
+  animation:scroll 15s linear infinite;
 }
 
 @keyframes scroll{
-0%{transform:translateX(0);}
-100%{transform:translateX(-50%);}
+  from{transform:translateX(100%);}
+  to{transform:translateX(-100%);}
 }
 
-/* ================= FOOTER ================= */
+/* ===== SECTION ===== */
+.section{
+  padding:70px 20px;
+  max-width:1200px;
+  margin:auto;
+}
 
-.footer{
-background:#111;
-color:#ccc;
-text-align:center;
-padding:30px;
-font-size:14px;
+.section h2{
+  margin-bottom:30px;
+  color:#1e3a8a;
+}
+
+/* ===== FOOTER ===== */
+footer{
+  background:#1e293b;
+  color:white;
+  padding:40px 20px;
+  text-align:center;
+  margin-top:60px;
+}
+
+footer p{
+  margin:5px 0;
 }
 
 </style>
@@ -243,99 +150,87 @@ font-size:14px;
 
 <body>
 
-<div class="top-strip"></div>
-
-<header class="header">
-
-<div class="logo-area">
-<img src="assets/india-emblem.png" alt="India Emblem">
-<img src="assets/maharashtra-logo.png" alt="Maharashtra Logo">
-
-<div class="logo-text">
-<h2>Gram Panchayat Wandhali</h2>
-<p>Government of India | Government of Maharashtra</p>
-</div>
+<!-- GOV RIBBON -->
+<div class="gov-ribbon">
+  <div class="gov-left">
+    <img src="assets/india-emblem.png" alt="India Emblem">
+    <img src="assets/maharashtra-logo.png" alt="Maharashtra Logo">
+    <span>Government of Maharashtra</span>
+  </div>
+  <div>
+    Official Digital Portal of Gram Panchayat Wandhali
+  </div>
 </div>
 
-<div class="lang-toggle">
-<button onclick="switchLang('en')">English</button>
-<button onclick="switchLang('mr')">मराठी</button>
+<!-- NAVBAR -->
+<div class="navbar">
+  <h2>Gram Panchayat Wandhali</h2>
+  <div class="nav-links">
+    <a href="#">Home</a>
+    <a href="complaint.html">Complaint</a>
+    <a href="track.html">Track</a>
+    <a href="#notices">Notices</a>
+    <a href="#contact">Contact</a>
+  </div>
 </div>
 
-</header>
-
-<nav class="navbar">
-<a href="#">Home</a>
-<a href="complaint.html">Complaint</a>
-<a href="track.html">Track Complaint</a>
-<a href="#notices">Notices</a>
-<a href="#gallery">Gallery</a>
-<a href="#contact">Contact</a>
-<a href="login.html">Admin</a>
-</nav>
-
-<div class="announcement">
-<span>Important: Gram Sabha Meeting on 25th January at 11:00 AM | Swachh Bharat Abhiyan Drive This Week | Submit Complaints Online Easily</span>
-</div>
-
+<!-- HERO -->
 <section class="hero">
-<h1>Welcome to Gram Panchayat Wandhali</h1>
-<p>Transparent • Accountable • Digital Governance</p>
-<a href="complaint.html" class="btn">Register Complaint</a>
-<a href="track.html" class="btn">Track Complaint</a>
+  <div class="hero-content">
+    <h1>Welcome to Gram Panchayat Wandhali</h1>
+    <p>Transparent Governance • Digital Services • Citizen First</p>
+
+    <a href="complaint.html" class="btn btn-primary">Register Complaint</a>
+    <a href="track.html" class="btn btn-secondary">Track Complaint</a>
+  </div>
 </section>
 
+<!-- ANNOUNCEMENT -->
+<div class="announcement">
+  <span>Latest Notice: Gram Sabha Meeting on 25th January | Water Supply Maintenance | Government Scheme Registration Open</span>
+</div>
+
+<!-- MEMBERS SECTION -->
 <section class="section">
-<h2>📊 Live Transparency</h2>
-<div class="stats">
-<div class="stat-card">
-<h1 id="noticeCount">0</h1>
-<p>Notices</p>
-</div>
-<div class="stat-card">
-<h1 id="complaintCount">0</h1>
-<p>Total Complaints</p>
-</div>
-<div class="stat-card">
-<h1 id="resolvedCount">0</h1>
-<p>Resolved</p>
-</div>
-</div>
+  <h2>Leadership</h2>
+  <div id="leadershipContainer"></div>
+
+  <h2>Elected Body Members</h2>
+  <div id="bodyMembersContainer"></div>
+
+  <h2>Gram Panchayat Employees</h2>
+  <div id="employeesContainer"></div>
 </section>
 
+<!-- NOTICES -->
 <section class="section" id="notices">
-<h2>📢 Latest Notices</h2>
-<div id="noticeList"></div>
+  <h2>Latest Notices</h2>
+  <div id="noticeList"></div>
 </section>
 
-<section class="section" id="gallery">
-<h2>📸 Village Gallery</h2>
-<div class="gallery">
-<div id="galleryTrack" class="gallery-track"></div>
-</div>
+<!-- GALLERY -->
+<section class="section">
+  <h2>Village Gallery</h2>
+  <div class="gallery">
+    <div id="galleryTrack" class="gallery-track"></div>
+  </div>
 </section>
 
+<!-- CONTACT -->
 <section class="section" id="contact">
-<h2>📍 Contact Gram Panchayat</h2>
-<p>Taluka: Warora</p>
-<p>District: Chandrapur</p>
-<p>Phone: +91-9764444266</p>
-<p>Email: gpwandhali@gmail.com</p>
+  <h2>Contact Information</h2>
+  <p>Gram Panchayat Wandhali</p>
+  <p>Taluka: Warora, District: Chandrapur</p>
+  <p>Phone: +91-9764444266</p>
+  <p>Email: gpwandhali@gmail.com</p>
 </section>
 
-<footer class="footer">
-© 2026 Gram Panchayat Wandhali | Official Digital Portal
+<footer>
+  <p>© 2026 Gram Panchayat Wandhali</p>
+  <p>Official Government Portal | Maharashtra State</p>
 </footer>
 
 <script type="module" src="js/main.js"></script>
-
-<script>
-function switchLang(lang){
-if(lang==='mr'){
-alert("Marathi Version Coming Soon");
-}
-}
-</script>
 
 </body>
 </html>
