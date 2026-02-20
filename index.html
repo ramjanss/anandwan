@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gram Panchayat Wandhali - Official Website</title>
+<title>Gram Panchayat Wandhali - Official Portal</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -23,29 +23,9 @@ body{
   font-family:'Poppins',sans-serif;
   background:var(--light);
   color:#222;
-  transition:0.3s;
 }
 
 a{text-decoration:none}
-
-/* ================= ACCESS BAR ================= */
-.access-bar{
-  background:#000;
-  color:white;
-  padding:6px 20px;
-  display:flex;
-  justify-content:flex-end;
-  gap:15px;
-  font-size:13px;
-}
-
-.access-bar button{
-  background:white;
-  border:none;
-  padding:3px 8px;
-  cursor:pointer;
-  font-weight:600;
-}
 
 /* ================= HEADER ================= */
 .top-header{
@@ -68,58 +48,53 @@ a{text-decoration:none}
   height:55px;
 }
 
-/* ================= NAVBAR ================= */
 .navbar{
   background:white;
   padding:12px 30px;
   display:flex;
-  justify-content:space-between;
-  align-items:center;
+  justify-content:flex-end;
+  gap:25px;
   box-shadow:0 4px 10px rgba(0,0,0,0.08);
 }
 
-.nav-links{
-  display:flex;
-  gap:25px;
-}
-
-.nav-links a{
+.navbar a{
   color:var(--primary);
   font-weight:600;
-  font-size:14px;
 }
 
-.nav-links a:hover{
-  color:var(--accent);
-}
-
-/* Hamburger */
-.menu-toggle{
-  display:none;
-  font-size:22px;
-  cursor:pointer;
-}
-
-/* ================= HERO ================= */
+/* ================= HERO SLIDER ================= */
 .hero{
   position:relative;
-  height:500px;
-  background:url('assets/india-theme.jpg') center/cover no-repeat;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
+  height:520px;
+  overflow:hidden;
   color:white;
+}
+
+.slide{
+  position:absolute;
+  inset:0;
+  background-size:cover;
+  background-position:center;
+  opacity:0;
+  transition:opacity 1s ease-in-out;
+}
+
+.slide.active{
+  opacity:1;
 }
 
 .hero-overlay{
   position:absolute;
   inset:0;
-  background:linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.65));
+  background:rgba(0,0,0,0.65);
 }
 
 .hero-content{
-  position:relative;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
   z-index:2;
   max-width:800px;
 }
@@ -134,18 +109,16 @@ a{text-decoration:none}
   font-weight:600;
   margin:10px;
   display:inline-block;
-  box-shadow:0 8px 25px rgba(0,0,0,0.3);
-  transition:0.3s;
   color:white;
+  box-shadow:0 8px 20px rgba(0,0,0,0.3);
 }
 
-.hero-btn:hover{transform:translateY(-4px)}
 .btn-green{background:var(--secondary)}
 .btn-blue{background:var(--primary)}
 
 /* ================= SECTION ================= */
 .section{
-  max-width:1100px;
+  max-width:1200px;
   margin:auto;
   padding:60px 20px;
 }
@@ -153,47 +126,62 @@ a{text-decoration:none}
 .section-title{
   font-size:24px;
   font-weight:700;
-  margin-bottom:25px;
+  margin-bottom:30px;
   color:var(--primary);
   border-left:5px solid var(--accent);
   padding-left:12px;
+}
+
+/* ================= ANNOUNCEMENTS ================= */
+.announcement-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;
+}
+
+.announcement-card{
+  background:white;
+  padding:20px;
+  border-radius:8px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+.announcement-card h4{
+  margin-top:0;
+  color:var(--primary);
+}
+
+/* ================= STATS DASHBOARD ================= */
+.dashboard{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+
+.dashboard-card{
+  background:white;
+  padding:30px;
+  border-radius:10px;
+  text-align:center;
+  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+.dashboard-card h2{
+  color:var(--primary);
+  margin:0;
 }
 
 /* ================= FOOTER ================= */
 .footer{
   background:var(--primary);
   color:white;
-  padding:40px 20px;
-  margin-top:40px;
   text-align:center;
+  padding:30px;
+  margin-top:40px;
 }
 
-/* ================= MOBILE ================= */
 @media(max-width:768px){
-
-  .nav-links{
-    display:none;
-    flex-direction:column;
-    background:white;
-    position:absolute;
-    top:120px;
-    right:20px;
-    padding:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.2);
-  }
-
-  .nav-links.active{
-    display:flex;
-  }
-
-  .menu-toggle{
-    display:block;
-  }
-
-  .hero h1{
-    font-size:28px;
-  }
-
+  .hero h1{font-size:26px}
 }
 
 </style>
@@ -201,92 +189,112 @@ a{text-decoration:none}
 
 <body>
 
-<!-- ACCESS BAR -->
-<div class="access-bar">
-  <button onclick="increaseFont()">A+</button>
-  <button onclick="decreaseFont()">A-</button>
-  <button onclick="toggleContrast()">High Contrast</button>
-  <button onclick="toggleLanguage()">मराठी</button>
-</div>
-
 <!-- HEADER -->
 <div class="top-header">
   <div class="header-left">
     <img src="assets/india-emblem.png">
     <div>
-      <strong id="govTitle">Government of Maharashtra</strong><br>
-      <small id="siteSub">Gram Panchayat Wandhali - Official Website</small>
+      <strong>Government of Maharashtra</strong><br>
+      <small>Gram Panchayat Wandhali</small>
     </div>
   </div>
   <img src="assets/maharashtra-logo.png" height="55">
 </div>
 
-<!-- NAVBAR -->
 <div class="navbar">
-  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
-
-  <div class="nav-links" id="navLinks">
-    <a href="#">Home</a>
-    <a href="complaint.html">Complaint</a>
-    <a href="track.html">Track</a>
-    <a href="#">Notices</a>
-    <a href="#">Contact</a>
-  </div>
+  <a href="#">Home</a>
+  <a href="complaint.html">Complaint</a>
+  <a href="track.html">Track</a>
+  <a href="#">Notices</a>
+  <a href="#">Contact</a>
 </div>
 
-<!-- HERO -->
+<!-- HERO SLIDER -->
 <section class="hero">
+
+  <div class="slide active" style="background-image:url('assets/slide1.jpg')"></div>
+  <div class="slide" style="background-image:url('assets/slide2.jpg')"></div>
+  <div class="slide" style="background-image:url('assets/slide3.jpg')"></div>
+
   <div class="hero-overlay"></div>
+
   <div class="hero-content">
-    <h1 id="heroTitle">Welcome to Gram Panchayat Wandhali</h1>
-    <p id="heroDesc">Empowering Rural Development • Transparent Governance • Citizen First</p>
+    <h1>Empowering Rural Development</h1>
+    <p>Transparent Governance • Citizen First • Digital Village</p>
     <a href="complaint.html" class="hero-btn btn-green">Register Complaint</a>
     <a href="track.html" class="hero-btn btn-blue">Track Complaint</a>
   </div>
+
 </section>
 
+<!-- ANNOUNCEMENTS -->
 <section class="section">
-  <h2 class="section-title">📊 Live Transparency</h2>
-  <p>Dynamic data connected from Firebase.</p>
+  <h2 class="section-title">📢 Official Announcements</h2>
+
+  <div class="announcement-grid">
+
+    <div class="announcement-card">
+      <h4>Gram Sabha Meeting</h4>
+      <p>Village meeting scheduled on 25th January at Panchayat Hall.</p>
+    </div>
+
+    <div class="announcement-card">
+      <h4>Water Supply Maintenance</h4>
+      <p>Water supply will remain closed from 9AM to 2PM tomorrow.</p>
+    </div>
+
+    <div class="announcement-card">
+      <h4>Government Scheme Registration</h4>
+      <p>Citizens can apply for housing and sanitation schemes online.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- VILLAGE DASHBOARD -->
+<section class="section">
+  <h2 class="section-title">📊 Village Statistics Dashboard</h2>
+
+  <div class="dashboard">
+
+    <div class="dashboard-card">
+      <h2>3,250</h2>
+      <p>Total Population</p>
+    </div>
+
+    <div class="dashboard-card">
+      <h2>720</h2>
+      <p>Total Households</p>
+    </div>
+
+    <div class="dashboard-card">
+      <h2>98%</h2>
+      <p>Water Coverage</p>
+    </div>
+
+    <div class="dashboard-card">
+      <h2>100%</h2>
+      <p>Toilet Coverage</p>
+    </div>
+
+  </div>
 </section>
 
 <div class="footer">
   © 2026 Gram Panchayat Wandhali • Government of Maharashtra
 </div>
 
-<script type="module" src="js/main.js"></script>
-
 <script>
 
-/* MOBILE MENU */
-function toggleMenu(){
-  document.getElementById("navLinks").classList.toggle("active");
-}
+/* HERO AUTO SLIDER */
+let slides=document.querySelectorAll(".slide");
+let index=0;
 
-/* FONT */
-let currentFont=16;
-function increaseFont(){currentFont++;document.body.style.fontSize=currentFont+"px"}
-function decreaseFont(){currentFont--;document.body.style.fontSize=currentFont+"px"}
-
-/* CONTRAST */
-function toggleContrast(){document.body.style.background="#000";document.body.style.color="#fff"}
-
-/* LANGUAGE */
-let marathi=false;
-function toggleLanguage(){
-  marathi=!marathi;
-  if(marathi){
-    document.getElementById("govTitle").innerText="महाराष्ट्र शासन";
-    document.getElementById("siteSub").innerText="ग्रामपंचायत वंधली - अधिकृत संकेतस्थळ";
-    document.getElementById("heroTitle").innerText="ग्रामपंचायत वंधली मध्ये आपले स्वागत आहे";
-    document.getElementById("heroDesc").innerText="ग्रामीण विकास • पारदर्शक प्रशासन • नागरिक प्रथम";
-  }else{
-    document.getElementById("govTitle").innerText="Government of Maharashtra";
-    document.getElementById("siteSub").innerText="Gram Panchayat Wandhali - Official Website";
-    document.getElementById("heroTitle").innerText="Welcome to Gram Panchayat Wandhali";
-    document.getElementById("heroDesc").innerText="Empowering Rural Development • Transparent Governance • Citizen First";
-  }
-}
+setInterval(()=>{
+  slides[index].classList.remove("active");
+  index=(index+1)%slides.length;
+  slides[index].classList.add("active");
+},4000);
 
 </script>
 
