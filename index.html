@@ -9,26 +9,53 @@
 
 <style>
 
-/* ================= GLOBAL ================= */
+/* ================= ROOT ================= */
+:root{
+  --primary:#1e3a8a;
+  --secondary:#16a34a;
+  --accent:#f97316;
+  --light:#f4f6f9;
+}
 
+/* ================= GLOBAL ================= */
 body{
   margin:0;
   font-family:'Poppins',sans-serif;
-  background:#f4f6f9;
+  background:var(--light);
   color:#222;
+  transition:0.3s;
 }
 
 a{text-decoration:none}
 
-/* ================= HEADER ================= */
+/* ================= ACCESSIBILITY BAR ================= */
+.access-bar{
+  background:#000;
+  color:white;
+  padding:6px 20px;
+  display:flex;
+  justify-content:flex-end;
+  gap:15px;
+  font-size:13px;
+}
 
+.access-bar button{
+  background:white;
+  border:none;
+  padding:3px 8px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+/* ================= HEADER ================= */
 .top-header{
-  background:#1e3a8a;
+  background:var(--primary);
   color:white;
   padding:15px 40px;
   display:flex;
   justify-content:space-between;
   align-items:center;
+  flex-wrap:wrap;
 }
 
 .header-left{
@@ -46,18 +73,11 @@ a{text-decoration:none}
   font-size:18px;
 }
 
-.header-left p{
-  margin:0;
-  font-size:13px;
-  opacity:0.9;
-}
-
 .header-right img{
   height:60px;
 }
 
 /* ================= NAVBAR ================= */
-
 .navbar{
   background:white;
   padding:12px 40px;
@@ -65,20 +85,20 @@ a{text-decoration:none}
   justify-content:flex-end;
   gap:30px;
   box-shadow:0 4px 10px rgba(0,0,0,0.08);
+  flex-wrap:wrap;
 }
 
 .navbar a{
-  color:#1e3a8a;
+  color:var(--primary);
   font-weight:600;
   font-size:14px;
 }
 
 .navbar a:hover{
-  color:#f97316;
+  color:var(--accent);
 }
 
 /* ================= HERO ================= */
-
 .hero{
   position:relative;
   height:520px;
@@ -103,7 +123,7 @@ a{text-decoration:none}
 }
 
 .hero h1{
-  font-size:52px;
+  font-size:48px;
   margin-bottom:15px;
 }
 
@@ -127,11 +147,10 @@ a{text-decoration:none}
   transform:translateY(-4px);
 }
 
-.btn-green{background:#16a34a;}
-.btn-blue{background:#1e3a8a;}
+.btn-green{background:var(--secondary);}
+.btn-blue{background:var(--primary);}
 
-/* ================= NOTICE TICKER ================= */
-
+/* ================= NOTICE ================= */
 .notice-ticker{
   background:#ffcc00;
   padding:10px;
@@ -141,7 +160,6 @@ a{text-decoration:none}
 }
 
 /* ================= SECTION ================= */
-
 .section{
   max-width:1200px;
   margin:auto;
@@ -149,16 +167,15 @@ a{text-decoration:none}
 }
 
 .section-title{
-  font-size:28px;
+  font-size:26px;
   font-weight:700;
-  margin-bottom:40px;
-  color:#1e3a8a;
-  border-left:5px solid #f97316;
+  margin-bottom:30px;
+  color:var(--primary);
+  border-left:5px solid var(--accent);
   padding-left:12px;
 }
 
 /* ================= STATS ================= */
-
 .stats{
   display:flex;
   gap:20px;
@@ -176,105 +193,44 @@ a{text-decoration:none}
 }
 
 .stat-card h1{
-  color:#1e3a8a;
-  margin:0;
-}
-
-/* ================= LEADERSHIP ================= */
-
-.leadership-grid{
-  display:flex;
-  gap:30px;
-  flex-wrap:wrap;
-}
-
-.leader-card{
-  background:white;
-  padding:25px;
-  border-radius:10px;
-  width:260px;
-  text-align:center;
-  box-shadow:0 10px 25px rgba(0,0,0,0.08);
-}
-
-.leader-card img{
-  width:140px;
-  height:160px;
-  object-fit:cover;
-  border-radius:8px;
-  margin-bottom:10px;
-}
-
-/* ================= MEMBERS ================= */
-
-.member-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:20px;
-}
-
-.member-card{
-  background:white;
-  padding:20px;
-  border-radius:10px;
-  text-align:center;
-  box-shadow:0 8px 20px rgba(0,0,0,0.08);
-}
-
-.member-card img{
-  width:100px;
-  height:100px;
-  border-radius:50%;
-  object-fit:cover;
-  margin-bottom:10px;
-}
-
-/* ================= NOTICE GRID ================= */
-
-.notice-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:20px;
-}
-
-.notice-card{
-  background:white;
-  padding:20px;
-  border-radius:10px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.08);
-}
-
-/* ================= SERVICES ================= */
-
-.services-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:20px;
-}
-
-.service-card{
-  background:#1e3a8a;
-  color:white;
-  padding:25px;
-  border-radius:10px;
-  font-weight:600;
-  text-align:center;
-  transition:0.3s;
-}
-
-.service-card:hover{
-  background:#f97316;
-  transform:translateY(-5px);
+  color:var(--primary);
 }
 
 /* ================= FOOTER ================= */
-
 .footer{
-  background:#1e3a8a;
+  background:var(--primary);
   color:white;
-  text-align:center;
-  padding:25px;
+  padding:40px 20px;
   margin-top:40px;
+}
+
+.footer-links{
+  display:flex;
+  justify-content:center;
+  gap:40px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
+
+.footer-links a{
+  color:white;
+  font-size:14px;
+}
+
+.footer-bottom{
+  text-align:center;
+  font-size:13px;
+  opacity:0.8;
+}
+
+/* ================= HIGH CONTRAST ================= */
+.high-contrast{
+  background:black !important;
+  color:white !important;
+}
+
+.high-contrast .section-title{
+  color:#00ffcc !important;
 }
 
 </style>
@@ -282,16 +238,23 @@ a{text-decoration:none}
 
 <body>
 
+<!-- ACCESSIBILITY BAR -->
+<div class="access-bar">
+  <button onclick="increaseFont()">A+</button>
+  <button onclick="decreaseFont()">A-</button>
+  <button onclick="toggleContrast()">High Contrast</button>
+  <button onclick="toggleLanguage()">मराठी</button>
+</div>
+
 <!-- HEADER -->
 <div class="top-header">
   <div class="header-left">
     <img src="assets/india-emblem.png">
     <div>
-      <h2>Government of Maharashtra</h2>
-      <p>Gram Panchayat Wandhali - Official Website</p>
+      <h2 id="govTitle">Government of Maharashtra</h2>
+      <p id="siteSub">Gram Panchayat Wandhali - Official Website</p>
     </div>
   </div>
-
   <div class="header-right">
     <img src="assets/maharashtra-logo.png">
   </div>
@@ -310,23 +273,15 @@ a{text-decoration:none}
 <section class="hero">
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <h1>Welcome to Gram Panchayat Wandhali</h1>
-    <p>Empowering Rural Development • Transparent Governance • Citizen First</p>
-
-    <a href="complaint.html" class="hero-btn btn-green">
-      Register Complaint
-    </a>
-
-    <a href="track.html" class="hero-btn btn-blue">
-      Track Complaint
-    </a>
+    <h1 id="heroTitle">Welcome to Gram Panchayat Wandhali</h1>
+    <p id="heroDesc">Empowering Rural Development • Transparent Governance • Citizen First</p>
+    <a href="complaint.html" class="hero-btn btn-green">Register Complaint</a>
+    <a href="track.html" class="hero-btn btn-blue">Track Complaint</a>
   </div>
 </section>
 
 <div class="notice-ticker">
-  <marquee>
-    📢 Gram Sabha Meeting on 25th January | Water Supply Maintenance | Government Scheme Registration Open
-  </marquee>
+  <marquee>📢 Gram Sabha Meeting | Water Supply Notice | Government Scheme Registration Open</marquee>
 </div>
 
 <!-- STATS -->
@@ -348,47 +303,64 @@ a{text-decoration:none}
   </div>
 </section>
 
-<!-- LEADERSHIP -->
-<section class="section">
-  <h2 class="section-title">🏛 Leadership</h2>
-  <div class="leadership-grid" id="leadersContainer"></div>
-</section>
-
-<!-- BODY MEMBERS -->
-<section class="section">
-  <h2 class="section-title">🗳 Elected Body Members</h2>
-  <div class="member-grid" id="bodyMembersContainer"></div>
-</section>
-
-<!-- EMPLOYEES -->
-<section class="section">
-  <h2 class="section-title">🏢 Gram Panchayat Employees</h2>
-  <div class="member-grid" id="employeesContainer"></div>
-</section>
-
-<!-- NOTICES -->
-<section class="section" id="notices">
-  <h2 class="section-title">📢 Latest Notices</h2>
-  <div class="notice-grid" id="noticeList"></div>
-</section>
-
-<!-- SERVICES -->
-<section class="section">
-  <h2 class="section-title">⚙ Citizen Services</h2>
-  <div class="services-grid">
-    <a href="complaint.html" class="service-card">📝 Register Complaint</a>
-    <a href="track.html" class="service-card">🔍 Track Complaint</a>
-    <a href="#" class="service-card">📄 Download Forms</a>
-    <a href="#" class="service-card">📢 View Notices</a>
-  </div>
-</section>
-
 <!-- FOOTER -->
 <div class="footer" id="contact">
-  © 2026 Gram Panchayat Wandhali • Government of Maharashtra
+
+  <div class="footer-links">
+    <a href="#">RTI</a>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms of Use</a>
+    <a href="#">Accessibility Statement</a>
+  </div>
+
+  <div class="footer-bottom">
+    © 2026 Gram Panchayat Wandhali • Government of Maharashtra
+  </div>
+
 </div>
 
 <script type="module" src="js/main.js"></script>
+
+<script>
+
+/* ================= FONT CONTROL ================= */
+let currentFont = 16;
+
+function increaseFont(){
+  currentFont += 1;
+  document.body.style.fontSize = currentFont + "px";
+}
+
+function decreaseFont(){
+  currentFont -= 1;
+  document.body.style.fontSize = currentFont + "px";
+}
+
+/* ================= CONTRAST ================= */
+function toggleContrast(){
+  document.body.classList.toggle("high-contrast");
+}
+
+/* ================= LANGUAGE ================= */
+let marathi = false;
+
+function toggleLanguage(){
+  marathi = !marathi;
+
+  if(marathi){
+    document.getElementById("govTitle").innerText = "महाराष्ट्र शासन";
+    document.getElementById("siteSub").innerText = "ग्रामपंचायत वंधली - अधिकृत संकेतस्थळ";
+    document.getElementById("heroTitle").innerText = "ग्रामपंचायत वंधली मध्ये आपले स्वागत आहे";
+    document.getElementById("heroDesc").innerText = "ग्रामीण विकास • पारदर्शक प्रशासन • नागरिक प्रथम";
+  }else{
+    document.getElementById("govTitle").innerText = "Government of Maharashtra";
+    document.getElementById("siteSub").innerText = "Gram Panchayat Wandhali - Official Website";
+    document.getElementById("heroTitle").innerText = "Welcome to Gram Panchayat Wandhali";
+    document.getElementById("heroDesc").innerText = "Empowering Rural Development • Transparent Governance • Citizen First";
+  }
+}
+
+</script>
 
 </body>
 </html>
