@@ -88,27 +88,39 @@ body{
 }
 
 /* ================= HERO ================= */
-.hero{
-  background:white;
-  text-align:center;
-  padding:60px 20px;
-}
-
-.hero h2{
-  font-size:28px;
-  margin-bottom:15px;
-}
-
-.hero-buttons a{
-  background:var(--gov-blue);
-  color:white;
-  padding:12px 22px;
+.hero-btn {
+  padding:14px 32px;
   border-radius:6px;
   text-decoration:none;
-  margin:5px;
+  color:white;
+  font-weight:600;
+  margin:10px;
   display:inline-block;
+  box-shadow:0 8px 25px rgba(0,0,0,0.3);
+  transition:0.3s ease;
 }
 
+.hero-btn:hover {
+  transform:translateY(-4px);
+}
+
+.hero-green {
+  background:#16a34a;
+}
+
+.hero-blue {
+  background:#1e3a8a;
+}
+
+  .notice-ticker {
+  background:#ffcc00;
+  padding:10px;
+  font-weight:600;
+  color:#000;
+  border-top:2px solid #eab308;
+  border-bottom:2px solid #eab308;
+}
+  
 /* ================= LEADERSHIP ================= */
 .leadership-grid{
   display:flex;
@@ -238,8 +250,8 @@ footer{
 <!-- HERO -->
 <section class="hero" style="
   position: relative;
-  background: url('assets/hero-bg.jpg') center/cover no-repeat;
-  height: 500px;
+  background: url('assets/india-theme.jpg') center/cover no-repeat;
+  height: 520px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -247,24 +259,23 @@ footer{
   color: white;
 ">
 
-  <!-- Dark Overlay -->
+  <!-- Premium Overlay -->
   <div style="
     position:absolute;
     inset:0;
     background: linear-gradient(
-      rgba(0,0,0,0.65),
-      rgba(0,0,0,0.55)
+      rgba(0,0,0,0.75),
+      rgba(0,0,0,0.65)
     );
   "></div>
 
-  <!-- Content -->
-  <div style="position:relative; z-index:2; max-width:800px; padding:20px;">
+  <div style="position:relative; z-index:2; max-width:900px; padding:20px;">
 
     <h1 style="
-      font-size:48px;
+      font-size:52px;
       font-weight:700;
-      letter-spacing:1px;
       margin-bottom:15px;
+      letter-spacing:1px;
     ">
       Welcome to Gram Panchayat Wandhali
     </h1>
@@ -274,54 +285,26 @@ footer{
       margin-bottom:35px;
       opacity:0.95;
     ">
-      Transparent Governance • Digital Services • Citizen First
+      Empowering Rural Development • Transparent Governance • Citizen First
     </p>
 
     <div>
-      <a href="complaint.html" style="
-        background:#16a34a;
-        padding:14px 32px;
-        border-radius:6px;
-        text-decoration:none;
-        color:white;
-        font-weight:600;
-        margin:10px;
-        display:inline-block;
-        box-shadow:0 8px 20px rgba(0,0,0,0.3);
-        transition:0.3s;
-      "
-      onmouseover="this.style.transform='translateY(-3px)'"
-      onmouseout="this.style.transform='translateY(0)'">
+      <a href="complaint.html" class="hero-btn hero-green">
         Register Complaint
       </a>
 
-      <a href="track.html" style="
-        background:#1e3a8a;
-        padding:14px 32px;
-        border-radius:6px;
-        text-decoration:none;
-        color:white;
-        font-weight:600;
-        margin:10px;
-        display:inline-block;
-        box-shadow:0 8px 20px rgba(0,0,0,0.3);
-        transition:0.3s;
-      "
-      onmouseover="this.style.transform='translateY(-3px)'"
-      onmouseout="this.style.transform='translateY(0)'">
+      <a href="track.html" class="hero-btn hero-blue">
         Track Complaint
       </a>
     </div>
 
   </div>
-
 </section>
-
-<!-- Thin Tricolor Strip -->
-<div style="
-  height:5px;
-  background: linear-gradient(to right, #FF9933 33%, white 33%, white 66%, #138808 66%);
-"></div>
+<div class="notice-ticker">
+  <marquee>
+    📢 Latest Notice: Gram Sabha Meeting on 25th January | Water Supply Maintenance | Government Scheme Registration Open
+  </marquee>
+</div>
 
 <!-- BODY MEMBERS -->
 <section class="section">
