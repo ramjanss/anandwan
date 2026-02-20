@@ -28,7 +28,7 @@ body{
 
 a{text-decoration:none}
 
-/* ================= ACCESSIBILITY BAR ================= */
+/* ================= ACCESS BAR ================= */
 .access-bar{
   background:#000;
   color:white;
@@ -51,7 +51,7 @@ a{text-decoration:none}
 .top-header{
   background:var(--primary);
   color:white;
-  padding:15px 40px;
+  padding:15px 30px;
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -65,43 +65,45 @@ a{text-decoration:none}
 }
 
 .header-left img{
-  height:60px;
-}
-
-.header-left h2{
-  margin:0;
-  font-size:18px;
-}
-
-.header-right img{
-  height:60px;
+  height:55px;
 }
 
 /* ================= NAVBAR ================= */
 .navbar{
   background:white;
-  padding:12px 40px;
+  padding:12px 30px;
   display:flex;
-  justify-content:flex-end;
-  gap:30px;
+  justify-content:space-between;
+  align-items:center;
   box-shadow:0 4px 10px rgba(0,0,0,0.08);
-  flex-wrap:wrap;
 }
 
-.navbar a{
+.nav-links{
+  display:flex;
+  gap:25px;
+}
+
+.nav-links a{
   color:var(--primary);
   font-weight:600;
   font-size:14px;
 }
 
-.navbar a:hover{
+.nav-links a:hover{
   color:var(--accent);
+}
+
+/* Hamburger */
+.menu-toggle{
+  display:none;
+  font-size:22px;
+  cursor:pointer;
 }
 
 /* ================= HERO ================= */
 .hero{
   position:relative;
-  height:520px;
+  height:500px;
   background:url('assets/india-theme.jpg') center/cover no-repeat;
   display:flex;
   align-items:center;
@@ -119,21 +121,15 @@ a{text-decoration:none}
 .hero-content{
   position:relative;
   z-index:2;
-  max-width:900px;
+  max-width:800px;
 }
 
 .hero h1{
-  font-size:48px;
-  margin-bottom:15px;
-}
-
-.hero p{
-  font-size:18px;
-  margin-bottom:35px;
+  font-size:42px;
 }
 
 .hero-btn{
-  padding:14px 32px;
+  padding:12px 28px;
   border-radius:6px;
   font-weight:600;
   margin:10px;
@@ -143,57 +139,24 @@ a{text-decoration:none}
   color:white;
 }
 
-.hero-btn:hover{
-  transform:translateY(-4px);
-}
-
-.btn-green{background:var(--secondary);}
-.btn-blue{background:var(--primary);}
-
-/* ================= NOTICE ================= */
-.notice-ticker{
-  background:#ffcc00;
-  padding:10px;
-  font-weight:600;
-  border-top:2px solid #eab308;
-  border-bottom:2px solid #eab308;
-}
+.hero-btn:hover{transform:translateY(-4px)}
+.btn-green{background:var(--secondary)}
+.btn-blue{background:var(--primary)}
 
 /* ================= SECTION ================= */
 .section{
-  max-width:1200px;
+  max-width:1100px;
   margin:auto;
   padding:60px 20px;
 }
 
 .section-title{
-  font-size:26px;
+  font-size:24px;
   font-weight:700;
-  margin-bottom:30px;
+  margin-bottom:25px;
   color:var(--primary);
   border-left:5px solid var(--accent);
   padding-left:12px;
-}
-
-/* ================= STATS ================= */
-.stats{
-  display:flex;
-  gap:20px;
-  flex-wrap:wrap;
-}
-
-.stat-card{
-  flex:1;
-  min-width:220px;
-  background:white;
-  padding:30px;
-  border-radius:10px;
-  text-align:center;
-  box-shadow:0 8px 20px rgba(0,0,0,0.08);
-}
-
-.stat-card h1{
-  color:var(--primary);
 }
 
 /* ================= FOOTER ================= */
@@ -202,35 +165,35 @@ a{text-decoration:none}
   color:white;
   padding:40px 20px;
   margin-top:40px;
-}
-
-.footer-links{
-  display:flex;
-  justify-content:center;
-  gap:40px;
-  flex-wrap:wrap;
-  margin-bottom:20px;
-}
-
-.footer-links a{
-  color:white;
-  font-size:14px;
-}
-
-.footer-bottom{
   text-align:center;
-  font-size:13px;
-  opacity:0.8;
 }
 
-/* ================= HIGH CONTRAST ================= */
-.high-contrast{
-  background:black !important;
-  color:white !important;
-}
+/* ================= MOBILE ================= */
+@media(max-width:768px){
 
-.high-contrast .section-title{
-  color:#00ffcc !important;
+  .nav-links{
+    display:none;
+    flex-direction:column;
+    background:white;
+    position:absolute;
+    top:120px;
+    right:20px;
+    padding:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+  }
+
+  .nav-links.active{
+    display:flex;
+  }
+
+  .menu-toggle{
+    display:block;
+  }
+
+  .hero h1{
+    font-size:28px;
+  }
+
 }
 
 </style>
@@ -238,7 +201,7 @@ a{text-decoration:none}
 
 <body>
 
-<!-- ACCESSIBILITY BAR -->
+<!-- ACCESS BAR -->
 <div class="access-bar">
   <button onclick="increaseFont()">A+</button>
   <button onclick="decreaseFont()">A-</button>
@@ -251,22 +214,24 @@ a{text-decoration:none}
   <div class="header-left">
     <img src="assets/india-emblem.png">
     <div>
-      <h2 id="govTitle">Government of Maharashtra</h2>
-      <p id="siteSub">Gram Panchayat Wandhali - Official Website</p>
+      <strong id="govTitle">Government of Maharashtra</strong><br>
+      <small id="siteSub">Gram Panchayat Wandhali - Official Website</small>
     </div>
   </div>
-  <div class="header-right">
-    <img src="assets/maharashtra-logo.png">
-  </div>
+  <img src="assets/maharashtra-logo.png" height="55">
 </div>
 
 <!-- NAVBAR -->
 <div class="navbar">
-  <a href="#">Home</a>
-  <a href="complaint.html">Complaint</a>
-  <a href="track.html">Track</a>
-  <a href="#notices">Notices</a>
-  <a href="#contact">Contact</a>
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+  <div class="nav-links" id="navLinks">
+    <a href="#">Home</a>
+    <a href="complaint.html">Complaint</a>
+    <a href="track.html">Track</a>
+    <a href="#">Notices</a>
+    <a href="#">Contact</a>
+  </div>
 </div>
 
 <!-- HERO -->
@@ -280,83 +245,46 @@ a{text-decoration:none}
   </div>
 </section>
 
-<div class="notice-ticker">
-  <marquee>📢 Gram Sabha Meeting | Water Supply Notice | Government Scheme Registration Open</marquee>
-</div>
-
-<!-- STATS -->
 <section class="section">
   <h2 class="section-title">📊 Live Transparency</h2>
-  <div class="stats">
-    <div class="stat-card">
-      <h1 id="noticeCount">0</h1>
-      <p>Notices</p>
-    </div>
-    <div class="stat-card">
-      <h1 id="complaintCount">0</h1>
-      <p>Total Complaints</p>
-    </div>
-    <div class="stat-card">
-      <h1 id="resolvedCount">0</h1>
-      <p>Resolved</p>
-    </div>
-  </div>
+  <p>Dynamic data connected from Firebase.</p>
 </section>
 
-<!-- FOOTER -->
-<div class="footer" id="contact">
-
-  <div class="footer-links">
-    <a href="#">RTI</a>
-    <a href="#">Privacy Policy</a>
-    <a href="#">Terms of Use</a>
-    <a href="#">Accessibility Statement</a>
-  </div>
-
-  <div class="footer-bottom">
-    © 2026 Gram Panchayat Wandhali • Government of Maharashtra
-  </div>
-
+<div class="footer">
+  © 2026 Gram Panchayat Wandhali • Government of Maharashtra
 </div>
 
 <script type="module" src="js/main.js"></script>
 
 <script>
 
-/* ================= FONT CONTROL ================= */
-let currentFont = 16;
-
-function increaseFont(){
-  currentFont += 1;
-  document.body.style.fontSize = currentFont + "px";
+/* MOBILE MENU */
+function toggleMenu(){
+  document.getElementById("navLinks").classList.toggle("active");
 }
 
-function decreaseFont(){
-  currentFont -= 1;
-  document.body.style.fontSize = currentFont + "px";
-}
+/* FONT */
+let currentFont=16;
+function increaseFont(){currentFont++;document.body.style.fontSize=currentFont+"px"}
+function decreaseFont(){currentFont--;document.body.style.fontSize=currentFont+"px"}
 
-/* ================= CONTRAST ================= */
-function toggleContrast(){
-  document.body.classList.toggle("high-contrast");
-}
+/* CONTRAST */
+function toggleContrast(){document.body.style.background="#000";document.body.style.color="#fff"}
 
-/* ================= LANGUAGE ================= */
-let marathi = false;
-
+/* LANGUAGE */
+let marathi=false;
 function toggleLanguage(){
-  marathi = !marathi;
-
+  marathi=!marathi;
   if(marathi){
-    document.getElementById("govTitle").innerText = "महाराष्ट्र शासन";
-    document.getElementById("siteSub").innerText = "ग्रामपंचायत वंधली - अधिकृत संकेतस्थळ";
-    document.getElementById("heroTitle").innerText = "ग्रामपंचायत वंधली मध्ये आपले स्वागत आहे";
-    document.getElementById("heroDesc").innerText = "ग्रामीण विकास • पारदर्शक प्रशासन • नागरिक प्रथम";
+    document.getElementById("govTitle").innerText="महाराष्ट्र शासन";
+    document.getElementById("siteSub").innerText="ग्रामपंचायत वंधली - अधिकृत संकेतस्थळ";
+    document.getElementById("heroTitle").innerText="ग्रामपंचायत वंधली मध्ये आपले स्वागत आहे";
+    document.getElementById("heroDesc").innerText="ग्रामीण विकास • पारदर्शक प्रशासन • नागरिक प्रथम";
   }else{
-    document.getElementById("govTitle").innerText = "Government of Maharashtra";
-    document.getElementById("siteSub").innerText = "Gram Panchayat Wandhali - Official Website";
-    document.getElementById("heroTitle").innerText = "Welcome to Gram Panchayat Wandhali";
-    document.getElementById("heroDesc").innerText = "Empowering Rural Development • Transparent Governance • Citizen First";
+    document.getElementById("govTitle").innerText="Government of Maharashtra";
+    document.getElementById("siteSub").innerText="Gram Panchayat Wandhali - Official Website";
+    document.getElementById("heroTitle").innerText="Welcome to Gram Panchayat Wandhali";
+    document.getElementById("heroDesc").innerText="Empowering Rural Development • Transparent Governance • Citizen First";
   }
 }
 
