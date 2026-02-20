@@ -9,7 +9,8 @@
 
 <style>
 
-/* ===== GLOBAL ===== */
+/* ================= GLOBAL ================= */
+
 body{
   margin:0;
   font-family:'Poppins',sans-serif;
@@ -17,53 +18,53 @@ body{
   color:#222;
 }
 
-a{
-  text-decoration:none;
-}
+a{text-decoration:none}
 
-/* ===== TOP HEADER ===== */
+/* ================= HEADER ================= */
+
 .top-header{
   background:#1e3a8a;
   color:white;
-  padding:15px 30px;
+  padding:15px 40px;
   display:flex;
   justify-content:space-between;
   align-items:center;
 }
 
-.top-header-left{
+.header-left{
   display:flex;
   align-items:center;
   gap:15px;
 }
 
-.top-header-left img{
-  height:55px;
+.header-left img{
+  height:60px;
 }
 
-.top-header h2{
+.header-left h2{
   margin:0;
   font-size:18px;
 }
 
-.top-header p{
+.header-left p{
   margin:0;
   font-size:13px;
   opacity:0.9;
 }
 
-.top-header-right img{
-  height:55px;
+.header-right img{
+  height:60px;
 }
 
-/* ===== NAVBAR ===== */
+/* ================= NAVBAR ================= */
+
 .navbar{
-  background:#ffffff;
-  padding:12px 30px;
+  background:white;
+  padding:12px 40px;
   display:flex;
   justify-content:flex-end;
-  gap:25px;
-  box-shadow:0 3px 10px rgba(0,0,0,0.08);
+  gap:30px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.08);
 }
 
 .navbar a{
@@ -76,7 +77,8 @@ a{
   color:#f97316;
 }
 
-/* ===== HERO ===== */
+/* ================= HERO ================= */
+
 .hero{
   position:relative;
   height:520px;
@@ -98,7 +100,6 @@ a{
   position:relative;
   z-index:2;
   max-width:900px;
-  padding:20px;
 }
 
 .hero h1{
@@ -114,27 +115,23 @@ a{
 .hero-btn{
   padding:14px 32px;
   border-radius:6px;
-  color:white;
   font-weight:600;
   margin:10px;
   display:inline-block;
   box-shadow:0 8px 25px rgba(0,0,0,0.3);
-  transition:0.3s ease;
+  transition:0.3s;
+  color:white;
 }
 
 .hero-btn:hover{
   transform:translateY(-4px);
 }
 
-.btn-green{
-  background:#16a34a;
-}
+.btn-green{background:#16a34a;}
+.btn-blue{background:#1e3a8a;}
 
-.btn-blue{
-  background:#1e3a8a;
-}
+/* ================= NOTICE TICKER ================= */
 
-/* ===== NOTICE BAR ===== */
 .notice-ticker{
   background:#ffcc00;
   padding:10px;
@@ -143,7 +140,8 @@ a{
   border-bottom:2px solid #eab308;
 }
 
-/* ===== SECTION ===== */
+/* ================= SECTION ================= */
+
 .section{
   max-width:1200px;
   margin:auto;
@@ -159,7 +157,8 @@ a{
   padding-left:12px;
 }
 
-/* ===== STATS ===== */
+/* ================= STATS ================= */
+
 .stats{
   display:flex;
   gap:20px;
@@ -181,7 +180,95 @@ a{
   margin:0;
 }
 
-/* ===== FOOTER ===== */
+/* ================= LEADERSHIP ================= */
+
+.leadership-grid{
+  display:flex;
+  gap:30px;
+  flex-wrap:wrap;
+}
+
+.leader-card{
+  background:white;
+  padding:25px;
+  border-radius:10px;
+  width:260px;
+  text-align:center;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.leader-card img{
+  width:140px;
+  height:160px;
+  object-fit:cover;
+  border-radius:8px;
+  margin-bottom:10px;
+}
+
+/* ================= MEMBERS ================= */
+
+.member-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+}
+
+.member-card{
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  text-align:center;
+  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+.member-card img{
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  object-fit:cover;
+  margin-bottom:10px;
+}
+
+/* ================= NOTICE GRID ================= */
+
+.notice-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:20px;
+}
+
+.notice-card{
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+/* ================= SERVICES ================= */
+
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+
+.service-card{
+  background:#1e3a8a;
+  color:white;
+  padding:25px;
+  border-radius:10px;
+  font-weight:600;
+  text-align:center;
+  transition:0.3s;
+}
+
+.service-card:hover{
+  background:#f97316;
+  transform:translateY(-5px);
+}
+
+/* ================= FOOTER ================= */
+
 .footer{
   background:#1e3a8a;
   color:white;
@@ -195,9 +282,9 @@ a{
 
 <body>
 
-<!-- ===== TOP HEADER ===== -->
+<!-- HEADER -->
 <div class="top-header">
-  <div class="top-header-left">
+  <div class="header-left">
     <img src="assets/india-emblem.png">
     <div>
       <h2>Government of Maharashtra</h2>
@@ -205,24 +292,23 @@ a{
     </div>
   </div>
 
-  <div class="top-header-right">
+  <div class="header-right">
     <img src="assets/maharashtra-logo.png">
   </div>
 </div>
 
-<!-- ===== NAVBAR ===== -->
+<!-- NAVBAR -->
 <div class="navbar">
   <a href="#">Home</a>
   <a href="complaint.html">Complaint</a>
   <a href="track.html">Track</a>
-  <a href="#">Notices</a>
-  <a href="#">Contact</a>
+  <a href="#notices">Notices</a>
+  <a href="#contact">Contact</a>
 </div>
 
-<!-- ===== HERO ===== -->
+<!-- HERO -->
 <section class="hero">
   <div class="hero-overlay"></div>
-
   <div class="hero-content">
     <h1>Welcome to Gram Panchayat Wandhali</h1>
     <p>Empowering Rural Development • Transparent Governance • Citizen First</p>
@@ -237,28 +323,24 @@ a{
   </div>
 </section>
 
-<!-- ===== NOTICE BAR ===== -->
 <div class="notice-ticker">
   <marquee>
     📢 Gram Sabha Meeting on 25th January | Water Supply Maintenance | Government Scheme Registration Open
   </marquee>
 </div>
 
-<!-- ===== STATS SECTION ===== -->
+<!-- STATS -->
 <section class="section">
   <h2 class="section-title">📊 Live Transparency</h2>
-
   <div class="stats">
     <div class="stat-card">
       <h1 id="noticeCount">0</h1>
       <p>Notices</p>
     </div>
-
     <div class="stat-card">
       <h1 id="complaintCount">0</h1>
       <p>Total Complaints</p>
     </div>
-
     <div class="stat-card">
       <h1 id="resolvedCount">0</h1>
       <p>Resolved</p>
@@ -266,8 +348,43 @@ a{
   </div>
 </section>
 
-<!-- ===== FOOTER ===== -->
-<div class="footer">
+<!-- LEADERSHIP -->
+<section class="section">
+  <h2 class="section-title">🏛 Leadership</h2>
+  <div class="leadership-grid" id="leadersContainer"></div>
+</section>
+
+<!-- BODY MEMBERS -->
+<section class="section">
+  <h2 class="section-title">🗳 Elected Body Members</h2>
+  <div class="member-grid" id="bodyMembersContainer"></div>
+</section>
+
+<!-- EMPLOYEES -->
+<section class="section">
+  <h2 class="section-title">🏢 Gram Panchayat Employees</h2>
+  <div class="member-grid" id="employeesContainer"></div>
+</section>
+
+<!-- NOTICES -->
+<section class="section" id="notices">
+  <h2 class="section-title">📢 Latest Notices</h2>
+  <div class="notice-grid" id="noticeList"></div>
+</section>
+
+<!-- SERVICES -->
+<section class="section">
+  <h2 class="section-title">⚙ Citizen Services</h2>
+  <div class="services-grid">
+    <a href="complaint.html" class="service-card">📝 Register Complaint</a>
+    <a href="track.html" class="service-card">🔍 Track Complaint</a>
+    <a href="#" class="service-card">📄 Download Forms</a>
+    <a href="#" class="service-card">📢 View Notices</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer" id="contact">
   © 2026 Gram Panchayat Wandhali • Government of Maharashtra
 </div>
 
