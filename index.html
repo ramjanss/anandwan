@@ -237,63 +237,91 @@ footer{
 
 <!-- HERO -->
 <section class="hero" style="
-  background: linear-gradient(135deg, #0b3d91, #1e3a8a);
-  color: white;
   position: relative;
-  padding: 100px 20px;
+  background: url('assets/hero-bg.jpg') center/cover no-repeat;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  overflow: hidden;
+  color: white;
 ">
 
-  <!-- Watermark Emblem -->
-  <img src="assets/india-emblem.png" 
-       style="
-       position:absolute;
-       top:50%;
-       left:50%;
-       transform:translate(-50%,-50%);
-       opacity:0.06;
-       height:350px;
-       pointer-events:none;
-       ">
+  <!-- Dark Overlay -->
+  <div style="
+    position:absolute;
+    inset:0;
+    background: linear-gradient(
+      rgba(0,0,0,0.65),
+      rgba(0,0,0,0.55)
+    );
+  "></div>
 
-  <h2 style="font-size:36px; margin-bottom:15px;">
-    Transparent & Citizen-Centric Governance
-  </h2>
+  <!-- Content -->
+  <div style="position:relative; z-index:2; max-width:800px; padding:20px;">
 
-  <p style="font-size:16px; margin-bottom:30px;">
-    Empowering Rural Development through Digital Services & Welfare Schemes
-  </p>
-
-  <div>
-    <a href="complaint.html" style="
-      background:#ffffff;
-      color:#0b3d91;
-      padding:14px 28px;
-      border-radius:6px;
-      text-decoration:none;
-      font-weight:600;
-      margin:5px;
-      display:inline-block;
+    <h1 style="
+      font-size:48px;
+      font-weight:700;
+      letter-spacing:1px;
+      margin-bottom:15px;
     ">
-      Register Complaint
-    </a>
+      Welcome to Gram Panchayat Wandhali
+    </h1>
 
-    <a href="track.html" style="
-      background:#f97316;
-      color:white;
-      padding:14px 28px;
-      border-radius:6px;
-      text-decoration:none;
-      font-weight:600;
-      margin:5px;
-      display:inline-block;
+    <p style="
+      font-size:18px;
+      margin-bottom:35px;
+      opacity:0.95;
     ">
-      Track Complaint
-    </a>
+      Transparent Governance • Digital Services • Citizen First
+    </p>
+
+    <div>
+      <a href="complaint.html" style="
+        background:#16a34a;
+        padding:14px 32px;
+        border-radius:6px;
+        text-decoration:none;
+        color:white;
+        font-weight:600;
+        margin:10px;
+        display:inline-block;
+        box-shadow:0 8px 20px rgba(0,0,0,0.3);
+        transition:0.3s;
+      "
+      onmouseover="this.style.transform='translateY(-3px)'"
+      onmouseout="this.style.transform='translateY(0)'">
+        Register Complaint
+      </a>
+
+      <a href="track.html" style="
+        background:#1e3a8a;
+        padding:14px 32px;
+        border-radius:6px;
+        text-decoration:none;
+        color:white;
+        font-weight:600;
+        margin:10px;
+        display:inline-block;
+        box-shadow:0 8px 20px rgba(0,0,0,0.3);
+        transition:0.3s;
+      "
+      onmouseover="this.style.transform='translateY(-3px)'"
+      onmouseout="this.style.transform='translateY(0)'">
+        Track Complaint
+      </a>
+    </div>
+
   </div>
 
 </section>
+
+<!-- Thin Tricolor Strip -->
+<div style="
+  height:5px;
+  background: linear-gradient(to right, #FF9933 33%, white 33%, white 66%, #138808 66%);
+"></div>
 
 <!-- BODY MEMBERS -->
 <section class="section">
