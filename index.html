@@ -65,6 +65,8 @@ a{text-decoration:none}
 
 /* ================= HERO SLIDER ================= */
 
+/* ================= HERO SLIDER ================= */
+
 .hero{
   position:relative;
   height:520px;
@@ -85,33 +87,104 @@ a{text-decoration:none}
   background-size:cover;
   background-position:center;
   opacity:0;
-  transition:opacity 1.2s ease-in-out;
+  transition:opacity 1s ease-in-out;
 }
 
 .slide.active{
   opacity:1;
 }
 
-.hero::after{
-  content:"";
+.overlay{
   position:absolute;
   inset:0;
-  background:rgba(0,0,0,0.65);
+  background:rgba(0,0,0,0.6);
+  z-index:1;
 }
 
 .hero-content{
-  position:relative;
-  z-index:2;
-  text-align:center;
+  position:absolute;
   top:50%;
-  transform:translateY(-50%);
-  max-width:800px;
-  margin:auto;
+  left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+  z-index:2;
+  animation:fadeUp 1.5s ease;
 }
 
-.hero h1{
-  font-size:42px;
+.hero-title{
+  font-size:44px;
   margin-bottom:15px;
+}
+
+.hero-sub{
+  font-size:18px;
+  margin-bottom:25px;
+}
+
+.hero-buttons{
+  display:flex;
+  gap:15px;
+  justify-content:center;
+}
+
+.hero-btn{
+  padding:12px 26px;
+  border-radius:6px;
+  font-weight:600;
+  color:white;
+  text-decoration:none;
+}
+
+.btn-green{background:#15803d;}
+.btn-blue{background:#1e3a8a;}
+
+/* Arrows */
+
+.arrow{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:30px;
+  background:rgba(0,0,0,0.5);
+  color:white;
+  padding:10px 15px;
+  cursor:pointer;
+  z-index:3;
+  border-radius:4px;
+}
+
+.arrow.left{ left:20px; }
+.arrow.right{ right:20px; }
+
+/* Dots */
+
+.dots{
+  position:absolute;
+  bottom:20px;
+  width:100%;
+  text-align:center;
+  z-index:3;
+}
+
+.dot{
+  display:inline-block;
+  width:12px;
+  height:12px;
+  background:#bbb;
+  border-radius:50%;
+  margin:0 5px;
+  cursor:pointer;
+}
+
+.dot.active{
+  background:white;
+}
+
+/* Animation */
+
+@keyframes fadeUp{
+  from{opacity:0; transform:translate(-50%,-40%);}
+  to{opacity:1; transform:translate(-50%,-50%);}
 }
 .hero-btn{
   padding:12px 28px;
@@ -275,22 +348,32 @@ a{text-decoration:none}
 <section class="hero">
 
   <div class="slides">
-
     <div class="slide active" style="background-image:url('assets/slide1.jpg')"></div>
     <div class="slide" style="background-image:url('assets/slide2.jpg')"></div>
     <div class="slide" style="background-image:url('assets/slide3.jpg')"></div>
-
   </div>
 
+  <!-- Overlay -->
+  <div class="overlay"></div>
+
+  <!-- Content -->
   <div class="hero-content">
-    <h1>Gram Panchayat Wandhali</h1>
-    <p>Transparent Governance • Citizen First • Rural Development</p>
-    <a href="complaint.html" class="hero-btn btn-green">Register Complaint</a>
-    <a href="track.html" class="hero-btn btn-blue">Track Complaint</a>
+    <h1 class="hero-title">Gram Panchayat Wandhali</h1>
+    <p class="hero-sub">Transparent Governance • Citizen First • Rural Development</p>
+    <div class="hero-buttons">
+      <a href="complaint.html" class="hero-btn btn-green">Register Complaint</a>
+      <a href="track.html" class="hero-btn btn-blue">Track Complaint</a>
+    </div>
   </div>
+
+  <!-- Arrows -->
+  <div class="arrow left">&#10094;</div>
+  <div class="arrow right">&#10095;</div>
+
+  <!-- Dots -->
+  <div class="dots"></div>
 
 </section>
-
 <!-- LEADERSHIP -->
 <section class="section">
   <h2 class="section-title">🏛 Elected Leadership</h2>
