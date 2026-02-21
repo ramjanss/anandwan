@@ -1,8 +1,6 @@
 import { db } from "./firebase.js";
-import {
-  collection,
-  getDocs
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { collection, getDocs }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 /* ================= LOAD MEMBERS ================= */
 
@@ -18,6 +16,7 @@ async function loadMembers() {
   const snapshot = await getDocs(collection(db, "members"));
 
   let members = [];
+
   snapshot.forEach(docSnap => {
     members.push(docSnap.data());
   });
@@ -31,6 +30,7 @@ async function loadMembers() {
 
   members.forEach(member=>{
 
+    // ===== SARPANCH =====
     if(member.role?.toLowerCase().includes("sarpanch")){
       sarpanchBlock.innerHTML = `
         <img src="${member.photoUrl}" alt="${member.name}">
@@ -43,30 +43,33 @@ async function loadMembers() {
       `;
     }
 
+    // ===== SECONDARY LEADERS =====
     else if(member.type==="leader"){
       leadersContainer.innerHTML += `
         <div class="leader-card">
-          <img src="${member.photoUrl}">
+          <img src="${member.photoUrl}" alt="${member.name}">
           <h4>${member.name}</h4>
           <p>${member.role}</p>
         </div>
       `;
     }
 
+    // ===== BODY MEMBERS =====
     else if(member.type==="body"){
       bodyContainer.innerHTML += `
         <div class="member-card">
-          <img src="${member.photoUrl}">
+          <img src="${member.photoUrl}" alt="${member.name}">
           <h4>${member.name}</h4>
           <p>${member.role}</p>
         </div>
       `;
     }
 
+    // ===== EMPLOYEES =====
     else if(member.type==="employee"){
       employeeContainer.innerHTML += `
         <div class="member-card">
-          <img src="${member.photoUrl}">
+          <img src="${member.photoUrl}" alt="${member.name}">
           <h4>${member.name}</h4>
           <p>${member.role}</p>
         </div>
@@ -74,30 +77,8 @@ async function loadMembers() {
     }
 
   });
+
 }
-
-/* ================= HERO SLIDER CLEAN ================= */
-
-document.addEventListener("DOMContentLoaded", () => {
-
-  const slides = document.querySelectorAll(".slide");
-  if (!slides.length) return;
-
-  let index = 0;
-
-  function showSlide(i){
-    slides.forEach(s => s.classList.remove("active"));
-    slides[i].classList.add("active");
-  }
-
-  function nextSlide(){
-    index = (index + 1) % slides.length;
-    showSlide(index);
-  }
-
-  setInterval(nextSlide, 5000);
-
-});
 
 /* ================= INIT ================= */
 
