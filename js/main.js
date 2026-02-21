@@ -16,7 +16,6 @@ async function loadMembers() {
   const snapshot = await getDocs(collection(db, "members"));
 
   let members = [];
-
   snapshot.forEach(docSnap => {
     members.push(docSnap.data());
   });
@@ -30,47 +29,46 @@ async function loadMembers() {
 
   members.forEach(member=>{
 
-    // ===== SARPANCH =====
-    if(member.role?.toLowerCase().includes("sarpanch")){
+    // ✅ EXACT SARPANCH MATCH
+    if(member.role && member.role.trim().toLowerCase() === "sarpanch"){
+
       sarpanchBlock.innerHTML = `
         <img src="${member.photoUrl}" alt="${member.name}">
         <div class="sarpanch-details">
-          <span class="designation-label">${member.role}</span>
+          <span class="designation-label">Sarpanch</span>
           <h3>${member.name}</h3>
           ${member.phone ? `<p><strong>Contact:</strong> ${member.phone}</p>` : ""}
-          <p>Serving the citizens of Wandhali with commitment, transparency, and accountable governance.</p>
+          <p>Serving the citizens of Wandhali with commitment, transparency and accountable governance.</p>
         </div>
       `;
     }
 
-    // ===== SECONDARY LEADERS =====
+    // Secondary Leaders (Upsarpanch etc.)
     else if(member.type==="leader"){
       leadersContainer.innerHTML += `
         <div class="leader-card">
-          <img src="${member.photoUrl}" alt="${member.name}">
+          <img src="${member.photoUrl}">
           <h4>${member.name}</h4>
           <p>${member.role}</p>
         </div>
       `;
     }
 
-    // ===== BODY MEMBERS =====
     else if(member.type==="body"){
       bodyContainer.innerHTML += `
         <div class="member-card">
-          <img src="${member.photoUrl}" alt="${member.name}">
-          <h4>${member.name}</h4>
+          <img src="${member.photoUrl}">
+          <h5>${member.name}</h5>
           <p>${member.role}</p>
         </div>
       `;
     }
 
-    // ===== EMPLOYEES =====
     else if(member.type==="employee"){
       employeeContainer.innerHTML += `
         <div class="member-card">
-          <img src="${member.photoUrl}" alt="${member.name}">
-          <h4>${member.name}</h4>
+          <img src="${member.photoUrl}">
+          <h5>${member.name}</h5>
           <p>${member.role}</p>
         </div>
       `;
@@ -79,7 +77,5 @@ async function loadMembers() {
   });
 
 }
-
-/* ================= INIT ================= */
 
 loadMembers();
