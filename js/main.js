@@ -199,7 +199,7 @@ async function loadSchemes() {
       </div>
     `;
   });
-
+}
 
 /* ================= LOAD DASHBOARD ================= */
 
