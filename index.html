@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gram Panchayat Wandhali</title>
+<title>Gram Panchayat Wandhali
+<p class="official-badge">Official Website of Gram Panchayat Wandhali</p>
+</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -27,6 +29,12 @@ body{
   line-height:1.6;
 }
 
+ .official-badge{
+  font-size:12px;
+  color:#64748b;
+  letter-spacing:0.5px;
+  margin-top:4px;
+} 
 /* ================= HEADER ================= */
 
   /* ===== TRICOLOR STRIP ===== */
@@ -40,13 +48,14 @@ body{
     #138808 66%
   );
 }
-
+  
 /* ===== GOVERNMENT HEADER ===== */
 
 .gov-header{
   background:#f8fafc;
   padding:20px 5%;
   border-bottom:1px solid #e2e8f0;
+  box-shadow:0 4px 8px rgba(0,0,0,0.04);
 }
 
 .gov-logos{
@@ -714,15 +723,24 @@ footer{
 
   <!-- BOTTOM DARK BAND -->
   <div class="footer-bottom">
-    <p>
-      © 2026 Gram Panchayat Wandhali |
-      Official Rural Governance Portal |
-      Developed for Transparent Digital Administration
-    </p>
+   <p>
+  © 2026 Gram Panchayat Wandhali |
+  Official Rural Governance Portal | Developed by Ramko Associates |
+  Last Updated: <span id="lastUpdated"></span>
+</p>
   </div>
 
 </footer>
 <script type="module" src="js/main.js"></script>
 
+<script>
+  const today = new Date();
+  document.getElementById("lastUpdated").innerText =
+    today.toLocaleDateString("en-IN", {
+      day:"2-digit",
+      month:"long",
+      year:"numeric"
+    });
+</script>  
 </body>
 </html>
