@@ -78,4 +78,61 @@ async function loadMembers() {
 
 }
 
-loadMembers();
+/* ================= SMART TRANSPARENCY DASHBOARD ================= */
+
+async function loadDashboardStats(){
+
+  const totalComplaintsEl = document.getElementById("totalComplaints");
+  const resolvedComplaintsEl = document.getElementById("resolvedComplaints");
+  const totalNoticesEl = document.getElementById("totalNotices");
+
+  if(!totalComplaintsEl) return;
+
+  try {
+
+    // Fetch complaints
+    const complaintSnap = await getDocs(collection(db, "complaints"));
+    let totalComplaints = complaintSnap.size;
+
+    let resolvedCount = 0;
+    complaintSnap.forEach(doc=>{
+      if(doc.data().status === "resolved"){
+        resolvedCount++;
+      }
+    });
+
+    // Fetch notices
+    const noticeSnap = await getDocs(collection(db, "notices"));
+    let totalNotices = noticeSnap.size;
+
+    animateNumber(totalComplaintsEl, totalComplaints);
+    animateNumber(resolvedComplaintsEl, resolvedCount);
+    animateNumber(totalNoticesEl, totalNotices);
+
+  } catch(error){
+    console.error("Dashboard Error:", error);
+  }
+
+}
+
+/* ===== NUMBER ANIMATION ===== */
+
+function animateNumber(element, target){
+
+  let start = 0;
+  const duration = 1000;
+  const stepTime = Math.abs(Math.floor(duration / target));
+
+  const timer = setInterval(()=>{
+
+    start++;
+    element.textContent = start;
+
+    if(start >= target){
+      clearInterval(timer);
+      element.textContent = target;
+    }
+
+  }, stepTime || 50);
+
+}loadDashboardStats();
