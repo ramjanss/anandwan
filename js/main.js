@@ -248,7 +248,6 @@ function initHeroSlider(){
 }
 
 /* ================= HERO SLIDER ================= */
-
 /* ================= HERO SLIDER FINAL ================= */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -258,12 +257,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const leftArrow = document.querySelector(".arrow.left");
   const rightArrow = document.querySelector(".arrow.right");
 
-  if(!slides.length) return; // safety
+  if(!slides.length) return;
 
   let index = 0;
   let interval;
 
-  // Create dots
   slides.forEach((_, i) => {
     const dot = document.createElement("span");
     dot.classList.add("dot");
@@ -302,12 +300,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   rightArrow.addEventListener("click", () => {
-    nextSlide();
+    prevSlide();
     resetAuto();
   });
 
   leftArrow.addEventListener("click", () => {
-    prevSlide();
+    nextSlide();
     resetAuto();
   });
 
