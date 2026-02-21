@@ -203,28 +203,71 @@ body{
 }
 /* ================= SERVICES ================= */
 
-.services{
+/* ================= MODERN SERVICES ================= */
+
+.services-section{
+  padding:70px 8%;
+  background:white;
+  text-align:center;
+}
+
+.services-section h2{
+  font-size:26px;
+  color:#1e3a8a;
+  margin-bottom:45px;
+}
+
+.services-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:25px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap:30px;
 }
 
 .service-card{
-  background:white;
-  padding:25px;
-  border-radius:6px;
-  border-left:4px solid var(--gov-green);
-  box-shadow:0 8px 20px rgba(0,0,0,0.05);
-  transition:0.3s;
+  background:#f9fafc;
+  padding:30px;
+  border-radius:8px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+  transition:0.3s ease;
 }
 
 .service-card:hover{
-  transform:translateY(-5px);
+  transform:translateY(-6px);
+  box-shadow:0 10px 28px rgba(0,0,0,0.1);
 }
 
+.service-icon{
+  font-size:36px;
+  margin-bottom:15px;
+}
 
+.service-card h3{
+  font-size:18px;
+  margin-bottom:10px;
+  color:#1e3a8a;
+}
+
+.service-card p{
+  font-size:14px;
+  color:#555;
+  margin-bottom:20px;
+}
+
+.service-btn{
+  display:inline-block;
+  padding:8px 16px;
+  background:#1e3a8a;
+  color:white;
+  font-size:13px;
+  border-radius:4px;
+  text-decoration:none;
+  transition:0.3s;
+}
+
+.service-btn:hover{
+  background:#16307a;
+}
 /* ================= LEADERSHIP STRUCTURE ================= */
-/* ================= CLEAN COMPACT LEADERSHIP ================= */
 
 .leadership{
   background:#f5f7fb;
@@ -448,14 +491,42 @@ body{
 </section>
 
 <!-- SERVICES -->
-<section class="section">
+<section class="services-section">
+
   <h2>Citizen Services</h2>
-  <div class="services">
-    <div class="service-card">Online Complaint Registration</div>
-    <div class="service-card">Complaint Status Tracking</div>
-    <div class="service-card">Public Notices & Updates</div>
-    <div class="service-card">Government Schemes Information</div>
+
+  <div class="services-grid">
+
+    <div class="service-card">
+      <div class="service-icon">📝</div>
+      <h3>Register Complaint</h3>
+      <p>Submit grievances digitally for faster resolution.</p>
+      <a href="complaint.html" class="service-btn">Apply Now</a>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">🔎</div>
+      <h3>Track Complaint</h3>
+      <p>Check real-time status using tracking ID.</p>
+      <a href="track.html" class="service-btn">Track Status</a>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">📢</div>
+      <h3>Public Notices</h3>
+      <p>View official announcements and updates.</p>
+      <a href="#notices" class="service-btn">View Notices</a>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">🏛</div>
+      <h3>Government Schemes</h3>
+      <p>Explore available welfare schemes for citizens.</p>
+      <a href="#schemes" class="service-btn">Explore</a>
+    </div>
+
   </div>
+
 </section>
 
 <!-- ================= LEADERSHIP SECTION ================= -->
