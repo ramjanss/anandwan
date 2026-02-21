@@ -206,7 +206,91 @@ body{
 .btn-green{background:var(--gov-green);}
 .btn-saffron{background:var(--gov-saffron);}
 
-/* ================= SECTION ================= */
+/* ================= CREDIBILITY SECTION ================= */
+
+.credibility-section{
+  padding:90px 8%;
+  background:#ffffff;
+}
+
+.credibility-container{
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:60px;
+  align-items:center;
+}
+
+.credibility-left h2{
+  font-size:28px;
+  margin-bottom:20px;
+  color:#1e3a8a;
+}
+
+.credibility-left p{
+  font-size:15px;
+  color:#475569;
+  line-height:1.8;
+  margin-bottom:30px;
+}
+
+.credibility-points{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:15px;
+}
+
+.credibility-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.credibility-item span{
+  color:#15803d;
+  font-weight:bold;
+  font-size:16px;
+}
+
+.credibility-item p{
+  font-size:14px;
+  margin:0;
+  color:#374151;
+}
+
+.credibility-right{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.credibility-card{
+  background:#f1f5f9;
+  padding:25px;
+  border-radius:12px;
+  border-left:5px solid #1e3a8a;
+  box-shadow:0 6px 15px rgba(0,0,0,0.05);
+}
+
+.credibility-card h3{
+  margin-bottom:10px;
+  color:#1e3a8a;
+}
+
+.credibility-card p{
+  font-size:14px;
+  color:#475569;
+  line-height:1.6;
+}
+
+/* ===== Responsive ===== */
+
+@media(max-width:992px){
+  .credibility-container{
+    grid-template-columns:1fr;
+  }
+}
+  
+  /* ================= SECTION ================= */
 
 .section{
   padding:70px 40px;
@@ -584,6 +668,67 @@ footer{
     <a href="complaint.html" class="btn btn-green">Register Complaint</a>
     <a href="track.html" class="btn btn-saffron">Track Complaint</a>
   </div>
+</section>
+
+  <!-- ================= PANCHAYAT CREDIBILITY BLOCK ================= -->
+
+<section class="credibility-section">
+
+  <div class="credibility-container">
+
+    <div class="credibility-left">
+      <h2>Committed to Transparent & Accountable Governance</h2>
+      <p>
+        Gram Panchayat Wandhali is dedicated to strengthening rural development
+        through transparent administration, citizen participation, and digital governance.
+        Our elected body works to ensure efficient service delivery and inclusive growth
+        for every household in the village.
+      </p>
+
+      <div class="credibility-points">
+        <div class="credibility-item">
+          <span>✔</span>
+          <p>Digitally Managed Public Services</p>
+        </div>
+
+        <div class="credibility-item">
+          <span>✔</span>
+          <p>Time-bound Grievance Redressal</p>
+        </div>
+
+        <div class="credibility-item">
+          <span>✔</span>
+          <p>Transparency in Public Notices & Schemes</p>
+        </div>
+
+        <div class="credibility-item">
+          <span>✔</span>
+          <p>Citizen-Centric Rural Development Planning</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="credibility-right">
+      <div class="credibility-card">
+        <h3>Our Vision</h3>
+        <p>
+          To build a progressive, self-reliant and digitally empowered village
+          ensuring quality infrastructure, social welfare, and sustainable development.
+        </p>
+      </div>
+
+      <div class="credibility-card">
+        <h3>Our Mission</h3>
+        <p>
+          To deliver transparent governance, strengthen public participation,
+          and implement government schemes effectively for the benefit of all citizens.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
 </section>
 
 <!-- TRANSPARENCY -->
