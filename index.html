@@ -29,6 +29,59 @@ body{
 
 /* ================= HEADER ================= */
 
+  /* ===== TRICOLOR STRIP ===== */
+
+.gov-strip{
+  height:6px;
+  background: linear-gradient(
+    to right,
+    #ff9933 33%,
+    white 33% 66%,
+    #138808 66%
+  );
+}
+
+/* ===== GOVERNMENT HEADER ===== */
+
+.gov-header{
+  background:#f8fafc;
+  padding:20px 5%;
+  border-bottom:1px solid #e2e8f0;
+}
+
+.gov-logos{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:40px;
+  flex-wrap:wrap;
+  text-align:center;
+}
+
+.gov-logos img{
+  height:70px;
+  object-fit:contain;
+}
+
+.gov-title h2{
+  font-size:16px;
+  color:#1e3a8a;
+  margin:0;
+  font-weight:600;
+}
+
+.gov-title h1{
+  font-size:26px;
+  margin:5px 0;
+  color:#111827;
+}
+
+.gov-title p{
+  font-size:14px;
+  color:#475569;
+  margin:0;
+}
+
 .header{
   background:var(--gov-blue);
   color:white;
@@ -484,12 +537,25 @@ footer{
 
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="header-left">
-    <img src="assets/emblem.png" alt="India Emblem">
-    <h1>Gram Panchayat Wandhali</h1>
+<!-- ================= GOVERNMENT AUTHORITY HEADER ================= -->
+
+<div class="gov-strip"></div>
+
+<div class="gov-header">
+
+  <div class="gov-logos">
+    <img src="assets/india-emblem.png" alt="Government of India">
+    
+    <div class="gov-title">
+      <h2>Government of Maharashtra</h2>
+      <h1>Gram Panchayat Wandhali</h1>
+      <p>Taluka Warora | District Chandrapur</p>
+    </div>
+
+    <img src="assets/maharashtra-logo.png" alt="Government of Maharashtra">
   </div>
+
+</div>
   <div class="nav">
     <a href="#">Home</a>
     <a href="complaint.html">Complaint</a>
