@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gram Panchayat Wandhali - Official Government Portal</title>
+<title>Gram Panchayat Wandhali - Official Portal</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -15,7 +15,6 @@
   --secondary:#15803d;
   --accent:#f97316;
   --light:#f4f6f9;
-  --dark:#111827;
 }
 
 body{
@@ -66,22 +65,13 @@ a{text-decoration:none}
 
 .hero{
   position:relative;
-  height:520px;
-  overflow:hidden;
+  height:500px;
+  background:url('assets/slide1.jpg') center/cover no-repeat;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
   color:white;
-}
-
-.slide{
-  position:absolute;
-  inset:0;
-  background-size:cover;
-  background-position:center;
-  opacity:0;
-  transition:opacity 1s ease-in-out;
-}
-
-.slide.active{
-  opacity:1;
 }
 
 .hero-overlay{
@@ -91,17 +81,13 @@ a{text-decoration:none}
 }
 
 .hero-content{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  text-align:center;
+  position:relative;
   z-index:2;
   max-width:800px;
 }
 
 .hero h1{
-  font-size:42px;
+  font-size:40px;
 }
 
 .hero-btn{
@@ -121,58 +107,85 @@ a{text-decoration:none}
 .section{
   max-width:1200px;
   margin:auto;
-  padding:60px 20px;
+  padding:70px 20px;
 }
 
 .section-title{
-  font-size:24px;
+  font-size:26px;
   font-weight:700;
-  margin-bottom:30px;
+  margin-bottom:40px;
   color:var(--primary);
   border-left:5px solid var(--accent);
   padding-left:12px;
 }
 
-/* ================= ANNOUNCEMENTS ================= */
+/* ================= LEADERSHIP ================= */
+
+.leaders{
+  display:flex;
+  gap:40px;
+  flex-wrap:wrap;
+}
+
+.leader-card{
+  background:white;
+  padding:25px;
+  border-radius:10px;
+  width:280px;
+  text-align:center;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.leader-card img{
+  width:180px;
+  height:220px;
+  object-fit:cover;
+  border-radius:8px;
+  margin-bottom:15px;
+}
+
+/* ================= MEMBERS ================= */
+
+.member-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:25px;
+}
+
+.member-card{
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  text-align:center;
+  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+.member-card img{
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  object-fit:cover;
+  margin-bottom:10px;
+}
+
+/* ================= CARDS ================= */
 
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:20px;
+  gap:25px;
 }
 
 .card{
   background:white;
-  padding:20px;
-  border-radius:8px;
+  padding:25px;
+  border-radius:10px;
   box-shadow:0 6px 18px rgba(0,0,0,0.08);
 }
 
 .card h4{
   margin-top:0;
   color:var(--primary);
-}
-
-/* ================= SERVICES ================= */
-
-.service-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:20px;
-}
-
-.service-card{
-  background:var(--primary);
-  color:white;
-  padding:25px;
-  border-radius:8px;
-  font-weight:600;
-  text-align:center;
-  transition:0.3s;
-}
-
-.service-card:hover{
-  background:var(--accent);
 }
 
 /* ================= DASHBOARD ================= */
@@ -205,6 +218,11 @@ a{text-decoration:none}
   padding:30px;
 }
 
+@media(max-width:768px){
+  .leaders{justify-content:center}
+  .hero h1{font-size:28px}
+}
+
 </style>
 </head>
 
@@ -232,17 +250,31 @@ a{text-decoration:none}
 
 <!-- HERO -->
 <section class="hero">
-
-  <div id="slidesContainer"></div>
   <div class="hero-overlay"></div>
-
   <div class="hero-content">
-    <h1>Empowering Rural Development</h1>
-    <p>Transparent Governance • Citizen First • Digital Village</p>
+    <h1>Gram Panchayat Wandhali</h1>
+    <p>Transparent Governance • Citizen First • Rural Development</p>
     <a href="complaint.html" class="hero-btn btn-green">Register Complaint</a>
     <a href="track.html" class="hero-btn btn-blue">Track Complaint</a>
   </div>
+</section>
 
+<!-- LEADERSHIP -->
+<section class="section">
+  <h2 class="section-title">🏛 Elected Leadership</h2>
+  <div class="leaders" id="leadersContainer"></div>
+</section>
+
+<!-- BODY MEMBERS -->
+<section class="section">
+  <h2 class="section-title">🗳 Body Members</h2>
+  <div class="member-grid" id="bodyMembersContainer"></div>
+</section>
+
+<!-- EMPLOYEES -->
+<section class="section">
+  <h2 class="section-title">🏢 Panchayat Employees</h2>
+  <div class="member-grid" id="employeesContainer"></div>
 </section>
 
 <!-- ANNOUNCEMENTS -->
@@ -257,20 +289,9 @@ a{text-decoration:none}
   <div class="grid" id="schemesContainer"></div>
 </section>
 
-<!-- SERVICES -->
-<section class="section">
-  <h2 class="section-title">⚙ Citizen Services</h2>
-  <div class="service-grid">
-    <a href="complaint.html" class="service-card">Register Complaint</a>
-    <a href="track.html" class="service-card">Track Complaint</a>
-    <div class="service-card">Water Tax</div>
-    <div class="service-card">Birth Certificate</div>
-  </div>
-</section>
-
 <!-- DASHBOARD -->
 <section class="section">
-  <h2 class="section-title">📊 Village Dashboard</h2>
+  <h2 class="section-title">📊 Village Statistics</h2>
   <div class="dashboard" id="dashboardContainer"></div>
 </section>
 
