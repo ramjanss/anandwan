@@ -157,35 +157,50 @@ body{
   color:var(--gov-blue);
 }
 
-/* ================= TRANSPARENCY ================= */
+/* ================= DASHBOARD PROFESSIONAL ================= */
 
-.transparency{
-  background:var(--soft-blue);
-  border-top:4px solid var(--gov-saffron);
+.dashboard-section{
+  background:#eef2f8;
+  padding:60px 8%;
+  text-align:center;
 }
 
-.stats{
+.dashboard-section h2{
+  color:#1e3a8a;
+  margin-bottom:40px;
+  font-size:26px;
+}
+
+.dashboard-grid{
   display:flex;
   justify-content:center;
-  gap:40px;
+  gap:30px;
   flex-wrap:wrap;
 }
 
-.stat-card{
+.dashboard-card{
   background:white;
-  padding:30px;
-  width:220px;
-  text-align:center;
+  padding:30px 40px;
   border-radius:8px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+  width:250px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.06);
+  transition:0.3s ease;
 }
 
-.stat-card h3{
-  font-size:28px;
-  color:var(--gov-blue);
-  margin:0;
+.dashboard-card:hover{
+  transform:translateY(-5px);
 }
 
+.dashboard-card h3{
+  font-size:40px;
+  color:#1e3a8a;
+  margin-bottom:10px;
+}
+
+.dashboard-card p{
+  font-size:15px;
+  color:#555;
+}
 /* ================= SERVICES ================= */
 
 .services{
@@ -409,21 +424,26 @@ body{
 </section>
 
 <!-- TRANSPARENCY -->
-<section class="section transparency">
+<section class="dashboard-section">
   <h2>Transparency Dashboard</h2>
-  <div class="stats">
-    <div class="stat-card">
-      <h3 id="complaintCount">0</h3>
+
+  <div class="dashboard-grid" id="dashboardGrid">
+
+    <div class="dashboard-card">
+      <h3 id="totalComplaints">0</h3>
       <p>Total Complaints</p>
     </div>
-    <div class="stat-card">
-      <h3 id="resolvedCount">0</h3>
-      <p>Resolved</p>
+
+    <div class="dashboard-card">
+      <h3 id="resolvedComplaints">0</h3>
+      <p>Resolved Complaints</p>
     </div>
-    <div class="stat-card">
-      <h3 id="noticeCount">0</h3>
+
+    <div class="dashboard-card">
+      <h3 id="totalNotices">0</h3>
       <p>Notices Issued</p>
     </div>
+
   </div>
 </section>
 
