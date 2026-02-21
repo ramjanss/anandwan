@@ -15,14 +15,16 @@
   --gov-blue:#1e3a8a;
   --gov-green:#15803d;
   --gov-saffron:#f97316;
-  --light-bg:#f8fafc;
+  --light-bg:#f4f6fb;
+  --soft-blue:#eef2ff;
 }
 
 body{
   margin:0;
   font-family:'Poppins',sans-serif;
-  background:var(--light-bg);
+  background:white;
   color:#1f2937;
+  line-height:1.6;
 }
 
 /* ================= HEADER ================= */
@@ -43,31 +45,42 @@ body{
 }
 
 .header-left img{
-  height:50px;
+  height:55px;
 }
 
 .header h1{
   margin:0;
-  font-size:20px;
+  font-size:18px;
   font-weight:600;
+  letter-spacing:0.5px;
 }
 
 .nav{
   display:flex;
-  gap:20px;
+  gap:25px;
 }
 
 .nav a{
   color:white;
   text-decoration:none;
   font-size:14px;
+  font-weight:500;
+}
+
+/* Tricolor strip */
+.tricolor{
+  height:6px;
+  background:linear-gradient(to right,
+    var(--gov-saffron) 33%,
+    white 33% 66%,
+    var(--gov-green) 66%);
 }
 
 /* ================= HERO ================= */
 
 .hero{
   position:relative;
-  height:500px;
+  height:460px;
   overflow:hidden;
   color:white;
 }
@@ -105,45 +118,56 @@ body{
   transform:translate(-50%,-50%);
   text-align:center;
   z-index:2;
+  max-width:800px;
 }
 
 .hero-content h2{
-  font-size:40px;
+  font-size:36px;
+  font-weight:700;
   margin-bottom:15px;
 }
 
 .hero-content p{
-  font-size:18px;
+  font-size:16px;
   margin-bottom:25px;
 }
 
 .btn{
-  padding:12px 25px;
-  border-radius:6px;
+  padding:12px 22px;
+  border-radius:4px;
   text-decoration:none;
   color:white;
-  margin:0 10px;
   font-weight:600;
+  margin:0 8px;
 }
 
 .btn-green{background:var(--gov-green);}
 .btn-saffron{background:var(--gov-saffron);}
 
-/* ================= TRANSPARENCY ================= */
+/* ================= SECTION ================= */
 
 .section{
-  padding:60px 40px;
+  padding:70px 40px;
 }
 
 .section h2{
   text-align:center;
-  margin-bottom:40px;
+  margin-bottom:50px;
+  font-size:24px;
+  color:var(--gov-blue);
+}
+
+/* ================= TRANSPARENCY ================= */
+
+.transparency{
+  background:var(--soft-blue);
+  border-top:4px solid var(--gov-saffron);
 }
 
 .stats{
   display:flex;
   justify-content:center;
-  gap:30px;
+  gap:40px;
   flex-wrap:wrap;
 }
 
@@ -151,16 +175,15 @@ body{
   background:white;
   padding:30px;
   width:220px;
-  border-radius:12px;
   text-align:center;
-  box-shadow:0 10px 25px rgba(0,0,0,0.08);
-  border-top:4px solid var(--gov-saffron);
+  border-radius:8px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.08);
 }
 
 .stat-card h3{
-  font-size:30px;
-  margin:0;
+  font-size:28px;
   color:var(--gov-blue);
+  margin:0;
 }
 
 /* ================= SERVICES ================= */
@@ -168,19 +191,27 @@ body{
 .services{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:20px;
+  gap:25px;
 }
 
 .service-card{
   background:white;
   padding:25px;
-  border-radius:10px;
-  text-align:center;
-  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+  border-radius:6px;
   border-left:4px solid var(--gov-green);
+  box-shadow:0 8px 20px rgba(0,0,0,0.05);
+  transition:0.3s;
+}
+
+.service-card:hover{
+  transform:translateY(-5px);
 }
 
 /* ================= LEADERSHIP ================= */
+
+.leadership{
+  background:#f9fafb;
+}
 
 .leadership-grid{
   display:flex;
@@ -193,16 +224,16 @@ body{
   background:white;
   padding:25px;
   width:280px;
-  border-radius:15px;
-  text-align:center;
+  border-radius:8px;
   box-shadow:0 10px 25px rgba(0,0,0,0.08);
+  text-align:center;
 }
 
 .leader-card img{
   width:150px;
   height:180px;
   object-fit:cover;
-  border-radius:10px;
+  border-radius:6px;
   margin-bottom:15px;
 }
 
@@ -215,15 +246,15 @@ body{
 
 .member-card{
   background:white;
-  padding:20px;
-  border-radius:10px;
+  padding:18px;
+  border-radius:6px;
   text-align:center;
-  box-shadow:0 8px 20px rgba(0,0,0,0.05);
+  box-shadow:0 6px 15px rgba(0,0,0,0.05);
 }
 
 .member-card img{
-  width:100px;
-  height:100px;
+  width:90px;
+  height:90px;
   border-radius:50%;
   object-fit:cover;
   margin-bottom:10px;
@@ -234,8 +265,9 @@ body{
 .footer{
   background:var(--gov-blue);
   color:white;
-  padding:30px;
+  padding:35px;
   text-align:center;
+  font-size:14px;
 }
 
 </style>
@@ -257,6 +289,8 @@ body{
   </div>
 </div>
 
+<div class="tricolor"></div>
+
 <!-- HERO -->
 <section class="hero">
   <div class="slides">
@@ -266,15 +300,15 @@ body{
   </div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <h2>Transparent & Citizen First Governance</h2>
-    <p>Digital Services for Rural Development</p>
+    <h2>Transparent & Citizen-Centric Governance</h2>
+    <p>Delivering accountable and digital public services for rural development.</p>
     <a href="complaint.html" class="btn btn-green">Register Complaint</a>
     <a href="track.html" class="btn btn-saffron">Track Complaint</a>
   </div>
 </section>
 
 <!-- TRANSPARENCY -->
-<section class="section">
+<section class="section transparency">
   <h2>Transparency Dashboard</h2>
   <div class="stats">
     <div class="stat-card">
@@ -287,7 +321,7 @@ body{
     </div>
     <div class="stat-card">
       <h3 id="noticeCount">0</h3>
-      <p>Notices</p>
+      <p>Notices Issued</p>
     </div>
   </div>
 </section>
@@ -296,26 +330,28 @@ body{
 <section class="section">
   <h2>Citizen Services</h2>
   <div class="services">
-    <div class="service-card">Register Complaint</div>
-    <div class="service-card">Track Complaint</div>
-    <div class="service-card">View Notices</div>
-    <div class="service-card">Government Schemes</div>
+    <div class="service-card">Online Complaint Registration</div>
+    <div class="service-card">Complaint Status Tracking</div>
+    <div class="service-card">Public Notices & Updates</div>
+    <div class="service-card">Government Schemes Information</div>
   </div>
 </section>
 
 <!-- LEADERSHIP -->
-<section class="section">
-  <h2>Leadership</h2>
+<section class="section leadership">
+  <h2>Leadership & Administration</h2>
   <div id="leadersContainer" class="leadership-grid"></div>
+
   <h3 style="text-align:center;margin-top:60px;">Elected Body Members</h3>
   <div id="bodyMembersContainer" class="member-grid"></div>
-  <h3 style="text-align:center;margin-top:60px;">Employees</h3>
+
+  <h3 style="text-align:center;margin-top:60px;">Administrative Staff</h3>
   <div id="employeesContainer" class="member-grid"></div>
 </section>
 
 <!-- FOOTER -->
 <div class="footer">
-  © 2026 Gram Panchayat Wandhali • Digital Governance Portal
+  © 2026 Gram Panchayat Wandhali | Official Digital Governance Portal
 </div>
 
 <script type="module" src="js/main.js"></script>
