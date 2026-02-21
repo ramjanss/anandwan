@@ -373,7 +373,7 @@ body{
 
 .services-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  grid-template-columns: repeat(4, 1fr); /* STRICT 4 columns */
   gap:30px;
 }
 
@@ -386,6 +386,11 @@ body{
   box-shadow:0 8px 20px rgba(0,0,0,0.05);
   transition:all 0.3s ease;
   border:1px solid #e2e8f0;
+
+  display:flex;               /* IMPORTANT */
+  flex-direction:column;      /* IMPORTANT */
+  justify-content:flex-start;
+  min-height:220px;           /* equal height */
 }
 
 .service-card:hover{
