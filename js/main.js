@@ -249,75 +249,71 @@ function initHeroSlider(){
 
 /* ================= HERO SLIDER ================= */
 
-function initHeroSlider(){
+/* ================= HERO SLIDER FINAL ================= */
+
+document.addEventListener("DOMContentLoaded", () => {
 
   const slides = document.querySelectorAll(".slide");
   const dotsContainer = document.querySelector(".dots");
   const leftArrow = document.querySelector(".arrow.left");
   const rightArrow = document.querySelector(".arrow.right");
 
+  if(!slides.length) return; // safety
+
   let index = 0;
   let interval;
 
   // Create dots
-  slides.forEach((_,i)=>{
+  slides.forEach((_, i) => {
     const dot = document.createElement("span");
     dot.classList.add("dot");
-    if(i===0) dot.classList.add("active");
-    dot.addEventListener("click",()=>goToSlide(i));
+    if (i === 0) dot.classList.add("active");
+    dot.addEventListener("click", () => showSlide(i));
     dotsContainer.appendChild(dot);
   });
 
   const dots = document.querySelectorAll(".dot");
 
-  function showSlide(i){
-    slides.forEach(s=>s.classList.remove("active"));
-    dots.forEach(d=>d.classList.remove("active"));
+  function showSlide(i) {
+    slides.forEach(s => s.classList.remove("active"));
+    dots.forEach(d => d.classList.remove("active"));
     slides[i].classList.add("active");
     dots[i].classList.add("active");
     index = i;
   }
 
-  function nextSlide(){
-    index = (index+1) % slides.length;
+  function nextSlide() {
+    index = (index + 1) % slides.length;
     showSlide(index);
   }
 
-  function prevSlide(){
-    index = (index-1+slides.length) % slides.length;
+  function prevSlide() {
+    index = (index - 1 + slides.length) % slides.length;
     showSlide(index);
   }
 
-  function goToSlide(i){
-    showSlide(i);
+  function startAuto() {
+    interval = setInterval(nextSlide, 5000);
   }
 
-  function startAuto(){
-    interval = setInterval(nextSlide,5000);
-  }
-
-  function stopAuto(){
+  function resetAuto() {
     clearInterval(interval);
+    startAuto();
   }
 
-  rightArrow.addEventListener("click",()=>{
+  rightArrow.addEventListener("click", () => {
     nextSlide();
-    stopAuto();
-    startAuto();
+    resetAuto();
   });
 
-  leftArrow.addEventListener("click",()=>{
+  leftArrow.addEventListener("click", () => {
     prevSlide();
-    stopAuto();
-    startAuto();
+    resetAuto();
   });
 
   startAuto();
-}
 
-document.addEventListener("DOMContentLoaded",initHeroSlider);
-
-
+});
 /* ================= INIT ================= */
 
 loadMembers();
