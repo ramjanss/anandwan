@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gram Panchayat Wandhali - Official Portal</title>
+<title>Gram Panchayat Wandhali - Official Government Portal</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -12,22 +12,23 @@
 /* ================= ROOT ================= */
 :root{
   --primary:#1e3a8a;
-  --secondary:#16a34a;
+  --secondary:#15803d;
   --accent:#f97316;
   --light:#f4f6f9;
+  --dark:#111827;
 }
 
-/* ================= GLOBAL ================= */
 body{
   margin:0;
   font-family:'Poppins',sans-serif;
   background:var(--light);
-  color:#222;
+  color:#1f2937;
 }
 
 a{text-decoration:none}
 
 /* ================= HEADER ================= */
+
 .top-header{
   background:var(--primary);
   color:white;
@@ -35,7 +36,6 @@ a{text-decoration:none}
   display:flex;
   justify-content:space-between;
   align-items:center;
-  flex-wrap:wrap;
 }
 
 .header-left{
@@ -53,8 +53,8 @@ a{text-decoration:none}
   padding:12px 30px;
   display:flex;
   justify-content:flex-end;
-  gap:25px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.08);
+  gap:30px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
 }
 
 .navbar a{
@@ -62,7 +62,8 @@ a{text-decoration:none}
   font-weight:600;
 }
 
-/* ================= HERO SLIDER ================= */
+/* ================= HERO ================= */
+
 .hero{
   position:relative;
   height:520px;
@@ -110,13 +111,13 @@ a{text-decoration:none}
   margin:10px;
   display:inline-block;
   color:white;
-  box-shadow:0 8px 20px rgba(0,0,0,0.3);
 }
 
 .btn-green{background:var(--secondary)}
 .btn-blue{background:var(--primary)}
 
 /* ================= SECTION ================= */
+
 .section{
   max-width:1200px;
   margin:auto;
@@ -133,25 +134,49 @@ a{text-decoration:none}
 }
 
 /* ================= ANNOUNCEMENTS ================= */
-.announcement-grid{
+
+.grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
   gap:20px;
 }
 
-.announcement-card{
+.card{
   background:white;
   padding:20px;
   border-radius:8px;
   box-shadow:0 6px 18px rgba(0,0,0,0.08);
 }
 
-.announcement-card h4{
+.card h4{
   margin-top:0;
   color:var(--primary);
 }
 
-/* ================= STATS DASHBOARD ================= */
+/* ================= SERVICES ================= */
+
+.service-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+
+.service-card{
+  background:var(--primary);
+  color:white;
+  padding:25px;
+  border-radius:8px;
+  font-weight:600;
+  text-align:center;
+  transition:0.3s;
+}
+
+.service-card:hover{
+  background:var(--accent);
+}
+
+/* ================= DASHBOARD ================= */
+
 .dashboard{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -167,21 +192,17 @@ a{text-decoration:none}
 }
 
 .dashboard-card h2{
-  color:var(--primary);
   margin:0;
+  color:var(--primary);
 }
 
 /* ================= FOOTER ================= */
+
 .footer{
   background:var(--primary);
   color:white;
   text-align:center;
   padding:30px;
-  margin-top:40px;
-}
-
-@media(max-width:768px){
-  .hero h1{font-size:26px}
 }
 
 </style>
@@ -205,17 +226,14 @@ a{text-decoration:none}
   <a href="#">Home</a>
   <a href="complaint.html">Complaint</a>
   <a href="track.html">Track</a>
-  <a href="#">Notices</a>
-  <a href="#">Contact</a>
+  <a href="#schemes">Schemes</a>
+  <a href="#contact">Contact</a>
 </div>
 
-<!-- HERO SLIDER -->
+<!-- HERO -->
 <section class="hero">
 
-  <div class="slide active" style="background-image:url('assets/slide1.jpg')"></div>
-  <div class="slide" style="background-image:url('assets/slide2.jpg')"></div>
-  <div class="slide" style="background-image:url('assets/slide3.jpg')"></div>
-
+  <div id="slidesContainer"></div>
   <div class="hero-overlay"></div>
 
   <div class="hero-content">
@@ -229,74 +247,38 @@ a{text-decoration:none}
 
 <!-- ANNOUNCEMENTS -->
 <section class="section">
-  <h2 class="section-title">📢 Official Announcements</h2>
-
-  <div class="announcement-grid">
-
-    <div class="announcement-card">
-      <h4>Gram Sabha Meeting</h4>
-      <p>Village meeting scheduled on 25th January at Panchayat Hall.</p>
-    </div>
-
-    <div class="announcement-card">
-      <h4>Water Supply Maintenance</h4>
-      <p>Water supply will remain closed from 9AM to 2PM tomorrow.</p>
-    </div>
-
-    <div class="announcement-card">
-      <h4>Government Scheme Registration</h4>
-      <p>Citizens can apply for housing and sanitation schemes online.</p>
-    </div>
-
-  </div>
+  <h2 class="section-title">📢 Latest Announcements</h2>
+  <div class="grid" id="announcementContainer"></div>
 </section>
 
-<!-- VILLAGE DASHBOARD -->
+<!-- SCHEMES -->
+<section class="section" id="schemes">
+  <h2 class="section-title">🏛 Government Schemes</h2>
+  <div class="grid" id="schemesContainer"></div>
+</section>
+
+<!-- SERVICES -->
 <section class="section">
-  <h2 class="section-title">📊 Village Statistics Dashboard</h2>
-
-  <div class="dashboard">
-
-    <div class="dashboard-card">
-      <h2>3,250</h2>
-      <p>Total Population</p>
-    </div>
-
-    <div class="dashboard-card">
-      <h2>720</h2>
-      <p>Total Households</p>
-    </div>
-
-    <div class="dashboard-card">
-      <h2>98%</h2>
-      <p>Water Coverage</p>
-    </div>
-
-    <div class="dashboard-card">
-      <h2>100%</h2>
-      <p>Toilet Coverage</p>
-    </div>
-
+  <h2 class="section-title">⚙ Citizen Services</h2>
+  <div class="service-grid">
+    <a href="complaint.html" class="service-card">Register Complaint</a>
+    <a href="track.html" class="service-card">Track Complaint</a>
+    <div class="service-card">Water Tax</div>
+    <div class="service-card">Birth Certificate</div>
   </div>
 </section>
 
-<div class="footer">
+<!-- DASHBOARD -->
+<section class="section">
+  <h2 class="section-title">📊 Village Dashboard</h2>
+  <div class="dashboard" id="dashboardContainer"></div>
+</section>
+
+<div class="footer" id="contact">
   © 2026 Gram Panchayat Wandhali • Government of Maharashtra
 </div>
 
-<script>
-
-/* HERO AUTO SLIDER */
-let slides=document.querySelectorAll(".slide");
-let index=0;
-
-setInterval(()=>{
-  slides[index].classList.remove("active");
-  index=(index+1)%slides.length;
-  slides[index].classList.add("active");
-},4000);
-
-</script>
+<script type="module" src="js/main.js"></script>
 
 </body>
 </html>
