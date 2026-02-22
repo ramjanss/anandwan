@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Gram Panchayat Wandhali | Official Digital Governance Portal</title>
-<meta name="description" content="Official website of Gram Panchayat Wandhali providing digital grievance redressal, public notices and transparent governance services.">
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -25,6 +23,7 @@ body{
   color:var(--text);
 }
 
+/* Top Bar */
 .top-bar{
   background:var(--primary);
   color:white;
@@ -33,22 +32,17 @@ body{
   font-size:13px;
 }
 
+/* Header */
 .gov-header{
   background:#f8fafc;
+  text-align:center;
   padding:20px;
   border-bottom:1px solid #e5e7eb;
-  text-align:center;
 }
 
 .gov-header h1{
   margin:5px 0;
   font-size:28px;
-}
-
-.gov-header p{
-  margin:0;
-  font-size:14px;
-  color:#555;
 }
 
 .nav{
@@ -65,39 +59,49 @@ body{
   font-weight:500;
 }
 
+/* HERO */
 .hero{
-  padding:100px 20px;
+  height:85vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
   text-align:center;
-  background:linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.55)),
-  url("assets/slide1.jpg") center/cover no-repeat;
   color:white;
+  background-size:cover;
+  background-position:center;
+  transition:background-image 1s ease-in-out;
+}
+
+.hero-overlay{
+  background:rgba(0,0,0,0.55);
+  padding:40px;
+  border-radius:12px;
 }
 
 .hero h2{
-  font-size:22px;
+  font-size:24px;
   margin-bottom:15px;
-  font-weight:500;
 }
 
 .hero p{
   max-width:700px;
   margin:auto;
   font-size:15px;
-  line-height:1.6;
-  margin-bottom:30px;
+  margin-bottom:20px;
 }
 
 .hero-btn{
-  display:inline-block;
   padding:12px 25px;
-  margin:5px;
   background:white;
   color:var(--primary);
   border-radius:6px;
   text-decoration:none;
   font-weight:600;
+  margin:5px;
 }
 
+/* Sections */
 .section{
   padding:80px 20px;
   max-width:1200px;
@@ -110,6 +114,7 @@ body{
   color:var(--primary);
 }
 
+/* Dashboard */
 .dashboard-grid{
   display:flex;
   flex-wrap:wrap;
@@ -120,48 +125,64 @@ body{
 .dashboard-card{
   background:white;
   padding:30px;
-  border-radius:10px;
+  border-radius:12px;
   box-shadow:0 8px 20px rgba(0,0,0,0.08);
   width:220px;
   text-align:center;
 }
 
 .dashboard-card h3{
-  font-size:36px;
+  font-size:32px;
   margin-bottom:10px;
   color:var(--primary);
 }
 
-.services-grid{
+/* Leadership */
+.leadership-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:25px;
 }
 
-.service-card{
+.leader-card{
   background:white;
-  padding:25px;
-  border-radius:10px;
-  box-shadow:0 6px 15px rgba(0,0,0,0.08);
+  padding:20px;
+  border-radius:12px;
   text-align:center;
-  text-decoration:none;
-  color:var(--text);
+  box-shadow:0 6px 15px rgba(0,0,0,0.08);
 }
 
-.notice-list{
-  max-width:800px;
-  margin:auto;
+.leader-card img{
+  width:120px;
+  height:120px;
+  object-fit:cover;
+  border-radius:50%;
+  margin-bottom:10px;
 }
 
-.notice-item{
+/* Gallery */
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+}
+
+.gallery-grid img{
+  width:100%;
+  height:160px;
+  object-fit:cover;
+  border-radius:10px;
+}
+
+/* Events */
+.event-card{
   background:#f1f5f9;
-  padding:15px 20px;
-  border-radius:6px;
-  margin-bottom:15px;
-  display:flex;
-  justify-content:space-between;
+  padding:20px;
+  border-radius:10px;
+  margin-bottom:20px;
 }
 
+/* Footer */
 footer{
   background:var(--primary);
   color:white;
@@ -170,9 +191,8 @@ footer{
 }
 
 @media(max-width:768px){
-  .dashboard-grid{
-    flex-direction:column;
-    align-items:center;
+  .hero{
+    height:70vh;
   }
 }
 
@@ -198,130 +218,126 @@ Gram Sabha Meeting Scheduled on 25 March 2026 | Citizens are requested to attend
 <a href="login.html">Admin</a>
 </div>
 
-<section class="hero">
+<!-- HERO -->
+<section class="hero" id="hero">
+<div class="hero-overlay">
 <h2>Transparent • Accountable • Digital Governance</h2>
-<p>
-Empowering citizens through online grievance redressal,
-public transparency dashboard and efficient village administration.
-</p>
-
+<p>Empowering citizens through online grievance redressal and transparent village administration.</p>
 <a href="complaint.html" class="hero-btn">Register Complaint</a>
 <a href="track.html" class="hero-btn">Track Complaint</a>
+</div>
 </section>
 
+<!-- DASHBOARD -->
 <section class="section">
 <h2>Transparency Dashboard</h2>
-
 <div class="dashboard-grid">
-
-<div class="dashboard-card">
-<h3 id="totalComplaints">0</h3>
-<p>Total Complaints</p>
-</div>
-
-<div class="dashboard-card">
-<h3 id="resolvedComplaints">0</h3>
-<p>Resolved Complaints</p>
-</div>
-
-<div class="dashboard-card">
-<h3 id="pendingComplaints">0</h3>
-<p>Pending Complaints</p>
-</div>
-
-<div class="dashboard-card">
-<h3 id="totalNotices">0</h3>
-<p>Notices Issued</p>
-</div>
-
- <div class="dashboard-card">
-  <h3 id="resolutionRate">0</h3>
-  <p>Resolution Rate (%)</p>
-</div>
-
-<div class="dashboard-card">
-  <h3 id="monthlyComplaints">0</h3>
-  <p>Complaints This Month</p>
-</div>
-
-<div class="dashboard-card">
-  <h3 id="avgRating">0</h3>
-  <p>Average Citizen Rating</p>
-</div> 
+<div class="dashboard-card"><h3 id="totalComplaints">0</h3><p>Total Complaints</p></div>
+<div class="dashboard-card"><h3 id="resolvedComplaints">0</h3><p>Resolved</p></div>
+<div class="dashboard-card"><h3 id="pendingComplaints">0</h3><p>Pending</p></div>
+<div class="dashboard-card"><h3 id="totalNotices">0</h3><p>Notices Issued</p></div>
 </div>
 </section>
 
+<!-- LEADERSHIP -->
 <section class="section">
-<h2>Citizen Services</h2>
+<h2>Leadership</h2>
+<div class="leadership-grid" id="leadershipContainer"></div>
+</section>
 
-<div class="services-grid">
-
-<a href="complaint.html" class="service-card">
-<h3>Register Complaint</h3>
-<p>Submit public grievances digitally for quick resolution.</p>
-</a>
-
-<a href="track.html" class="service-card">
-<h3>Track Complaint</h3>
-<p>Track the real-time status of your grievance.</p>
-</a>
-
-<div class="service-card">
-<h3>Public Notices</h3>
-<p>View official announcements and circulars.</p>
-</div>
-
-<div class="service-card">
-<h3>Birth & Death Certificates</h3>
-<p>Information and application process.</p>
-</div>
-
-<div class="service-card">
-<h3>Tax & Revenue</h3>
-<p>Property tax information and payment details.</p>
-</div>
-
-<div class="service-card">
-<h3>Government Schemes</h3>
-<p>Information about rural development schemes.</p>
-</div>
-
+<!-- EVENTS -->
+<section class="section">
+<h2>Recent Events</h2>
+<div id="eventsContainer">
+<div class="event-card">Tree Plantation Drive - 15 August 2025</div>
+<div class="event-card">Gram Sabha Meeting - January 2026</div>
 </div>
 </section>
 
+<!-- GALLERY -->
 <section class="section">
-<h2>Latest Notices</h2>
-
-<div class="notice-list">
-
-<div class="notice-item">
-<span>Gram Sabha Meeting Notice – 25 March 2026</span>
-<span>20 Mar 2026</span>
-</div>
-
-<div class="notice-item">
-<span>Water Supply Maintenance Update</span>
-<span>15 Mar 2026</span>
-</div>
-
-<div class="notice-item">
-<span>Property Tax Payment Deadline</span>
-<span>10 Mar 2026</span>
-</div>
-
-</div>
+<h2>Village Gallery</h2>
+<div class="gallery-grid" id="galleryContainer"></div>
 </section>
 
 <footer>
-<p>
-© 2026 Gram Panchayat Wandhali | Official Rural Governance Portal
-</p>
-<p>
-Developed & Maintained by Smart GP Digital Governance Platform
-</p>
+<p>© 2026 Gram Panchayat Wandhali | Official Rural Governance Portal</p>
+<p>Developed & Maintained by Smart GP Digital Governance Platform</p>
 </footer>
 
-<script type="module" src="js/main.js"></script>
+<script type="module">
+
+import { db } from "./js/firebase.js";
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+/* HERO AUTO SLIDE */
+const hero = document.getElementById("hero");
+const images = [
+  "assets/slide1.jpg",
+  "assets/slide2.jpg",
+  "assets/slide3.jpg"
+];
+let index = 0;
+
+function changeBackground(){
+  hero.style.backgroundImage = `url('${images[index]}')`;
+  index = (index + 1) % images.length;
+}
+changeBackground();
+setInterval(changeBackground,5000);
+
+
+/* DASHBOARD */
+async function loadDashboard(){
+  const complaintSnap = await getDocs(collection(db,"complaints"));
+  const noticeSnap = await getDocs(collection(db,"notices"));
+
+  let total = complaintSnap.size;
+  let resolved = 0;
+
+  complaintSnap.forEach(d=>{
+    if(d.data().status === "Resolved") resolved++;
+  });
+
+  document.getElementById("totalComplaints").textContent = total;
+  document.getElementById("resolvedComplaints").textContent = resolved;
+  document.getElementById("pendingComplaints").textContent = total - resolved;
+  document.getElementById("totalNotices").textContent = noticeSnap.size;
+}
+
+loadDashboard();
+
+
+/* LEADERSHIP */
+async function loadLeadership(){
+  const snap = await getDocs(collection(db,"members"));
+  const container = document.getElementById("leadershipContainer");
+  snap.forEach(doc=>{
+    const data = doc.data();
+    container.innerHTML += `
+      <div class="leader-card">
+        <img src="${data.photoUrl}">
+        <h4>${data.name}</h4>
+        <p>${data.role}</p>
+      </div>
+    `;
+  });
+}
+loadLeadership();
+
+
+/* GALLERY */
+async function loadGallery(){
+  const snap = await getDocs(collection(db,"gallery"));
+  const container = document.getElementById("galleryContainer");
+  snap.forEach(doc=>{
+    const data = doc.data();
+    container.innerHTML += `<img src="${data.imageUrl}">`;
+  });
+}
+loadGallery();
+
+</script>
 
 </body>
 </html>
