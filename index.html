@@ -129,6 +129,45 @@ body{
   color:var(--primary);
 }
 
+.leadership-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:25px;
+}
+
+.leader-card{
+  background:#f9fafb;
+  padding:20px;
+  border-radius:12px;
+  text-align:center;
+  box-shadow:0 6px 15px rgba(0,0,0,0.05);
+  transition:0.3s;
+}
+
+.leader-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 10px 20px rgba(0,0,0,0.1);
+}
+
+.leader-card img{
+  width:110px;
+  height:110px;
+  object-fit:cover;
+  border-radius:50%;
+  margin-bottom:10px;
+}
+
+.leader-card h4{
+  margin:8px 0 4px;
+  font-size:16px;
+}
+
+.leader-card p{
+  font-size:13px;
+  color:#555;
+}
+
+  
 /* EVENTS */
 .events-grid{
   display:grid;
@@ -250,6 +289,23 @@ Gram Sabha Meeting Scheduled on 25 March 2026
 </section>
 
 <section class="section">
+<h2>Leadership & Administration</h2>
+
+<!-- MAIN OFFICIALS -->
+<h3 style="margin-bottom:15px;color:#1e3a8a;">Main Officials</h3>
+<div class="leadership-grid" id="leaderContainer"></div>
+
+<!-- BODY MEMBERS -->
+<h3 style="margin:40px 0 15px;color:#1e3a8a;">Elected Body Members</h3>
+<div class="leadership-grid" id="bodyContainer"></div>
+
+<!-- EMPLOYEES -->
+<h3 style="margin:40px 0 15px;color:#1e3a8a;">Gram Panchayat Employees</h3>
+<div class="leadership-grid" id="employeeContainer"></div>
+
+</section>
+  
+<section class="section">
 <h2>Recent Events</h2>
 <div id="eventsContainer" class="events-grid"></div>
 </section>
@@ -311,6 +367,45 @@ document.getElementById("pendingComplaints").textContent=complaints.size-resolve
 document.getElementById("totalNotices").textContent=notices.size;
 }
 loadDashboard();
+
+  async function loadLeadership(){
+
+const snap = await getDocs(collection(db,"members"));
+
+const leaderContainer = document.getElementById("leaderContainer");
+const bodyContainer = document.getElementById("bodyContainer");
+const employeeContainer = document.getElementById("employeeContainer");
+
+leaderContainer.innerHTML = "";
+bodyContainer.innerHTML = "";
+employeeContainer.innerHTML = "";
+
+snap.forEach(doc=>{
+const d = doc.data();
+
+const card = `
+<div class="leader-card">
+<img src="${d.photoUrl || 'assets/default-user.png'}">
+<h4>${d.name}</h4>
+<p>${d.role}</p>
+${d.phone ? `<small>${d.phone}</small>` : ""}
+</div>
+`;
+
+if(d.type === "leader"){
+leaderContainer.innerHTML += card;
+}
+else if(d.type === "body"){
+bodyContainer.innerHTML += card;
+}
+else if(d.type === "employee"){
+employeeContainer.innerHTML += card;
+}
+
+});
+
+}
+loadLeadership();
 
 /* EVENTS (Indian Date Format) */
 async function loadEvents(){
