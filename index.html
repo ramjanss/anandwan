@@ -130,55 +130,116 @@ body{
 }
 
   /* MODERN LEADERSHIP STYLE */
+/* ===== PREMIUM LEADERSHIP SECTION ===== */
 
 .leadership-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
   gap:35px;
+  margin-bottom:20px;
 }
 
 .leader-card{
   background:white;
+  border-radius:16px;
   padding:20px;
-  border-radius:12px;
   text-align:center;
   transition:all 0.3s ease;
+  position:relative;
+  overflow:hidden;
 }
 
 .leader-card:hover{
-  transform:translateY(-6px);
-  box-shadow:0 12px 25px rgba(0,0,0,0.12);
+  transform:translateY(-8px);
+  box-shadow:0 15px 35px rgba(0,0,0,0.15);
 }
 
+/* Highlight Sarpanch */
+.leader-card.highlight{
+  grid-column:span 2;
+  border:2px solid #1e3a8a;
+}
+
+/* Colored Photo Block */
 .leader-photo{
-  width:100%;
   height:260px;
-  border-radius:10px;
+  border-radius:14px;
   overflow:hidden;
   margin-bottom:15px;
+  position:relative;
+}
+
+.leader-photo::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,#1e3a8a,#15803d);
+  opacity:0.15;
+  z-index:1;
 }
 
 .leader-photo img{
   width:100%;
   height:100%;
   object-fit:cover;
+  position:relative;
+  z-index:2;
 }
 
+/* Name */
 .leader-card h4{
-  margin:10px 0 5px;
-  font-size:17px;
+  margin:10px 0 6px;
+  font-size:18px;
   font-weight:600;
   color:#111;
 }
 
-.leader-role{
-  font-size:12px;
+/* Badge */
+.leader-badge{
+  display:inline-block;
+  padding:5px 12px;
+  border-radius:20px;
+  font-size:11px;
   letter-spacing:1px;
   text-transform:uppercase;
-  color:#6b7280;
-  font-weight:500;
+  background:#1e3a8a;
+  color:white;
+  margin-bottom:10px;
 }
-  
+
+/* Contact Buttons */
+.contact-actions{
+  margin-top:10px;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.contact-btn{
+  padding:6px 14px;
+  font-size:12px;
+  border-radius:20px;
+  text-decoration:none;
+  color:white;
+  background:#15803d;
+  transition:0.3s;
+}
+
+.contact-btn.whatsapp{
+  background:#25D366;
+}
+
+.contact-btn:hover{
+  opacity:0.85;
+}
+
+@media(max-width:768px){
+  .leader-card.highlight{
+    grid-column:span 1;
+  }
+}
+
 /* EVENTS */
 .events-grid{
   display:grid;
@@ -379,7 +440,7 @@ document.getElementById("totalNotices").textContent=notices.size;
 }
 loadDashboard();
 
-  async function loadLeadership(){
+async function loadLeadership(){
 
 const snap = await getDocs(collection(db,"members"));
 
@@ -394,15 +455,26 @@ employeeContainer.innerHTML = "";
 snap.forEach(doc=>{
 const d = doc.data();
 
+const isSarpanch = d.role && d.role.toLowerCase().includes("sarpanch");
+
 const card = `
-<div class="leader-card">
+<div class="leader-card ${isSarpanch ? 'highlight' : ''}">
 
   <div class="leader-photo">
     <img src="${d.photoUrl || 'assets/default-user.png'}">
   </div>
 
   <h4>${d.name}</h4>
-  <div class="leader-role">${d.role}</div>
+
+  <div class="leader-badge">${d.role}</div>
+
+  ${d.phone ? `
+  <div class="contact-actions">
+    <a href="tel:${d.phone}" class="contact-btn">Call</a>
+    <a href="https://wa.me/91${d.phone}" target="_blank"
+       class="contact-btn whatsapp">WhatsApp</a>
+  </div>
+  ` : ""}
 
 </div>
 `;
