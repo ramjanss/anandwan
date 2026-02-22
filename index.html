@@ -452,12 +452,38 @@ leaderContainer.innerHTML = "";
 bodyContainer.innerHTML = "";
 employeeContainer.innerHTML = "";
 
+// Convert snapshot to array
+const members = [];
 snap.forEach(doc=>{
-const d = doc.data();
+  members.push(doc.data());
+});
+
+// ===== SORTING FUNCTION =====
+function getPriority(role){
+  if(!role) return 99;
+  role = role.toLowerCase();
+
+  if(role.includes("sarpanch")) return 1;
+  if(role.includes("upsarpanch")) return 2;
+  if(role.includes("village development officer") || role.includes("vdo")) return 3;
+
+  return 4;
+}
+
+// Separate leaders
+const leaders = members.filter(m => m.type === "leader");
+const body = members.filter(m => m.type === "body");
+const employees = members.filter(m => m.type === "employee");
+
+// Sort leaders by priority
+leaders.sort((a,b)=> getPriority(a.role) - getPriority(b.role));
+
+// ===== CARD BUILDER =====
+function buildCard(d){
 
 const isSarpanch = d.role && d.role.toLowerCase().includes("sarpanch");
 
-const card = `
+return `
 <div class="leader-card ${isSarpanch ? 'highlight' : ''}">
 
   <div class="leader-photo">
@@ -478,22 +504,26 @@ const card = `
 
 </div>
 `;
-
-if(d.type === "leader"){
-leaderContainer.innerHTML += card;
-}
-else if(d.type === "body"){
-bodyContainer.innerHTML += card;
-}
-else if(d.type === "employee"){
-employeeContainer.innerHTML += card;
 }
 
+// Render leaders
+leaders.forEach(d=>{
+  leaderContainer.innerHTML += buildCard(d);
+});
+
+// Render body
+body.forEach(d=>{
+  bodyContainer.innerHTML += buildCard(d);
+});
+
+// Render employees
+employees.forEach(d=>{
+  employeeContainer.innerHTML += buildCard(d);
 });
 
 }
-loadLeadership();
 
+loadLeadership();
 /* EVENTS (Indian Date Format) */
 async function loadEvents(){
 const container=document.getElementById("eventsContainer");
