@@ -135,4 +135,51 @@ function animateNumber(element, target){
 
   }, stepTime || 50);
 
+/* ================= LOAD LATEST NOTICES ================= */
+
+async function loadLatestNotices(){
+
+  const noticeList = document.getElementById("noticeList");
+  if(!noticeList) return;
+
+  try {
+
+    const snapshot = await getDocs(collection(db, "notices"));
+
+    if(snapshot.empty){
+      noticeList.innerHTML = "<p style='text-align:center;'>No notices available.</p>";
+      return;
+    }
+
+    let notices = [];
+    snapshot.forEach(doc=>{
+      notices.push(doc.data());
+    });
+
+    // Sort latest first (based on date field)
+    notices.sort((a,b)=>{
+      return new Date(b.date) - new Date(a.date);
+    });
+
+    // Take only latest 3
+    const latestThree = notices.slice(0,3);
+
+    latestThree.forEach(n=>{
+      noticeList.innerHTML += `
+        <div class="notice-item">
+          <div>
+            <div class="notice-title">${n.title}</div>
+          </div>
+          <div class="notice-date">${n.date}</div>
+        </div>
+      `;
+    });
+
+  } catch(error){
+    console.error("Notice Load Error:", error);
+  }
+
+}
+  
 }loadDashboardStats();
+loadLatestNotices();
