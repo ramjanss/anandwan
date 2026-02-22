@@ -1,310 +1,34 @@
-
-import { db } from "./js/firebase.js";
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gram Panchayat Wandhali | Official Digital Governance Portal</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
-<style>
-
-:root{
-  --primary:#1e3a8a;
-  --secondary:#15803d;
-  --light:#f4f6fb;
-  --text:#1f2937;
-}
-
-body{
-  margin:0;
-  font-family:'Poppins',sans-serif;
-  background:white;
-  color:var(--text);
-}
-
-/* Top Bar */
-.top-bar{
-  background:var(--primary);
-  color:white;
-  text-align:center;
-  padding:6px;
-  font-size:13px;
-}
-
-/* Header */
-.gov-header{
-  background:#f8fafc;
-  text-align:center;
-  padding:20px;
-  border-bottom:1px solid #e5e7eb;
-}
-
-.gov-header h1{
-  margin:5px 0;
-  font-size:28px;
-}
-
-.nav{
-  background:var(--primary);
-  padding:12px;
-  text-align:center;
-}
-
-.nav a{
-  color:white;
-  text-decoration:none;
-  margin:0 15px;
-  font-size:14px;
-  font-weight:500;
-}
-
-/* HERO */
-.hero{
-  height:85vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  color:white;
-  background-size:cover;
-  background-position:center;
-  transition:background-image 1s ease-in-out;
-}
-
-.hero-overlay{
-  background:rgba(0,0,0,0.55);
-  padding:40px;
-  border-radius:12px;
-}
-
-.hero h2{
-  font-size:24px;
-  margin-bottom:15px;
-}
-
-.hero p{
-  max-width:700px;
-  margin:auto;
-  font-size:15px;
-  margin-bottom:20px;
-}
-
-.hero-btn{
-  padding:12px 25px;
-  background:white;
-  color:var(--primary);
-  border-radius:6px;
-  text-decoration:none;
-  font-weight:600;
-  margin:5px;
-}
-
-/* Sections */
-.section{
-  padding:80px 20px;
-  max-width:1200px;
-  margin:auto;
-}
-
-.section h2{
-  text-align:center;
-  margin-bottom:50px;
-  color:var(--primary);
-}
-
-/* Dashboard */
-.dashboard-grid{
-  display:flex;
-  flex-wrap:wrap;
-  gap:25px;
-  justify-content:center;
-}
-
-.dashboard-card{
-  background:white;
-  padding:30px;
-  border-radius:12px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.08);
-  width:220px;
-  text-align:center;
-}
-
-.dashboard-card h3{
-  font-size:32px;
-  margin-bottom:10px;
-  color:var(--primary);
-}
-
-/* Leadership */
-.leadership-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:25px;
-}
-
-.leader-card{
-  background:white;
-  padding:20px;
-  border-radius:12px;
-  text-align:center;
-  box-shadow:0 6px 15px rgba(0,0,0,0.08);
-}
-
-.leader-card img{
-  width:120px;
-  height:120px;
-  object-fit:cover;
-  border-radius:50%;
-  margin-bottom:10px;
-}
-
-/* Gallery */
-.gallery-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:20px;
-}
-
-.gallery-grid img{
-  width:100%;
-  height:160px;
-  object-fit:cover;
-  border-radius:10px;
-}
-
-/* Events */
-.event-card{
-  background:#f1f5f9;
-  padding:20px;
-  border-radius:10px;
-  margin-bottom:20px;
-}
-
-/* Footer */
-footer{
-  background:var(--primary);
-  color:white;
-  padding:40px 20px;
-  text-align:center;
-}
-
-@media(max-width:768px){
-  .hero{
-    height:70vh;
-  }
-}
-
-</style>
-</head>
-
-<body>
-
-<div class="top-bar">
-Gram Sabha Meeting Scheduled on 25 March 2026 | Citizens are requested to attend.
-</div>
-
-<div class="gov-header">
-<h1>Gram Panchayat Wandhali</h1>
-<p>Taluka Warora | District Chandrapur | Government of Maharashtra</p>
-<p>Official Digital Governance Portal</p>
-</div>
-
-<div class="nav">
-<a href="#">Home</a>
-<a href="complaint.html">Register Complaint</a>
-<a href="track.html">Track Complaint</a>
-<a href="login.html">Admin</a>
-</div>
-
-<!-- HERO -->
-<section class="hero" id="hero">
-<div class="hero-overlay">
-<h2>Transparent • Accountable • Digital Governance</h2>
-<p>Empowering citizens through online grievance redressal and transparent village administration.</p>
-<a href="complaint.html" class="hero-btn">Register Complaint</a>
-<a href="track.html" class="hero-btn">Track Complaint</a>
-</div>
-</section>
-
-<!-- DASHBOARD -->
-<section class="section">
-<h2>Transparency Dashboard</h2>
-<div class="dashboard-grid">
-<div class="dashboard-card"><h3 id="totalComplaints">0</h3><p>Total Complaints</p></div>
-<div class="dashboard-card"><h3 id="resolvedComplaints">0</h3><p>Resolved</p></div>
-<div class="dashboard-card"><h3 id="pendingComplaints">0</h3><p>Pending</p></div>
-<div class="dashboard-card"><h3 id="totalNotices">0</h3><p>Notices Issued</p></div>
-</div>
-</section>
-
-<!-- LEADERSHIP -->
-
-  <!-- LEADERSHIP -->
-<section class="section">
-<h2>Leadership & Administration</h2>
-
-<h3 style="margin-bottom:20px;color:#1e3a8a;">Main Officials</h3>
-<div class="leadership-grid" id="leaderContainer"></div>
-
-<br><br>
-
-<h3 style="margin-bottom:20px;color:#1e3a8a;">Elected Body Members</h3>
-<div class="leadership-grid" id="bodyContainer"></div>
-
-<br><br>
-
-<h3 style="margin-bottom:20px;color:#1e3a8a;">Gram Panchayat Employees</h3>
-<div class="leadership-grid" id="employeeContainer"></div>
-
-</section>
-
-<!-- EVENTS -->
-<section class="section">
-<h2>Recent Events</h2>
-<div id="eventsContainer">
-<div class="event-card">Tree Plantation Drive - 15 August 2025</div>
-<div class="event-card">Gram Sabha Meeting - January 2026</div>
-</div>
-</section>
-
-<!-- GALLERY -->
-<section class="section">
-<h2>Village Gallery</h2>
-<div class="gallery-grid" id="galleryContainer"></div>
-</section>
-
-<footer>
-<p>© 2026 Gram Panchayat Wandhali | Official Rural Governance Portal</p>
-<p>Developed & Maintained by Smart GP Digital Governance Platform</p>
-</footer>
-
 <script type="module">
 
-/* HERO AUTO SLIDE */
+import { db } from "./js/firebase.js";
+import { collection, getDocs, query, orderBy }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+
+/* ================= HERO AUTO SLIDE ================= */
+
 const hero = document.getElementById("hero");
 const images = [
   "assets/slide1.jpg",
   "assets/slide2.jpg",
   "assets/slide3.jpg"
 ];
+
 let index = 0;
 
 function changeBackground(){
   hero.style.backgroundImage = `url('${images[index]}')`;
   index = (index + 1) % images.length;
 }
+
 changeBackground();
 setInterval(changeBackground,5000);
 
 
-/* DASHBOARD */
+/* ================= DASHBOARD ================= */
+
 async function loadDashboard(){
+
   const complaintSnap = await getDocs(collection(db,"complaints"));
   const noticeSnap = await getDocs(collection(db,"notices"));
 
@@ -324,8 +48,8 @@ async function loadDashboard(){
 loadDashboard();
 
 
-/* LEADERSHIP */
-/* STRUCTURED LEADERSHIP SECTION */
+/* ================= LEADERSHIP ================= */
+
 async function loadLeadership(){
 
   const snap = await getDocs(collection(db,"members"));
@@ -359,16 +83,13 @@ async function loadLeadership(){
     else if(data.type === "employee"){
       employeeContainer.innerHTML += card;
     }
-
   });
 }
 
 loadLeadership();
 
-  /* ================= LOAD EVENTS ================= */
 
-import { collection, getDocs, query, orderBy }
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+/* ================= EVENTS ================= */
 
 async function loadEvents(){
 
@@ -418,23 +139,26 @@ async function loadEvents(){
     console.error("Homepage Event Error:", error);
     container.innerHTML = "<p>Failed to load events.</p>";
   }
-
 }
 
 loadEvents();
 
-/* GALLERY */
+
+/* ================= GALLERY ================= */
+
 async function loadGallery(){
+
   const snap = await getDocs(collection(db,"gallery"));
   const container = document.getElementById("galleryContainer");
+
+  container.innerHTML = "";
+
   snap.forEach(doc=>{
     const data = doc.data();
     container.innerHTML += `<img src="${data.imageUrl}">`;
   });
 }
+
 loadGallery();
 
 </script>
-
-</body>
-</html>
