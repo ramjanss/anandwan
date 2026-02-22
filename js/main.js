@@ -138,7 +138,8 @@ function animateNumber(element, target){
 
   }, stepTime || 50);
 
-/* ================= LOAD LATEST NOTICES (FIXED) ================= */
+
+/* ================= LOAD LATEST NOTICES (STABLE VERSION) ================= */
 
 async function loadLatestNotices(){
 
@@ -149,12 +150,7 @@ async function loadLatestNotices(){
 
   try {
 
-    const q = query(
-      collection(db, "notices"),
-      orderBy("created", "desc")
-    );
-
-    const snapshot = await getDocs(q);
+    const snapshot = await getDocs(collection(db, "notices"));
 
     if(snapshot.empty){
       noticeList.innerHTML = "<p style='text-align:center;'>No notices available.</p>";
@@ -171,21 +167,12 @@ async function loadLatestNotices(){
 
       const n = docSnap.data();
 
-      let formattedDate = "N/A";
-
-      if(n.created && n.created.toDate){
-        const d = n.created.toDate();
-        formattedDate = d.toLocaleDateString("en-IN", {
-          day: "2-digit",
-          month: "short",
-          year: "numeric"
-        });
-      }
-
       noticeList.innerHTML += `
         <div class="notice-item">
           <div class="notice-title">${n.title}</div>
-          <div class="notice-date">${formattedDate}</div>
+          <div class="notice-date">
+            ${n.created ? new Date(n.created.seconds * 1000).toLocaleDateString("en-IN") : ""}
+          </div>
         </div>
       `;
 
