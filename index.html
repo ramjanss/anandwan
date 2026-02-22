@@ -3,787 +3,177 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gram Panchayat Wandhali
-<p class="official-badge">Official Website of Gram Panchayat Wandhali</p>
-</title>
+
+<title>Gram Panchayat Wandhali | Official Digital Governance Portal</title>
+<meta name="description" content="Official website of Gram Panchayat Wandhali providing digital grievance redressal, public notices and transparent governance services.">
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 
-/* ================= ROOT ================= */
-
 :root{
-  --gov-blue:#1e3a8a;
-  --gov-green:#15803d;
-  --gov-saffron:#f97316;
-  --light-bg:#f4f6fb;
-  --soft-blue:#eef2ff;
+  --primary:#1e3a8a;
+  --secondary:#15803d;
+  --light:#f4f6fb;
+  --text:#1f2937;
 }
 
 body{
   margin:0;
   font-family:'Poppins',sans-serif;
   background:white;
-  color:#1f2937;
-  line-height:1.6;
+  color:var(--text);
 }
 
- .official-badge{
-  font-size:12px;
-  color:#64748b;
-  letter-spacing:0.5px;
-  margin-top:4px;
-} 
-/* ================= HEADER ================= */
-
-  /* ===== TRICOLOR STRIP ===== */
-
-.gov-strip{
-  height:6px;
-  background: linear-gradient(
-    to right,
-    #ff9933 33%,
-    white 33% 66%,
-    #138808 66%
-  );
+.top-bar{
+  background:var(--primary);
+  color:white;
+  text-align:center;
+  padding:6px;
+  font-size:13px;
 }
-  
-/* ===== GOVERNMENT HEADER ===== */
 
 .gov-header{
   background:#f8fafc;
-  padding:20px 5%;
-  border-bottom:1px solid #e2e8f0;
-  box-shadow:0 4px 8px rgba(0,0,0,0.04);
-}
-
-.gov-logos{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:40px;
-  flex-wrap:wrap;
+  padding:20px;
+  border-bottom:1px solid #e5e7eb;
   text-align:center;
 }
 
-.gov-logos img{
-  height:70px;
-  object-fit:contain;
-}
-
-.gov-title h2{
-  font-size:16px;
-  color:#1e3a8a;
-  margin:0;
-  font-weight:600;
-}
-
-.gov-title h1{
-  font-size:26px;
+.gov-header h1{
   margin:5px 0;
-  color:#111827;
+  font-size:28px;
 }
 
-.gov-title p{
+.gov-header p{
+  margin:0;
   font-size:14px;
-  color:#475569;
-  margin:0;
-}
-
-.header{
-  background:var(--gov-blue);
-  color:white;
-  padding:10px 40px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.header-left{
-  display:flex;
-  align-items:center;
-  gap:15px;
-}
-
-.header-left img{
-  height:55px;
-}
-
-.header h1{
-  margin:0;
-  font-size:18px;
-  font-weight:600;
-  letter-spacing:0.5px;
+  color:#555;
 }
 
 .nav{
-  display:flex;
-  gap:25px;
+  background:var(--primary);
+  padding:12px;
+  text-align:center;
 }
 
 .nav a{
   color:white;
   text-decoration:none;
+  margin:0 15px;
   font-size:14px;
   font-weight:500;
 }
 
-/* Tricolor strip */
-.tricolor{
-  height:6px;
-  background:linear-gradient(to right,
-    var(--gov-saffron) 33%,
-    white 33% 66%,
-    var(--gov-green) 66%);
-}
-
-/* ================= HERO ================= */
-
 .hero{
-  position:relative;
-  height:460px;
-  overflow:hidden;
-  color:white;
-}
-
-.slides{
-  position:absolute;
-  width:100%;
-  height:100%;
-}
-
-.slide{
-  position:absolute;
-  width:100%;
-  height:100%;
-  background-size:cover;
-  background-position:center;
-  opacity:0;
-  transition:opacity 1s ease-in-out;
-}
-
-.slide.active{
-  opacity:1;
-}
-
-/* ================= HERO SECTION ================= */
-
-.hero{
-  position:relative;
-  height:85vh;
-  background:url("assets/slide1.jpg") center/cover no-repeat;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  padding:100px 20px;
   text-align:center;
+  background:linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.55)),
+  url("assets/slide1.jpg") center/cover no-repeat;
   color:white;
-}
-
-.hero-overlay{
-  position:absolute;
-  inset:0;
-  background:linear-gradient(
-    rgba(0,0,0,0.55),
-    rgba(0,0,0,0.65)
-  );
-}
-
-.hero-content{
-  position:relative;
-  max-width:900px;
-  padding:20px;
-  z-index:2;
-}
-
-.hero h1{
-  font-size:42px;
-  font-weight:700;
-  margin-bottom:12px;
-  letter-spacing:1px;
 }
 
 .hero h2{
-  font-size:20px;
+  font-size:22px;
+  margin-bottom:15px;
   font-weight:500;
-  margin-bottom:18px;
-  color:#e2e8f0;
 }
 
 .hero p{
+  max-width:700px;
+  margin:auto;
   font-size:15px;
-  line-height:1.7;
+  line-height:1.6;
   margin-bottom:30px;
-  color:#f1f5f9;
-}
-
-.hero-buttons{
-  display:flex;
-  justify-content:center;
-  gap:18px;
-  flex-wrap:wrap;
 }
 
 .hero-btn{
-  padding:12px 22px;
-  border-radius:6px;
-  font-size:14px;
-  text-decoration:none;
-  transition:0.3s ease;
-}
-
-.hero-btn.primary{
-  background:#1e3a8a;
-  color:white;
-}
-
-.hero-btn.primary:hover{
-  background:#142e6e;
-}
-
-.hero-btn.secondary{
-  border:1px solid white;
-  color:white;
-}
-
-.hero-btn.secondary:hover{
+  display:inline-block;
+  padding:12px 25px;
+  margin:5px;
   background:white;
-  color:#1e3a8a;
-}
-
-/* Responsive */
-
-@media(max-width:768px){
-  .hero h1{
-    font-size:28px;
-  }
-
-  .hero h2{
-    font-size:16px;
-  }
-
-  .hero p{
-    font-size:13px;
-  }
-}
-/* ================= CREDIBILITY SECTION ================= */
-
-.credibility-section{
-  padding:90px 8%;
-  background:#ffffff;
-}
-
-.credibility-container{
-  display:grid;
-  grid-template-columns:1.2fr 1fr;
-  gap:60px;
-  align-items:center;
-}
-
-.credibility-left h2{
-  font-size:28px;
-  margin-bottom:20px;
-  color:#1e3a8a;
-}
-
-.credibility-left p{
-  font-size:15px;
-  color:#475569;
-  line-height:1.8;
-  margin-bottom:30px;
-}
-
-.credibility-points{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:15px;
-}
-
-.credibility-item{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.credibility-item span{
-  color:#15803d;
-  font-weight:bold;
-  font-size:16px;
-}
-
-.credibility-item p{
-  font-size:14px;
-  margin:0;
-  color:#374151;
-}
-
-.credibility-right{
-  display:flex;
-  flex-direction:column;
-  gap:20px;
-}
-
-.credibility-card{
-  background:#f1f5f9;
-  padding:25px;
-  border-radius:12px;
-  border-left:5px solid #1e3a8a;
-  box-shadow:0 6px 15px rgba(0,0,0,0.05);
-}
-
-.credibility-card h3{
-  margin-bottom:10px;
-  color:#1e3a8a;
-}
-
-.credibility-card p{
-  font-size:14px;
-  color:#475569;
-  line-height:1.6;
-}
-
-/* ===== Responsive ===== */
-
-@media(max-width:992px){
-  .credibility-container{
-    grid-template-columns:1fr;
-  }
-}
-
-/* ================= IMPORTANT LINKS STRIP ================= */
-
-.important-links{
-  background:#1e3a8a;
-  padding:20px 5%;
-}
-
-.links-container{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:20px;
-}
-
-.imp-link{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  text-decoration:none;
-  color:white;
-  font-size:13px;
-  padding:8px 14px;
+  color:var(--primary);
   border-radius:6px;
-  transition:0.3s ease;
+  text-decoration:none;
+  font-weight:600;
 }
-
-.imp-link:hover{
-  background:rgba(255,255,255,0.15);
-}
-
-.imp-icon{
-  font-size:16px;
-}
-
-/* Responsive */
-
-@media(max-width:900px){
-  .links-container{
-    justify-content:center;
-  }
-}
-  
-  /* ================= SECTION ================= */
 
 .section{
-  padding:70px 40px;
+  padding:80px 20px;
+  max-width:1200px;
+  margin:auto;
 }
 
 .section h2{
   text-align:center;
   margin-bottom:50px;
-  font-size:24px;
-  color:var(--gov-blue);
-}
-
-/* ================= DASHBOARD PROFESSIONAL ================= */
-
-.dashboard-section{
-  background:#eef2f8;
-  padding:60px 8%;
-  text-align:center;
-}
-
-.dashboard-section h2{
-  color:#1e3a8a;
-  margin-bottom:40px;
-  font-size:26px;
+  color:var(--primary);
 }
 
 .dashboard-grid{
   display:flex;
-  justify-content:center;
-  gap:30px;
   flex-wrap:wrap;
+  gap:25px;
+  justify-content:center;
 }
 
 .dashboard-card{
   background:white;
-  padding:30px 40px;
-  border-radius:8px;
-  width:250px;
-  box-shadow:0 8px 25px rgba(0,0,0,0.06);
-  transition:0.3s ease;
-}
-
-.dashboard-card:hover{
-  transform:translateY(-5px);
+  padding:30px;
+  border-radius:10px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+  width:220px;
+  text-align:center;
 }
 
 .dashboard-card h3{
-  font-size:40px;
-  color:#1e3a8a;
+  font-size:36px;
   margin-bottom:10px;
+  color:var(--primary);
 }
-
-.dashboard-card p{
-  font-size:15px;
-  color:#555;
-}
-
-/* ================= SERVICES SECTION ================= */
-/* ================= ULTRA CLEAN COMPACT SERVICES ================= */
 
 .services-grid{
   display:grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap:18px;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:25px;
 }
 
 .service-card{
   background:white;
-  padding:16px;                /* reduced */
+  padding:25px;
   border-radius:10px;
+  box-shadow:0 6px 15px rgba(0,0,0,0.08);
+  text-align:center;
   text-decoration:none;
-  color:#111827;
-  box-shadow:0 5px 14px rgba(0,0,0,0.04);
-  border:1px solid #e2e8f0;
-  transition:all 0.25s ease;
-
-  display:flex;
-  flex-direction:column;
-  min-height:150px;            /* tighter */
-}
-
-.service-card:hover{
-  transform:translateY(-3px);
-  box-shadow:0 8px 18px rgba(0,0,0,0.07);
-}
-
-.service-icon{
-  font-size:22px;              /* smaller */
-  margin-bottom:6px;
-}
-
-.service-card h3{
-  font-size:14px;
-  margin-bottom:6px;
-  color:#1e3a8a;
-  min-height:30px;
-}
-
-.service-card p{
-  font-size:11.5px;
-  color:#64748b;
-  line-height:1.4;
-  margin:0;
-}
-
-/* Responsive */
-
-@media(max-width:1100px){
-  .services-grid{
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media(max-width:600px){
-  .services-grid{
-    grid-template-columns: 1fr;
-  }
-}
-/* ================= LEADERSHIP STRUCTURE ================= */
-
-.leadership{
-  background:#f5f7fb;
-  padding:40px 8%;
-}
-
-.leadership h2{
-  text-align:center;
-  margin-bottom:25px;
-  color:#1e3a8a;
-  font-size:24px;
-}
-
-.sub-heading{
-  text-align:center;
-  margin-top:35px;
-  margin-bottom:15px;
-  font-size:18px;
-  color:#1e3a8a;
-}
-
-/* ===== SARPANCH ===== */
-
-.sarpanch-block{
-  display:flex;
-  gap:25px;
-  align-items:center;
-  background:white;
-  padding:22px;
-  border-radius:6px;
-  box-shadow:0 6px 18px rgba(0,0,0,0.05);
-  margin-bottom:30px;
-}
-
-.sarpanch-block img{
-  width:150px;
-  height:190px;
-  object-fit:cover;
-  border-radius:4px;
-}
-
-.sarpanch-details h3{
-  font-size:20px;
-  margin-bottom:6px;
-  color:#1e3a8a;
-}
-
-.sarpanch-details p{
-  margin:3px 0;
-  font-size:13px;
-  line-height:1.4;
-}
-
-.designation-label{
-  display:inline-block;
-  background:#ff7a00;
-  color:white;
-  font-size:10px;
-  padding:3px 7px;
-  border-radius:3px;
-  margin-bottom:6px;
-}
-
-/* ===== SECONDARY LEADERS ===== */
-
-.leaders-grid{
-  display:flex;
-  justify-content:center;
-  gap:15px;
-  flex-wrap:wrap;
-  margin-bottom:20px;
-}
-
-.leader-card{
-  background:white;
-  padding:12px;
-  width:170px;
-  border-radius:6px;
-  text-align:center;
-  box-shadow:0 4px 12px rgba(0,0,0,0.05);
-}
-
-.leader-card img{
-  width:80px;
-  height:100px;
-  object-fit:cover;
-  border-radius:4px;
-  margin-bottom:6px;
-}
-
-.leader-card h4{
-  font-size:14px;
-  margin-bottom:4px;
-}
-
-.leader-card p{
-  font-size:12px;
-}
-
-/* ===== BODY & EMPLOYEE GRID ===== */
-
-.member-grid{
-  display:grid;
-  grid-template-columns: repeat(4, 1fr); /* fixed 4 per row desktop */
-  gap:18px;
-  margin-top:5px;
-}
-
-.member-card{
-  background:white;
-  padding:12px;
-  border-radius:6px;
-  text-align:center;
-  box-shadow:0 3px 10px rgba(0,0,0,0.05);
-}
-
-.member-card img{
-  width:75px;
-  height:95px;
-  object-fit:cover;
-  border-radius:4px;
-  margin-bottom:6px;
-}
-
-.member-card h5{
-  font-size:13px;
-  margin-bottom:3px;
-}
-
-.member-card p{
-  font-size:11px;
-}
-
-/* ===== RESPONSIVE ===== */
-
-@media(max-width:992px){
-  .member-grid{
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .sarpanch-block{
-    flex-direction:column;
-    text-align:center;
-  }
-}
-
-@media(max-width:600px){
-  .member-grid{
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ================= NOTICES SECTION ================= */
-
-.notices-section{
-  background:#f8fafc;
-  padding:80px 8%;
+  color:var(--text);
 }
 
 .notice-list{
-  max-width:900px;
-  margin:40px auto 20px auto;
-  display:flex;
-  flex-direction:column;
-  gap:15px;
+  max-width:800px;
+  margin:auto;
 }
 
 .notice-item{
-  background:white;
-  padding:18px 22px;
-  border-radius:8px;
-  border-left:4px solid #1e3a8a;
-  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+  background:#f1f5f9;
+  padding:15px 20px;
+  border-radius:6px;
+  margin-bottom:15px;
   display:flex;
   justify-content:space-between;
-  align-items:center;
-  transition:0.2s ease;
 }
-
-.notice-item:hover{
-  background:#f1f5f9;
-}
-
-.notice-title{
-  font-size:14px;
-  font-weight:500;
-  color:#1e3a8a;
-}
-
-.notice-date{
-  font-size:12px;
-  color:#64748b;
-}
-
-.notice-footer{
-  text-align:center;
-  margin-top:30px;
-}
-
-.view-all-btn{
-  padding:8px 18px;
-  background:#1e3a8a;
-  color:white;
-  font-size:13px;
-  border-radius:5px;
-  text-decoration:none;
-  transition:0.3s;
-}
-
-.view-all-btn:hover{
-  background:#16307a;
-}
-
-  
- /* ================= TWO-TONE GOVERNMENT FOOTER ================= */
 
 footer{
-  margin-top:80px;
-}
-
-.footer-top{
-  background:#1e3a8a;
+  background:var(--primary);
   color:white;
-  padding:50px 8%;
-}
-
-.footer-grid{
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap:40px;
-}
-
-.footer-col h4{
-  margin-bottom:15px;
-  font-size:16px;
-  font-weight:600;
-}
-
-.footer-col p{
-  font-size:13px;
-  line-height:1.6;
-  margin-bottom:8px;
-  color:#e5e7eb;
-}
-
-.footer-col ul{
-  list-style:none;
-  padding:0;
-}
-
-.footer-col ul li{
-  margin-bottom:8px;
-}
-
-.footer-col ul li a{
-  color:#e5e7eb;
-  text-decoration:none;
-  font-size:13px;
-  transition:0.3s;
-}
-
-.footer-col ul li a:hover{
-  color:white;
-}
-
-.footer-bottom{
-  background:#0f172a;
-  color:#cbd5e1;
+  padding:40px 20px;
   text-align:center;
-  padding:18px;
-  font-size:12px;
+}
+
+@media(max-width:768px){
+  .dashboard-grid{
+    flex-direction:column;
+    align-items:center;
+  }
 }
 
 </style>
@@ -791,382 +181,133 @@ footer{
 
 <body>
 
-<!-- ================= GOVERNMENT AUTHORITY HEADER ================= -->
-
-<div class="gov-strip"></div>
+<div class="top-bar">
+Gram Sabha Meeting Scheduled on 25 March 2026 | Citizens are requested to attend.
+</div>
 
 <div class="gov-header">
-
-  <div class="gov-logos">
-    <img src="assets/india-emblem.png" alt="Government of India">
-    
-    <div class="gov-title">
-      <h2>Government of Maharashtra</h2>
-      <h1>Gram Panchayat Wandhali</h1>
-      <p>Taluka Warora | District Chandrapur</p>
-    </div>
-
-    <img src="assets/maharashtra-logo.png" alt="Government of Maharashtra">
-  </div>
-
-</div>
-  <div class="nav">
-    <a href="#">Home</a>
-    <a href="complaint.html">Complaint</a>
-    <a href="track.html">Track</a>
-    <a href="login.html">Admin</a>
-  </div>
+<h1>Gram Panchayat Wandhali</h1>
+<p>Taluka Warora | District Chandrapur | Government of Maharashtra</p>
+<p>Official Digital Governance Portal</p>
 </div>
 
-<div class="tricolor"></div>
-
-<!-- HERO -->
-<!-- ================= HERO SECTION ================= -->
+<div class="nav">
+<a href="#">Home</a>
+<a href="complaint.html">Register Complaint</a>
+<a href="track.html">Track Complaint</a>
+<a href="login.html">Admin</a>
+</div>
 
 <section class="hero">
+<h2>Transparent • Accountable • Digital Governance</h2>
+<p>
+Empowering citizens through online grievance redressal,
+public transparency dashboard and efficient village administration.
+</p>
 
-  <div class="hero-overlay"></div>
-
-  <div class="hero-content">
-
-    <h1>
-      Gram Panchayat Wandhali
-    </h1>
-
-    <h2>
-      Official Digital Governance Portal
-    </h2>
-
-    <p>
-      Delivering Transparent Administration, Public Services
-      and Rural Development for the Citizens of Wandhali.
-    </p>
-
-    <div class="hero-buttons">
-      <a href="complaint.html" class="hero-btn primary">
-        Register Complaint
-      </a>
-
-      <a href="track.html" class="hero-btn secondary">
-        Track Complaint
-      </a>
-    </div>
-
-  </div>
-
-</section>
-  <!-- ================= PANCHAYAT CREDIBILITY BLOCK ================= -->
-
-<section class="credibility-section">
-
-  <div class="credibility-container">
-
-    <div class="credibility-left">
-      <h2>Committed to Transparent & Accountable Governance</h2>
-      <p>
-        Gram Panchayat Wandhali is dedicated to strengthening rural development
-        through transparent administration, citizen participation, and digital governance.
-        Our elected body works to ensure efficient service delivery and inclusive growth
-        for every household in the village.
-      </p>
-
-      <div class="credibility-points">
-        <div class="credibility-item">
-          <span>✔</span>
-          <p>Digitally Managed Public Services</p>
-        </div>
-
-        <div class="credibility-item">
-          <span>✔</span>
-          <p>Time-bound Grievance Redressal</p>
-        </div>
-
-        <div class="credibility-item">
-          <span>✔</span>
-          <p>Transparency in Public Notices & Schemes</p>
-        </div>
-
-        <div class="credibility-item">
-          <span>✔</span>
-          <p>Citizen-Centric Rural Development Planning</p>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="credibility-right">
-      <div class="credibility-card">
-        <h3>Our Vision</h3>
-        <p>
-          To build a progressive, self-reliant and digitally empowered village
-          ensuring quality infrastructure, social welfare, and sustainable development.
-        </p>
-      </div>
-
-      <div class="credibility-card">
-        <h3>Our Mission</h3>
-        <p>
-          To deliver transparent governance, strengthen public participation,
-          and implement government schemes effectively for the benefit of all citizens.
-        </p>
-      </div>
-    </div>
-
-  </div>
-
+<a href="complaint.html" class="hero-btn">Register Complaint</a>
+<a href="track.html" class="hero-btn">Track Complaint</a>
 </section>
 
-<!-- ================= IMPORTANT LINKS STRIP ================= -->
+<section class="section">
+<h2>Transparency Dashboard</h2>
 
-<section class="important-links">
+<div class="dashboard-grid">
 
-  <div class="links-container">
-
-    <a href="#" class="imp-link">
-      <div class="imp-icon">📘</div>
-      <span>RTI Information</span>
-    </a>
-
-    <a href="#" class="imp-link">
-      <div class="imp-icon">📜</div>
-      <span>Public Documents</span>
-    </a>
-
-    <a href="#" class="imp-link">
-      <div class="imp-icon">🏛</div>
-      <span>Government Schemes</span>
-    </a>
-
-    <a href="#" class="imp-link">
-      <div class="imp-icon">🧾</div>
-      <span>Tax & Revenue</span>
-    </a>
-
-    <a href="#" class="imp-link">
-      <div class="imp-icon">📢</div>
-      <span>Announcements</span>
-    </a>
-
-    <a href="#" class="imp-link">
-      <div class="imp-icon">📞</div>
-      <span>Emergency Contact</span>
-    </a>
-
-  </div>
-
-</section>
-  
-<!-- TRANSPARENCY -->
-<section class="dashboard-section">
-  <h2>Transparency Dashboard</h2>
-
-  <div class="dashboard-grid" id="dashboardGrid">
-
-    <div class="dashboard-card">
-      <h3 id="totalComplaints">0</h3>
-      <p>Total Complaints</p>
-    </div>
-
-    <div class="dashboard-card">
-      <h3 id="resolvedComplaints">0</h3>
-      <p>Resolved Complaints</p>
-    </div>
-
-    <div class="dashboard-card">
-      <h3 id="totalNotices">0</h3>
-      <p>Notices Issued</p>
-    </div>
-
-  </div>
-</section>
-
-<!-- ================= CITIZEN SERVICES ================= -->
-<div class="services-grid">
-
-  <a href="complaint.html" class="service-card">
-    <div class="service-icon">📝</div>
-    <h3>Register Complaint</h3>
-    <p>Submit public grievances digitally for quick resolution.</p>
-  </a>
-
-  <a href="track.html" class="service-card">
-    <div class="service-icon">🔎</div>
-    <h3>Track Complaint</h3>
-    <p>Track status of your registered grievance online.</p>
-  </a>
-
-  <div class="service-card">
-    <div class="service-icon">📄</div>
-    <h3>Download Notices</h3>
-    <p>View and download official public notices and circulars.</p>
-  </div>
-
-  <div class="service-card">
-    <div class="service-icon">🏠</div>
-    <h3>Housing Schemes</h3>
-    <p>Information about PM Awas Yojana and other housing programs.</p>
-  </div>
-
-  <div class="service-card">
-    <div class="service-icon">💧</div>
-    <h3>Water & Sanitation</h3>
-    <p>Details about Jal Jeevan Mission and sanitation services.</p>
-  </div>
-
-  <div class="service-card">
-    <div class="service-icon">📢</div>
-    <h3>Public Announcements</h3>
-    <p>Latest updates and official communications.</p>
-  </div>
-
-  <!-- NEW 1 -->
-  <div class="service-card">
-    <div class="service-icon">📜</div>
-    <h3>Birth & Death Certificates</h3>
-    <p>Information and application process for certificates.</p>
-  </div>
-
-  <!-- NEW 2 -->
-  <div class="service-card">
-    <div class="service-icon">🏘</div>
-    <h3>Property Tax Services</h3>
-    <p>House tax information and payment details.</p>
-  </div>
-
+<div class="dashboard-card">
+<h3 id="totalComplaints">0</h3>
+<p>Total Complaints</p>
 </div>
 
-  <!-- ================= LATEST NOTICES ================= -->
+<div class="dashboard-card">
+<h3 id="resolvedComplaints">0</h3>
+<p>Resolved Complaints</p>
+</div>
 
-<!-- ================= LATEST NOTICES PREVIEW ================= -->
+<div class="dashboard-card">
+<h3 id="pendingComplaints">0</h3>
+<p>Pending Complaints</p>
+</div>
 
-<section class="notices-section" id="notices">
+<div class="dashboard-card">
+<h3 id="totalNotices">0</h3>
+<p>Notices Issued</p>
+</div>
 
-  <div class="section-header">
-    <h2>Latest Notices</h2>
-    <p>Official announcements and public updates</p>
-  </div>
-
-  <div class="notice-list">
-
-    <div class="notice-item">
-      <div class="notice-title">
-        ग्रामसभा बैठक सूचना – 25 March 2026
-      </div>
-      <div class="notice-date">20 Mar 2026</div>
-    </div>
-
-    <div class="notice-item">
-      <div class="notice-title">
-        जल जीवन मिशन कार्याबाबत माहिती
-      </div>
-      <div class="notice-date">15 Mar 2026</div>
-    </div>
-
-    <div class="notice-item">
-      <div class="notice-title">
-        मालमत्ता कर भरणा अंतिम दिनांक
-      </div>
-      <div class="notice-date">10 Mar 2026</div>
-    </div>
-
-  </div>
-
-  <div class="notice-footer">
-    <a href="notices.html" class="view-all-btn">
-      View All Notices
-    </a>
-  </div>
-
+</div>
 </section>
 
-<!-- ================= LEADERSHIP SECTION ================= -->
+<section class="section">
+<h2>Citizen Services</h2>
 
-<section class="section leadership">
+<div class="services-grid">
 
-  <h2>Leadership & Administration</h2>
+<a href="complaint.html" class="service-card">
+<h3>Register Complaint</h3>
+<p>Submit public grievances digitally for quick resolution.</p>
+</a>
 
-  <!-- Sarpanch Main Block -->
-  <div id="sarpanchBlock" class="sarpanch-block"></div>
+<a href="track.html" class="service-card">
+<h3>Track Complaint</h3>
+<p>Track the real-time status of your grievance.</p>
+</a>
 
-  <!-- Secondary Leaders -->
-  <div id="leadersContainer" class="leaders-grid"></div>
+<div class="service-card">
+<h3>Public Notices</h3>
+<p>View official announcements and circulars.</p>
+</div>
 
-  <h3 class="sub-heading">Elected Body Members</h3>
-  <div id="bodyMembersContainer" class="member-grid"></div>
+<div class="service-card">
+<h3>Birth & Death Certificates</h3>
+<p>Information and application process.</p>
+</div>
 
-  <h3 class="sub-heading">Administrative Staff</h3>
-  <div id="employeesContainer" class="member-grid"></div>
+<div class="service-card">
+<h3>Tax & Revenue</h3>
+<p>Property tax information and payment details.</p>
+</div>
 
+<div class="service-card">
+<h3>Government Schemes</h3>
+<p>Information about rural development schemes.</p>
+</div>
+
+</div>
 </section>
-  
-<!-- ================= PROFESSIONAL TWO-TONE FOOTER ================= -->
+
+<section class="section">
+<h2>Latest Notices</h2>
+
+<div class="notice-list">
+
+<div class="notice-item">
+<span>Gram Sabha Meeting Notice – 25 March 2026</span>
+<span>20 Mar 2026</span>
+</div>
+
+<div class="notice-item">
+<span>Water Supply Maintenance Update</span>
+<span>15 Mar 2026</span>
+</div>
+
+<div class="notice-item">
+<span>Property Tax Payment Deadline</span>
+<span>10 Mar 2026</span>
+</div>
+
+</div>
+</section>
 
 <footer>
-
-  <!-- TOP GOVERNMENT BAND -->
-  <div class="footer-top">
-
-    <div class="footer-grid">
-
-      <div class="footer-col">
-        <h4>About Gram Panchayat</h4>
-        <p>
-          Gram Panchayat Wandhali is committed to transparent,
-          accountable and citizen-focused governance for rural development.
-        </p>
-      </div>
-
-      <div class="footer-col">
-        <h4>Quick Links</h4>
-        <ul>
-          <li><a href="complaint.html">Register Complaint</a></li>
-          <li><a href="track.html">Track Complaint</a></li>
-          <li><a href="#notices">Public Notices</a></li>
-          <li><a href="#schemes">Government Schemes</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>Contact Information</h4>
-        <p>Gram Panchayat Wandhali</p>
-        <p>Taluka: Warora</p>
-        <p>District: Chandrapur</p>
-        <p>Phone: +91-9764444266</p>
-        <p>Email: gpwandhali@gmail.com</p>
-      </div>
-
-      <div class="footer-col">
-        <h4>Office Hours</h4>
-        <p>Monday – Friday</p>
-        <p>10:00 AM – 5:00 PM</p>
-        <p>Saturday (Half Day)</p>
-        <p>Closed on Government Holidays</p>
-      </div>
-
-    </div>
-
-  </div>
-
-  <!-- BOTTOM DARK BAND -->
-  <div class="footer-bottom">
-   <p>
-  © 2026 Gram Panchayat Wandhali |
-  Official Rural Governance Portal | Developed by Ramko Associates |
-  Last Updated: <span id="lastUpdated"></span>
+<p>
+© 2026 Gram Panchayat Wandhali | Official Rural Governance Portal
 </p>
-  </div>
-
+<p>
+Developed & Maintained by Smart GP Digital Governance Platform
+</p>
 </footer>
+
 <script type="module" src="js/main.js"></script>
 
-<script>
-  const today = new Date();
-  document.getElementById("lastUpdated").innerText =
-    today.toLocaleDateString("en-IN", {
-      day:"2-digit",
-      month:"long",
-      year:"numeric"
-    });
-</script>  
 </body>
 </html>
