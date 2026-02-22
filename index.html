@@ -129,44 +129,55 @@ body{
   color:var(--primary);
 }
 
+  /* MODERN LEADERSHIP STYLE */
+
 .leadership-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:25px;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:35px;
 }
 
 .leader-card{
-  background:#f9fafb;
+  background:white;
   padding:20px;
   border-radius:12px;
   text-align:center;
-  box-shadow:0 6px 15px rgba(0,0,0,0.05);
-  transition:0.3s;
+  transition:all 0.3s ease;
 }
 
 .leader-card:hover{
-  transform:translateY(-5px);
-  box-shadow:0 10px 20px rgba(0,0,0,0.1);
+  transform:translateY(-6px);
+  box-shadow:0 12px 25px rgba(0,0,0,0.12);
 }
 
-.leader-card img{
-  width:110px;
-  height:110px;
+.leader-photo{
+  width:100%;
+  height:260px;
+  border-radius:10px;
+  overflow:hidden;
+  margin-bottom:15px;
+}
+
+.leader-photo img{
+  width:100%;
+  height:100%;
   object-fit:cover;
-  border-radius:50%;
-  margin-bottom:10px;
 }
 
 .leader-card h4{
-  margin:8px 0 4px;
-  font-size:16px;
+  margin:10px 0 5px;
+  font-size:17px;
+  font-weight:600;
+  color:#111;
 }
 
-.leader-card p{
-  font-size:13px;
-  color:#555;
+.leader-role{
+  font-size:12px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  color:#6b7280;
+  font-weight:500;
 }
-
   
 /* EVENTS */
 .events-grid{
@@ -385,10 +396,14 @@ const d = doc.data();
 
 const card = `
 <div class="leader-card">
-<img src="${d.photoUrl || 'assets/default-user.png'}">
-<h4>${d.name}</h4>
-<p>${d.role}</p>
-${d.phone ? `<small>${d.phone}</small>` : ""}
+
+  <div class="leader-photo">
+    <img src="${d.photoUrl || 'assets/default-user.png'}">
+  </div>
+
+  <h4>${d.name}</h4>
+  <div class="leader-role">${d.role}</div>
+
 </div>
 `;
 
