@@ -562,6 +562,68 @@ body{
   }
 }
 
+/* ================= NOTICES SECTION ================= */
+
+.notices-section{
+  background:#f8fafc;
+  padding:80px 8%;
+}
+
+.notice-list{
+  max-width:900px;
+  margin:40px auto 20px auto;
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+.notice-item{
+  background:white;
+  padding:18px 22px;
+  border-radius:8px;
+  border-left:4px solid #1e3a8a;
+  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  transition:0.2s ease;
+}
+
+.notice-item:hover{
+  background:#f1f5f9;
+}
+
+.notice-title{
+  font-size:14px;
+  font-weight:500;
+  color:#1e3a8a;
+}
+
+.notice-date{
+  font-size:12px;
+  color:#64748b;
+}
+
+.notice-footer{
+  text-align:center;
+  margin-top:30px;
+}
+
+.view-all-btn{
+  padding:8px 18px;
+  background:#1e3a8a;
+  color:white;
+  font-size:13px;
+  border-radius:5px;
+  text-decoration:none;
+  transition:0.3s;
+}
+
+.view-all-btn:hover{
+  background:#16307a;
+}
+
+  
  /* ================= TWO-TONE GOVERNMENT FOOTER ================= */
 
 footer{
@@ -830,6 +892,26 @@ footer{
   <div id="employeesContainer" class="member-grid"></div>
 
 </section>
+
+<!-- ================= LATEST NOTICES ================= -->
+
+<section class="notices-section" id="notices">
+
+  <div class="section-header">
+    <h2>Latest Notices</h2>
+    <p>Official announcements and public updates</p>
+  </div>
+
+  <div class="notice-list" id="noticeList">
+    <!-- Notices will load here -->
+  </div>
+
+  <div class="notice-footer">
+    <a href="notices.html" class="view-all-btn">View All Notices</a>
+  </div>
+
+</section>
+  
 <!-- ================= PROFESSIONAL TWO-TONE FOOTER ================= -->
 
 <footer>
