@@ -298,7 +298,6 @@ async function loadLeadership(){
 }
 loadLeadership();
 
-/* EVENTS */
 /* ================= EVENTS (HOMEPAGE) ================= */
 
 async function loadEvents(){
@@ -351,6 +350,20 @@ async function loadGallery(){
   });
 }
 loadGallery();
+
+window.openEventModal = function(title, desc, image, date){
+  document.getElementById("modalTitle").textContent = title;
+  document.getElementById("modalDesc").textContent = desc;
+  document.getElementById("modalDate").textContent = date;
+  document.getElementById("modalImage").src = image;
+  document.getElementById("eventModal").style.display = "flex";
+}
+
+window.closeEventModal = function(){
+  document.getElementById("eventModal").style.display = "none";
+}
+  
+  
 </script>
 
   <!-- EVENT MODAL -->
