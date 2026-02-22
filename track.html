@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Track Complaint</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
@@ -123,6 +125,22 @@ button:hover{opacity:0.9;}
 .print-btn{
   background:#16a34a;
 }
+
+.rejected-box{
+  background:#fee2e2;
+  padding:10px;
+  border-radius:8px;
+  margin-top:10px;
+  color:#991b1b;
+}
+
+.admin-note{
+  background:#e0f2fe;
+  padding:10px;
+  border-radius:8px;
+  margin-top:10px;
+  font-size:13px;
+}
 </style>
 </head>
 
@@ -163,6 +181,7 @@ document.getElementById("trackBtn").onclick = async () => {
   }
 
   snapshot.forEach(docSnap=>{
+
     const data = docSnap.data();
     const id = docSnap.id;
 
@@ -178,14 +197,20 @@ document.getElementById("trackBtn").onclick = async () => {
     };
 
     if(status==="Accepted"){ steps.accepted="active"; }
-    if(status==="In Review"){ steps.accepted="completed"; steps.review="active"; }
+    if(status==="In Review"){
+      steps.accepted="completed";
+      steps.review="active";
+    }
     if(status==="Resolved"){
       steps.accepted="completed";
       steps.review="completed";
       steps.resolved="completed";
     }
 
-    const statusColor = status==="Resolved" ? "#16a34a" : "#f59e0b";
+    let statusColor =
+      status==="Resolved" ? "#16a34a" :
+      status==="Rejected" ? "#ef4444" :
+      "#f59e0b";
 
     resultDiv.innerHTML = `
     <div class="result-card">
@@ -225,6 +250,20 @@ document.getElementById("trackBtn").onclick = async () => {
 
       <strong>Message:</strong>
       <div>${data.message}</div>
+
+      ${status==="Rejected" ? `
+        <div class="rejected-box">
+          <strong>Rejection Reason:</strong><br>
+          ${data.rejectReason || "Not specified"}
+        </div>
+      ` : ""}
+
+      ${data.adminNote ? `
+        <div class="admin-note">
+          <strong>Admin Note:</strong><br>
+          ${data.adminNote}
+        </div>
+      ` : ""}
 
       ${status==="Resolved" ? `
       <div class="rating">
