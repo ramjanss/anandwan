@@ -167,45 +167,105 @@ body{
   opacity:1;
 }
 
+/* ================= HERO SECTION ================= */
+
+.hero{
+  position:relative;
+  height:85vh;
+  background:url("assets/slide1.jpg") center/cover no-repeat;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:white;
+}
+
 .hero-overlay{
   position:absolute;
   inset:0;
-  background:rgba(0,0,0,0.6);
+  background:linear-gradient(
+    rgba(0,0,0,0.55),
+    rgba(0,0,0,0.65)
+  );
 }
 
 .hero-content{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  text-align:center;
+  position:relative;
+  max-width:900px;
+  padding:20px;
   z-index:2;
-  max-width:800px;
 }
 
-.hero-content h2{
-  font-size:36px;
+.hero h1{
+  font-size:42px;
   font-weight:700;
-  margin-bottom:15px;
+  margin-bottom:12px;
+  letter-spacing:1px;
 }
 
-.hero-content p{
-  font-size:16px;
-  margin-bottom:25px;
+.hero h2{
+  font-size:20px;
+  font-weight:500;
+  margin-bottom:18px;
+  color:#e2e8f0;
 }
 
-.btn{
+.hero p{
+  font-size:15px;
+  line-height:1.7;
+  margin-bottom:30px;
+  color:#f1f5f9;
+}
+
+.hero-buttons{
+  display:flex;
+  justify-content:center;
+  gap:18px;
+  flex-wrap:wrap;
+}
+
+.hero-btn{
   padding:12px 22px;
-  border-radius:4px;
+  border-radius:6px;
+  font-size:14px;
   text-decoration:none;
-  color:white;
-  font-weight:600;
-  margin:0 8px;
+  transition:0.3s ease;
 }
 
-.btn-green{background:var(--gov-green);}
-.btn-saffron{background:var(--gov-saffron);}
+.hero-btn.primary{
+  background:#1e3a8a;
+  color:white;
+}
 
+.hero-btn.primary:hover{
+  background:#142e6e;
+}
+
+.hero-btn.secondary{
+  border:1px solid white;
+  color:white;
+}
+
+.hero-btn.secondary:hover{
+  background:white;
+  color:#1e3a8a;
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+  .hero h1{
+    font-size:28px;
+  }
+
+  .hero h2{
+    font-size:16px;
+  }
+
+  .hero p{
+    font-size:13px;
+  }
+}
 /* ================= CREDIBILITY SECTION ================= */
 
 .credibility-section{
@@ -718,21 +778,40 @@ footer{
 <div class="tricolor"></div>
 
 <!-- HERO -->
-<section class="hero">
-  <div class="slides">
-    <div class="slide active" style="background-image:url('assets/slide1.jpg')"></div>
-    <div class="slide" style="background-image:url('assets/slide2.jpg')"></div>
-    <div class="slide" style="background-image:url('assets/slide3.jpg')"></div>
-  </div>
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <h2>Transparent & Citizen-Centric Governance</h2>
-    <p>Delivering accountable and digital public services for rural development.</p>
-    <a href="complaint.html" class="btn btn-green">Register Complaint</a>
-    <a href="track.html" class="btn btn-saffron">Track Complaint</a>
-  </div>
-</section>
+<!-- ================= HERO SECTION ================= -->
 
+<section class="hero">
+
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+
+    <h1>
+      Gram Panchayat Wandhali
+    </h1>
+
+    <h2>
+      Official Digital Governance Portal
+    </h2>
+
+    <p>
+      Delivering Transparent Administration, Public Services
+      and Rural Development for the Citizens of Wandhali.
+    </p>
+
+    <div class="hero-buttons">
+      <a href="complaint.html" class="hero-btn primary">
+        Register Complaint
+      </a>
+
+      <a href="track.html" class="hero-btn secondary">
+        Track Complaint
+      </a>
+    </div>
+
+  </div>
+
+</section>
   <!-- ================= PANCHAYAT CREDIBILITY BLOCK ================= -->
 
 <section class="credibility-section">
