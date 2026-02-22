@@ -99,7 +99,7 @@ async function loadDashboardStats(){
 
     let resolvedCount = 0;
     complaintSnap.forEach(doc=>{
-      if(doc.data().status === "resolved"){
+      if(doc.data().status === "Resolved"){
         resolvedCount++;
       }
     });
