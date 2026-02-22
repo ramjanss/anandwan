@@ -53,52 +53,46 @@
 <script type="module">
 
 import { db, storage } from "../js/firebase.js";
-import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } 
+import { collection, addDoc, getDocs, deleteDoc, doc, orderBy, query }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { ref, uploadBytes, getDownloadURL, deleteObject } 
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
-const titleInput = document.getElementById("noticeTitle");
-const descInput = document.getElementById("noticeDesc");
-const fileInput = document.getElementById("noticeFile");
-const msg = document.getElementById("noticeMsg");
-const noticeList = document.getElementById("noticeList");
+import { ref, uploadBytes, getDownloadURL, deleteObject }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
 document.getElementById("addNoticeBtn").onclick = async () => {
 
-  if(titleInput.value.trim() === ""){
-    alert("Title required");
+  const title = document.getElementById("noticeTitle").value;
+  const file = document.getElementById("noticeFile").files[0];
+
+  if(!title || !file){
+    alert("Title and PDF required");
     return;
   }
 
   try {
 
-    let fileURL = "";
-    let storagePath = "";
+    const storageRef = ref(storage,"notices/"+Date.now()+"_"+file.name);
 
-    if(fileInput.files[0]){
+    await uploadBytes(storageRef,file);
 
-      const file = fileInput.files[0];
-      const storageRef = ref(storage,"notices/"+Date.now()+"_"+file.name);
-
-      await uploadBytes(storageRef,file);
-      fileURL = await getDownloadURL(storageRef);
-      storagePath = storageRef.fullPath;
-    }
+    const fileUrl = await getDownloadURL(storageRef);
 
     await addDoc(collection(db,"notices"),{
-      title:titleInput.value,
-      description:descInput.value,
-      fileUrl:fileURL,
-      storagePath:storagePath,
-      created:new Date()
+      title:title,
+      fileUrl:fileUrl,
+      storagePath:storageRef.fullPath,
+      createdAt:new Date()
     });
 
-    msg.textContent = "Notice uploaded successfully ✅";
+    alert("Notice uploaded successfully ✅");
+    location.reload();
 
-    titleInput.value="";
-    descInput.value="";
-    fileInput.value="";
+  } catch(error){
+    console.error(error);
+    alert("Upload failed ❌");
+  }
+
+};
 
     loadNotices();
 
