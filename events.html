@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>All Events</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+body{font-family:'Poppins',sans-serif;margin:0;padding:40px;}
+.events-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:25px;
+}
+.event-card{
+  background:#f1f5f9;
+  padding:20px;
+  border-radius:12px;
+}
+.event-card img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+  border-radius:8px;
+}
+</style>
+</head>
+<body>
+
+<h2>All Events</h2>
+<div id="allEvents" class="events-grid"></div>
+
+<script type="module">
+import { db } from "./js/firebase.js";
+import { collection, getDocs, query, orderBy }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+async function loadAllEvents(){
+  const container=document.getElementById("allEvents");
+  const q=query(collection(db,"events"),orderBy("eventDate","desc"));
+  const snap=await getDocs(q);
+
+  snap.forEach(doc=>{
+    const d=doc.data();
+    const date=d.eventDate?.toDate().toLocaleDateString();
+
+    container.innerHTML+=`
+      <div class="event-card">
+        ${d.imageUrl?`<img src="${d.imageUrl}">`:""}
+        <h4>${d.title}</h4>
+        <small>${date}</small>
+        <p>${d.description||""}</p>
+      </div>
+    `;
+  });
+}
+loadAllEvents();
+</script>
+
+</body>
+</html>
