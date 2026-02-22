@@ -390,154 +390,150 @@ Taluka Warora, District Chandrapur
 © <span id="year"></span> | Last Updated: <span id="updated"></span>
 </div>
 </footer>
-
 <script type="module">
 import { db } from "./js/firebase.js";
 import { collection, getDocs, query, orderBy }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 /* HERO AUTO SLIDER */
-const hero=document.getElementById("hero");
-const images=["assets/slide1.jpg","assets/slide2.jpg","assets/slide3.jpg"];
-let i=0;
+const hero = document.getElementById("hero");
+const images = ["assets/slide1.jpg","assets/slide2.jpg","assets/slide3.jpg"];
+let i = 0;
 function changeHero(){
-hero.style.backgroundImage=`url('${images[i]}')`;
-i=(i+1)%images.length;
+  hero.style.backgroundImage = `url('${images[i]}')`;
+  i = (i+1) % images.length;
 }
 changeHero();
 setInterval(changeHero,5000);
 
 /* DASHBOARD */
 async function loadDashboard(){
-const complaints=await getDocs(collection(db,"complaints"));
-const notices=await getDocs(collection(db,"notices"));
-let resolved=0;
-complaints.forEach(d=>{if(d.data().status==="Resolved")resolved++;});
-document.getElementById("totalComplaints").textContent=complaints.size;
-document.getElementById("resolvedComplaints").textContent=resolved;
-document.getElementById("pendingComplaints").textContent=complaints.size-resolved;
-document.getElementById("totalNotices").textContent=notices.size;
+  const complaints = await getDocs(collection(db,"complaints"));
+  const notices = await getDocs(collection(db,"notices"));
+  let resolved = 0;
+
+  complaints.forEach(d=>{
+    if(d.data().status==="Resolved") resolved++;
+  });
+
+  document.getElementById("totalComplaints").textContent = complaints.size;
+  document.getElementById("resolvedComplaints").textContent = resolved;
+  document.getElementById("pendingComplaints").textContent = complaints.size - resolved;
+  document.getElementById("totalNotices").textContent = notices.size;
 }
 loadDashboard();
 
+/* LEADERSHIP */
 async function loadLeadership(){
 
-const snap = await getDocs(collection(db,"members"));
+  const snap = await getDocs(collection(db,"members"));
 
-const leaderContainer = document.getElementById("leaderContainer");
-const bodyContainer = document.getElementById("bodyContainer");
-const employeeContainer = document.getElementById("employeeContainer");
+  const leaderContainer = document.getElementById("leaderContainer");
+  const bodyContainer = document.getElementById("bodyContainer");
+  const employeeContainer = document.getElementById("employeeContainer");
 
-leaderContainer.innerHTML = "";
-bodyContainer.innerHTML = "";
-employeeContainer.innerHTML = "";
+  leaderContainer.innerHTML = "";
+  bodyContainer.innerHTML = "";
+  employeeContainer.innerHTML = "";
 
-// Convert snapshot to array
-const members = [];
-snap.forEach(doc=>{
-  members.push(doc.data());
-});
+  const members = [];
+  snap.forEach(doc=>{
+    members.push(doc.data());
+  });
 
-// ===== SORTING FUNCTION =====
-function getPriority(role){
-  if(!role) return 99;
-  role = role.toLowerCase();
+  function getPriority(role){
+    if(!role) return 99;
+    role = role.toLowerCase();
+    if(role.includes("sarpanch")) return 1;
+    if(role.includes("upsarpanch")) return 2;
+    if(role.includes("village development officer") || role.includes("vdo")) return 3;
+    return 4;
+  }
 
-  if(role.includes("sarpanch")) return 1;
-  if(role.includes("upsarpanch")) return 2;
-  if(role.includes("village development officer") || role.includes("vdo")) return 3;
+  const leaders = members.filter(m => m.type === "leader");
+  const body = members.filter(m => m.type === "body");
+  const employees = members.filter(m => m.type === "employee");
 
-  return 4;
+  leaders.sort((a,b)=> getPriority(a.role) - getPriority(b.role));
+
+  function buildCard(d){
+
+    const isSarpanch = d.role && d.role.toLowerCase().includes("sarpanch");
+
+    return `
+    <div class="leader-card ${isSarpanch ? 'highlight' : ''}">
+
+      <div class="leader-photo">
+        <img src="${d.photoUrl || 'assets/default-user.png'}">
+      </div>
+
+      <h4>${d.name}</h4>
+
+      <div class="leader-badge">${d.role}</div>
+
+      ${d.phone ? `
+      <div class="contact-actions">
+        <a href="tel:${d.phone}" class="contact-btn">Call</a>
+        <a href="https://wa.me/91${d.phone}" target="_blank"
+           class="contact-btn whatsapp">WhatsApp</a>
+      </div>
+      ` : ""}
+
+    </div>
+    `;
+  }
+
+  leaders.forEach(d=>{
+    leaderContainer.innerHTML += buildCard(d);
+  });
+
+  body.forEach(d=>{
+    bodyContainer.innerHTML += buildCard(d);
+  });
+
+  employees.forEach(d=>{
+    employeeContainer.innerHTML += buildCard(d);
+  });
 }
-
-// Separate leaders
-const leaders = members.filter(m => m.type === "leader");
-const body = members.filter(m => m.type === "body");
-const employees = members.filter(m => m.type === "employee");
-
-// Sort leaders by priority
-leaders.sort((a,b)=> getPriority(a.role) - getPriority(b.role));
-
-// ===== CARD BUILDER =====
-function buildCard(d){
-
-const isSarpanch = d.role && d.role.toLowerCase().includes("sarpanch");
-
-return `
-const card = `
-<div class="leader-card ${isSarpanch ? 'highlight' : ''}">
-
-  <div class="leader-photo">
-    <img src="${d.photoUrl || 'assets/default-user.png'}">
-  </div>
-
-  <h4>${d.name}</h4>
-
-  <div class="leader-badge">${d.role}</div>
-
-  ${d.phone ? `
-  <div class="contact-actions">
-    <a href="tel:${d.phone}" class="contact-btn">Call</a>
-    <a href="https://wa.me/91${d.phone}" target="_blank"
-       class="contact-btn whatsapp">WhatsApp</a>
-  </div>
-  ` : ""}
-
-</div>
-`;
-}
-
-// Render leaders
-leaders.forEach(d=>{
-  leaderContainer.innerHTML += buildCard(d);
-});
-
-// Render body
-body.forEach(d=>{
-  bodyContainer.innerHTML += buildCard(d);
-});
-
-// Render employees
-employees.forEach(d=>{
-  employeeContainer.innerHTML += buildCard(d);
-});
-
-}
-
 loadLeadership();
+
 /* EVENTS (Indian Date Format) */
 async function loadEvents(){
-const container=document.getElementById("eventsContainer");
-container.innerHTML="";
-const q=query(collection(db,"events"),orderBy("eventDate","desc"));
-const snap=await getDocs(q);
-snap.forEach(doc=>{
-const d=doc.data();
-const date=d.eventDate?.toDate().toLocaleDateString('en-IN');
-container.innerHTML+=`
-<div class="event-card">
-${d.imageUrl?`<img src="${d.imageUrl}">`:""}
-<h4>${d.title}</h4>
-<small>${date||""}</small>
-<p>${d.description||""}</p>
-</div>`;
-});
+  const container = document.getElementById("eventsContainer");
+  container.innerHTML = "";
+
+  const q = query(collection(db,"events"),orderBy("eventDate","desc"));
+  const snap = await getDocs(q);
+
+  snap.forEach(doc=>{
+    const d = doc.data();
+    const date = d.eventDate?.toDate().toLocaleDateString('en-IN');
+
+    container.innerHTML += `
+    <div class="event-card">
+      ${d.imageUrl?`<img src="${d.imageUrl}">`:""}
+      <h4>${d.title}</h4>
+      <small>${date||""}</small>
+      <p>${d.description||""}</p>
+    </div>`;
+  });
 }
 loadEvents();
 
-/* GALLERY AUTO SCROLL */
+/* GALLERY */
 async function loadGallery(){
-const container=document.getElementById("galleryContainer");
-const snap=await getDocs(collection(db,"gallery"));
-snap.forEach(doc=>{
-container.innerHTML+=`<img src="${doc.data().imageUrl}">`;
-});
+  const container = document.getElementById("galleryContainer");
+  const snap = await getDocs(collection(db,"gallery"));
+
+  snap.forEach(doc=>{
+    container.innerHTML += `<img src="${doc.data().imageUrl}">`;
+  });
 }
 loadGallery();
 
 /* FOOTER DATE */
-document.getElementById("year").textContent=new Date().getFullYear();
-document.getElementById("updated").textContent=new Date().toLocaleDateString('en-IN');
+document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById("updated").textContent = new Date().toLocaleDateString('en-IN');
 </script>
 
 </body>
