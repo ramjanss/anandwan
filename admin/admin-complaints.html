@@ -79,9 +79,6 @@ from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 const container = document.getElementById("complaintsContainer");
 
 let allComplaints = [];
-let currentFilter = "all";
-
-/* ================= LOAD ================= */
 
 async function loadComplaints(){
 
@@ -99,51 +96,29 @@ async function loadComplaints(){
     });
   });
 
-  renderComplaints("all");
+  renderComplaints();
 }
 
-/* ================= FILTER ================= */
+function renderComplaints(){
 
-window.filterComplaints = function(status){
-  renderComplaints(status);
-};
-
-/* ================= RENDER ================= */
-
-function renderComplaints(filter){
-
-  currentFilter = filter;
   container.innerHTML = "";
 
-  const searchValue = document
-    .getElementById("searchInput")
-    .value
-    .toLowerCase();
-
-  let filtered = filter === "all"
-    ? allComplaints
-    : allComplaints.filter(c => c.status === filter);
-
-  if(searchValue){
-    filtered = filtered.filter(c =>
-      (c.trackingId && c.trackingId.toLowerCase().includes(searchValue)) ||
-      (c.name && c.name.toLowerCase().includes(searchValue))
-    );
-  }
-
-  if(filtered.length === 0){
+  if(allComplaints.length === 0){
     container.innerHTML = "<p>No complaints found.</p>";
     return;
   }
 
-  filtered.forEach(c=>{
+  allComplaints.forEach(c=>{
 
     const createdDate = c.createdAt?.toDate();
     const formattedDate = createdDate
       ? createdDate.toLocaleString()
       : "N/A";
 
-    const statusColor = c.status === "Resolved" ? "#16a34a" : "#f59e0b";
+    const statusColor =
+      c.status === "Resolved" ? "#16a34a" :
+      c.status === "Rejected" ? "#ef4444" :
+      "#f59e0b";
 
     const card = document.createElement("div");
     card.style.background = "#fff";
@@ -153,93 +128,98 @@ function renderComplaints(filter){
     card.style.boxShadow = "0 10px 25px rgba(0,0,0,0.08)";
 
     card.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <strong>Tracking ID: ${c.trackingId || "N/A"}</strong>
-        <span style="
-          padding:6px 12px;
-          border-radius:20px;
-          font-size:12px;
-          background:${statusColor};
-          color:white;
-        ">
-          ${c.status}
+      <div style="display:flex;justify-content:space-between;">
+        <strong>Tracking ID: ${c.trackingId}</strong>
+        <span style="background:${statusColor};color:white;padding:6px 12px;border-radius:20px;font-size:12px;">
+          ${c.status || "Submitted"}
         </span>
       </div>
 
       <hr style="margin:12px 0;">
 
-      <strong>Name:</strong> ${c.name} <br>
-      <strong>Phone:</strong> ${c.phone} <br>
-      <strong>Date:</strong> ${formattedDate} <br><br>
+      <strong>Name:</strong> ${c.name}<br>
+      <strong>Phone:</strong> ${c.phone}<br>
+      <strong>Date:</strong> ${formattedDate}<br><br>
 
       <strong>Message:</strong>
-      <div style="
-        background:#f3f4f6;
-        padding:10px;
-        border-radius:8px;
-        margin-top:5px;
-      ">
+      <div style="background:#f3f4f6;padding:10px;border-radius:8px;margin-top:5px;">
         ${c.message}
       </div>
+
       <br>
+
+      <strong>Admin Note:</strong>
+      <textarea id="note-${c.id}" style="width:100%;margin-top:5px;padding:6px;">${c.adminNote || ""}</textarea>
+
+      <br><br>
+
+      <strong>Update Status:</strong>
+      <select id="status-${c.id}" style="padding:6px;margin-top:5px;">
+        <option value="Submitted">Submitted</option>
+        <option value="Accepted">Accepted</option>
+        <option value="In Review">In Review</option>
+        <option value="Resolved">Resolved</option>
+        <option value="Rejected">Rejected</option>
+      </select>
+
+      <br><br>
+
+      <button id="save-${c.id}" style="
+        background:#1e3a8a;
+        color:white;
+        border:none;
+        padding:8px 14px;
+        border-radius:6px;
+        cursor:pointer;
+      ">
+        Save Update
+      </button>
+
+      <div id="rejectReasonBox-${c.id}" style="display:none;margin-top:10px;">
+        <strong>Rejection Reason:</strong>
+        <textarea id="reject-${c.id}" style="width:100%;margin-top:5px;padding:6px;">${c.rejectReason || ""}</textarea>
+      </div>
     `;
 
-    if(c.status !== "Resolved"){
-      const btn = document.createElement("button");
-      btn.innerText = "Mark Resolved";
-      btn.style.background = "#1e3a8a";
-      btn.style.color = "white";
-      btn.style.padding = "8px 14px";
-      btn.style.border = "none";
-      btn.style.borderRadius = "6px";
-      btn.style.cursor = "pointer";
+    container.appendChild(card);
 
-      btn.onclick = async () => {
-        await updateDoc(doc(db,"complaints",c.id),{
-          status:"Resolved"
-        });
-        loadComplaints();
-      };
+    const statusSelect = document.getElementById(`status-${c.id}`);
+    const saveBtn = document.getElementById(`save-${c.id}`);
+    const noteInput = document.getElementById(`note-${c.id}`);
+    const rejectBox = document.getElementById(`rejectReasonBox-${c.id}`);
+    const rejectInput = document.getElementById(`reject-${c.id}`);
 
-      card.appendChild(btn);
+    statusSelect.value = c.status || "Submitted";
+
+    if(c.status === "Rejected"){
+      rejectBox.style.display = "block";
     }
 
-    container.appendChild(card);
+    statusSelect.onchange = () => {
+      if(statusSelect.value === "Rejected"){
+        rejectBox.style.display = "block";
+      } else {
+        rejectBox.style.display = "none";
+      }
+    };
+
+    saveBtn.onclick = async () => {
+
+      const updatedStatus = statusSelect.value;
+
+      await updateDoc(doc(db,"complaints",c.id),{
+        status: updatedStatus,
+        adminNote: noteInput.value,
+        rejectReason: updatedStatus === "Rejected" ? rejectInput.value : "",
+        updatedAt: new Date()
+      });
+
+      alert("Updated Successfully");
+      loadComplaints();
+    };
+
   });
 }
-
-/* ================= SEARCH ================= */
-
-document.getElementById("searchInput")
-  .addEventListener("input", () => {
-    renderComplaints(currentFilter);
-});
-
-/* ================= EXPORT ================= */
-
-document.getElementById("exportBtn")
-  .addEventListener("click", () => {
-
-    let filtered = currentFilter === "all"
-      ? allComplaints
-      : allComplaints.filter(c => c.status === currentFilter);
-
-    const data = filtered.map(c => ({
-      "Tracking ID": c.trackingId || "",
-      "Name": c.name || "",
-      "Phone": c.phone || "",
-      "Status": c.status || "",
-      "Date": c.createdAt?.toDate().toLocaleString() || ""
-    }));
-
-    const worksheet = XLSX.utils.json_to_sheet(data);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Complaints");
-
-    XLSX.writeFile(workbook, "Complaints.xlsx");
-});
-
-/* ================= INIT ================= */
 
 loadComplaints();
 
