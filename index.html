@@ -129,23 +129,27 @@ body{
   color:var(--primary);
 }
 
-/* ===== FLOATING IMAGE LEADERSHIP STYLE ===== */
+/* ===== UNIFORM LEADERSHIP CARDS ===== */
 
 .leadership-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:50px;
-  margin-top:40px;
+  gap:60px;
+  margin-top:60px;
 }
 
 .leader-card{
   background:white;
   border-radius:16px;
-  padding:60px 20px 25px;
+  padding:90px 20px 30px;
   text-align:center;
   position:relative;
   border:2px solid #1e3a8a;
   transition:0.3s;
+  height:320px;                 /* FIXED HEIGHT */
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between; /* Balanced vertical spacing */
 }
 
 .leader-card:hover{
@@ -176,10 +180,11 @@ body{
 
 /* Name */
 .leader-card h4{
-  margin-top:80px;
-  margin-bottom:8px;
-  font-size:18px;
+  margin-top:10px;
+  margin-bottom:6px;
+  font-size:17px;
   font-weight:600;
+  min-height:40px;  /* keeps equal spacing even for long names */
 }
 
 /* Badge */
@@ -193,14 +198,15 @@ body{
   background:#1e3a8a;
   color:white;
   margin-bottom:12px;
+  min-height:22px;  /* keeps layout consistent */
 }
 
 /* Contact */
 .contact-actions{
-  margin-top:10px;
   display:flex;
   justify-content:center;
   gap:10px;
+  margin-top:auto;  /* pushes buttons to bottom */
 }
 
 .contact-btn{
