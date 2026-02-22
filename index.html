@@ -349,6 +349,49 @@ body{
     grid-template-columns:1fr;
   }
 }
+
+/* ================= IMPORTANT LINKS STRIP ================= */
+
+.important-links{
+  background:#1e3a8a;
+  padding:20px 5%;
+}
+
+.links-container{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:20px;
+}
+
+.imp-link{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  text-decoration:none;
+  color:white;
+  font-size:13px;
+  padding:8px 14px;
+  border-radius:6px;
+  transition:0.3s ease;
+}
+
+.imp-link:hover{
+  background:rgba(255,255,255,0.15);
+}
+
+.imp-icon{
+  font-size:16px;
+}
+
+/* Responsive */
+
+@media(max-width:900px){
+  .links-container{
+    justify-content:center;
+  }
+}
   
   /* ================= SECTION ================= */
 
@@ -873,6 +916,46 @@ footer{
 
 </section>
 
+<!-- ================= IMPORTANT LINKS STRIP ================= -->
+
+<section class="important-links">
+
+  <div class="links-container">
+
+    <a href="#" class="imp-link">
+      <div class="imp-icon">📘</div>
+      <span>RTI Information</span>
+    </a>
+
+    <a href="#" class="imp-link">
+      <div class="imp-icon">📜</div>
+      <span>Public Documents</span>
+    </a>
+
+    <a href="#" class="imp-link">
+      <div class="imp-icon">🏛</div>
+      <span>Government Schemes</span>
+    </a>
+
+    <a href="#" class="imp-link">
+      <div class="imp-icon">🧾</div>
+      <span>Tax & Revenue</span>
+    </a>
+
+    <a href="#" class="imp-link">
+      <div class="imp-icon">📢</div>
+      <span>Announcements</span>
+    </a>
+
+    <a href="#" class="imp-link">
+      <div class="imp-icon">📞</div>
+      <span>Emergency Contact</span>
+    </a>
+
+  </div>
+
+</section>
+  
 <!-- TRANSPARENCY -->
 <section class="dashboard-section">
   <h2>Transparency Dashboard</h2>
