@@ -18,7 +18,6 @@
 body{
   margin:0;
   font-family:'Poppins',sans-serif;
-  background:white;
   color:var(--text);
 }
 
@@ -96,7 +95,7 @@ body{
 
 /* ===== SECTION ===== */
 .section{
-  padding:80px 20px;
+  padding:90px 20px;
   max-width:1200px;
   margin:auto;
 }
@@ -133,7 +132,6 @@ body{
 /* ===== LEADERSHIP PREMIUM ===== */
 .leadership-section{
   background:var(--light);
-  padding:100px 20px;
 }
 
 .section h3{
@@ -155,54 +153,32 @@ body{
   border-radius:2px;
 }
 
-/* MAIN OFFICIALS */
-#leaderContainer{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
-  gap:80px;
-  max-width:1100px;
-  margin:80px auto 0;
-}
-
-#leaderContainer .leader-card{
-  height:420px;
-  padding:120px 30px 40px;
-  border:4px solid var(--primary);
-  background:white;
-  box-shadow:0 20px 40px rgba(0,0,0,0.08);
-}
-
-/* BODY MEMBERS */
-#bodyContainer{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:60px;
-  max-width:1000px;
-  margin:70px auto 0;
-}
-
-#bodyContainer .leader-card{
-  height:340px;
-  padding:95px 25px 30px;
-  border:2px solid #cbd5e1;
-}
-
-/* EMPLOYEES */
+#leaderContainer,
+#bodyContainer,
 #employeeContainer{
   display:grid;
+  gap:60px;
+  margin-top:70px;
+}
+
+#leaderContainer{
+  grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+  max-width:1100px;
+  margin:auto;
+}
+
+#bodyContainer{
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  max-width:1000px;
+  margin:auto;
+}
+
+#employeeContainer{
   grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:50px;
   max-width:900px;
-  margin:60px auto 0;
+  margin:auto;
 }
 
-#employeeContainer .leader-card{
-  height:280px;
-  padding:85px 20px 25px;
-  border:1px solid #e2e8f0;
-}
-
-/* COMMON CARD */
 .leader-card{
   border-radius:18px;
   text-align:center;
@@ -211,6 +187,25 @@ body{
   flex-direction:column;
   justify-content:space-between;
   transition:0.3s;
+  background:white;
+  padding:120px 25px 35px;
+}
+
+#leaderContainer .leader-card{
+  height:420px;
+  border:4px solid var(--primary);
+}
+
+#bodyContainer .leader-card{
+  height:340px;
+  border:2px solid #cbd5e1;
+  padding:95px 25px 30px;
+}
+
+#employeeContainer .leader-card{
+  height:280px;
+  border:1px solid #e2e8f0;
+  padding:85px 20px 25px;
 }
 
 .leader-card:hover{
@@ -285,10 +280,6 @@ body{
   transition:0.3s;
 }
 
-.event-card:hover{
-  transform:translateY(-5px);
-}
-
 .event-card img{
   width:100%;
   height:180px;
@@ -299,7 +290,7 @@ body{
 /* ===== GALLERY ===== */
 .gallery-slider{
   display:flex;
-  overflow:hidden;
+  overflow-x:auto;
   gap:15px;
 }
 
@@ -319,15 +310,7 @@ footer{
   color:white;
   padding:30px 20px;
   font-size:13px;
-}
-
-.footer-container{
-  display:flex;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  max-width:1200px;
-  margin:auto;
-  gap:20px;
+  text-align:center;
 }
 </style>
 </head>
@@ -374,7 +357,7 @@ Gram Sabha Meeting Scheduled on 25 March 2026
 </div>
 </section>
 
-<section class="leadership-section section">
+<section class="section leadership-section">
 <h2>Leadership & Administration</h2>
 <h3>Main Officials</h3>
 <div id="leaderContainer"></div>
@@ -395,14 +378,7 @@ Gram Sabha Meeting Scheduled on 25 March 2026
 </section>
 
 <footer>
-<div class="footer-container">
-<div>Gram Panchayat Wandhali</div>
-<div>📞 +91 9764444266</div>
-<div>✉ gpwandhali@gmail.com</div>
-</div>
-<div style="text-align:center;margin-top:10px;">
-© <span id="year"></span> | Last Updated: <span id="updated"></span>
-</div>
+© <span id="year"></span> Gram Panchayat Wandhali | Last Updated: <span id="updated"></span>
 </footer>
 
 <script type="module">
@@ -421,7 +397,20 @@ i=(i+1)%images.length;
 changeHero();
 setInterval(changeHero,5000);
 
-/* FOOTER DATE */
+/* DASHBOARD */
+async function loadDashboard(){
+const complaints=await getDocs(collection(db,"complaints"));
+const notices=await getDocs(collection(db,"notices"));
+let resolved=0;
+complaints.forEach(d=>{if(d.data().status==="Resolved")resolved++;});
+document.getElementById("totalComplaints").textContent=complaints.size;
+document.getElementById("resolvedComplaints").textContent=resolved;
+document.getElementById("pendingComplaints").textContent=complaints.size-resolved;
+document.getElementById("totalNotices").textContent=notices.size;
+}
+loadDashboard();
+
+/* FOOTER */
 document.getElementById("year").textContent=new Date().getFullYear();
 document.getElementById("updated").textContent=new Date().toLocaleDateString('en-IN');
 </script>
