@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin - Events</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+<div class="admin-container">
+
+  <aside class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="admin-dashboard.html">Dashboard</a>
+    <a href="admin-members.html">Members</a>
+    <a href="admin-notices.html">Notices</a>
+    <a href="admin-gallery.html">Gallery</a>
+    <a href="admin-events.html" class="active">Events</a>
+    <a href="admin-complaints.html">Complaints</a>
+    <button id="logoutBtn">Logout</button>
+  </aside>
+
+  <main class="content">
+    <h1>📸 Manage Events</h1>
+
+    <div class="card" style="margin-bottom:30px;">
+      <h3>Add New Event</h3>
+
+      <input type="text" id="eventTitle" placeholder="Event Title" style="width:100%;padding:10px;margin-bottom:10px;">
+      
+      <textarea id="eventDesc" placeholder="Event Description" style="width:100%;padding:10px;height:80px;margin-bottom:10px;"></textarea>
+
+      <input type="date" id="eventDate" style="margin-bottom:10px;">
+
+      <br>
+
+      <input type="file" id="eventImage" accept="image/*">
+
+      <br><br>
+
+      <button id="addEventBtn" style="padding:10px 18px;background:#1e3a8a;color:white;border:none;border-radius:6px;">
+        Upload Event
+      </button>
+
+      <p id="eventMsg"></p>
+    </div>
+
+    <h3>All Events</h3>
+    <div id="eventList"></div>
+
+  </main>
+
+</div>
+
+<script type="module" src="admin-auth.js"></script>
+
+<script type="module">
+
+import { db, storage } from "../js/firebase.js";
+import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+import { ref, uploadBytes, getDownloadURL, deleteObject }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+const titleInput = document.getElementById("eventTitle");
+const descInput = document.getElementById("eventDesc");
+const dateInput = document.getElementById("eventDate");
+const imageInput = document.getElementById("eventImage");
+const msg = document.getElementById("eventMsg");
+const eventList = document.getElementById("eventList");
+
+document.getElementById("addEventBtn").onclick = async () => {
+
+  if(titleInput.value.trim() === ""){
+    alert("Title required");
+    return;
+  }
+
+  try {
+
+    let imageUrl = "";
+    let storagePath = "";
+
+    if(imageInput.files[0]){
+
+      const file = imageInput.files[0];
+      const storageRef = ref(storage,"events/"+Date.now()+"_"+file.name);
+
+      await uploadBytes(storageRef,file);
+      imageUrl = await getDownloadURL(storageRef);
+      storagePath = storageRef.fullPath;
+    }
+
+    await addDoc(collection(db,"events"),{
+      title:titleInput.value,
+      description:descInput.value,
+      eventDate: new Date(dateInput.value),
+      imageUrl:imageUrl,
+      storagePath:storagePath,
+      createdAt:new Date()
+    });
+
+    msg.textContent = "Event uploaded successfully ✅";
+
+    titleInput.value="";
+    descInput.value="";
+    dateInput.value="";
+    imageInput.value="";
+
+    loadEvents();
+
+  } catch(error){
+    console.error(error);
+    msg.textContent = "Upload failed ❌";
+  }
+};
+
+async function loadEvents(){
+
+  eventList.innerHTML="";
+
+  const q = query(collection(db,"events"),orderBy("eventDate","desc"));
+  const snapshot = await getDocs(q);
+
+  if(snapshot.empty){
+    eventList.innerHTML="<p>No events found.</p>";
+    return;
+  }
+
+  snapshot.forEach(docSnap=>{
+
+    const data = docSnap.data();
+    const eventDate = data.eventDate?.toDate().toLocaleDateString();
+
+    const card = document.createElement("div");
+    card.className="card";
+    card.style.marginBottom="20px";
+
+    card.innerHTML=`
+      <strong>${data.title}</strong><br>
+      ${eventDate}<br>
+      ${data.description}<br><br>
+      ${data.imageUrl ? `<img src="${data.imageUrl}" width="150">` : ""}
+      <br><br>
+      <button style="background:#ef4444;color:white;border:none;padding:6px 12px;border-radius:6px;">
+        Delete
+      </button>
+    `;
+
+    card.querySelector("button").onclick = async () => {
+
+      if(!confirm("Delete this event?")) return;
+
+      try{
+
+        if(data.storagePath){
+          await deleteObject(ref(storage,data.storagePath));
+        }
+
+        await deleteDoc(doc(db,"events",docSnap.id));
+        loadEvents();
+
+      }catch(error){
+        alert("Delete failed ❌");
+      }
+    };
+
+    eventList.appendChild(card);
+  });
+}
+
+loadEvents();
+
+</script>
+
+</body>
+</html>
