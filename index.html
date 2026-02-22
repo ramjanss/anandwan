@@ -1,4 +1,6 @@
 
+import { db } from "./js/firebase.js";
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 <!DOCTYPE html>
 <html lang="en">
@@ -283,9 +285,6 @@ Gram Sabha Meeting Scheduled on 25 March 2026 | Citizens are requested to attend
 </footer>
 
 <script type="module">
-
-import { db } from "./js/firebase.js";
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 /* HERO AUTO SLIDE */
 const hero = document.getElementById("hero");
