@@ -1,7 +1,10 @@
 import { db } from "./firebase.js";
-import { collection, getDocs }
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
+import {
+  collection,
+  getDocs,
+  query,
+  orderBy
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 /* ================= LOAD MEMBERS ================= */
 
 async function loadMembers() {
@@ -135,48 +138,64 @@ function animateNumber(element, target){
 
   }, stepTime || 50);
 
-/* ================= LOAD LATEST NOTICES ================= */
+/* ================= LOAD LATEST NOTICES (FIXED) ================= */
 
 async function loadLatestNotices(){
 
   const noticeList = document.getElementById("noticeList");
   if(!noticeList) return;
 
+  noticeList.innerHTML = "Loading...";
+
   try {
 
-    const snapshot = await getDocs(collection(db, "notices"));
+    const q = query(
+      collection(db, "notices"),
+      orderBy("created", "desc")
+    );
+
+    const snapshot = await getDocs(q);
 
     if(snapshot.empty){
       noticeList.innerHTML = "<p style='text-align:center;'>No notices available.</p>";
       return;
     }
 
-    let notices = [];
-    snapshot.forEach(doc=>{
-      notices.push(doc.data());
-    });
+    noticeList.innerHTML = "";
 
-    // Sort latest first (based on date field)
-    notices.sort((a,b)=>{
-      return new Date(b.date) - new Date(a.date);
-    });
+    let count = 0;
 
-    // Take only latest 3
-    const latestThree = notices.slice(0,3);
+    snapshot.forEach(docSnap => {
 
-    latestThree.forEach(n=>{
+      if(count >= 3) return;
+
+      const n = docSnap.data();
+
+      let formattedDate = "N/A";
+
+      if(n.created && n.created.toDate){
+        const d = n.created.toDate();
+        formattedDate = d.toLocaleDateString("en-IN", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric"
+        });
+      }
+
       noticeList.innerHTML += `
         <div class="notice-item">
-          <div>
-            <div class="notice-title">${n.title}</div>
-          </div>
-          <div class="notice-date">${n.date}</div>
+          <div class="notice-title">${n.title}</div>
+          <div class="notice-date">${formattedDate}</div>
         </div>
       `;
+
+      count++;
+
     });
 
   } catch(error){
     console.error("Notice Load Error:", error);
+    noticeList.innerHTML = "<p style='text-align:center;'>Unable to load notices.</p>";
   }
 
 }
