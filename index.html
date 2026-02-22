@@ -469,6 +469,57 @@ totalNotices.textContent=notices.size;
 }
 loadDashboard();
 
+/* ================= NOTICES ================= */
+
+async function loadNotices(){
+
+  const container = document.getElementById("noticeContainer");
+
+  const q = query(
+    collection(db,"notices"),
+    orderBy("createdAt","desc")
+  );
+
+  const snap = await getDocs(q);
+
+  if(snap.empty){
+    container.innerHTML = "<p>No notices available.</p>";
+    return;
+  }
+
+  snap.forEach(doc=>{
+    const d = doc.data();
+
+    container.innerHTML += `
+      <div style="
+        background:#f1f5f9;
+        padding:15px;
+        border-radius:8px;
+        margin-bottom:15px;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        flex-wrap:wrap;
+      ">
+        <span><strong>${d.title}</strong></span>
+        <a href="${d.fileUrl}" target="_blank"
+           style="
+             background:#1e3a8a;
+             color:white;
+             padding:6px 15px;
+             border-radius:5px;
+             text-decoration:none;
+           ">
+          Download PDF
+        </a>
+      </div>
+    `;
+  });
+
+}
+
+loadNotices();
+  
 /* LEADERSHIP */
 async function loadLeadership(){
 const snap=await getDocs(collection(db,"members"));
