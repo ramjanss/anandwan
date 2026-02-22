@@ -237,10 +237,9 @@ body{
 
 /* FOOTER */
 footer{
-  background:var(--primary);
+  background:#1e3a8a;
   color:white;
-  padding:40px;
-  text-align:center;
+  padding:60px 20px;
 }
 
 /* SCROLL REVEAL */
@@ -425,8 +424,66 @@ For grievances, please use our online complaint system for faster resolution.
 </section>
   
 <footer>
-<p>© 2026 Gram Panchayat Wandhali | Official Rural Governance Portal</p>
-<p>Developed & Maintained by Smart GP Digital Governance Platform</p>
+
+<div style="
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:40px;
+  max-width:1200px;
+  margin:auto;
+  text-align:left;
+">
+
+  <!-- ABOUT -->
+  <div>
+    <h3>Gram Panchayat Wandhali</h3>
+    <p>
+      Official Digital Governance Portal providing transparent services,
+      grievance redressal, and development updates to citizens.
+    </p>
+  </div>
+
+  <!-- QUICK LINKS -->
+  <div>
+    <h3>Quick Links</h3>
+    <ul style="list-style:none;padding:0;line-height:1.8;">
+      <li><a href="index.html" style="color:white;text-decoration:none;">Home</a></li>
+      <li><a href="complaint.html" style="color:white;text-decoration:none;">Register Complaint</a></li>
+      <li><a href="track.html" style="color:white;text-decoration:none;">Track Complaint</a></li>
+      <li><a href="events.html" style="color:white;text-decoration:none;">All Events</a></li>
+    </ul>
+  </div>
+
+  <!-- CONTACT -->
+  <div>
+    <h3>Contact</h3>
+    <p>
+      Gram Panchayat Office,<br>
+      Wandhali, Taluka Warora,<br>
+      District Chandrapur,<br>
+      Maharashtra – 442906
+    </p>
+    <p><strong>Phone:</strong> +91 9XXXXXXXXX</p>
+    <p><strong>Email:</strong> gpwandhali@gmail.com</p>
+  </div>
+
+</div>
+
+<hr style="margin:40px 0;border-color:rgba(255,255,255,0.3);">
+
+<div style="text-align:center;font-size:14px;">
+  <p>
+    © <span id="currentYear"></span> Gram Panchayat Wandhali |
+    All Rights Reserved.
+  </p>
+  <p>
+    Last Updated: <span id="lastUpdated"></span>
+  </p>
+  <p>
+    Designed & Developed under Smart GP Digital Governance Initiative
+  </p>
+</div>
+
 </footer>
 
 <!-- MODAL -->
@@ -590,6 +647,15 @@ if(top<window.innerHeight-100){el.classList.add("active");}
 }
 window.addEventListener("scroll",revealOnScroll);
 revealOnScroll();
+
+/* FOOTER DATE */
+
+document.getElementById("currentYear").textContent =
+  new Date().getFullYear();
+
+document.getElementById("lastUpdated").textContent =
+  new Date().toLocaleDateString();
+  
 </script>
 
 </body>
