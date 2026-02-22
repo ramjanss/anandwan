@@ -82,35 +82,86 @@ async function loadMembers() {
 }
 
 /* ================= SMART TRANSPARENCY DASHBOARD ================= */
+// ================= SMART TRANSPARENCY DASHBOARD =================
 
 async function loadDashboardStats(){
 
   const totalComplaintsEl = document.getElementById("totalComplaints");
   const resolvedComplaintsEl = document.getElementById("resolvedComplaints");
+  const pendingComplaintsEl = document.getElementById("pendingComplaints");
   const totalNoticesEl = document.getElementById("totalNotices");
+  const resolutionRateEl = document.getElementById("resolutionRate");
+  const monthlyComplaintsEl = document.getElementById("monthlyComplaints");
+  const avgRatingEl = document.getElementById("avgRating");
 
   if(!totalComplaintsEl) return;
 
   try {
 
-    // Fetch complaints
     const complaintSnap = await getDocs(collection(db, "complaints"));
-    let totalComplaints = complaintSnap.size;
+    const noticeSnap = await getDocs(collection(db, "notices"));
 
+    let totalComplaints = complaintSnap.size;
     let resolvedCount = 0;
-    complaintSnap.forEach(doc=>{
-      if(doc.data().status === "Resolved"){
+    let pendingCount = 0;
+    let monthlyCount = 0;
+    let ratingTotal = 0;
+    let ratingCount = 0;
+
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+
+    complaintSnap.forEach(doc => {
+
+      const data = doc.data();
+      const status = data.status;
+
+      // Workflow Support
+      if(status === "Resolved"){
         resolvedCount++;
+      } else {
+        pendingCount++;
       }
+
+      // Monthly Count
+      if(data.createdAt){
+        const createdDate = data.createdAt.toDate();
+        if(createdDate.getMonth() === currentMonth &&
+           createdDate.getFullYear() === currentYear){
+            monthlyCount++;
+        }
+      }
+
+      // Average Rating
+      if(data.rating){
+        ratingTotal += Number(data.rating);
+        ratingCount++;
+      }
+
     });
 
-    // Fetch notices
-    const noticeSnap = await getDocs(collection(db, "notices"));
-    let totalNotices = noticeSnap.size;
+    const totalNotices = noticeSnap.size;
 
+    // Resolution Percentage
+    const resolutionRate = totalComplaints > 0
+      ? Math.round((resolvedCount / totalComplaints) * 100)
+      : 0;
+
+    // Average Rating
+    const avgRating = ratingCount > 0
+      ? (ratingTotal / ratingCount).toFixed(1)
+      : 0;
+
+    // Animate Numbers
     animateNumber(totalComplaintsEl, totalComplaints);
     animateNumber(resolvedComplaintsEl, resolvedCount);
+    animateNumber(pendingComplaintsEl, pendingCount);
     animateNumber(totalNoticesEl, totalNotices);
+    animateNumber(resolutionRateEl, resolutionRate);
+    animateNumber(monthlyComplaintsEl, monthlyCount);
+
+    avgRatingEl.textContent = avgRating;
 
   } catch(error){
     console.error("Dashboard Error:", error);
@@ -118,15 +169,23 @@ async function loadDashboardStats(){
 
 }
 
-/* ===== NUMBER ANIMATION ===== */
+
+
+// ================= SAFE NUMBER ANIMATION =================
 
 function animateNumber(element, target){
 
   let start = 0;
-  const duration = 1000;
-  const stepTime = Math.abs(Math.floor(duration / target));
 
-  const timer = setInterval(()=>{
+  if(target === 0){
+    element.textContent = 0;
+    return;
+  }
+
+  const duration = 800;
+  const stepTime = Math.max(Math.floor(duration / target), 20);
+
+  const timer = setInterval(() => {
 
     start++;
     element.textContent = start;
@@ -136,56 +195,12 @@ function animateNumber(element, target){
       element.textContent = target;
     }
 
-  }, stepTime || 50);
-
-
-/* ================= LOAD LATEST NOTICES (STABLE VERSION) ================= */
-
-async function loadLatestNotices(){
-
-  const noticeList = document.getElementById("noticeList");
-  if(!noticeList) return;
-
-  noticeList.innerHTML = "Loading...";
-
-  try {
-
-    const snapshot = await getDocs(collection(db, "notices"));
-
-    if(snapshot.empty){
-      noticeList.innerHTML = "<p style='text-align:center;'>No notices available.</p>";
-      return;
-    }
-
-    noticeList.innerHTML = "";
-
-    let count = 0;
-
-    snapshot.forEach(docSnap => {
-
-      if(count >= 3) return;
-
-      const n = docSnap.data();
-
-      noticeList.innerHTML += `
-        <div class="notice-item">
-          <div class="notice-title">${n.title}</div>
-          <div class="notice-date">
-            ${n.created ? new Date(n.created.seconds * 1000).toLocaleDateString("en-IN") : ""}
-          </div>
-        </div>
-      `;
-
-      count++;
-
-    });
-
-  } catch(error){
-    console.error("Notice Load Error:", error);
-    noticeList.innerHTML = "<p style='text-align:center;'>Unable to load notices.</p>";
-  }
-
+  }, stepTime);
 }
-  
-}loadDashboardStats();
+
+
+
+// ================= LOAD ON PAGE =================
+
+loadDashboardStats();
 loadLatestNotices();
