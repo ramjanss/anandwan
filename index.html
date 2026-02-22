@@ -158,6 +158,15 @@ body{
   color:#555;
   font-size:12px;
 }
+
+<div style="text-align:center;margin-top:30px;">
+  <a href="events.html" 
+     style="background:#1e3a8a;color:white;padding:10px 20px;
+            border-radius:6px;text-decoration:none;">
+    View All Events
+  </a>
+</div>
+  
 .gallery-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
@@ -171,6 +180,8 @@ body{
   border-radius:10px;
 }
 
+  
+  
 footer{
   background:var(--primary);
   color:white;
@@ -288,23 +299,46 @@ async function loadLeadership(){
 loadLeadership();
 
 /* EVENTS */
+/* ================= EVENTS (HOMEPAGE) ================= */
+
 async function loadEvents(){
-  const container=document.getElementById("eventsContainer");
-  container.innerHTML="Loading...";
-  const q=query(collection(db,"events"),orderBy("eventDate","desc"));
-  const snap=await getDocs(q);
-  container.innerHTML="";
-  if(snap.empty){container.innerHTML="<p>No events available.</p>";return;}
+
+  const container = document.getElementById("eventsContainer");
+  container.innerHTML = "Loading...";
+
+  const q = query(
+    collection(db,"events"),
+    orderBy("eventDate","desc")
+  );
+
+  const snap = await getDocs(q);
+
+  container.innerHTML = "";
+
+  let count = 0;
+
   snap.forEach(doc=>{
-    const d=doc.data();
-    const date=d.eventDate?.toDate().toLocaleDateString();
-    container.innerHTML+=`<div class="event-card">
-      ${d.imageUrl?`<img src="${d.imageUrl}">`:""}
-      <h4>${d.title}</h4>
-      <small>${date}</small>
-      <p>${d.description||""}</p>
-    </div>`;
+    if(count >= 6) return;
+
+    const d = doc.data();
+    const date = d.eventDate?.toDate().toLocaleDateString();
+
+    container.innerHTML += `
+      <div class="event-card" onclick="openEventModal(
+        '${d.title}',
+        '${d.description || ""}',
+        '${d.imageUrl || ""}',
+        '${date || ""}'
+      )">
+        ${d.imageUrl ? `<img src="${d.imageUrl}">` : ""}
+        <h4>${d.title}</h4>
+        <small>${date || ""}</small>
+      </div>
+    `;
+
+    count++;
   });
+
 }
 loadEvents();
 
@@ -319,5 +353,33 @@ async function loadGallery(){
 loadGallery();
 </script>
 
+  <!-- EVENT MODAL -->
+<div id="eventModal" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+">
+  <div style="
+    background:white;
+    width:90%;
+    max-width:600px;
+    padding:20px;
+    border-radius:10px;
+    position:relative;
+  ">
+    <span onclick="closeEventModal()" 
+          style="position:absolute;right:15px;top:10px;cursor:pointer;font-size:20px;">✖</span>
+
+    <img id="modalImage" style="width:100%;border-radius:8px;margin-bottom:15px;">
+    <h3 id="modalTitle"></h3>
+    <small id="modalDate"></small>
+    <p id="modalDesc" style="margin-top:10px;"></p>
+  </div>
+</div>
+  
 </body>
 </html>
