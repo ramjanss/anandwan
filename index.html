@@ -364,6 +364,63 @@ async function loadLeadership(){
 
 loadLeadership();
 
+  /* ================= LOAD EVENTS ================= */
+
+import { collection, getDocs, query, orderBy }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+async function loadEvents(){
+
+  const container = document.getElementById("eventsContainer");
+
+  if(!container) return;
+
+  container.innerHTML = "Loading events...";
+
+  try {
+
+    const q = query(
+      collection(db,"events"),
+      orderBy("eventDate","desc")
+    );
+
+    const snapshot = await getDocs(q);
+
+    container.innerHTML = "";
+
+    if(snapshot.empty){
+      container.innerHTML = "<p>No events available.</p>";
+      return;
+    }
+
+    snapshot.forEach(doc=>{
+      const data = doc.data();
+
+      const eventDate = data.eventDate?.toDate();
+      const formattedDate = eventDate
+        ? eventDate.toLocaleDateString()
+        : "";
+
+      container.innerHTML += `
+        <div class="event-card">
+          <img src="${data.imageUrl || ''}" alt="${data.title}">
+          <div class="event-content">
+            <h4>${data.title}</h4>
+            <div class="event-date">${formattedDate}</div>
+            <p>${data.description || ''}</p>
+          </div>
+        </div>
+      `;
+    });
+
+  } catch(error){
+    console.error("Homepage Event Error:", error);
+    container.innerHTML = "<p>Failed to load events.</p>";
+  }
+
+}
+
+loadEvents();
 
 /* GALLERY */
 async function loadGallery(){
