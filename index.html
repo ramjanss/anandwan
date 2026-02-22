@@ -129,91 +129,78 @@ body{
   color:var(--primary);
 }
 
-  /* MODERN LEADERSHIP STYLE */
-/* ===== PREMIUM LEADERSHIP SECTION ===== */
+/* ===== FLOATING IMAGE LEADERSHIP STYLE ===== */
 
 .leadership-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:35px;
-  margin-bottom:20px;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:50px;
+  margin-top:40px;
 }
 
 .leader-card{
   background:white;
   border-radius:16px;
-  padding:20px;
+  padding:60px 20px 25px;
   text-align:center;
-  transition:all 0.3s ease;
   position:relative;
-  overflow:hidden;
+  border:2px solid #1e3a8a;
+  transition:0.3s;
 }
 
 .leader-card:hover{
-  transform:translateY(-8px);
-  box-shadow:0 15px 35px rgba(0,0,0,0.15);
+  transform:translateY(-6px);
+  box-shadow:0 15px 30px rgba(0,0,0,0.12);
 }
 
-/* Highlight Sarpanch */
-.leader-card.highlight{
-  grid-column:span 2;
-  border:2px solid #1e3a8a;
-}
-
-/* Colored Photo Block */
+/* Floating Photo */
 .leader-photo{
-  height:260px;
-  border-radius:14px;
-  overflow:hidden;
-  margin-bottom:15px;
-  position:relative;
-}
-
-.leader-photo::before{
-  content:"";
   position:absolute;
-  inset:0;
-  background:linear-gradient(135deg,#1e3a8a,#15803d);
-  opacity:0.15;
-  z-index:1;
+  top:-70px;
+  left:50%;
+  transform:translateX(-50%);
+  width:140px;
+  height:140px;
+  border-radius:50%;
+  overflow:hidden;
+  border:6px solid white;
+  box-shadow:0 8px 20px rgba(0,0,0,0.15);
+  background:white;
 }
 
 .leader-photo img{
   width:100%;
   height:100%;
   object-fit:cover;
-  position:relative;
-  z-index:2;
 }
 
 /* Name */
 .leader-card h4{
-  margin:10px 0 6px;
+  margin-top:80px;
+  margin-bottom:8px;
   font-size:18px;
   font-weight:600;
-  color:#111;
 }
 
 /* Badge */
 .leader-badge{
   display:inline-block;
-  padding:5px 12px;
+  padding:5px 14px;
   border-radius:20px;
   font-size:11px;
   letter-spacing:1px;
   text-transform:uppercase;
   background:#1e3a8a;
   color:white;
-  margin-bottom:10px;
+  margin-bottom:12px;
 }
 
-/* Contact Buttons */
+/* Contact */
 .contact-actions{
   margin-top:10px;
   display:flex;
   justify-content:center;
   gap:10px;
-  flex-wrap:wrap;
 }
 
 .contact-btn{
@@ -223,23 +210,16 @@ body{
   text-decoration:none;
   color:white;
   background:#15803d;
-  transition:0.3s;
 }
 
 .contact-btn.whatsapp{
   background:#25D366;
 }
 
-.contact-btn:hover{
-  opacity:0.85;
-}
-
-@media(max-width:768px){
-  .leader-card.highlight{
-    grid-column:span 1;
-  }
-}
-
+/* Highlight Sarpanch */
+.leader-card.highlight{
+  border:3px solid #15803d;
+} 
 /* EVENTS */
 .events-grid{
   display:grid;
@@ -484,6 +464,7 @@ function buildCard(d){
 const isSarpanch = d.role && d.role.toLowerCase().includes("sarpanch");
 
 return `
+const card = `
 <div class="leader-card ${isSarpanch ? 'highlight' : ''}">
 
   <div class="leader-photo">
