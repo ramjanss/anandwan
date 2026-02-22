@@ -10,38 +10,41 @@
 <style>
 :root{
   --primary:#1e3a8a;
-  --light:#f4f6fb;
+  --accent:#15803d;
   --text:#1f2937;
 }
 
 body{
   margin:0;
   font-family:'Poppins',sans-serif;
-  background:white;
   color:var(--text);
+  background:#fff;
 }
 
+/* COMPACT HEADER */
 .top-bar{
   background:var(--primary);
   color:white;
   text-align:center;
-  padding:6px;
-  font-size:13px;
+  padding:5px;
+  font-size:12px;
 }
 
-/* HEADER */
+.header{
+  padding:12px 15px;
+  border-bottom:1px solid #e5e7eb;
+}
+
 .header-container{
   display:flex;
   align-items:center;
   justify-content:space-between;
   max-width:1200px;
   margin:auto;
-  flex-wrap:wrap;
 }
 
-.logo-left img,
-.logo-right img{
-  height:80px;
+.header img{
+  height:55px;
 }
 
 .header-title{
@@ -49,40 +52,35 @@ body{
   flex:1;
 }
 
-.portal-text{
-  font-weight:600;
-  color:#1e3a8a;
+.header-title h1{
+  font-size:20px;
+  margin:2px 0;
 }
 
-@media(max-width:768px){
-  .header-container{
-    flex-direction:column;
-    gap:15px;
-  }
-  .logo-left img,
-  .logo-right img{
-    height:60px;
-  }
+.header-title p{
+  font-size:13px;
+  margin:2px 0;
 }
 
 .nav{
   background:var(--primary);
-  padding:12px;
+  padding:10px;
   text-align:center;
 }
 
 .nav a{
   color:white;
   text-decoration:none;
-  margin:0 15px;
+  margin:0 12px;
+  font-size:14px;
 }
 
-/* HERO */
+/* HERO SLIDER */
 .hero{
-  height:80vh;
+  height:70vh;
   display:flex;
-  justify-content:center;
   align-items:center;
+  justify-content:center;
   text-align:center;
   color:white;
   background-size:cover;
@@ -92,13 +90,12 @@ body{
 
 .hero-overlay{
   background:rgba(0,0,0,0.6);
-  padding:40px;
-  border-radius:12px;
+  padding:30px;
+  border-radius:10px;
 }
 
-/* SECTION */
 .section{
-  padding:80px 20px;
+  padding:60px 20px;
   max-width:1200px;
   margin:auto;
 }
@@ -118,128 +115,94 @@ body{
 }
 
 .dashboard-card{
-  background:white;
-  padding:30px;
-  border-radius:12px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.08);
-  width:220px;
+  background:#f9fafb;
+  padding:25px;
+  border-radius:10px;
   text-align:center;
+  width:200px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.05);
 }
 
-/* LEADERSHIP */
-.leadership-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:25px;
-}
-
-.leader-card{
-  background:white;
-  padding:20px;
-  border-radius:12px;
-  text-align:center;
-  box-shadow:0 6px 15px rgba(0,0,0,0.08);
-}
-
-.leader-card img{
-  width:120px;
-  height:120px;
-  object-fit:cover;
-  border-radius:50%;
+.dashboard-card h3{
+  font-size:26px;
+  margin:0;
+  color:var(--primary);
 }
 
 /* EVENTS */
 .events-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:25px;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;
 }
 
 .event-card{
   background:#f1f5f9;
-  padding:20px;
-  border-radius:12px;
-  box-shadow:0 6px 15px rgba(0,0,0,0.08);
+  padding:15px;
+  border-radius:10px;
   cursor:pointer;
-  transition:transform 0.3s ease;
+  transition:0.3s;
 }
 
 .event-card:hover{
   transform:translateY(-5px);
+  box-shadow:0 8px 20px rgba(0,0,0,0.1);
 }
 
 .event-card img{
   width:100%;
-  height:200px;
+  height:180px;
   object-fit:cover;
   border-radius:8px;
-  margin-bottom:10px;
 }
 
-/* GALLERY */
-.gallery-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+/* GALLERY AUTO SLIDER */
+.gallery-slider{
+  display:flex;
+  overflow:hidden;
+  gap:15px;
+}
+
+.gallery-slider img{
+  height:160px;
+  border-radius:10px;
+  transition:0.3s;
+}
+
+.gallery-slider img:hover{
+  transform:scale(1.05);
+}
+
+/* COMPACT FOOTER */
+footer{
+  background:var(--primary);
+  color:white;
+  padding:30px 15px;
+  font-size:13px;
+}
+
+.footer-container{
+  max-width:1200px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
   gap:20px;
 }
 
-.gallery-grid img{
-  width:100%;
-  height:160px;
-  object-fit:cover;
-  border-radius:10px;
-}
-
-/* NOTICE */
-.notice-box{
-  background:#f1f5f9;
-  padding:15px;
-  border-radius:8px;
-  margin-bottom:15px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-}
-
-/* MODAL */
-#eventModal{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.6);
-  justify-content:center;
-  align-items:center;
-  z-index:999;
-}
-
-.modal-box{
-  background:white;
-  width:90%;
-  max-width:600px;
-  padding:20px;
-  border-radius:10px;
-  position:relative;
-}
-
-.modal-box img{
-  width:100%;
-  border-radius:8px;
-  margin-bottom:15px;
-}
-
-.close-btn{
-  position:absolute;
-  right:15px;
-  top:10px;
-  cursor:pointer;
-  font-size:20px;
-}
-
-footer{
-  background:#1e3a8a;
+footer a{
   color:white;
-  padding:60px 20px;
+  text-decoration:none;
+}
+
+@media(max-width:768px){
+  .header-container{
+    flex-direction:column;
+    gap:10px;
+  }
+  .footer-container{
+    flex-direction:column;
+  }
 }
 </style>
 </head>
@@ -247,23 +210,18 @@ footer{
 <body>
 
 <div class="top-bar">
-Gram Sabha Meeting Scheduled on 25 March 2026 | Citizens are requested to attend.
+Gram Sabha Meeting Scheduled on 25 March 2026
 </div>
 
-<div class="gov-header">
+<div class="header">
 <div class="header-container">
-<div class="logo-left">
 <img src="assets/maharashtra-logo.png">
-</div>
 <div class="header-title">
 <h1>Gram Panchayat Wandhali</h1>
 <p>Taluka Warora | District Chandrapur</p>
 <p>Government of Maharashtra</p>
-<p class="portal-text">Official Digital Governance Portal</p>
 </div>
-<div class="logo-right">
 <img src="assets/india-emblem.png">
-</div>
 </div>
 </div>
 
@@ -277,7 +235,7 @@ Gram Sabha Meeting Scheduled on 25 March 2026 | Citizens are requested to attend
 <section class="hero" id="hero">
 <div class="hero-overlay">
 <h2>Transparent • Accountable • Digital Governance</h2>
-<p>Empowering citizens through digital services and grievance redressal.</p>
+<p>Empowering citizens through digital services</p>
 </div>
 </section>
 
@@ -287,20 +245,8 @@ Gram Sabha Meeting Scheduled on 25 March 2026 | Citizens are requested to attend
 <div class="dashboard-card"><h3 id="totalComplaints">0</h3><p>Total Complaints</p></div>
 <div class="dashboard-card"><h3 id="resolvedComplaints">0</h3><p>Resolved</p></div>
 <div class="dashboard-card"><h3 id="pendingComplaints">0</h3><p>Pending</p></div>
-<div class="dashboard-card"><h3 id="totalNotices">0</h3><p>Notices Issued</p></div>
+<div class="dashboard-card"><h3 id="totalNotices">0</h3><p>Notices</p></div>
 </div>
-</section>
-
-<section class="section">
-<h2>Latest Notices</h2>
-<div id="noticeContainer"></div>
-</section>
-
-<section class="section">
-<h2>Leadership</h2>
-<div class="leadership-grid" id="leaderContainer"></div>
-<div class="leadership-grid" id="bodyContainer"></div>
-<div class="leadership-grid" id="employeeContainer"></div>
 </section>
 
 <section class="section">
@@ -310,41 +256,48 @@ Gram Sabha Meeting Scheduled on 25 March 2026 | Citizens are requested to attend
 
 <section class="section">
 <h2>Village Gallery</h2>
-<div class="gallery-grid" id="galleryContainer"></div>
+<div class="gallery-slider" id="galleryContainer"></div>
 </section>
 
 <footer>
-<div style="text-align:center;">
-© <span id="currentYear"></span> Gram Panchayat Wandhali |
-Last Updated: <span id="lastUpdated"></span>
+<div class="footer-container">
+<div>
+<strong>Gram Panchayat Wandhali</strong><br>
+Taluka Warora, District Chandrapur
+</div>
+
+<div>
+<a href="#">Home</a><br>
+<a href="complaint.html">Complaint</a><br>
+<a href="track.html">Track</a>
+</div>
+
+<div>
+📞 +91 9764444266<br>
+✉ gpwandhali@gmail.com
+</div>
+</div>
+
+<div style="text-align:center;margin-top:15px;">
+© <span id="year"></span> | Last Updated: <span id="updated"></span>
 </div>
 </footer>
-
-<div id="eventModal">
-<div class="modal-box">
-<span class="close-btn" onclick="closeEventModal()">✖</span>
-<img id="modalImage">
-<h3 id="modalTitle"></h3>
-<small id="modalDate"></small>
-<p id="modalDesc"></p>
-</div>
-</div>
 
 <script type="module">
 import { db } from "./js/firebase.js";
 import { collection, getDocs, query, orderBy }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-/* HERO */
+/* HERO AUTO SLIDER */
 const hero=document.getElementById("hero");
 const images=["assets/slide1.jpg","assets/slide2.jpg","assets/slide3.jpg"];
-let index=0;
-function changeBackground(){
-hero.style.backgroundImage=`url('${images[index]}')`;
-index=(index+1)%images.length;
+let i=0;
+function changeHero(){
+hero.style.backgroundImage=`url('${images[i]}')`;
+i=(i+1)%images.length;
 }
-changeBackground();
-setInterval(changeBackground,5000);
+changeHero();
+setInterval(changeHero,5000);
 
 /* DASHBOARD */
 async function loadDashboard(){
@@ -359,97 +312,39 @@ document.getElementById("totalNotices").textContent=notices.size;
 }
 loadDashboard();
 
-/* NOTICES */
-async function loadNotices(){
-const container=document.getElementById("noticeContainer");
-container.innerHTML="";
-const q=query(collection(db,"notices"),orderBy("createdAt","desc"));
-const snap=await getDocs(q);
-snap.forEach(doc=>{
-const d=doc.data();
-container.innerHTML+=`
-<div class="notice-box">
-<span><strong>${d.title}</strong></span>
-<a href="${d.fileUrl}" target="_blank"
-style="background:#1e3a8a;color:white;padding:6px 15px;border-radius:5px;text-decoration:none;">
-Download PDF
-</a>
-</div>`;
-});
-}
-loadNotices();
-
-/* LEADERSHIP */
-async function loadLeadership(){
-const snap=await getDocs(collection(db,"members"));
-const leaderContainer=document.getElementById("leaderContainer");
-const bodyContainer=document.getElementById("bodyContainer");
-const employeeContainer=document.getElementById("employeeContainer");
-snap.forEach(doc=>{
-const d=doc.data();
-const card=`<div class="leader-card">
-<img src="${d.photoUrl}">
-<h4>${d.name}</h4>
-<p>${d.role}</p>
-</div>`;
-if(d.type==="leader")leaderContainer.innerHTML+=card;
-else if(d.type==="body")bodyContainer.innerHTML+=card;
-else if(d.type==="employee")employeeContainer.innerHTML+=card;
-});
-}
-loadLeadership();
-
-/* EVENTS */
+/* EVENTS (Indian Date Format) */
 async function loadEvents(){
 const container=document.getElementById("eventsContainer");
 container.innerHTML="";
 const q=query(collection(db,"events"),orderBy("eventDate","desc"));
 const snap=await getDocs(q);
-let count=0;
 snap.forEach(doc=>{
-if(count>=6)return;
 const d=doc.data();
-const date=d.eventDate?.toDate().toLocaleDateString();
+const date=d.eventDate?.toDate().toLocaleDateString('en-IN');
 container.innerHTML+=`
-<div class="event-card"
-onclick="openEventModal('${d.title}','${d.description||""}','${d.imageUrl||""}','${date||""}')">
+<div class="event-card">
 ${d.imageUrl?`<img src="${d.imageUrl}">`:""}
 <h4>${d.title}</h4>
 <small>${date||""}</small>
+<p>${d.description||""}</p>
 </div>`;
-count++;
 });
 }
 loadEvents();
 
-/* GALLERY */
+/* GALLERY AUTO SCROLL */
 async function loadGallery(){
 const container=document.getElementById("galleryContainer");
-container.innerHTML="";
 const snap=await getDocs(collection(db,"gallery"));
 snap.forEach(doc=>{
-const d=doc.data();
-container.innerHTML+=`<img src="${d.imageUrl}">`;
+container.innerHTML+=`<img src="${doc.data().imageUrl}">`;
 });
 }
 loadGallery();
 
-/* MODAL */
-window.openEventModal=function(title,desc,image,date){
-document.getElementById("modalTitle").textContent=title;
-document.getElementById("modalDesc").textContent=desc;
-document.getElementById("modalDate").textContent=date;
-document.getElementById("modalImage").src=image;
-document.getElementById("eventModal").style.display="flex";
-}
-window.closeEventModal=function(){
-document.getElementById("eventModal").style.display="none";
-}
-
 /* FOOTER DATE */
-document.getElementById("currentYear").textContent=new Date().getFullYear();
-document.getElementById("lastUpdated").textContent=new Date().toLocaleDateString();
-
+document.getElementById("year").textContent=new Date().getFullYear();
+document.getElementById("updated").textContent=new Date().toLocaleDateString('en-IN');
 </script>
 
 </body>
