@@ -180,7 +180,15 @@ body{
   border-radius:10px;
 }
 
-  
+  .reveal{
+  opacity:0;
+  transform:translateY(40px);
+  transition:all 0.6s ease;
+}
+.reveal.active{
+  opacity:1;
+  transform:translateY(0);
+}
   
 footer{
   background:var(--primary);
@@ -252,6 +260,8 @@ Gram Sabha Meeting Scheduled on 25 March 2026 | Citizens are requested to attend
 <p>Developed & Maintained by Smart GP Digital Governance Platform</p>
 </footer>
 
+<section class="section reveal">
+  
 <script type="module">
 import { db } from "./js/firebase.js";
 import { collection, getDocs, query, orderBy }
@@ -393,6 +403,20 @@ window.closeEventModal = function(){
     <p id="modalDesc" style="margin-top:10px;"></p>
   </div>
 </div>
+
+  const reveals=document.querySelectorAll(".reveal");
+
+function revealOnScroll(){
+  reveals.forEach(el=>{
+    const top=el.getBoundingClientRect().top;
+    if(top < window.innerHeight - 100){
+      el.classList.add("active");
+    }
+  });
+}
+
+window.addEventListener("scroll",revealOnScroll);
+revealOnScroll();
   
 </body>
 </html>
