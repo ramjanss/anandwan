@@ -240,9 +240,24 @@ Gram Sabha Meeting Scheduled on 25 March 2026 | Citizens are requested to attend
 </section>
 
 <!-- LEADERSHIP -->
+
+  <!-- LEADERSHIP -->
 <section class="section">
-<h2>Leadership</h2>
-<div class="leadership-grid" id="leadershipContainer"></div>
+<h2>Leadership & Administration</h2>
+
+<h3 style="margin-bottom:20px;color:#1e3a8a;">Main Officials</h3>
+<div class="leadership-grid" id="leaderContainer"></div>
+
+<br><br>
+
+<h3 style="margin-bottom:20px;color:#1e3a8a;">Elected Body Members</h3>
+<div class="leadership-grid" id="bodyContainer"></div>
+
+<br><br>
+
+<h3 style="margin-bottom:20px;color:#1e3a8a;">Gram Panchayat Employees</h3>
+<div class="leadership-grid" id="employeeContainer"></div>
+
 </section>
 
 <!-- EVENTS -->
@@ -309,20 +324,44 @@ loadDashboard();
 
 
 /* LEADERSHIP */
+/* STRUCTURED LEADERSHIP SECTION */
 async function loadLeadership(){
+
   const snap = await getDocs(collection(db,"members"));
-  const container = document.getElementById("leadershipContainer");
+
+  const leaderContainer = document.getElementById("leaderContainer");
+  const bodyContainer = document.getElementById("bodyContainer");
+  const employeeContainer = document.getElementById("employeeContainer");
+
+  leaderContainer.innerHTML = "";
+  bodyContainer.innerHTML = "";
+  employeeContainer.innerHTML = "";
+
   snap.forEach(doc=>{
     const data = doc.data();
-    container.innerHTML += `
+
+    const card = `
       <div class="leader-card">
-        <img src="${data.photoUrl}">
+        <img src="${data.photoUrl}" alt="${data.name}">
         <h4>${data.name}</h4>
         <p>${data.role}</p>
+        <small>${data.phone || ""}</small>
       </div>
     `;
+
+    if(data.type === "leader"){
+      leaderContainer.innerHTML += card;
+    }
+    else if(data.type === "body"){
+      bodyContainer.innerHTML += card;
+    }
+    else if(data.type === "employee"){
+      employeeContainer.innerHTML += card;
+    }
+
   });
 }
+
 loadLeadership();
 
 
