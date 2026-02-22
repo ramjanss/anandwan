@@ -349,49 +349,51 @@ body{
 }
 
 /* ================= SERVICES SECTION ================= */
+/* ================= ULTRA CLEAN COMPACT SERVICES ================= */
 
 .services-grid{
   display:grid;
   grid-template-columns: repeat(4, 1fr);
-  gap:22px;
+  gap:18px;
 }
 
 .service-card{
   background:white;
-  padding:20px;
-  border-radius:12px;
+  padding:16px;                /* reduced */
+  border-radius:10px;
   text-decoration:none;
   color:#111827;
-  box-shadow:0 6px 16px rgba(0,0,0,0.05);
+  box-shadow:0 5px 14px rgba(0,0,0,0.04);
   border:1px solid #e2e8f0;
-  transition:all 0.3s ease;
+  transition:all 0.25s ease;
 
   display:flex;
   flex-direction:column;
-  min-height:180px;   /* reduced */
+  min-height:150px;            /* tighter */
 }
 
 .service-card:hover{
-  transform:translateY(-4px);
-  box-shadow:0 10px 22px rgba(0,0,0,0.08);
+  transform:translateY(-3px);
+  box-shadow:0 8px 18px rgba(0,0,0,0.07);
 }
 
 .service-icon{
-  font-size:26px;     /* smaller icon */
-  margin-bottom:10px;
+  font-size:22px;              /* smaller */
+  margin-bottom:6px;
 }
 
 .service-card h3{
-  font-size:15px;
-  margin-bottom:8px;
+  font-size:14px;
+  margin-bottom:6px;
   color:#1e3a8a;
-  min-height:36px;   /* reduced */
+  min-height:30px;
 }
 
 .service-card p{
-  font-size:12px;
+  font-size:11.5px;
   color:#64748b;
-  line-height:1.5;
+  line-height:1.4;
+  margin:0;
 }
 
 /* Responsive */
@@ -407,7 +409,6 @@ body{
     grid-template-columns: 1fr;
   }
 }
-  
 /* ================= LEADERSHIP STRUCTURE ================= */
 
 .leadership{
