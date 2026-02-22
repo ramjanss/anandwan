@@ -11,27 +11,28 @@
 :root{
   --primary:#1e3a8a;
   --accent:#15803d;
+  --light:#f5f7fb;
   --text:#1f2937;
 }
 
 body{
   margin:0;
   font-family:'Poppins',sans-serif;
+  background:white;
   color:var(--text);
-  background:#fff;
 }
 
-/* COMPACT HEADER */
+/* ===== HEADER ===== */
 .top-bar{
   background:var(--primary);
   color:white;
   text-align:center;
-  padding:5px;
+  padding:6px;
   font-size:12px;
 }
 
 .header{
-  padding:12px 15px;
+  padding:10px 15px;
   border-bottom:1px solid #e5e7eb;
 }
 
@@ -41,11 +42,10 @@ body{
   justify-content:space-between;
   max-width:1200px;
   margin:auto;
+  flex-wrap:wrap;
 }
 
-.header img{
-  height:55px;
-}
+.header img{ height:55px; }
 
 .header-title{
   text-align:center;
@@ -53,13 +53,13 @@ body{
 }
 
 .header-title h1{
-  font-size:20px;
   margin:2px 0;
+  font-size:20px;
 }
 
 .header-title p{
-  font-size:13px;
   margin:2px 0;
+  font-size:13px;
 }
 
 .nav{
@@ -75,12 +75,12 @@ body{
   font-size:14px;
 }
 
-/* HERO SLIDER */
+/* ===== HERO ===== */
 .hero{
   height:70vh;
   display:flex;
-  align-items:center;
   justify-content:center;
+  align-items:center;
   text-align:center;
   color:white;
   background-size:cover;
@@ -94,137 +94,143 @@ body{
   border-radius:10px;
 }
 
+/* ===== SECTION ===== */
 .section{
-  padding:60px 20px;
+  padding:80px 20px;
   max-width:1200px;
   margin:auto;
 }
 
 .section h2{
   text-align:center;
-  margin-bottom:40px;
+  margin-bottom:50px;
   color:var(--primary);
 }
 
-/* DASHBOARD */
+/* ===== DASHBOARD ===== */
 .dashboard-grid{
   display:flex;
   flex-wrap:wrap;
-  gap:20px;
   justify-content:center;
+  gap:25px;
 }
 
 .dashboard-card{
-  background:#f9fafb;
+  width:220px;
   padding:25px;
-  border-radius:10px;
+  background:#f9fafb;
+  border-radius:12px;
   text-align:center;
-  width:200px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.05);
+  box-shadow:0 5px 15px rgba(0,0,0,0.05);
 }
 
 .dashboard-card h3{
-  font-size:26px;
   margin:0;
+  font-size:26px;
   color:var(--primary);
 }
 
-/* ===== LEADERSHIP HIERARCHY DESIGN ===== */
+/* ===== LEADERSHIP PREMIUM ===== */
+.leadership-section{
+  background:var(--light);
+  padding:100px 20px;
+}
 
-/* SECTION SPACING */
 .section h3{
-  margin-top:60px;
+  margin-top:70px;
   margin-bottom:25px;
+  position:relative;
+  padding-left:18px;
   color:#1e3a8a;
 }
 
-/* ===== MAIN OFFICIALS (BIG CARDS) ===== */
+.section h3::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:8px;
+  width:6px;
+  height:18px;
+  background:#1e3a8a;
+  border-radius:2px;
+}
+
+/* MAIN OFFICIALS */
 #leaderContainer{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-  gap:70px;
-  margin-top:70px;
+  grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+  gap:80px;
+  max-width:1100px;
+  margin:80px auto 0;
 }
 
 #leaderContainer .leader-card{
-  height:380px;
-  padding:110px 25px 30px;
-  border:3px solid #1e3a8a;
+  height:420px;
+  padding:120px 30px 40px;
+  border:4px solid var(--primary);
+  background:white;
+  box-shadow:0 20px 40px rgba(0,0,0,0.08);
 }
 
-/* ===== BODY MEMBERS (MEDIUM CARDS) ===== */
+/* BODY MEMBERS */
 #bodyContainer{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:50px;
-  margin-top:60px;
+  gap:60px;
+  max-width:1000px;
+  margin:70px auto 0;
 }
 
 #bodyContainer .leader-card{
-  height:320px;
-  padding:90px 20px 25px;
+  height:340px;
+  padding:95px 25px 30px;
+  border:2px solid #cbd5e1;
 }
 
-/* ===== EMPLOYEES (SMALL CARDS) ===== */
+/* EMPLOYEES */
 #employeeContainer{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:40px;
-  margin-top:50px;
+  gap:50px;
+  max-width:900px;
+  margin:60px auto 0;
 }
 
 #employeeContainer .leader-card{
-  height:270px;
-  padding:80px 15px 20px;
-  border:2px solid #d1d5db;
+  height:280px;
+  padding:85px 20px 25px;
+  border:1px solid #e2e8f0;
 }
 
-/* ===== COMMON CARD STYLE ===== */
+/* COMMON CARD */
 .leader-card{
-  background:white;
   border-radius:18px;
   text-align:center;
   position:relative;
-  transition:0.3s;
   display:flex;
   flex-direction:column;
   justify-content:space-between;
+  transition:0.3s;
 }
 
 .leader-card:hover{
-  transform:translateY(-6px);
-  box-shadow:0 15px 35px rgba(0,0,0,0.12);
-}
-
-/* ===== FLOATING PHOTO (DYNAMIC SIZE) ===== */
-#leaderContainer .leader-photo{
-  width:170px;
-  height:170px;
-  top:-85px;
-}
-
-#bodyContainer .leader-photo{
-  width:140px;
-  height:140px;
-  top:-70px;
-}
-
-#employeeContainer .leader-photo{
-  width:110px;
-  height:110px;
-  top:-55px;
+  transform:translateY(-8px);
 }
 
 .leader-photo{
   position:absolute;
+  top:-85px;
   left:50%;
   transform:translateX(-50%);
   border-radius:50%;
   overflow:hidden;
   border:6px solid white;
-  box-shadow:0 8px 20px rgba(0,0,0,0.15);
   background:white;
 }
+
+#leaderContainer .leader-photo{ width:170px; height:170px; }
+#bodyContainer .leader-photo{ width:140px; height:140px; }
+#employeeContainer .leader-photo{ width:110px; height:110px; }
 
 .leader-photo img{
   width:100%;
@@ -232,72 +238,55 @@ body{
   object-fit:cover;
 }
 
-/* NAME */
 .leader-card h4{
-  margin-top:15px;
-  font-weight:600;
+  font-weight:700;
 }
 
-#leaderContainer .leader-card h4{
-  font-size:20px;
-}
-
-#bodyContainer .leader-card h4{
-  font-size:17px;
-}
-
-#employeeContainer .leader-card h4{
-  font-size:15px;
-}
-
-/* BADGE */
 .leader-badge{
   display:inline-block;
-  padding:5px 14px;
+  padding:6px 14px;
   border-radius:20px;
   font-size:11px;
-  text-transform:uppercase;
-  background:#1e3a8a;
+  background:var(--primary);
   color:white;
 }
 
-/* CONTACT */
 .contact-actions{
   display:flex;
   justify-content:center;
-  gap:8px;
+  gap:10px;
   margin-top:auto;
 }
 
 .contact-btn{
-  padding:5px 12px;
-  font-size:11px;
+  padding:6px 14px;
   border-radius:20px;
+  font-size:12px;
   text-decoration:none;
   color:white;
-  background:#15803d;
+  background:var(--accent);
 }
 
 .contact-btn.whatsapp{
   background:#25D366;
 }
 
-/* HIGHLIGHT SARPANCH */
-#leaderContainer .leader-card.highlight{
-  border:4px solid #15803d;
-  transform:scale(1.03);
+/* ===== EVENTS ===== */
+.events-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:25px;
 }
+
 .event-card{
   background:#f1f5f9;
   padding:15px;
   border-radius:10px;
-  cursor:pointer;
   transition:0.3s;
 }
 
 .event-card:hover{
   transform:translateY(-5px);
-  box-shadow:0 8px 20px rgba(0,0,0,0.1);
 }
 
 .event-card img{
@@ -307,7 +296,7 @@ body{
   border-radius:8px;
 }
 
-/* GALLERY AUTO SLIDER */
+/* ===== GALLERY ===== */
 .gallery-slider{
   display:flex;
   overflow:hidden;
@@ -324,36 +313,21 @@ body{
   transform:scale(1.05);
 }
 
-/* COMPACT FOOTER */
+/* ===== FOOTER ===== */
 footer{
   background:var(--primary);
   color:white;
-  padding:30px 15px;
+  padding:30px 20px;
   font-size:13px;
 }
 
 .footer-container{
-  max-width:1200px;
-  margin:auto;
   display:flex;
   justify-content:space-between;
   flex-wrap:wrap;
+  max-width:1200px;
+  margin:auto;
   gap:20px;
-}
-
-footer a{
-  color:white;
-  text-decoration:none;
-}
-
-@media(max-width:768px){
-  .header-container{
-    flex-direction:column;
-    gap:10px;
-  }
-  .footer-container{
-    flex-direction:column;
-  }
 }
 </style>
 </head>
@@ -400,23 +374,16 @@ Gram Sabha Meeting Scheduled on 25 March 2026
 </div>
 </section>
 
-<section class="section">
+<section class="leadership-section section">
 <h2>Leadership & Administration</h2>
-
-<!-- MAIN OFFICIALS -->
-<h3 style="margin-bottom:15px;color:#1e3a8a;">Main Officials</h3>
-<div class="leadership-grid" id="leaderContainer"></div>
-
-<!-- BODY MEMBERS -->
-<h3 style="margin:40px 0 15px;color:#1e3a8a;">Elected Body Members</h3>
-<div class="leadership-grid" id="bodyContainer"></div>
-
-<!-- EMPLOYEES -->
-<h3 style="margin:40px 0 15px;color:#1e3a8a;">Gram Panchayat Employees</h3>
-<div class="leadership-grid" id="employeeContainer"></div>
-
+<h3>Main Officials</h3>
+<div id="leaderContainer"></div>
+<h3>Elected Body Members</h3>
+<div id="bodyContainer"></div>
+<h3>Gram Panchayat Employees</h3>
+<div id="employeeContainer"></div>
 </section>
-  
+
 <section class="section">
 <h2>Recent Events</h2>
 <div id="eventsContainer" class="events-grid"></div>
@@ -424,176 +391,39 @@ Gram Sabha Meeting Scheduled on 25 March 2026
 
 <section class="section">
 <h2>Village Gallery</h2>
-<div class="gallery-slider" id="galleryContainer"></div>
+<div id="galleryContainer" class="gallery-slider"></div>
 </section>
 
 <footer>
 <div class="footer-container">
-<div>
-<strong>Gram Panchayat Wandhali</strong><br>
-Taluka Warora, District Chandrapur
+<div>Gram Panchayat Wandhali</div>
+<div>📞 +91 9764444266</div>
+<div>✉ gpwandhali@gmail.com</div>
 </div>
-
-<div>
-<a href="#">Home</a><br>
-<a href="complaint.html">Complaint</a><br>
-<a href="track.html">Track</a>
-</div>
-
-<div>
-📞 +91 9764444266<br>
-✉ gpwandhali@gmail.com
-</div>
-</div>
-
-<div style="text-align:center;margin-top:15px;">
+<div style="text-align:center;margin-top:10px;">
 © <span id="year"></span> | Last Updated: <span id="updated"></span>
 </div>
 </footer>
+
 <script type="module">
 import { db } from "./js/firebase.js";
 import { collection, getDocs, query, orderBy }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-/* HERO AUTO SLIDER */
-const hero = document.getElementById("hero");
-const images = ["assets/slide1.jpg","assets/slide2.jpg","assets/slide3.jpg"];
-let i = 0;
+/* HERO */
+const hero=document.getElementById("hero");
+const images=["assets/slide1.jpg","assets/slide2.jpg","assets/slide3.jpg"];
+let i=0;
 function changeHero(){
-  hero.style.backgroundImage = `url('${images[i]}')`;
-  i = (i+1) % images.length;
+hero.style.backgroundImage=`url('${images[i]}')`;
+i=(i+1)%images.length;
 }
 changeHero();
 setInterval(changeHero,5000);
 
-/* DASHBOARD */
-async function loadDashboard(){
-  const complaints = await getDocs(collection(db,"complaints"));
-  const notices = await getDocs(collection(db,"notices"));
-  let resolved = 0;
-
-  complaints.forEach(d=>{
-    if(d.data().status==="Resolved") resolved++;
-  });
-
-  document.getElementById("totalComplaints").textContent = complaints.size;
-  document.getElementById("resolvedComplaints").textContent = resolved;
-  document.getElementById("pendingComplaints").textContent = complaints.size - resolved;
-  document.getElementById("totalNotices").textContent = notices.size;
-}
-loadDashboard();
-
-/* LEADERSHIP */
-async function loadLeadership(){
-
-  const snap = await getDocs(collection(db,"members"));
-
-  const leaderContainer = document.getElementById("leaderContainer");
-  const bodyContainer = document.getElementById("bodyContainer");
-  const employeeContainer = document.getElementById("employeeContainer");
-
-  leaderContainer.innerHTML = "";
-  bodyContainer.innerHTML = "";
-  employeeContainer.innerHTML = "";
-
-  const members = [];
-  snap.forEach(doc=>{
-    members.push(doc.data());
-  });
-
-  function getPriority(role){
-    if(!role) return 99;
-    role = role.toLowerCase();
-    if(role.includes("sarpanch")) return 1;
-    if(role.includes("upsarpanch")) return 2;
-    if(role.includes("village development officer") || role.includes("vdo")) return 3;
-    return 4;
-  }
-
-  const leaders = members.filter(m => m.type === "leader");
-  const body = members.filter(m => m.type === "body");
-  const employees = members.filter(m => m.type === "employee");
-
-  leaders.sort((a,b)=> getPriority(a.role) - getPriority(b.role));
-
-  function buildCard(d){
-
-    const isSarpanch = d.role && d.role.toLowerCase().includes("sarpanch");
-
-    return `
-    <div class="leader-card ${isSarpanch ? 'highlight' : ''}">
-
-      <div class="leader-photo">
-        <img src="${d.photoUrl || 'assets/default-user.png'}">
-      </div>
-
-      <h4>${d.name}</h4>
-
-      <div class="leader-badge">${d.role}</div>
-
-      ${d.phone ? `
-      <div class="contact-actions">
-        <a href="tel:${d.phone}" class="contact-btn">Call</a>
-        <a href="https://wa.me/91${d.phone}" target="_blank"
-           class="contact-btn whatsapp">WhatsApp</a>
-      </div>
-      ` : ""}
-
-    </div>
-    `;
-  }
-
-  leaders.forEach(d=>{
-    leaderContainer.innerHTML += buildCard(d);
-  });
-
-  body.forEach(d=>{
-    bodyContainer.innerHTML += buildCard(d);
-  });
-
-  employees.forEach(d=>{
-    employeeContainer.innerHTML += buildCard(d);
-  });
-}
-loadLeadership();
-
-/* EVENTS (Indian Date Format) */
-async function loadEvents(){
-  const container = document.getElementById("eventsContainer");
-  container.innerHTML = "";
-
-  const q = query(collection(db,"events"),orderBy("eventDate","desc"));
-  const snap = await getDocs(q);
-
-  snap.forEach(doc=>{
-    const d = doc.data();
-    const date = d.eventDate?.toDate().toLocaleDateString('en-IN');
-
-    container.innerHTML += `
-    <div class="event-card">
-      ${d.imageUrl?`<img src="${d.imageUrl}">`:""}
-      <h4>${d.title}</h4>
-      <small>${date||""}</small>
-      <p>${d.description||""}</p>
-    </div>`;
-  });
-}
-loadEvents();
-
-/* GALLERY */
-async function loadGallery(){
-  const container = document.getElementById("galleryContainer");
-  const snap = await getDocs(collection(db,"gallery"));
-
-  snap.forEach(doc=>{
-    container.innerHTML += `<img src="${doc.data().imageUrl}">`;
-  });
-}
-loadGallery();
-
 /* FOOTER DATE */
-document.getElementById("year").textContent = new Date().getFullYear();
-document.getElementById("updated").textContent = new Date().toLocaleDateString('en-IN');
+document.getElementById("year").textContent=new Date().getFullYear();
+document.getElementById("updated").textContent=new Date().toLocaleDateString('en-IN');
 </script>
 
 </body>
