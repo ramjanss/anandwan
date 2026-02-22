@@ -16,8 +16,6 @@ onAuthStateChanged(auth, (user)=>{
   }
 });
 
-<button onclick="logout()">Logout</button>
-
 <script type="module">
 import { auth } from "../js/firebase.js";
 import { signOut } from 
