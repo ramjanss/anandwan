@@ -21,6 +21,7 @@ body{
   color:var(--text);
 }
 
+/* TOP */
 .top-bar{
   background:var(--primary);
   color:white;
@@ -46,11 +47,11 @@ body{
   color:white;
   text-decoration:none;
   margin:0 15px;
-  font-size:14px;
 }
 
+/* HERO */
 .hero{
-  height:85vh;
+  height:80vh;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -67,6 +68,7 @@ body{
   border-radius:12px;
 }
 
+/* SECTION */
 .section{
   padding:80px 20px;
   max-width:1200px;
@@ -79,6 +81,7 @@ body{
   color:var(--primary);
 }
 
+/* DASHBOARD */
 .dashboard-grid{
   display:flex;
   flex-wrap:wrap;
@@ -96,11 +99,11 @@ body{
 }
 
 .dashboard-card h3{
-  font-size:32px;
   margin:0 0 10px;
   color:var(--primary);
 }
 
+/* LEADERSHIP */
 .leadership-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -122,7 +125,7 @@ body{
   border-radius:50%;
 }
 
-/* EVENTS GRID */
+/* EVENTS */
 .events-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
@@ -134,6 +137,7 @@ body{
   padding:20px;
   border-radius:12px;
   box-shadow:0 6px 15px rgba(0,0,0,0.08);
+  cursor:pointer;
   transition:transform 0.3s ease;
 }
 
@@ -149,24 +153,7 @@ body{
   margin-bottom:10px;
 }
 
-.event-card h4{
-  margin:10px 0 5px;
-  color:#1e3a8a;
-}
-
-.event-card small{
-  color:#555;
-  font-size:12px;
-}
-
-<div style="text-align:center;margin-top:30px;">
-  <a href="events.html" 
-     style="background:#1e3a8a;color:white;padding:10px 20px;
-            border-radius:6px;text-decoration:none;">
-    View All Events
-  </a>
-</div>
-  
+/* GALLERY */
 .gallery-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
@@ -180,7 +167,50 @@ body{
   border-radius:10px;
 }
 
-  .reveal{
+/* MODAL */
+#eventModal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+}
+
+.modal-box{
+  background:white;
+  width:90%;
+  max-width:600px;
+  padding:20px;
+  border-radius:10px;
+  position:relative;
+}
+
+.modal-box img{
+  width:100%;
+  border-radius:8px;
+  margin-bottom:15px;
+}
+
+.close-btn{
+  position:absolute;
+  right:15px;
+  top:10px;
+  cursor:pointer;
+  font-size:20px;
+}
+
+/* FOOTER */
+footer{
+  background:var(--primary);
+  color:white;
+  padding:40px;
+  text-align:center;
+}
+
+/* SCROLL REVEAL */
+.reveal{
   opacity:0;
   transform:translateY(40px);
   transition:all 0.6s ease;
@@ -188,13 +218,6 @@ body{
 .reveal.active{
   opacity:1;
   transform:translateY(0);
-}
-  
-footer{
-  background:var(--primary);
-  color:white;
-  padding:40px;
-  text-align:center;
 }
 </style>
 </head>
@@ -221,11 +244,11 @@ Gram Sabha Meeting Scheduled on 25 March 2026 | Citizens are requested to attend
 <section class="hero" id="hero">
 <div class="hero-overlay">
 <h2>Transparent • Accountable • Digital Governance</h2>
-<p>Empowering citizens through online grievance redressal and transparent village administration.</p>
+<p>Empowering citizens through digital services and grievance redressal.</p>
 </div>
 </section>
 
-<section class="section">
+<section class="section reveal">
 <h2>Transparency Dashboard</h2>
 <div class="dashboard-grid">
 <div class="dashboard-card"><h3 id="totalComplaints">0</h3><p>Total Complaints</p></div>
@@ -235,7 +258,7 @@ Gram Sabha Meeting Scheduled on 25 March 2026 | Citizens are requested to attend
 </div>
 </section>
 
-<section class="section">
+<section class="section reveal">
 <h2>Leadership & Administration</h2>
 <h3>Main Officials</h3>
 <div class="leadership-grid" id="leaderContainer"></div>
@@ -245,12 +268,20 @@ Gram Sabha Meeting Scheduled on 25 March 2026 | Citizens are requested to attend
 <div class="leadership-grid" id="employeeContainer"></div>
 </section>
 
-<section class="section">
+<section class="section reveal">
 <h2>Recent Events</h2>
 <div id="eventsContainer" class="events-grid"></div>
+
+<div style="text-align:center;margin-top:30px;">
+<a href="events.html"
+   style="background:#1e3a8a;color:white;padding:10px 20px;
+          border-radius:6px;text-decoration:none;">
+View All Events
+</a>
+</div>
 </section>
 
-<section class="section">
+<section class="section reveal">
 <h2>Village Gallery</h2>
 <div class="gallery-grid" id="galleryContainer"></div>
 </section>
@@ -260,163 +291,117 @@ Gram Sabha Meeting Scheduled on 25 March 2026 | Citizens are requested to attend
 <p>Developed & Maintained by Smart GP Digital Governance Platform</p>
 </footer>
 
-<section class="section reveal">
-  
+<!-- MODAL -->
+<div id="eventModal">
+<div class="modal-box">
+<span class="close-btn" onclick="closeEventModal()">✖</span>
+<img id="modalImage">
+<h3 id="modalTitle"></h3>
+<small id="modalDate"></small>
+<p id="modalDesc"></p>
+</div>
+</div>
+
 <script type="module">
 import { db } from "./js/firebase.js";
 import { collection, getDocs, query, orderBy }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 /* HERO SLIDER */
-const hero = document.getElementById("hero");
-const images = ["assets/slide1.jpg","assets/slide2.jpg","assets/slide3.jpg"];
-let index = 0;
+const hero=document.getElementById("hero");
+const images=["assets/slide1.jpg","assets/slide2.jpg","assets/slide3.jpg"];
+let index=0;
 function changeBackground(){
-  hero.style.backgroundImage = `url('${images[index]}')`;
-  index = (index+1)%images.length;
+hero.style.backgroundImage=`url('${images[index]}')`;
+index=(index+1)%images.length;
 }
 changeBackground();
 setInterval(changeBackground,5000);
 
 /* DASHBOARD */
 async function loadDashboard(){
-  const complaints = await getDocs(collection(db,"complaints"));
-  const notices = await getDocs(collection(db,"notices"));
-  let resolved=0;
-  complaints.forEach(d=>{ if(d.data().status==="Resolved") resolved++; });
-  document.getElementById("totalComplaints").textContent=complaints.size;
-  document.getElementById("resolvedComplaints").textContent=resolved;
-  document.getElementById("pendingComplaints").textContent=complaints.size-resolved;
-  document.getElementById("totalNotices").textContent=notices.size;
+const complaints=await getDocs(collection(db,"complaints"));
+const notices=await getDocs(collection(db,"notices"));
+let resolved=0;
+complaints.forEach(d=>{if(d.data().status==="Resolved")resolved++;});
+totalComplaints.textContent=complaints.size;
+resolvedComplaints.textContent=resolved;
+pendingComplaints.textContent=complaints.size-resolved;
+totalNotices.textContent=notices.size;
 }
 loadDashboard();
 
 /* LEADERSHIP */
 async function loadLeadership(){
-  const snap=await getDocs(collection(db,"members"));
-  snap.forEach(doc=>{
-    const data=doc.data();
-    const card=`<div class="leader-card">
-      <img src="${data.photoUrl}" alt="${data.name}">
-      <h4>${data.name}</h4>
-      <p>${data.role}</p>
-    </div>`;
-    if(data.type==="leader") leaderContainer.innerHTML+=card;
-    else if(data.type==="body") bodyContainer.innerHTML+=card;
-    else if(data.type==="employee") employeeContainer.innerHTML+=card;
-  });
+const snap=await getDocs(collection(db,"members"));
+snap.forEach(doc=>{
+const d=doc.data();
+const card=`<div class="leader-card">
+<img src="${d.photoUrl}">
+<h4>${d.name}</h4>
+<p>${d.role}</p>
+</div>`;
+if(d.type==="leader")leaderContainer.innerHTML+=card;
+else if(d.type==="body")bodyContainer.innerHTML+=card;
+else if(d.type==="employee")employeeContainer.innerHTML+=card;
+});
 }
 loadLeadership();
 
-/* ================= EVENTS (HOMEPAGE) ================= */
-
+/* EVENTS */
 async function loadEvents(){
-
-  const container = document.getElementById("eventsContainer");
-  container.innerHTML = "Loading...";
-
-  const q = query(
-    collection(db,"events"),
-    orderBy("eventDate","desc")
-  );
-
-  const snap = await getDocs(q);
-
-  container.innerHTML = "";
-
-  let count = 0;
-
-  snap.forEach(doc=>{
-    if(count >= 6) return;
-
-    const d = doc.data();
-    const date = d.eventDate?.toDate().toLocaleDateString();
-
-    container.innerHTML += `
-      <div class="event-card" onclick="openEventModal(
-        '${d.title}',
-        '${d.description || ""}',
-        '${d.imageUrl || ""}',
-        '${date || ""}'
-      )">
-        ${d.imageUrl ? `<img src="${d.imageUrl}">` : ""}
-        <h4>${d.title}</h4>
-        <small>${date || ""}</small>
-      </div>
-    `;
-
-    count++;
-  });
-
+const container=document.getElementById("eventsContainer");
+const q=query(collection(db,"events"),orderBy("eventDate","desc"));
+const snap=await getDocs(q);
+let count=0;
+snap.forEach(doc=>{
+if(count>=6)return;
+const d=doc.data();
+const date=d.eventDate?.toDate().toLocaleDateString();
+container.innerHTML+=`<div class="event-card"
+onclick="openEventModal('${d.title}','${d.description||""}','${d.imageUrl||""}','${date||""}')">
+${d.imageUrl?`<img src="${d.imageUrl}">`:""}
+<h4>${d.title}</h4>
+<small>${date||""}</small>
+</div>`;
+count++;
+});
 }
 loadEvents();
 
 /* GALLERY */
 async function loadGallery(){
-  const snap=await getDocs(collection(db,"gallery"));
-  snap.forEach(doc=>{
-    const d=doc.data();
-    galleryContainer.innerHTML+=`<img src="${d.imageUrl}">`;
-  });
+const snap=await getDocs(collection(db,"gallery"));
+snap.forEach(doc=>{
+const d=doc.data();
+galleryContainer.innerHTML+=`<img src="${d.imageUrl}">`;
+});
 }
 loadGallery();
 
-window.openEventModal = function(title, desc, image, date){
-  document.getElementById("modalTitle").textContent = title;
-  document.getElementById("modalDesc").textContent = desc;
-  document.getElementById("modalDate").textContent = date;
-  document.getElementById("modalImage").src = image;
-  document.getElementById("eventModal").style.display = "flex";
+/* MODAL */
+window.openEventModal=function(title,desc,image,date){
+modalTitle.textContent=title;
+modalDesc.textContent=desc;
+modalDate.textContent=date;
+modalImage.src=image;
+eventModal.style.display="flex";
+}
+window.closeEventModal=function(){
+eventModal.style.display="none";
 }
 
-window.closeEventModal = function(){
-  document.getElementById("eventModal").style.display = "none";
-}
-  
-  
-</script>
-
-  <!-- EVENT MODAL -->
-<div id="eventModal" style="
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.6);
-  justify-content:center;
-  align-items:center;
-  z-index:999;
-">
-  <div style="
-    background:white;
-    width:90%;
-    max-width:600px;
-    padding:20px;
-    border-radius:10px;
-    position:relative;
-  ">
-    <span onclick="closeEventModal()" 
-          style="position:absolute;right:15px;top:10px;cursor:pointer;font-size:20px;">✖</span>
-
-    <img id="modalImage" style="width:100%;border-radius:8px;margin-bottom:15px;">
-    <h3 id="modalTitle"></h3>
-    <small id="modalDate"></small>
-    <p id="modalDesc" style="margin-top:10px;"></p>
-  </div>
-</div>
-
-  const reveals=document.querySelectorAll(".reveal");
-
+/* SCROLL REVEAL */
+const reveals=document.querySelectorAll(".reveal");
 function revealOnScroll(){
-  reveals.forEach(el=>{
-    const top=el.getBoundingClientRect().top;
-    if(top < window.innerHeight - 100){
-      el.classList.add("active");
-    }
-  });
+reveals.forEach(el=>{
+const top=el.getBoundingClientRect().top;
+if(top<window.innerHeight-100){el.classList.add("active");}
+});
 }
-
 window.addEventListener("scroll",revealOnScroll);
 revealOnScroll();
-  
+</script>
+
 </body>
 </html>
