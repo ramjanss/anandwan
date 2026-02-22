@@ -122,21 +122,42 @@ body{
   border-radius:50%;
 }
 
+/* EVENTS GRID */
+.events-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:25px;
+}
+
 .event-card{
   background:#f1f5f9;
   padding:20px;
-  border-radius:10px;
-  margin-bottom:20px;
+  border-radius:12px;
+  box-shadow:0 6px 15px rgba(0,0,0,0.08);
+  transition:transform 0.3s ease;
+}
+
+.event-card:hover{
+  transform:translateY(-5px);
 }
 
 .event-card img{
   width:100%;
-  max-height:200px;
+  height:200px;
   object-fit:cover;
   border-radius:8px;
   margin-bottom:10px;
 }
 
+.event-card h4{
+  margin:10px 0 5px;
+  color:#1e3a8a;
+}
+
+.event-card small{
+  color:#555;
+  font-size:12px;
+}
 .gallery-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
@@ -207,7 +228,7 @@ Gram Sabha Meeting Scheduled on 25 March 2026 | Citizens are requested to attend
 
 <section class="section">
 <h2>Recent Events</h2>
-<div id="eventsContainer"></div>
+<div id="eventsContainer" class="events-grid"></div>
 </section>
 
 <section class="section">
