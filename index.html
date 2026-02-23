@@ -45,6 +45,10 @@ body{
   object-fit:cover;   /* keeps proper ratio */
   display:block;
 }
+
+html {
+  scroll-behavior: smooth;
+}  
 /* TOP STRIP */
 .gov-top-strip{
   background:#f5f5f5;
@@ -615,40 +619,37 @@ footer{
   <nav class="gov-navbar">
   <div class="nav-container">
     <ul class="nav-menu">
+<li><a href="index.html">Home</a></li>
 
-      <li><a href="index.html">Home</a></li>
+<li class="mega-dropdown">
+  <a href="#">About Gram Panchayat ▾</a>
 
-      <li class="mega-dropdown">
-        <a href="#">About Gram Panchayat ▾</a>
+  <div class="mega-menu">
+    <div class="mega-column">
+      <h4>About</h4>
+      <a href="#village-profile">Village Profile</a>
+      <a href="#leadership">Leadership</a>
+    </div>
 
-        <div class="mega-menu">
-          <div class="mega-column">
-            <h4>About</h4>
-            <a href="#">Village Profile</a>
-            <a href="#">History</a>
-            <a href="#">Demographics</a>
-          </div>
+    <div class="mega-column">
+      <h4>Administration</h4>
+      <a href="#leadership">Main Officials</a>
+      <a href="#leadership">Employees</a>
+    </div>
 
-          <div class="mega-column">
-            <h4>Administration</h4>
-            <a href="#">Leadership</a>
-            <a href="#">Committees</a>
-            <a href="#">Departments</a>
-          </div>
+    <div class="mega-column">
+      <h4>Reports</h4>
+      <a href="#">Annual Report</a>
+      <a href="#">Budget</a>
+    </div>
+  </div>
+</li>
 
-          <div class="mega-column">
-            <h4>Reports</h4>
-            <a href="#">Annual Report</a>
-            <a href="#">Audit Reports</a>
-            <a href="#">Budget</a>
-          </div>
-        </div>
-      </li>
-
-      <li><a href="#">Schemes</a></li>
-      <li><a href="events.html">Events</a></li>
-      <li><a href="login.html">Admin</a></li>
-
+<li><a href="#schemes">Schemes</a></li>
+<li><a href="#events">Events</a></li>
+<li><a href="#gallery">Gallery</a></li>
+<li><a href="login.html">Admin</a></li>
+     
     </ul>
   </div>
 </nav>
@@ -681,12 +682,6 @@ footer{
     <div id="whatsNewTicker"></div>
   </div>
 </div>
-<section class="hero" id="hero">
-<div class="hero-overlay">
-<h2>Transparent • Accountable • Digital Governance</h2>
-<p>Empowering citizens through digital services</p>
-</div>
-</section>
 
 <section class="section">
 <h2>Transparency Dashboard</h2>
@@ -698,7 +693,7 @@ footer{
 </div>
 </section>
 
-<section class="section leadership-section">
+<section class="section leadership-section" id="leadership">
 <h2>Leadership & Administration</h2>
 <h3>Main Officials</h3>
 <div id="leaderContainer"></div>
@@ -708,17 +703,17 @@ footer{
 <div id="employeeContainer"></div>
 </section>
 
-<section class="section">
+<section class="section" id="events">
 <h2>Recent Events</h2>
 <div id="eventsContainer" class="events-grid"></div>
 </section>
 
-<section class="section">
+<section class="section" id="schemes">
   <h2>Government Schemes</h2>
   <div id="schemeContainer" class="scheme-grid"></div>
 </section>
   
-<section class="section">
+<section class="section" id="gallery">
 <h2>Village Gallery</h2>
 <div class="gallery-wrapper">
   <div id="galleryContainer" class="gallery-track"></div>
