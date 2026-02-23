@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gram Panchayat Wandhali | Official Digital Governance Portal</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@600;700&family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --primary:#1e3a8a;
@@ -46,93 +45,100 @@ body{
   object-fit:cover;   /* keeps proper ratio */
   display:block;
 }
-/* ===== GOV STRIP ===== */
 /* TOP STRIP */
 .gov-top-strip{
-  background:#f1f1f1;
+  background:#f5f5f5;
   text-align:center;
   padding:6px 0;
+  font-family:'Noto Sans', sans-serif;
   font-size:14px;
   font-weight:500;
   letter-spacing:0.5px;
+  border-bottom:1px solid #ddd;
 }
 
 /* MAIN HEADER */
 .gov-header{
-  padding:15px 20px;
-  border-bottom:1px solid #ddd;
   background:#fff;
+  padding:18px 25px;
+  border-bottom:1px solid #ddd;
 }
 
 .gov-header-container{
   max-width:1200px;
   margin:auto;
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
 }
 
-/* LEFT */
+/* LEFT SIDE STRUCTURE */
 .gov-left{
-  width:120px;
   display:flex;
-  justify-content:center;
+  align-items:center;
+  gap:20px;
 }
 
-.india-emblem{
-  height:95px;
+/* EMBLEM LARGE */
+.emblem-box img{
+  height:110px;   /* Larger like divisional site */
 }
 
-/* CENTER */
-.gov-center{
-  flex:1;
-  text-align:center;
+/* TITLE SECTION */
+.title-box{
+  text-align:left;
 }
 
-.dept-marathi{
+.gp-marathi{
+  font-family:'Noto Sans', sans-serif;
   font-size:18px;
   margin:0;
   font-weight:500;
 }
 
-.dept-english{
-  font-size:32px;
+.gp-english{
+  font-family:'Noto Serif', serif;  /* Government style serif */
+  font-size:34px;
   font-weight:700;
-  margin:8px 0;
-  letter-spacing:0.5px;
+  margin:6px 0;
+  letter-spacing:0.4px;
 }
 
 .district-line{
+  font-family:'Noto Sans', sans-serif;
   font-size:15px;
   margin:0;
 }
 
-/* RIGHT */
+/* RIGHT LOGOS */
 .gov-right{
-  width:200px;
   display:flex;
-  justify-content:flex-end;
   align-items:center;
-  gap:15px;
+  gap:20px;
 }
 
 .mh-logo{
-  height:75px;
+  height:80px;
 }
 
 .digital-logo{
-  height:60px;
+  height:65px;
 }
 
 /* RESPONSIVE */
 @media(max-width:768px){
   .gov-header-container{
     flex-direction:column;
-    gap:15px;
+    gap:20px;
   }
 
-  .gov-right{
-    justify-content:center;
+  .gov-left{
+    flex-direction:column;
+    text-align:center;
+  }
+
+  .title-box{
+    text-align:center;
   }
 }
 /* ===== NAV ===== */
@@ -486,44 +492,45 @@ footer{
 
 <body>
 
-<!-- TOP GOVERNMENT STRIP -->
+<!-- GOVERNMENT TOP STRIP -->
 <div class="gov-top-strip">
-  <span>महाराष्ट्र शासन</span>
-  <span class="divider">|</span>
-  <span>GOVERNMENT OF MAHARASHTRA</span>
+  महाराष्ट्र शासन | GOVERNMENT OF MAHARASHTRA
 </div>
 
-<!-- MAIN HEADER -->
+<!-- MAIN GOVERNMENT HEADER -->
 <header class="gov-header">
 
   <div class="gov-header-container">
 
-    <!-- LEFT SIDE (INDIA EMBLEM BIG) -->
+    <!-- LEFT SIDE (EMBLEM + NAME TOGETHER) -->
     <div class="gov-left">
-      <img src="assets/india-emblem.png" alt="India Emblem" class="india-emblem">
-    </div>
 
-    <!-- CENTER TITLE -->
-    <div class="gov-center">
+      <div class="emblem-box">
+        <img src="assets/india-emblem.png" alt="India Emblem">
+      </div>
 
-      <p class="dept-marathi">
-        ग्रामपंचायत वंधाळी, तालुका वरोरा
-      </p>
+      <div class="title-box">
 
-      <h1 class="dept-english">
-        Gram Panchayat Wandhali
-      </h1>
+        <p class="gp-marathi">
+          ग्रामपंचायत वंधाळी, तालुका वरोरा
+        </p>
 
-      <p class="district-line">
-        Taluka Warora | District Chandrapur
-      </p>
+        <h1 class="gp-english">
+          Gram Panchayat Wandhali
+        </h1>
+
+        <p class="district-line">
+          Taluka Warora | District Chandrapur
+        </p>
+
+      </div>
 
     </div>
 
     <!-- RIGHT SIDE LOGOS -->
     <div class="gov-right">
-      <img src="assets/maharashtra-logo.png" alt="Maharashtra Logo" class="mh-logo">
-      <img src="assets/digital-india.png" alt="Digital India Logo" class="digital-logo">
+      <img src="assets/maharashtra-logo.png" class="mh-logo">
+      <img src="assets/digital-india.png" class="digital-logo">
     </div>
 
   </div>
