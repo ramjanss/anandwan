@@ -143,6 +143,7 @@ body{
 }
 /* ===== NAV ===== */
 /* GOVERNMENT NAVBAR */
+/* NAVBAR BASE */
 .gov-navbar{
   background:#e9e9e9;
   border-bottom:1px solid #d5d5d5;
@@ -158,7 +159,6 @@ body{
   margin:0;
   padding:0;
   display:flex;
-  align-items:center;
 }
 
 .nav-menu > li{
@@ -167,69 +167,81 @@ body{
 
 .nav-menu > li > a{
   display:block;
-  padding:14px 18px;
+  padding:15px 20px;
   text-decoration:none;
   color:#222;
   font-family:'Noto Sans', sans-serif;
   font-size:15px;
   font-weight:500;
-  transition:0.2s;
 }
 
-/* Hover */
 .nav-menu > li > a:hover{
   background:#dcdcdc;
 }
 
-/* DROPDOWN */
-.dropdown-menu{
+/* MEGA MENU */
+.mega-dropdown{
+  position:relative;
+}
+
+.mega-menu{
   position:absolute;
-  top:100%;
   left:0;
+  top:100%;
+  width:700px;
   background:#fff;
-  list-style:none;
-  padding:0;
-  margin:0;
-  min-width:220px;
+  display:flex;
+  justify-content:space-between;
+  padding:25px;
   border:1px solid #ddd;
+  box-shadow:0 8px 20px rgba(0,0,0,0.08);
   display:none;
   z-index:1000;
 }
 
-.dropdown-menu li a{
-  display:block;
-  padding:12px 15px;
+/* Columns */
+.mega-column{
+  display:flex;
+  flex-direction:column;
+  min-width:180px;
+}
+
+.mega-column h4{
+  font-family:'Noto Serif', serif;
+  font-size:16px;
+  margin-bottom:10px;
+  color:#1e3a8a;
+}
+
+.mega-column a{
   text-decoration:none;
   color:#333;
   font-size:14px;
+  padding:5px 0;
   font-family:'Noto Sans', sans-serif;
 }
 
-.dropdown-menu li a:hover{
-  background:#f2f2f2;
+.mega-column a:hover{
+  color:#1e3a8a;
 }
 
-/* Show dropdown */
-.dropdown:hover .dropdown-menu{
-  display:block;
+/* Show on hover */
+.mega-dropdown:hover .mega-menu{
+  display:flex;
 }
 
-/* Responsive */
+/* RESPONSIVE */
 @media(max-width:768px){
   .nav-menu{
     flex-direction:column;
   }
 
-  .nav-menu > li{
+  .mega-menu{
+    position:static;
     width:100%;
-  }
-
-  .nav-menu > li > a{
-    padding:12px;
-    border-top:1px solid #ddd;
+    flex-direction:column;
   }
 }
-
 /* ===== HERO ===== */
 .gov-hero{
   height:420px;
@@ -618,25 +630,66 @@ footer{
 
       <li><a href="index.html">Home</a></li>
 
-      <li class="dropdown">
+      <!-- ABOUT MEGA MENU -->
+      <li class="mega-dropdown">
         <a href="#">About Gram Panchayat ▾</a>
-        <ul class="dropdown-menu">
-          <li><a href="#">Village Profile</a></li>
-          <li><a href="#">Leadership</a></li>
-          <li><a href="#">Committees</a></li>
-        </ul>
+
+        <div class="mega-menu">
+
+          <div class="mega-column">
+            <h4>About</h4>
+            <a href="#">Village Profile</a>
+            <a href="#">History</a>
+            <a href="#">Demographics</a>
+          </div>
+
+          <div class="mega-column">
+            <h4>Administration</h4>
+            <a href="#">Leadership</a>
+            <a href="#">Committees</a>
+            <a href="#">Departments</a>
+          </div>
+
+          <div class="mega-column">
+            <h4>Reports</h4>
+            <a href="#">Annual Report</a>
+            <a href="#">Audit Reports</a>
+            <a href="#">Budget</a>
+          </div>
+
+        </div>
       </li>
 
-      <li class="dropdown">
-        <a href="#">Services ▾</a>
-        <ul class="dropdown-menu">
-          <li><a href="complaint.html">Register Complaint</a></li>
-          <li><a href="track.html">Track Complaint</a></li>
-        </ul>
+      <!-- SERVICES MEGA MENU -->
+      <li class="mega-dropdown">
+        <a href="#">Citizen Services ▾</a>
+
+        <div class="mega-menu">
+
+          <div class="mega-column">
+            <h4>Complaints</h4>
+            <a href="complaint.html">Register Complaint</a>
+            <a href="track.html">Track Complaint</a>
+          </div>
+
+          <div class="mega-column">
+            <h4>Certificates</h4>
+            <a href="#">Birth Certificate</a>
+            <a href="#">Death Certificate</a>
+            <a href="#">Income Certificate</a>
+          </div>
+
+          <div class="mega-column">
+            <h4>Public Info</h4>
+            <a href="#">Notices</a>
+            <a href="#">Schemes</a>
+            <a href="#">Events</a>
+          </div>
+
+        </div>
       </li>
 
       <li><a href="events.html">Events</a></li>
-      <li><a href="#">Notices</a></li>
       <li><a href="#">Schemes</a></li>
       <li><a href="login.html">Admin</a></li>
 
@@ -645,7 +698,6 @@ footer{
   </div>
 
 </nav>
-
 <!-- HERO BANNER -->
 <section class="gov-hero">
   <div class="hero-slider" id="heroSlider">
