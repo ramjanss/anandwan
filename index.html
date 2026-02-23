@@ -285,7 +285,10 @@ body{
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
-
+@keyframes fadeIn{
+  from{ opacity:0; transform:scale(0.95); }
+  to{ opacity:1; transform:scale(1); }
+}
 /* FOOTER */
 footer{
   background:var(--primary);
@@ -481,20 +484,82 @@ async function loadGallery(){
     return;
   }
 
-  /* Duplicate images for seamless loop */
-  const allImages = [...images, ...images];
+  const allImages = [...images, ...images]; // duplicate for smooth loop
 
   allImages.forEach(url=>{
-    container.innerHTML += `<img src="${url}">`;
+    container.innerHTML += `<img src="${url}" class="gallery-img">`;
+  });
+
+  // Add click event for modal
+  document.querySelectorAll(".gallery-img").forEach(img=>{
+    img.addEventListener("click",()=>{
+      openGalleryModal(img.src);
+    });
   });
 
 }
 loadGallery();
 
+const modal = document.getElementById("galleryModal");
+const modalImg = document.getElementById("modalGalleryImage");
+const closeBtn = document.getElementById("closeGalleryModal");
+
+window.openGalleryModal = function(src){
+  modal.style.display = "flex";
+  modalImg.src = src;
+}
+
+closeBtn.onclick = function(){
+  modal.style.display = "none";
+}
+
+modal.onclick = function(e){
+  if(e.target === modal){
+    modal.style.display = "none";
+  }
+}
+
+document.addEventListener("keydown",function(e){
+  if(e.key === "Escape"){
+    modal.style.display = "none";
+  }
+});
+  
 /* FOOTER DATE */
 document.getElementById("year").textContent=new Date().getFullYear();
 document.getElementById("updated").textContent=new Date().toLocaleDateString('en-IN');
 </script>
 
+<!-- GALLERY MODAL -->
+<div id="galleryModal" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.8);
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  padding:20px;
+">
+
+  <span id="closeGalleryModal" style="
+    position:absolute;
+    top:25px;
+    right:30px;
+    font-size:30px;
+    color:white;
+    cursor:pointer;
+  ">✕</span>
+
+  <img id="modalGalleryImage" style="
+    max-width:90%;
+    max-height:85%;
+    border-radius:12px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.4);
+    animation:fadeIn 0.3s ease;
+  ">
+
+</div>
+  
 </body>
 </html>
