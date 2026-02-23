@@ -122,88 +122,117 @@ body{
 }
 
 /* LEADERSHIP */
+/* =========================
+   LEADERSHIP SECTION POLISHED
+========================= */
+
 .leadership-section{
-  background:var(--light);
+  background:#f5f7fb;
+  padding:100px 20px;
 }
 
 .section h3{
-  margin-top:70px;
-  margin-bottom:25px;
-  color:var(--primary);
+  margin-top:90px;
+  margin-bottom:35px;
+  font-size:20px;
+  color:#1e3a8a;
+  border-left:5px solid #1e3a8a;
+  padding-left:12px;
 }
 
-/* GRID SIZES */
+/* ===== MAIN OFFICIALS ===== */
 #leaderContainer{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
-  gap:80px;
+  grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
+  gap:90px;
   max-width:1100px;
-  margin:auto;
+  margin:0 auto;
 }
 
+#leaderContainer .leader-card{
+  height:450px;
+  padding:130px 30px 40px;
+  border:4px solid #1e3a8a;
+  background:white;
+  box-shadow:0 20px 40px rgba(0,0,0,0.08);
+}
+
+/* ===== BODY MEMBERS ===== */
 #bodyContainer{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:60px;
+  gap:70px;
   max-width:1000px;
-  margin:auto;
+  margin:0 auto;
 }
 
+#bodyContainer .leader-card{
+  height:350px;
+  padding:100px 25px 30px;
+  border:2px solid #cbd5e1;
+  background:white;
+}
+
+/* ===== EMPLOYEES ===== */
 #employeeContainer{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:50px;
+  gap:60px;
   max-width:900px;
-  margin:auto;
+  margin:0 auto;
 }
 
+#employeeContainer .leader-card{
+  height:290px;
+  padding:85px 20px 25px;
+  border:1px solid #e2e8f0;
+  background:white;
+}
+
+/* ===== COMMON CARD STYLE ===== */
 .leader-card{
-  border-radius:18px;
+  border-radius:20px;
   text-align:center;
   position:relative;
   display:flex;
   flex-direction:column;
   justify-content:space-between;
-  transition:0.3s;
-  background:white;
-}
-
-#leaderContainer .leader-card{
-  height:420px;
-  padding:120px 30px 35px;
-  border:4px solid var(--primary);
-}
-
-#bodyContainer .leader-card{
-  height:340px;
-  padding:95px 25px 30px;
-  border:2px solid #cbd5e1;
-}
-
-#employeeContainer .leader-card{
-  height:280px;
-  padding:85px 20px 25px;
-  border:1px solid #e2e8f0;
+  transition:0.3s ease;
 }
 
 .leader-card:hover{
   transform:translateY(-8px);
 }
 
+/* ===== PHOTO SIZES ===== */
+#leaderContainer .leader-photo{
+  width:180px;
+  height:180px;
+  top:-90px;
+}
+
+#bodyContainer .leader-photo{
+  width:140px;
+  height:140px;
+  top:-70px;
+}
+
+#employeeContainer .leader-photo{
+  width:110px;
+  height:110px;
+  top:-55px;
+}
+
 .leader-photo{
   position:absolute;
-  top:-85px;
   left:50%;
   transform:translateX(-50%);
   border-radius:50%;
   overflow:hidden;
   border:6px solid white;
   background:white;
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
 }
-
-#leaderContainer .leader-photo{ width:170px; height:170px; }
-#bodyContainer .leader-photo{ width:140px; height:140px; }
-#employeeContainer .leader-photo{ width:110px; height:110px; }
 
 .leader-photo img{
   width:100%;
@@ -211,24 +240,31 @@ body{
   object-fit:cover;
 }
 
+/* ===== TYPOGRAPHY ===== */
 .leader-card h4{
+  font-size:18px;
   font-weight:700;
+  margin-top:15px;
+}
+
+#employeeContainer .leader-card h4{
+  font-size:15px;
 }
 
 .leader-badge{
   display:inline-block;
-  padding:6px 14px;
+  padding:6px 16px;
   border-radius:20px;
   font-size:11px;
-  background:var(--primary);
+  background:#1e3a8a;
   color:white;
+  margin-bottom:10px;
 }
 
 .contact-actions{
   display:flex;
   justify-content:center;
   gap:10px;
-  margin-top:auto;
 }
 
 .contact-btn{
@@ -237,13 +273,12 @@ body{
   font-size:12px;
   text-decoration:none;
   color:white;
-  background:var(--accent);
+  background:#15803d;
 }
 
 .contact-btn.whatsapp{
   background:#25D366;
 }
-
 /* EVENTS */
 .events-grid{
   display:grid;
