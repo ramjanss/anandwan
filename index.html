@@ -22,10 +22,29 @@ body{
 }
 
 .gov-hero{
+  width:100%;
   height:450px;
-  background-size:cover;
-  background-position:center;
-  transition:background-image 1.2s ease-in-out;
+  overflow:hidden;
+  position:relative;
+}
+
+.hero-slider{
+  display:flex;
+  width:300%; /* 3 images */
+  height:100%;
+  transition:transform 1s ease-in-out;
+}
+
+.hero-slide{
+  width:100%;
+  flex-shrink:0;
+}
+
+.hero-slide img{
+  width:100%;
+  height:450px;
+  object-fit:cover;
+}
 }
 /* ===== GOV STRIP ===== */
 .gov-strip{
@@ -475,8 +494,23 @@ footer{
 </div>
 
 <!-- HERO BANNER -->
-<section class="gov-hero" id="hero"></section>
+<section class="gov-hero">
+  <div class="hero-slider" id="heroSlider">
 
+    <div class="hero-slide">
+      <img src="assets/slide1.jpg" alt="">
+    </div>
+
+    <div class="hero-slide">
+      <img src="assets/slide2.jpg" alt="">
+    </div>
+
+    <div class="hero-slide">
+      <img src="assets/slide3.jpg" alt="">
+    </div>
+
+  </div>
+</section>
 <!-- YELLOW SEPARATOR -->
 <div class="gov-divider"></div>
 
@@ -541,15 +575,22 @@ import { collection, getDocs, query, orderBy }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 /* HERO */
-const hero=document.getElementById("hero");
-const images=["assets/slide1.jpg","assets/slide2.jpg","assets/slide3.jpg"];
-let i=0;
-function changeHero(){
-hero.style.backgroundImage=`url('${images[i]}')`;
-i=(i+1)%images.length;
+const slider = document.getElementById("heroSlider");
+const totalSlides = document.querySelectorAll(".hero-slide").length;
+
+let currentIndex = 0;
+
+function slideHero(){
+  currentIndex++;
+
+  if(currentIndex >= totalSlides){
+    currentIndex = 0;
+  }
+
+  slider.style.transform = `translateX(-${currentIndex * 100}%)`;
 }
-changeHero();
-setInterval(changeHero,5000);
+
+setInterval(slideHero, 4000);
 
 /* DASHBOARD */
 async function loadDashboard(){
