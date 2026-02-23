@@ -6,10 +6,7 @@
 <title>Gram Panchayat Wandhali | Official Digital Governance Portal</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@600;700&family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-
 <style>
-
-/* ================= ROOT ================= */
 :root{
   --primary:#1e3a8a;
   --accent:#15803d;
@@ -19,156 +16,10 @@
 
 body{
   margin:0;
-  font-family:'Noto Sans', sans-serif;
+  font-family:'Poppins',sans-serif;
   color:var(--text);
-  background:#fff;
 }
 
-/* ================= TOP STRIP ================= */
-.gov-top-strip{
-  background:#f5f5f5;
-  text-align:center;
-  padding:6px 0;
-  font-size:14px;
-  font-weight:500;
-  border-bottom:1px solid #ddd;
-}
-
-/* ================= HEADER ================= */
-.gov-header{
-  background:#fff;
-  padding:18px 25px;
-  border-bottom:1px solid #ddd;
-}
-
-.gov-header-container{
-  max-width:1200px;
-  margin:auto;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.gov-left{
-  display:flex;
-  align-items:center;
-  gap:20px;
-}
-
-.emblem-box img{
-  height:110px;
-}
-
-.gp-marathi{
-  font-size:18px;
-  margin:0;
-}
-
-.gp-english{
-  font-family:'Noto Serif', serif;
-  font-size:34px;
-  font-weight:700;
-  margin:6px 0;
-}
-
-.district-line{
-  font-size:15px;
-  margin:0;
-}
-
-.gov-right{
-  display:flex;
-  align-items:center;
-  gap:20px;
-}
-
-.mh-logo{ height:80px; }
-.digital-logo{ height:65px; }
-
-/* ================= NAVBAR ================= */
-.gov-navbar{
-  background:#e9e9e9;
-  border-bottom:1px solid #d5d5d5;
-  position:relative;
-  z-index:1000;
-}
-
-.nav-container{
-  max-width:1200px;
-  margin:auto;
-}
-
-.nav-menu{
-  list-style:none;
-  margin:0;
-  padding:0;
-  display:flex;
-}
-
-.nav-menu > li{
-  position:relative;
-}
-
-.nav-menu > li > a{
-  display:block;
-  padding:15px 20px;
-  text-decoration:none;
-  color:#222;
-  font-size:15px;
-  font-weight:500;
-}
-
-.nav-menu > li > a:hover{
-  background:#dcdcdc;
-}
-
-/* ===== FULL WIDTH MEGA MENU ===== */
-.mega-dropdown:hover .mega-menu{
-  display:block;
-}
-
-.mega-menu{
-  display:none;
-  position:absolute;
-  left:0;
-  top:100%;
-  width:100vw;
-  background:#fff;
-  padding:40px 60px;
-  border-top:2px solid var(--primary);
-  box-shadow:0 15px 30px rgba(0,0,0,0.08);
-}
-
-.mega-inner{
-  max-width:1200px;
-  margin:auto;
-  display:flex;
-  gap:80px;
-}
-
-.mega-column{
-  display:flex;
-  flex-direction:column;
-}
-
-.mega-column h4{
-  font-family:'Noto Serif', serif;
-  margin-bottom:10px;
-  color:var(--primary);
-}
-
-.mega-column a{
-  text-decoration:none;
-  color:#444;
-  margin-bottom:6px;
-  font-size:14px;
-}
-
-.mega-column a:hover{
-  color:var(--primary);
-}
-
-/* ================= HERO SLIDER ================= */
 .gov-hero{
   width:100%;
   height:500px;
@@ -185,15 +36,210 @@ body{
 .hero-slide{
   min-width:100%;
   height:100%;
+  position:relative;
 }
 
 .hero-slide img{
   width:100%;
   height:100%;
-  object-fit:cover;
+  object-fit:cover;   /* keeps proper ratio */
+  display:block;
+}
+/* TOP STRIP */
+.gov-top-strip{
+  background:#f5f5f5;
+  text-align:center;
+  padding:6px 0;
+  font-family:'Noto Sans', sans-serif;
+  font-size:14px;
+  font-weight:500;
+  letter-spacing:0.5px;
+  border-bottom:1px solid #ddd;
 }
 
-/* ================= WHAT'S NEW ================= */
+/* MAIN HEADER */
+.gov-header{
+  background:#fff;
+  padding:18px 25px;
+  border-bottom:1px solid #ddd;
+}
+
+.gov-header-container{
+  max-width:1200px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+/* LEFT SIDE STRUCTURE */
+.gov-left{
+  display:flex;
+  align-items:center;
+  gap:20px;
+}
+
+/* EMBLEM LARGE */
+.emblem-box img{
+  height:110px;   /* Larger like divisional site */
+}
+
+/* TITLE SECTION */
+.title-box{
+  text-align:left;
+}
+
+.gp-marathi{
+  font-family:'Noto Sans', sans-serif;
+  font-size:18px;
+  margin:0;
+  font-weight:500;
+}
+
+.gp-english{
+  font-family:'Noto Serif', serif;  /* Government style serif */
+  font-size:34px;
+  font-weight:700;
+  margin:6px 0;
+  letter-spacing:0.4px;
+}
+
+.district-line{
+  font-family:'Noto Sans', sans-serif;
+  font-size:15px;
+  margin:0;
+}
+
+/* RIGHT LOGOS */
+.gov-right{
+  display:flex;
+  align-items:center;
+  gap:20px;
+}
+
+.mh-logo{
+  height:80px;
+}
+
+.digital-logo{
+  height:65px;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .gov-header-container{
+    flex-direction:column;
+    gap:20px;
+  }
+
+  .gov-left{
+    flex-direction:column;
+    text-align:center;
+  }
+
+  .title-box{
+    text-align:center;
+  }
+}
+/* GOVERNMENT NAVBAR */
+.gov-navbar{
+  background:#e9e9e9;
+  border-bottom:1px solid #d5d5d5;
+  position:relative;
+  z-index:999;
+}
+
+.nav-container{
+  max-width:1200px;
+  margin:auto;
+}
+
+.nav-menu{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+}
+
+.nav-menu > li{
+  position:relative;
+  padding-bottom:0;
+}
+
+.nav-menu > li > a{
+  display:block;
+  padding:15px 20px;
+  text-decoration:none;
+  color:#222;
+  font-family:'Noto Sans', sans-serif;
+  font-size:15px;
+  font-weight:500;
+}
+
+.nav-menu > li > a:hover{
+  background:#dcdcdc;
+}
+
+/* ===== MEGA MENU ===== */
+
+/* ===== MEGA MENU FIXED ===== */
+
+.mega-dropdown{
+  position:relative;
+}
+
+.mega-menu{
+  position:absolute;
+  top:100%;      /* directly under menu item */
+  left:0;
+  background:#fff;
+  display:none;
+  gap:60px;
+  padding:25px;
+  border:1px solid #ddd;
+  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+  min-width:650px;
+  z-index:9999;
+}
+
+/* CRITICAL FIX */
+.mega-dropdown:hover .mega-menu,
+.mega-menu:hover{
+  display:flex;
+}
+
+.mega-column{
+  display:flex;
+  flex-direction:column;
+  min-width:180px;
+}
+
+.mega-column h4{
+  font-family:'Noto Serif', serif;
+  font-size:16px;
+  margin-bottom:10px;
+  color:#1e3a8a;
+}
+
+.mega-column a{
+  text-decoration:none;
+  color:#333;
+  font-size:14px;
+  padding:5px 0;
+}
+
+.mega-column a:hover{
+  color:#1e3a8a;
+}
+/* ===== HERO ===== */
+.gov-hero{
+  height:420px;
+  background-size:cover;
+  background-position:center;
+  transition:background-image 1s ease-in-out;
+}
+
+/* ===== YELLOW STRIP ===== */
 .gov-divider{
   height:50px;
   background:#f3a617;
@@ -203,6 +249,7 @@ body{
   display:flex;
   align-items:center;
   background:#f3a617;
+  color:#000;
   padding:10px 0;
   overflow:hidden;
 }
@@ -210,11 +257,13 @@ body{
 .whats-label{
   font-weight:600;
   padding:0 20px;
+  white-space:nowrap;
 }
 
 .whats-scroll{
   flex:1;
   overflow:hidden;
+  position:relative;
 }
 
 .whats-scroll-content{
@@ -227,6 +276,7 @@ body{
   margin-right:60px;
   text-decoration:none;
   color:#000;
+  font-size:14px;
 }
 
 .whats-scroll:hover .whats-scroll-content{
@@ -237,8 +287,7 @@ body{
   from { transform: translateX(100%); }
   to { transform: translateX(-100%); }
 }
-
-/* ================= SECTIONS ================= */
+/* SECTION */
 .section{
   padding:90px 20px;
   max-width:1200px;
@@ -251,12 +300,12 @@ body{
   color:var(--primary);
 }
 
-/* ================= DASHBOARD ================= */
+/* DASHBOARD */
 .dashboard-grid{
   display:flex;
+  flex-wrap:wrap;
   justify-content:center;
   gap:25px;
-  flex-wrap:wrap;
 }
 
 .dashboard-card{
@@ -274,10 +323,25 @@ body{
   color:var(--primary);
 }
 
-/* ================= LEADERSHIP ================= */
+/* =========================
+   CLEAN GOVERNMENT LEADERSHIP
+========================= */
+
 .leadership-section{
   background:#f8fafc;
+  padding:80px 20px;
 }
+
+.section h3{
+  margin-top:60px;
+  margin-bottom:25px;
+  font-size:18px;
+  color:#1e3a8a;
+  border-bottom:2px solid #e5e7eb;
+  padding-bottom:8px;
+}
+
+/* GRID STRUCTURE */
 
 #leaderContainer,
 #bodyContainer,
@@ -287,9 +351,19 @@ body{
   margin-top:30px;
 }
 
-#leaderContainer{ grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); }
-#bodyContainer{ grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
-#employeeContainer{ grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); }
+#leaderContainer{
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+}
+
+#bodyContainer{
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+}
+
+#employeeContainer{
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+}
+
+/* CARD STYLE */
 
 .leader-card{
   background:white;
@@ -305,6 +379,8 @@ body{
 .leader-card:hover{
   box-shadow:0 8px 20px rgba(0,0,0,0.08);
 }
+
+/* PHOTO */
 
 .leader-photo{
   width:70px;
@@ -325,18 +401,38 @@ body{
   object-fit:cover;
 }
 
+/* TEXT BLOCK */
+
+.leader-info{
+  text-align:left;
+}
+
 .leader-info h4{
-  margin:0;
+  margin:0 0 4px;
   font-size:16px;
+  font-weight:600;
 }
 
 .leader-info p{
-  margin:3px 0 0;
+  margin:0;
   font-size:13px;
   color:#555;
 }
 
-/* ================= EVENTS ================= */
+.contact-actions{
+  margin-top:6px;
+}
+
+.contact-btn{
+  font-size:11px;
+  padding:4px 10px;
+  border-radius:4px;
+  background:#1e3a8a;
+  color:white;
+  text-decoration:none;
+  margin-right:5px;
+}
+/* EVENTS */
 .events-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
@@ -356,16 +452,75 @@ body{
   border-radius:8px;
 }
 
-/* ================= SCHEMES ================= */
+/* ===== GOVERNMENT SCHEMES ===== */
+
 .scheme-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
   gap:25px;
+  margin-top:40px;
 }
 
-/* ================= GALLERY ================= */
+.scheme-card{
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  border:1px solid #e5e7eb;
+  box-shadow:0 6px 15px rgba(0,0,0,0.05);
+  transition:0.3s;
+}
+
+.scheme-card:hover{
+  transform:translateY(-5px);
+}
+
+.scheme-card h4{
+  margin:0 0 8px;
+  color:#1e3a8a;
+}
+
+.scheme-card p{
+  font-size:14px;
+  color:#555;
+  margin-bottom:15px;
+}
+
+.scheme-category{
+  display:inline-block;
+  padding:4px 10px;
+  font-size:11px;
+  border-radius:20px;
+  color:white;
+  margin-bottom:10px;
+}
+
+.category-central{
+  background:#1e3a8a;
+}
+
+.category-state{
+  background:#15803d;
+}
+
+.category-local{
+  background:#f59e0b;
+}
+
+.scheme-link{
+  display:inline-block;
+  padding:6px 14px;
+  background:#1e3a8a;
+  color:white;
+  font-size:13px;
+  border-radius:6px;
+  text-decoration:none;
+}
+  
+/* ===== AUTO SLIDING GALLERY ===== */
+
 .gallery-wrapper{
   overflow:hidden;
+  position:relative;
   margin-top:40px;
 }
 
@@ -387,6 +542,7 @@ body{
   transform:scale(1.08);
 }
 
+/* Pause on hover */
 .gallery-wrapper:hover .gallery-track{
   animation-play-state: paused;
 }
@@ -395,69 +551,461 @@ body{
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
-
-/* ================= FOOTER ================= */
+@keyframes fadeIn{
+  from{ opacity:0; transform:scale(0.95); }
+  to{ opacity:1; transform:scale(1); }
+}
+/* FOOTER */
 footer{
   background:var(--primary);
   color:white;
-  padding:30px;
+  padding:30px 20px;
   text-align:center;
 }
-
 </style>
 </head>
+
 <body>
 
+<!-- GOVERNMENT TOP STRIP -->
 <div class="gov-top-strip">
   महाराष्ट्र शासन | GOVERNMENT OF MAHARASHTRA
 </div>
 
+<!-- MAIN GOVERNMENT HEADER -->
 <header class="gov-header">
-<div class="gov-header-container">
-<div class="gov-left">
-<div class="emblem-box">
-<img src="assets/india-emblem.png">
-</div>
-<div>
-<p class="gp-marathi">ग्रामपंचायत वंधली | तालुका वरोरा | जिल्हा चंद्रपूर</p>
-<h1 class="gp-english">Gram Panchayat Wandhali</h1>
-<p class="district-line">Taluka Warora | District Chandrapur</p>
-</div>
-</div>
-<div class="gov-right">
-<img src="assets/maharashtra-logo.png" class="mh-logo">
-<img src="assets/digital-india.png" class="digital-logo">
-</div>
-</div>
+
+  <div class="gov-header-container">
+
+    <!-- LEFT SIDE (EMBLEM + NAME TOGETHER) -->
+    <div class="gov-left">
+
+      <div class="emblem-box">
+        <img src="assets/india-emblem.png" alt="India Emblem">
+      </div>
+
+      <div class="title-box">
+
+        <p class="gp-marathi">
+          ग्रामपंचायत वंधली | तालुका वरोरा | जिल्हा चंद्रपूर 
+        </p>
+
+        <h1 class="gp-english">
+          Gram Panchayat Wandhali
+        </h1>
+
+        <p class="district-line">
+          Taluka Warora | District Chandrapur
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDE LOGOS -->
+    <div class="gov-right">
+      <img src="assets/maharashtra-logo.png" class="mh-logo">
+      <img src="assets/digital-india.png" class="digital-logo">
+    </div>
+
+  </div>
+
 </header>
 
-<!-- HERO -->
+  <nav class="gov-navbar">
+  <div class="nav-container">
+    <ul class="nav-menu">
+
+      <li><a href="index.html">Home</a></li>
+
+      <li class="mega-dropdown">
+        <a href="#">About Gram Panchayat ▾</a>
+
+        <div class="mega-menu">
+          <div class="mega-column">
+            <h4>About</h4>
+            <a href="#">Village Profile</a>
+            <a href="#">History</a>
+            <a href="#">Demographics</a>
+          </div>
+
+          <div class="mega-column">
+            <h4>Administration</h4>
+            <a href="#">Leadership</a>
+            <a href="#">Committees</a>
+            <a href="#">Departments</a>
+          </div>
+
+          <div class="mega-column">
+            <h4>Reports</h4>
+            <a href="#">Annual Report</a>
+            <a href="#">Audit Reports</a>
+            <a href="#">Budget</a>
+          </div>
+        </div>
+      </li>
+
+      <li><a href="#">Schemes</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="login.html">Admin</a></li>
+
+    </ul>
+  </div>
+</nav>
+  
+<!-- HERO BANNER -->
 <section class="gov-hero">
-<div class="hero-slider" id="heroSlider">
-<div class="hero-slide"><img src="assets/slide1.jpg"></div>
-<div class="hero-slide"><img src="assets/slide2.jpg"></div>
-<div class="hero-slide"><img src="assets/slide3.jpg"></div>
+  <div class="hero-slider" id="heroSlider">
+
+    <div class="hero-slide">
+      <img src="assets/slide1.jpg" alt="">
+    </div>
+
+    <div class="hero-slide">
+      <img src="assets/slide2.jpg" alt="">
+    </div>
+
+    <div class="hero-slide">
+      <img src="assets/slide3.jpg" alt="">
+    </div>
+
+  </div>
+</section>
+<!-- YELLOW SEPARATOR -->
+<div class="gov-divider"></div>
+
+<!-- WHAT'S NEW TICKER -->
+<div class="whats-new-bar">
+  <div class="whats-label">What's New :</div>
+  <div class="whats-scroll">
+    <div id="whatsNewTicker"></div>
+  </div>
+</div>
+<section class="hero" id="hero">
+<div class="hero-overlay">
+<h2>Transparent • Accountable • Digital Governance</h2>
+<p>Empowering citizens through digital services</p>
 </div>
 </section>
 
-<div class="gov-divider"></div>
+<section class="section">
+<h2>Transparency Dashboard</h2>
+<div class="dashboard-grid">
+<div class="dashboard-card"><h3 id="totalComplaints">0</h3><p>Total Complaints</p></div>
+<div class="dashboard-card"><h3 id="resolvedComplaints">0</h3><p>Resolved</p></div>
+<div class="dashboard-card"><h3 id="pendingComplaints">0</h3><p>Pending</p></div>
+<div class="dashboard-card"><h3 id="totalNotices">0</h3><p>Notices</p></div>
+</div>
+</section>
+
+<section class="section leadership-section">
+<h2>Leadership & Administration</h2>
+<h3>Main Officials</h3>
+<div id="leaderContainer"></div>
+<h3>Elected Body Members</h3>
+<div id="bodyContainer"></div>
+<h3>Gram Panchayat Employees</h3>
+<div id="employeeContainer"></div>
+</section>
+
+<section class="section">
+<h2>Recent Events</h2>
+<div id="eventsContainer" class="events-grid"></div>
+</section>
+
+<section class="section">
+  <h2>Government Schemes</h2>
+  <div id="schemeContainer" class="scheme-grid"></div>
+</section>
+  
+<section class="section">
+<h2>Village Gallery</h2>
+<div class="gallery-wrapper">
+  <div id="galleryContainer" class="gallery-track"></div>
+</div>
+</section>
 
 <footer>
-© <span id="year"></span> Gram Panchayat Wandhali
+© <span id="year"></span> Gram Panchayat Wandhali | Last Updated: <span id="updated"></span>
 </footer>
 
-<script>
-/* HERO SLIDER */
-const slider = document.getElementById("heroSlider");
-const slides = document.querySelectorAll(".hero-slide").length;
-let index = 0;
-setInterval(()=>{
-index = (index+1) % slides;
-slider.style.transform = `translateX(-${index*100}%)`;
-},4000);
+<script type="module">
+import { db } from "./js/firebase.js";
+import { collection, getDocs, query, orderBy }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-document.getElementById("year").textContent = new Date().getFullYear();
+/* HERO */
+const slider = document.getElementById("heroSlider");
+const totalSlides = document.querySelectorAll(".hero-slide").length;
+
+let currentIndex = 0;
+
+function slideHero(){
+  currentIndex++;
+
+  if(currentIndex >= totalSlides){
+    currentIndex = 0;
+  }
+
+  slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+}
+
+setInterval(slideHero, 4000);
+
+/* DASHBOARD */
+async function loadDashboard(){
+const complaints=await getDocs(collection(db,"complaints"));
+const notices=await getDocs(collection(db,"notices"));
+let resolved=0;
+complaints.forEach(d=>{if(d.data().status==="Resolved")resolved++;});
+document.getElementById("totalComplaints").textContent=complaints.size;
+document.getElementById("resolvedComplaints").textContent=resolved;
+document.getElementById("pendingComplaints").textContent=complaints.size-resolved;
+document.getElementById("totalNotices").textContent=notices.size;
+}
+loadDashboard();
+
+async function loadWhatsNew(){
+
+  const container = document.getElementById("whatsNewTicker");
+  container.innerHTML = "";
+
+  const snap = await getDocs(
+    query(collection(db,"notices"), orderBy("createdAt","desc"))
+  );
+
+  if(snap.empty){
+    container.innerHTML = "No new updates.";
+    return;
+  }
+
+  let content = '<div class="whats-scroll-content">';
+
+  snap.forEach(doc=>{
+    const d = doc.data();
+
+    if(d.fileUrl){
+      content += `<a href="${d.fileUrl}" target="_blank">
+                    ${d.title}
+                  </a>`;
+    } else {
+      content += `<a href="#">${d.title}</a>`;
+    }
+  });
+
+  content += '</div>';
+
+  container.innerHTML = content;
+}
+
+loadWhatsNew();  
+/* LEADERSHIP WITH PHOTOS */
+async function loadLeadership(){
+const snap=await getDocs(collection(db,"members"));
+
+const leaderContainer=document.getElementById("leaderContainer");
+const bodyContainer=document.getElementById("bodyContainer");
+const employeeContainer=document.getElementById("employeeContainer");
+
+const members=[];
+snap.forEach(doc=>members.push(doc.data()));
+
+function getPriority(role){
+if(!role)return 99;
+role=role.toLowerCase();
+if(role.includes("sarpanch"))return 1;
+if(role.includes("upsarpanch"))return 2;
+if(role.includes("village development officer")||role.includes("vdo"))return 3;
+return 4;
+}
+
+const leaders=members.filter(m=>m.type==="leader").sort((a,b)=>getPriority(a.role)-getPriority(b.role));
+const body=members.filter(m=>m.type==="body");
+const employees=members.filter(m=>m.type==="employee");
+
+function buildCard(d){
+  return `
+  <div class="leader-card">
+    <div class="leader-photo">
+      <img src="${d.photoUrl || 'assets/default-user.png'}">
+    </div>
+
+    <div class="leader-info">
+      <h4>${d.name}</h4>
+      <p>${d.role}</p>
+
+      ${d.phone ? `
+      <div class="contact-actions">
+        <a href="tel:${d.phone}" class="contact-btn">Call</a>
+      </div>` : ""}
+    </div>
+  </div>
+  `;
+}
+
+leaders.forEach(d=>leaderContainer.innerHTML+=buildCard(d));
+body.forEach(d=>bodyContainer.innerHTML+=buildCard(d));
+employees.forEach(d=>employeeContainer.innerHTML+=buildCard(d));
+}
+loadLeadership();
+
+/* EVENTS */
+async function loadEvents(){
+const container=document.getElementById("eventsContainer");
+const q=query(collection(db,"events"),orderBy("eventDate","desc"));
+const snap=await getDocs(q);
+snap.forEach(doc=>{
+const d=doc.data();
+const date=d.eventDate?.toDate().toLocaleDateString('en-IN');
+container.innerHTML+=`
+<div class="event-card">
+${d.imageUrl?`<img src="${d.imageUrl}">`:""}
+<h4>${d.title}</h4>
+<small>${date||""}</small>
+<p>${d.description||""}</p>
+</div>`;
+});
+}
+loadEvents();
+
+async function loadSchemes(){
+
+  const container = document.getElementById("schemeContainer");
+  container.innerHTML = "";
+
+  const snap = await getDocs(
+    query(collection(db,"schemes"), orderBy("updatedAt","desc"))
+  );
+
+  if(snap.empty){
+    container.innerHTML = "<p>No schemes available.</p>";
+    return;
+  }
+
+  snap.forEach(doc=>{
+    const d = doc.data();
+
+    let categoryClass = "category-local";
+    if(d.category === "Central") categoryClass = "category-central";
+    if(d.category === "State") categoryClass = "category-state";
+
+    container.innerHTML += `
+      <div class="scheme-card">
+        <span class="scheme-category ${categoryClass}">
+          ${d.category || "Local"}
+        </span>
+
+        <h4>${d.title}</h4>
+        <p>${d.description || ""}</p>
+
+        ${d.link ? `
+          <a href="${d.link}" target="_blank" class="scheme-link">
+            View Details
+          </a>
+        ` : ""}
+      </div>
+    `;
+  });
+
+}
+
+loadSchemes();
+  
+/* GALLERY */
+async function loadGallery(){
+
+  const container = document.getElementById("galleryContainer");
+  container.innerHTML = "";
+
+  const snap = await getDocs(collection(db,"gallery"));
+
+  let images = [];
+
+  snap.forEach(doc=>{
+    images.push(doc.data().imageUrl);
+  });
+
+  if(images.length === 0){
+    container.innerHTML = "<p>No images available</p>";
+    return;
+  }
+
+  const allImages = [...images, ...images]; // duplicate for smooth loop
+
+  allImages.forEach(url=>{
+    container.innerHTML += `<img src="${url}" class="gallery-img">`;
+  });
+
+  // Add click event for modal
+  document.querySelectorAll(".gallery-img").forEach(img=>{
+    img.addEventListener("click",()=>{
+      openGalleryModal(img.src);
+    });
+  });
+
+}
+loadGallery();
+
+const modal = document.getElementById("galleryModal");
+const modalImg = document.getElementById("modalGalleryImage");
+const closeBtn = document.getElementById("closeGalleryModal");
+
+window.openGalleryModal = function(src){
+  modal.style.display = "flex";
+  modalImg.src = src;
+}
+
+closeBtn.onclick = function(){
+  modal.style.display = "none";
+}
+
+modal.onclick = function(e){
+  if(e.target === modal){
+    modal.style.display = "none";
+  }
+}
+
+document.addEventListener("keydown",function(e){
+  if(e.key === "Escape"){
+    modal.style.display = "none";
+  }
+});
+  
+/* FOOTER DATE */
+document.getElementById("year").textContent=new Date().getFullYear();
+document.getElementById("updated").textContent=new Date().toLocaleDateString('en-IN');
 </script>
 
+<!-- GALLERY MODAL -->
+<div id="galleryModal" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.8);
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  padding:20px;
+">
+
+  <span id="closeGalleryModal" style="
+    position:absolute;
+    top:25px;
+    right:30px;
+    font-size:30px;
+    color:white;
+    cursor:pointer;
+  ">✕</span>
+
+  <img id="modalGalleryImage" style="
+    max-width:90%;
+    max-height:85%;
+    border-radius:12px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.4);
+    animation:fadeIn 0.3s ease;
+  ">
+
+</div>
+  
 </body>
 </html>
