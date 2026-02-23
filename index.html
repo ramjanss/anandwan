@@ -355,7 +355,9 @@ Gram Sabha Meeting Scheduled on 25 March 2026
 
 <section class="section">
 <h2>Village Gallery</h2>
-<div id="galleryContainer" class="gallery-slider"></div>
+<div class="gallery-wrapper">
+  <div id="galleryContainer" class="gallery-track"></div>
+</div>
 </section>
 
 <footer>
@@ -462,11 +464,30 @@ loadEvents();
 
 /* GALLERY */
 async function loadGallery(){
-const container=document.getElementById("galleryContainer");
-const snap=await getDocs(collection(db,"gallery"));
-snap.forEach(doc=>{
-container.innerHTML+=`<img src="${doc.data().imageUrl}">`;
-});
+
+  const container = document.getElementById("galleryContainer");
+  container.innerHTML = "";
+
+  const snap = await getDocs(collection(db,"gallery"));
+
+  let images = [];
+
+  snap.forEach(doc=>{
+    images.push(doc.data().imageUrl);
+  });
+
+  if(images.length === 0){
+    container.innerHTML = "<p>No images available</p>";
+    return;
+  }
+
+  /* Duplicate images for seamless loop */
+  const allImages = [...images, ...images];
+
+  allImages.forEach(url=>{
+    container.innerHTML += `<img src="${url}">`;
+  });
+
 }
 loadGallery();
 
