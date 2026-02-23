@@ -521,6 +521,33 @@ document.getElementById("totalNotices").textContent=notices.size;
 }
 loadDashboard();
 
+async function loadWhatsNew(){
+
+  const container = document.getElementById("whatsNewList");
+  container.innerHTML = "";
+
+  const snap = await getDocs(
+    query(collection(db,"notices"), orderBy("createdAt","desc"))
+  );
+
+  if(snap.empty){
+    container.innerHTML = "<p>No updates available.</p>";
+    return;
+  }
+
+  snap.forEach(doc=>{
+    const d = doc.data();
+    container.innerHTML += `
+      <div class="whats-new-item">
+        ${d.title}
+      </div>
+    `;
+  });
+
+}
+
+loadWhatsNew();
+  
 /* LEADERSHIP WITH PHOTOS */
 async function loadLeadership(){
 const snap=await getDocs(collection(db,"members"));
