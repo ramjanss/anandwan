@@ -22,69 +22,81 @@ body{
 }
 
 /* HEADER */
-.top-bar{
-  background:var(--primary);
-  color:white;
-  text-align:center;
+
+/* ===== GOV STRIP ===== */
+.gov-strip{
+  background:#f1f1f1;
   padding:6px;
-  font-size:12px;
+  font-size:13px;
+  text-align:center;
+  font-weight:500;
 }
 
-.header{
-  padding:10px 15px;
-  border-bottom:1px solid #e5e7eb;
+/* ===== GOV HEADER ===== */
+.gov-header{
+  padding:15px 20px;
+  border-bottom:1px solid #ddd;
 }
 
-.header-container{
+.gov-header-inner{
+  max-width:1200px;
+  margin:auto;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  max-width:1200px;
-  margin:auto;
 }
 
-.header img{ height:55px; }
+.gov-emblem{
+  height:70px;
+}
 
-.header-title{
+.gov-logo{
+  height:70px;
+}
+
+.gov-title{
   text-align:center;
   flex:1;
 }
 
-.header-title h1{ margin:2px 0; font-size:20px; }
-.header-title p{ margin:2px 0; font-size:13px; }
+.gov-title h1{
+  margin:5px 0;
+  font-size:26px;
+}
 
-.nav{
-  background:var(--primary);
-  padding:10px;
+.marathi-title{
+  font-size:14px;
+  margin:0;
+}
+
+/* ===== NAV ===== */
+.gov-nav{
+  background:#e5e5e5;
+  padding:12px;
   text-align:center;
 }
 
-.nav a{
-  color:white;
+.gov-nav a{
+  margin:0 15px;
   text-decoration:none;
-  margin:0 12px;
+  color:#111;
+  font-weight:500;
   font-size:14px;
 }
 
-/* HERO */
-.hero{
-  height:70vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  color:white;
+/* ===== HERO ===== */
+.gov-hero{
+  height:420px;
   background-size:cover;
   background-position:center;
   transition:background-image 1s ease-in-out;
 }
 
-.hero-overlay{
-  background:rgba(0,0,0,0.6);
-  padding:30px;
-  border-radius:10px;
+/* ===== YELLOW STRIP ===== */
+.gov-divider{
+  height:50px;
+  background:#f3a617;
 }
-
 /* SECTION */
 .section{
   padding:90px 20px;
@@ -365,21 +377,48 @@ footer{
 
 <body>
 
-<div class="top-bar">
-Gram Sabha Meeting Scheduled on 25 March 2026
+<!-- GOV TOP STRIP -->
+<div class="gov-strip">
+  महाराष्ट्र शासन | GOVERNMENT OF MAHARASHTRA
 </div>
 
-<div class="header">
-<div class="header-container">
-<img src="assets/maharashtra-logo.png">
-<div class="header-title">
-<h1>Gram Panchayat Wandhali</h1>
-<p>Taluka Warora | District Chandrapur</p>
-<p>Government of Maharashtra</p>
+<!-- HEADER -->
+<div class="gov-header">
+
+  <div class="gov-header-inner">
+
+    <div class="gov-left">
+      <img src="assets/india-emblem.png" class="gov-emblem">
+    </div>
+
+    <div class="gov-title">
+      <p class="marathi-title">ग्रामपंचायत वंधाळी, तालुका वरोरा</p>
+      <h1>Gram Panchayat Wandhali</h1>
+      <p>Taluka Warora | District Chandrapur</p>
+    </div>
+
+    <div class="gov-right">
+      <img src="assets/maharashtra-logo.png" class="gov-logo">
+    </div>
+
+  </div>
+
 </div>
-<img src="assets/india-emblem.png">
+
+<!-- NAVIGATION -->
+<div class="gov-nav">
+  <a href="#">Home</a>
+  <a href="complaint.html">Register Complaint</a>
+  <a href="track.html">Track Complaint</a>
+  <a href="events.html">Events</a>
+  <a href="login.html">Admin</a>
 </div>
-</div>
+
+<!-- HERO BANNER -->
+<section class="gov-hero" id="hero"></section>
+
+<!-- YELLOW SEPARATOR -->
+<div class="gov-divider"></div>
 
 <div class="nav">
 <a href="#">Home</a>
