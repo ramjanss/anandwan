@@ -47,20 +47,24 @@ body{
   display:block;
 }
 /* ===== GOV STRIP ===== */
-.gov-strip{
-  background:#f2f2f2;
+/* TOP STRIP */
+.gov-top-strip{
+  background:#f1f1f1;
   text-align:center;
-  padding:6px;
-  font-size:13px;
+  padding:6px 0;
+  font-size:14px;
   font-weight:500;
+  letter-spacing:0.5px;
 }
 
+/* MAIN HEADER */
 .gov-header{
   padding:15px 20px;
   border-bottom:1px solid #ddd;
+  background:#fff;
 }
 
-.gov-header-inner{
+.gov-header-container{
   max-width:1200px;
   margin:auto;
   display:flex;
@@ -68,41 +72,69 @@ body{
   justify-content:space-between;
 }
 
-.gov-left,
-.gov-right{
+/* LEFT */
+.gov-left{
+  width:120px;
   display:flex;
+  justify-content:center;
+}
+
+.india-emblem{
+  height:95px;
+}
+
+/* CENTER */
+.gov-center{
+  flex:1;
+  text-align:center;
+}
+
+.dept-marathi{
+  font-size:18px;
+  margin:0;
+  font-weight:500;
+}
+
+.dept-english{
+  font-size:32px;
+  font-weight:700;
+  margin:8px 0;
+  letter-spacing:0.5px;
+}
+
+.district-line{
+  font-size:15px;
+  margin:0;
+}
+
+/* RIGHT */
+.gov-right{
+  width:200px;
+  display:flex;
+  justify-content:flex-end;
   align-items:center;
   gap:15px;
 }
 
-.gov-emblem{
+.mh-logo{
   height:75px;
 }
 
-.gov-logo{
-  height:65px;
+.digital-logo{
+  height:60px;
 }
 
-.small-logo{
-  height:55px;
-}
+/* RESPONSIVE */
+@media(max-width:768px){
+  .gov-header-container{
+    flex-direction:column;
+    gap:15px;
+  }
 
-.gov-title{
-  text-align:center;
-  flex:1;
+  .gov-right{
+    justify-content:center;
+  }
 }
-
-.english-title{
-  font-size:28px;
-  font-weight:700;
-  margin:5px 0;
-}
-
-.marathi-title{
-  font-size:14px;
-  margin:0;
-}
-
 /* ===== NAV ===== */
 .gov-nav{
   background:#e5e5e5;
@@ -454,36 +486,49 @@ footer{
 
 <body>
 
-<!-- GOV TOP STRIP -->
-<div class="gov-strip">
-  महाराष्ट्र शासन | GOVERNMENT OF MAHARASHTRA
+<!-- TOP GOVERNMENT STRIP -->
+<div class="gov-top-strip">
+  <span>महाराष्ट्र शासन</span>
+  <span class="divider">|</span>
+  <span>GOVERNMENT OF MAHARASHTRA</span>
 </div>
 
 <!-- MAIN HEADER -->
-<div class="gov-header">
-  <div class="gov-header-inner">
+<header class="gov-header">
 
-    <!-- LEFT -->
+  <div class="gov-header-container">
+
+    <!-- LEFT SIDE (INDIA EMBLEM BIG) -->
     <div class="gov-left">
-      <img src="assets/india-emblem.png" class="gov-emblem">
+      <img src="assets/india-emblem.png" alt="India Emblem" class="india-emblem">
     </div>
 
-    <!-- CENTER -->
-    <div class="gov-title">
-      <p class="marathi-title">ग्रामपंचायत वंधाळी, तालुका वरोरा</p>
-      <h1 class="english-title">Gram Panchayat Wandhali</h1>
-      <p>Taluka Warora | District Chandrapur</p>
+    <!-- CENTER TITLE -->
+    <div class="gov-center">
+
+      <p class="dept-marathi">
+        ग्रामपंचायत वंधाळी, तालुका वरोरा
+      </p>
+
+      <h1 class="dept-english">
+        Gram Panchayat Wandhali
+      </h1>
+
+      <p class="district-line">
+        Taluka Warora | District Chandrapur
+      </p>
+
     </div>
 
-    <!-- RIGHT -->
+    <!-- RIGHT SIDE LOGOS -->
     <div class="gov-right">
-      <img src="assets/maharashtra-logo.png" class="gov-logo">
-      <img src="assets/digital-india.png" class="gov-logo small-logo">
+      <img src="assets/maharashtra-logo.png" alt="Maharashtra Logo" class="mh-logo">
+      <img src="assets/digital-india.png" alt="Digital India Logo" class="digital-logo">
     </div>
 
   </div>
-</div>
 
+</header>
 <!-- NAVIGATION -->
 <div class="gov-nav">
   <a href="#">Home</a>
