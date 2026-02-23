@@ -392,19 +392,23 @@ const body=members.filter(m=>m.type==="body");
 const employees=members.filter(m=>m.type==="employee");
 
 function buildCard(d){
-return `
-<div class="leader-card">
-<div class="leader-photo">
-<img src="${d.photoUrl||'assets/default-user.png'}">
-</div>
-<h4>${d.name}</h4>
-<div class="leader-badge">${d.role}</div>
-${d.phone?`
-<div class="contact-actions">
-<a href="tel:${d.phone}" class="contact-btn">Call</a>
-<a href="https://wa.me/91${d.phone}" target="_blank" class="contact-btn whatsapp">WhatsApp</a>
-</div>`:""}
-</div>`;
+  return `
+  <div class="leader-card">
+    <div class="leader-photo">
+      <img src="${d.photoUrl || 'assets/default-user.png'}">
+    </div>
+
+    <div class="leader-info">
+      <h4>${d.name}</h4>
+      <p>${d.role}</p>
+
+      ${d.phone ? `
+      <div class="contact-actions">
+        <a href="tel:${d.phone}" class="contact-btn">Call</a>
+      </div>` : ""}
+    </div>
+  </div>
+  `;
 }
 
 leaders.forEach(d=>leaderContainer.innerHTML+=buildCard(d));
