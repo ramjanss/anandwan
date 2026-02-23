@@ -97,6 +97,24 @@ body{
   height:50px;
   background:#f3a617;
 }
+
+.whats-new-container{
+  max-width:900px;
+  margin:40px auto;
+  background:white;
+  border:1px solid #ddd;
+  padding:20px;
+}
+
+.whats-new-item{
+  padding:10px 0;
+  border-bottom:1px solid #eee;
+  font-size:14px;
+}
+
+.whats-new-item:last-child{
+  border-bottom:none;
+}
 /* SECTION */
 .section{
   padding:90px 20px;
@@ -420,13 +438,12 @@ footer{
 <!-- YELLOW SEPARATOR -->
 <div class="gov-divider"></div>
 
-<div class="nav">
-<a href="#">Home</a>
-<a href="complaint.html">Register Complaint</a>
-<a href="track.html">Track Complaint</a>
-<a href="login.html">Admin</a>
-</div>
-
+<section class="section">
+  <h2>What's New</h2>
+  <div class="whats-new-container">
+    <div id="whatsNewList"></div>
+  </div>
+</section>
 <section class="hero" id="hero">
 <div class="hero-overlay">
 <h2>Transparent • Accountable • Digital Governance</h2>
