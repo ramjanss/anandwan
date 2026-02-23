@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin - Schemes</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+<div class="admin-container">
+
+  <aside class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="admin-dashboard.html">Dashboard</a>
+    <a href="admin-members.html">Members</a>
+    <a href="admin-notices.html">Notices</a>
+    <a href="admin-gallery.html">Gallery</a>
+    <a href="admin-events.html">Events</a>
+    <a href="admin-schemes.html" class="active">Schemes</a>
+    <a href="admin-complaints.html">Complaints</a>
+    <button onclick="logout()">Logout</button>
+  </aside>
+
+  <main class="content">
+
+    <h1>📋 Manage Government Schemes</h1>
+
+    <div class="card" style="margin-bottom:30px;">
+      <h3>Add New Scheme</h3>
+
+      <input type="text" id="schemeTitle" placeholder="Scheme Title" style="width:100%;padding:10px;margin-bottom:10px;">
+
+      <textarea id="schemeDesc" placeholder="Scheme Description" style="width:100%;padding:10px;height:80px;margin-bottom:10px;"></textarea>
+
+      <select id="schemeCategory" style="width:100%;padding:10px;margin-bottom:10px;">
+        <option value="Central">Central</option>
+        <option value="State">State</option>
+        <option value="Local">Local</option>
+      </select>
+
+      <input type="text" id="schemeLink" placeholder="Official Link (optional)" style="width:100%;padding:10px;margin-bottom:10px;">
+
+      <button id="addSchemeBtn" style="padding:10px 18px;background:#1e3a8a;color:white;border:none;border-radius:6px;">
+        Add Scheme
+      </button>
+
+      <p id="schemeMsg"></p>
+    </div>
+
+    <h3>All Schemes</h3>
+    <div id="schemeList"></div>
+
+  </main>
+
+</div>
+
+<script type="module" src="admin-auth.js"></script>
+
+<script type="module">
+
+import { db } from "../js/firebase.js";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc,
+  updateDoc,
+  query,
+  orderBy,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+import { auth } from "../js/firebase.js";
+import { signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+/* ===== ADD SCHEME ===== */
+
+const titleInput = document.getElementById("schemeTitle");
+const descInput = document.getElementById("schemeDesc");
+const categoryInput = document.getElementById("schemeCategory");
+const linkInput = document.getElementById("schemeLink");
+const msg = document.getElementById("schemeMsg");
+const schemeList = document.getElementById("schemeList");
+
+document.getElementById("addSchemeBtn").onclick = async () => {
+
+  if(titleInput.value.trim() === ""){
+    alert("Title required");
+    return;
+  }
+
+  try {
+
+    await addDoc(collection(db,"schemes"),{
+      title: titleInput.value,
+      description: descInput.value,
+      category: categoryInput.value,
+      link: linkInput.value,
+      updatedAt: serverTimestamp()
+    });
+
+    msg.textContent = "Scheme added successfully ✅";
+
+    titleInput.value = "";
+    descInput.value = "";
+    linkInput.value = "";
+
+    loadSchemes();
+
+  } catch(error){
+    console.error(error);
+    msg.textContent = "Failed to add scheme ❌";
+  }
+};
+
+/* ===== LOAD SCHEMES ===== */
+
+async function loadSchemes(){
+
+  schemeList.innerHTML = "";
+
+  const q = query(collection(db,"schemes"),orderBy("updatedAt","desc"));
+  const snap = await getDocs(q);
+
+  if(snap.empty){
+    schemeList.innerHTML = "<p>No schemes available.</p>";
+    return;
+  }
+
+  snap.forEach(docSnap=>{
+
+    const data = docSnap.data();
+    const id = docSnap.id;
+
+    const card = document.createElement("div");
+    card.className = "card";
+    card.style.marginBottom = "15px";
+
+    card.innerHTML = `
+      <strong>${data.title}</strong><br>
+      ${data.category}<br>
+      ${data.description || ""}<br><br>
+      ${data.link ? `<a href="${data.link}" target="_blank">View Link</a><br><br>` : ""}
+      <button style="background:#ef4444;color:white;border:none;padding:6px 12px;border-radius:6px;">
+        Delete
+      </button>
+    `;
+
+    card.querySelector("button").onclick = async () => {
+      if(!confirm("Delete this scheme?")) return;
+
+      await deleteDoc(doc(db,"schemes",id));
+      loadSchemes();
+    };
+
+    schemeList.appendChild(card);
+
+  });
+
+}
+
+loadSchemes();
+
+/* ===== LOGOUT ===== */
+
+window.logout = async () => {
+  await signOut(auth);
+  window.location.href = "../login.html";
+};
+
+</script>
+
+</body>
+</html>
