@@ -141,12 +141,12 @@ body{
     text-align:center;
   }
 }
-/* ===== NAV ===== */
 /* GOVERNMENT NAVBAR */
-/* NAVBAR BASE */
+/* NAVBAR */
 .gov-navbar{
   background:#e9e9e9;
   border-bottom:1px solid #d5d5d5;
+  position:relative;
 }
 
 .nav-container{
@@ -179,37 +179,38 @@ body{
   background:#dcdcdc;
 }
 
-/* MEGA MENU */
-.mega-dropdown{
-  position:relative;
-}
-
+/* FULL WIDTH MEGA MENU */
 .mega-menu{
   position:absolute;
   left:0;
   top:100%;
-  width:700px;
+  width:100vw;          /* FULL WIDTH */
   background:#fff;
-  display:flex;
-  justify-content:space-between;
-  padding:25px;
-  border:1px solid #ddd;
+  border-top:1px solid #ddd;
   box-shadow:0 8px 20px rgba(0,0,0,0.08);
   display:none;
-  z-index:1000;
+  padding:30px 0;
+}
+
+/* Centered Inner Content */
+.mega-inner{
+  max-width:1200px;
+  margin:auto;
+  display:flex;
+  gap:80px;
 }
 
 /* Columns */
 .mega-column{
   display:flex;
   flex-direction:column;
-  min-width:180px;
+  min-width:200px;
 }
 
 .mega-column h4{
   font-family:'Noto Serif', serif;
   font-size:16px;
-  margin-bottom:10px;
+  margin-bottom:12px;
   color:#1e3a8a;
 }
 
@@ -217,7 +218,7 @@ body{
   text-decoration:none;
   color:#333;
   font-size:14px;
-  padding:5px 0;
+  padding:6px 0;
   font-family:'Noto Sans', sans-serif;
 }
 
@@ -225,22 +226,9 @@ body{
   color:#1e3a8a;
 }
 
-/* Show on hover */
+/* SHOW ON HOVER */
 .mega-dropdown:hover .mega-menu{
-  display:flex;
-}
-
-/* RESPONSIVE */
-@media(max-width:768px){
-  .nav-menu{
-    flex-direction:column;
-  }
-
-  .mega-menu{
-    position:static;
-    width:100%;
-    flex-direction:column;
-  }
+  display:block;
 }
 /* ===== HERO ===== */
 .gov-hero{
@@ -630,60 +618,34 @@ footer{
 
       <li><a href="index.html">Home</a></li>
 
-      <!-- ABOUT MEGA MENU -->
       <li class="mega-dropdown">
         <a href="#">About Gram Panchayat ▾</a>
 
         <div class="mega-menu">
 
-          <div class="mega-column">
-            <h4>About</h4>
-            <a href="#">Village Profile</a>
-            <a href="#">History</a>
-            <a href="#">Demographics</a>
-          </div>
+          <div class="mega-inner">
 
-          <div class="mega-column">
-            <h4>Administration</h4>
-            <a href="#">Leadership</a>
-            <a href="#">Committees</a>
-            <a href="#">Departments</a>
-          </div>
+            <div class="mega-column">
+              <h4>About</h4>
+              <a href="#">Village Profile</a>
+              <a href="#">History</a>
+              <a href="#">Demographics</a>
+            </div>
 
-          <div class="mega-column">
-            <h4>Reports</h4>
-            <a href="#">Annual Report</a>
-            <a href="#">Audit Reports</a>
-            <a href="#">Budget</a>
-          </div>
+            <div class="mega-column">
+              <h4>Administration</h4>
+              <a href="#">Leadership</a>
+              <a href="#">Committees</a>
+              <a href="#">Departments</a>
+            </div>
 
-        </div>
-      </li>
+            <div class="mega-column">
+              <h4>Reports</h4>
+              <a href="#">Annual Report</a>
+              <a href="#">Audit Reports</a>
+              <a href="#">Budget</a>
+            </div>
 
-      <!-- SERVICES MEGA MENU -->
-      <li class="mega-dropdown">
-        <a href="#">Citizen Services ▾</a>
-
-        <div class="mega-menu">
-
-          <div class="mega-column">
-            <h4>Complaints</h4>
-            <a href="complaint.html">Register Complaint</a>
-            <a href="track.html">Track Complaint</a>
-          </div>
-
-          <div class="mega-column">
-            <h4>Certificates</h4>
-            <a href="#">Birth Certificate</a>
-            <a href="#">Death Certificate</a>
-            <a href="#">Income Certificate</a>
-          </div>
-
-          <div class="mega-column">
-            <h4>Public Info</h4>
-            <a href="#">Notices</a>
-            <a href="#">Schemes</a>
-            <a href="#">Events</a>
           </div>
 
         </div>
