@@ -163,6 +163,7 @@ body{
 
 .nav-menu > li{
   position:relative;
+  padding-bottom:0;
 }
 
 .nav-menu > li > a{
@@ -181,9 +182,15 @@ body{
 
 /* ===== MEGA MENU ===== */
 
+/* ===== MEGA MENU FIXED ===== */
+
+.mega-dropdown{
+  position:relative;
+}
+
 .mega-menu{
   position:absolute;
-  top:100%;
+  top:100%;      /* directly under menu item */
   left:0;
   background:#fff;
   display:none;
@@ -192,10 +199,12 @@ body{
   border:1px solid #ddd;
   box-shadow:0 8px 20px rgba(0,0,0,0.08);
   min-width:650px;
+  z-index:9999;
 }
 
 /* CRITICAL FIX */
-.mega-dropdown:hover > .mega-menu{
+.mega-dropdown:hover .mega-menu,
+.mega-menu:hover{
   display:flex;
 }
 
