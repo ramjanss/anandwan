@@ -1,3 +1,7 @@
+let currentPage=1;
+const perPage=6;
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -205,7 +209,6 @@ footer{
 import { db } from "./js/firebase.js";
 import { collection, getDocs, query, orderBy }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
 async function loadEvents(){
 
 const container=document.getElementById("eventsContainer");
@@ -214,13 +217,13 @@ container.innerHTML="";
 const q=query(collection(db,"events"),orderBy("eventDate","desc"));
 const snap=await getDocs(q);
 
-if(snap.empty){
-container.innerHTML="<p>No events available.</p>";
-return;
-}
+const events=[];
+snap.forEach(doc=>events.push(doc.data()));
 
-snap.forEach(doc=>{
-const d=doc.data();
+const start=(currentPage-1)*perPage;
+const paginated=events.slice(start,start+perPage);
+
+paginated.forEach(d=>{
 const date=d.eventDate?.toDate().toLocaleDateString('en-IN');
 
 container.innerHTML+=`
@@ -231,13 +234,28 @@ ${d.imageUrl?`<img src="${d.imageUrl}">`:""}
 <div class="event-date">${date||""}</div>
 <p>${d.description||""}</p>
 </div>
-</div>
-`;
+</div>`;
 });
 
+renderPagination(events.length);
 }
 
+function renderPagination(total){
+const pages=Math.ceil(total/perPage);
+let html='<div style="text-align:center;margin-top:40px;">';
+
+for(let i=1;i<=pages;i++){
+html+=`<button onclick="changePage(${i})" style="margin:0 5px;padding:6px 12px;">${i}</button>`;
+}
+
+html+='</div>';
+document.getElementById("eventsContainer").innerHTML+=html;
+}
+
+window.changePage=function(page){
+currentPage=page;
 loadEvents();
+}
 document.getElementById("year").textContent=new Date().getFullYear();
 </script>
 
