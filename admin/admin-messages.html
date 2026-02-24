@@ -19,16 +19,11 @@ body{
   min-height:100vh;
 }
 
-/* SIDEBAR */
 .sidebar{
   width:230px;
   background:#1e3a8a;
   color:white;
   padding:20px;
-}
-
-.sidebar h2{
-  margin-top:0;
 }
 
 .sidebar a{
@@ -38,22 +33,36 @@ body{
   margin:10px 0;
 }
 
-.sidebar a:hover{
-  text-decoration:underline;
-}
-
 .content{
   flex:1;
   padding:40px;
 }
 
-/* CARD */
+h1{
+  margin-bottom:10px;
+}
+
+.unread-badge{
+  background:red;
+  color:white;
+  padding:3px 8px;
+  border-radius:20px;
+  font-size:12px;
+  margin-left:10px;
+}
+
 .message-card{
   background:white;
   padding:20px;
   border-radius:10px;
   margin-bottom:20px;
   box-shadow:0 5px 15px rgba(0,0,0,0.05);
+  border-left:5px solid transparent;
+}
+
+.message-card.unread{
+  border-left:5px solid red;
+  background:#fff8f8;
 }
 
 .message-header{
@@ -68,18 +77,23 @@ body{
   color:#666;
 }
 
-.delete-btn{
-  background:red;
-  color:white;
-  border:none;
+.btn{
   padding:5px 10px;
+  border:none;
   border-radius:5px;
   cursor:pointer;
   font-size:12px;
+  margin-left:5px;
 }
 
-.delete-btn:hover{
-  background:#c00000;
+.delete-btn{
+  background:red;
+  color:white;
+}
+
+.read-btn{
+  background:#15803d;
+  color:white;
 }
 </style>
 </head>
@@ -88,22 +102,18 @@ body{
 
 <div class="admin-container">
 
-  <!-- SIDEBAR -->
   <aside class="sidebar">
     <h2>Admin Panel</h2>
     <a href="admin-dashboard.html">Dashboard</a>
-    <a href="admin-members.html">Members</a>
-    <a href="admin-events.html">Events</a>
-    <a href="admin-schemes.html">Schemes</a>
-    <a href="admin-notices.html">Notices</a>
-    <a href="admin-gallery.html">Gallery</a>
     <a href="admin-messages.html">Contact Messages</a>
     <a href="#" onclick="logout()">Logout</a>
   </aside>
 
-  <!-- CONTENT -->
   <main class="content">
-    <h1>Contact Messages</h1>
+    <h1>
+      Contact Messages
+      <span id="unreadCount" class="unread-badge">0</span>
+    </h1>
     <div id="messagesContainer"></div>
   </main>
 
@@ -111,31 +121,33 @@ body{
 
 <script type="module">
 import { db, auth } from "../js/firebase.js";
-import { collection, getDocs, query, orderBy, deleteDoc, doc }
+import { collection, getDocs, query, orderBy, deleteDoc, doc, updateDoc }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { signOut, onAuthStateChanged }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-/* ===== AUTH PROTECTION ===== */
+/* AUTH PROTECTION */
 onAuthStateChanged(auth, user=>{
   if(!user){
     window.location.href="../login.html";
   }
 });
 
-/* ===== LOAD MESSAGES ===== */
+/* LOAD MESSAGES */
 async function loadMessages(){
 const container=document.getElementById("messagesContainer");
-container.innerHTML="Loading...";
+const badge=document.getElementById("unreadCount");
 
 const snap=await getDocs(
 query(collection(db,"contactMessages"),orderBy("createdAt","desc"))
 );
 
 container.innerHTML="";
+let unreadCounter=0;
 
 if(snap.empty){
 container.innerHTML="<p>No messages found.</p>";
+badge.textContent="0";
 return;
 }
 
@@ -144,25 +156,41 @@ const data=d.data();
 const id=d.id;
 const date=data.createdAt?.toDate().toLocaleDateString('en-IN');
 
+const isUnread = data.status === "unread";
+if(isUnread) unreadCounter++;
+
 container.innerHTML+=`
-<div class="message-card">
+<div class="message-card ${isUnread ? 'unread' : ''}">
   <div class="message-header">
     <div>
       <strong>${data.name}</strong> (${data.email})
       <div class="message-date">${date||""}</div>
     </div>
-    <button class="delete-btn" onclick="deleteMessage('${id}')">Delete</button>
+    <div>
+      ${isUnread ? `<button class="btn read-btn" onclick="markRead('${id}')">Mark Read</button>` : ''}
+      <button class="btn delete-btn" onclick="deleteMessage('${id}')">Delete</button>
+    </div>
   </div>
   <div><strong>Subject:</strong> ${data.subject}</div>
   <p>${data.message}</p>
 </div>
 `;
 });
+
+badge.textContent = unreadCounter;
 }
 
 loadMessages();
 
-/* ===== DELETE ===== */
+/* MARK AS READ */
+window.markRead = async(id)=>{
+await updateDoc(doc(db,"contactMessages",id),{
+  status:"read"
+});
+loadMessages();
+}
+
+/* DELETE */
 window.deleteMessage=async(id)=>{
 if(confirm("Delete this message?")){
 await deleteDoc(doc(db,"contactMessages",id));
@@ -170,7 +198,7 @@ loadMessages();
 }
 }
 
-/* ===== LOGOUT ===== */
+/* LOGOUT */
 window.logout=async()=>{
 await signOut(auth);
 window.location.href="../login.html";
