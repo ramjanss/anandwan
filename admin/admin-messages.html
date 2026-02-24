@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Contact Messages</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background:#f4f6fb;
+}
+
+.admin-container{
+  display:flex;
+  min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:230px;
+  background:#1e3a8a;
+  color:white;
+  padding:20px;
+}
+
+.sidebar h2{
+  margin-top:0;
+}
+
+.sidebar a{
+  display:block;
+  color:white;
+  text-decoration:none;
+  margin:10px 0;
+}
+
+.sidebar a:hover{
+  text-decoration:underline;
+}
+
+.content{
+  flex:1;
+  padding:40px;
+}
+
+/* CARD */
+.message-card{
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  margin-bottom:20px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.05);
+}
+
+.message-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.message-date{
+  font-size:13px;
+  color:#666;
+}
+
+.delete-btn{
+  background:red;
+  color:white;
+  border:none;
+  padding:5px 10px;
+  border-radius:5px;
+  cursor:pointer;
+  font-size:12px;
+}
+
+.delete-btn:hover{
+  background:#c00000;
+}
+</style>
+</head>
+
+<body>
+
+<div class="admin-container">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="admin-dashboard.html">Dashboard</a>
+    <a href="admin-members.html">Members</a>
+    <a href="admin-events.html">Events</a>
+    <a href="admin-schemes.html">Schemes</a>
+    <a href="admin-notices.html">Notices</a>
+    <a href="admin-gallery.html">Gallery</a>
+    <a href="admin-messages.html">Contact Messages</a>
+    <a href="#" onclick="logout()">Logout</a>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="content">
+    <h1>Contact Messages</h1>
+    <div id="messagesContainer"></div>
+  </main>
+
+</div>
+
+<script type="module">
+import { db, auth } from "../js/firebase.js";
+import { collection, getDocs, query, orderBy, deleteDoc, doc }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { signOut, onAuthStateChanged }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+/* ===== AUTH PROTECTION ===== */
+onAuthStateChanged(auth, user=>{
+  if(!user){
+    window.location.href="../login.html";
+  }
+});
+
+/* ===== LOAD MESSAGES ===== */
+async function loadMessages(){
+const container=document.getElementById("messagesContainer");
+container.innerHTML="Loading...";
+
+const snap=await getDocs(
+query(collection(db,"contactMessages"),orderBy("createdAt","desc"))
+);
+
+container.innerHTML="";
+
+if(snap.empty){
+container.innerHTML="<p>No messages found.</p>";
+return;
+}
+
+snap.forEach(d=>{
+const data=d.data();
+const id=d.id;
+const date=data.createdAt?.toDate().toLocaleDateString('en-IN');
+
+container.innerHTML+=`
+<div class="message-card">
+  <div class="message-header">
+    <div>
+      <strong>${data.name}</strong> (${data.email})
+      <div class="message-date">${date||""}</div>
+    </div>
+    <button class="delete-btn" onclick="deleteMessage('${id}')">Delete</button>
+  </div>
+  <div><strong>Subject:</strong> ${data.subject}</div>
+  <p>${data.message}</p>
+</div>
+`;
+});
+}
+
+loadMessages();
+
+/* ===== DELETE ===== */
+window.deleteMessage=async(id)=>{
+if(confirm("Delete this message?")){
+await deleteDoc(doc(db,"contactMessages",id));
+loadMessages();
+}
+}
+
+/* ===== LOGOUT ===== */
+window.logout=async()=>{
+await signOut(auth);
+window.location.href="../login.html";
+}
+</script>
+
+</body>
+</html>
