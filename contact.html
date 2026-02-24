@@ -1,1 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us | Gram Panchayat Wandhali</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@600;700&family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --primary:#1e3a8a;
+  --accent:#15803d;
+  --light:#f8fafc;
+  --text:#1f2937;
+}
+
+body{
+  margin:0;
+  font-family:'Noto Sans',sans-serif;
+  color:var(--text);
+}
+
+.page-title{
+  background:var(--light);
+  padding:50px 20px;
+  text-align:center;
+}
+
+.page-title h1{
+  font-family:'Noto Serif',serif;
+  font-size:34px;
+  color:var(--primary);
+  margin:0;
+}
+
+.section{
+  max-width:1100px;
+  margin:auto;
+  padding:70px 20px;
+}
+
+.contact-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
+  gap:50px;
+}
+
+/* CONTACT DETAILS */
+.contact-details h3{
+  color:var(--primary);
+  margin-bottom:15px;
+}
+
+.contact-details p{
+  line-height:1.7;
+  margin-bottom:10px;
+}
+
+/* FORM */
+form{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+input, textarea{
+  padding:10px;
+  border:1px solid #ccc;
+  border-radius:6px;
+  font-family:'Noto Sans',sans-serif;
+}
+
+textarea{
+  resize:none;
+  height:120px;
+}
+
+button{
+  background:var(--primary);
+  color:white;
+  padding:10px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#162c66;
+}
+
+.success-message{
+  margin-top:15px;
+  color:green;
+  font-size:14px;
+}
+</style>
+</head>
+<body>
+
+<div class="page-title">
+<h1>Contact Gram Panchayat</h1>
+</div>
+
+<section class="section">
+
+<div class="contact-grid">
+
+<!-- LEFT SIDE DETAILS -->
+<div class="contact-details">
+<h3>Office Address</h3>
+<p>
+Gram Panchayat Wandhali<br>
+Taluka Warora<br>
+District Chandrapur<br>
+Maharashtra – 442906
+</p>
+
+<h3>Contact Information</h3>
+<p><strong>Phone:</strong> +91 9764444266</p>
+<p><strong>Email:</strong> gpwandhali@gmail.com</p>
+
+<h3>Office Hours</h3>
+<p>
+Monday – Friday: 10:00 AM – 5:00 PM<br>
+Saturday: 10:00 AM – 2:00 PM<br>
+Sunday: Closed
+</p>
+
+<h3>Location Map</h3>
+<iframe 
+  src="https://www.google.com/maps?q=Wandhali+Warora+Chandrapur&output=embed"
+  width="100%" 
+  height="250" 
+  style="border:0;border-radius:10px;"
+  loading="lazy">
+</iframe>
+</div>
+
+<!-- RIGHT SIDE FORM -->
+<div>
+<h3 style="color:#1e3a8a;">Send Message</h3>
+
+<form id="contactForm">
+<input type="text" id="name" placeholder="Your Name" required>
+<input type="email" id="email" placeholder="Your Email" required>
+<input type="text" id="subject" placeholder="Subject" required>
+<textarea id="message" placeholder="Your Message" required></textarea>
+<button type="submit">Submit</button>
+</form>
+
+<div id="successMessage" class="success-message"></div>
+
+</div>
+
+</div>
+
+</section>
+
+<script type="module">
+import { db } from "./js/firebase.js";
+import { collection, addDoc, serverTimestamp }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const form=document.getElementById("contactForm");
+const success=document.getElementById("successMessage");
+
+form.addEventListener("submit",async(e)=>{
+e.preventDefault();
+
+const name=document.getElementById("name").value;
+const email=document.getElementById("email").value;
+const subject=document.getElementById("subject").value;
+const message=document.getElementById("message").value;
+
+await addDoc(collection(db,"contactMessages"),{
+name,
+email,
+subject,
+message,
+createdAt:serverTimestamp()
+});
+
+form.reset();
+success.textContent="Your message has been submitted successfully.";
+});
+</script>
+
+</body>
+</html>
