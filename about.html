@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About Village | Gram Panchayat Wandhali</title>
+<title>About | Gram Panchayat Wandhali</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@600;700&family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
@@ -14,12 +14,67 @@
   --text:#1f2937;
 }
 
-body{
-  margin:0;
-  font-family:'Noto Sans',sans-serif;
-  color:var(--text);
+body{margin:0;font-family:'Noto Sans',sans-serif;color:var(--text);}
+
+/* ===== HEADER ===== */
+.gov-top-strip{
+  background:#f5f5f5;
+  text-align:center;
+  padding:6px 0;
+  font-size:14px;
+  border-bottom:1px solid #ddd;
 }
 
+.gov-header{
+  background:#fff;
+  padding:18px 25px;
+  border-bottom:1px solid #ddd;
+}
+
+.gov-header-container{
+  max-width:1200px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.gov-left{display:flex;align-items:center;gap:20px;}
+
+.emblem-box img{height:100px;}
+
+.gp-english{
+  font-family:'Noto Serif',serif;
+  font-size:30px;
+  font-weight:700;
+  margin:5px 0;
+}
+
+/* NAVBAR */
+.gov-navbar{
+  background:#e9e9e9;
+  border-bottom:1px solid #d5d5d5;
+}
+
+.nav-menu{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+  max-width:1200px;
+  margin:auto;
+}
+
+.nav-menu li a{
+  display:block;
+  padding:14px 18px;
+  text-decoration:none;
+  color:#222;
+}
+
+.nav-menu li a:hover{background:#dcdcdc;}
+
+/* PAGE TITLE */
 .page-title{
   background:var(--light);
   padding:50px 20px;
@@ -33,6 +88,7 @@ body{
   margin:0;
 }
 
+/* CONTENT */
 .section{
   max-width:1100px;
   margin:auto;
@@ -41,15 +97,9 @@ body{
 
 .section h2{
   color:var(--primary);
-  margin-bottom:15px;
+  margin-top:40px;
 }
 
-.section p{
-  line-height:1.7;
-  margin-bottom:20px;
-}
-
-/* TABLE */
 .info-table{
   width:100%;
   border-collapse:collapse;
@@ -60,15 +110,51 @@ body{
 .info-table td{
   border:1px solid #e5e7eb;
   padding:10px;
-  text-align:left;
 }
 
-.info-table th{
-  background:#f1f5f9;
+.info-table th{background:#f1f5f9;}
+
+/* FOOTER */
+footer{
+  background:var(--primary);
+  color:white;
+  text-align:center;
+  padding:30px;
+  margin-top:60px;
 }
 </style>
 </head>
 <body>
+
+<div class="gov-top-strip">
+महाराष्ट्र शासन | GOVERNMENT OF MAHARASHTRA
+</div>
+
+<header class="gov-header">
+<div class="gov-header-container">
+<div class="gov-left">
+<div class="emblem-box">
+<img src="assets/india-emblem.png">
+</div>
+<div>
+<h1 class="gp-english">Gram Panchayat Wandhali</h1>
+<p>Taluka Warora | District Chandrapur</p>
+</div>
+</div>
+</div>
+</header>
+
+<nav class="gov-navbar">
+<ul class="nav-menu">
+<li><a href="index.html">Home</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="leadership.html">Leadership</a></li>
+<li><a href="schemes.html">Schemes</a></li>
+<li><a href="events.html">Events</a></li>
+<li><a href="gallery.html">Gallery</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</nav>
 
 <div class="page-title">
 <h1>About Gram Panchayat Wandhali</h1>
@@ -77,46 +163,25 @@ body{
 <section class="section">
 
 <h2>Village Introduction</h2>
-<p>
-Gram Panchayat Wandhali is situated in Taluka Warora, District Chandrapur, Maharashtra.
-The village is known for its agricultural activities and active local governance system.
-The Gram Panchayat works towards rural development, infrastructure improvement,
-and digital governance for transparent administration.
-</p>
-
-<h2>History</h2>
-<p>
-The village has a rich cultural and historical background rooted in traditional
-Maharashtrian rural heritage. Over the years, Wandhali has developed through
-community participation and government development schemes.
-</p>
+<p>Gram Panchayat Wandhali is situated in Taluka Warora, District Chandrapur, Maharashtra...</p>
 
 <h2>Village Demographics</h2>
-
 <table class="info-table">
 <tr><th>Total Population</th><td>XXXX</td></tr>
 <tr><th>Total Households</th><td>XXXX</td></tr>
 <tr><th>Main Occupation</th><td>Agriculture</td></tr>
 <tr><th>Literacy Rate</th><td>XX%</td></tr>
-<tr><th>Area</th><td>XX sq. km</td></tr>
 </table>
 
-<h2>Vision</h2>
-<p>
-To build a transparent, accountable and digitally empowered Gram Panchayat
-ensuring inclusive development for all citizens.
-</p>
-
-<h2>Development Priorities</h2>
-<ul>
-<li>Road & Infrastructure Development</li>
-<li>Clean Drinking Water Supply</li>
-<li>Sanitation & Waste Management</li>
-<li>Digital Complaint System</li>
-<li>Women & Youth Empowerment</li>
-</ul>
-
 </section>
+
+<footer>
+© <span id="year"></span> Gram Panchayat Wandhali
+</footer>
+
+<script>
+document.getElementById("year").textContent=new Date().getFullYear();
+</script>
 
 </body>
 </html>
