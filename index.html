@@ -851,22 +851,43 @@ loadLeadership();
 /* EVENTS */
 async function loadEvents(){
 const container=document.getElementById("eventsContainer");
+container.innerHTML="";
+
 const q=query(collection(db,"events"),orderBy("eventDate","desc"));
 const snap=await getDocs(q);
+
+let count=0;
+
 snap.forEach(doc=>{
+if(count>=3) return;
+
 const d=doc.data();
 const date=d.eventDate?.toDate().toLocaleDateString('en-IN');
+
 container.innerHTML+=`
-<div class="event-card">
+<div class="event-card" onclick='openEventModal(${JSON.stringify(d)})'>
 ${d.imageUrl?`<img src="${d.imageUrl}">`:""}
 <h4>${d.title}</h4>
 <small>${date||""}</small>
 <p>${d.description||""}</p>
 </div>`;
+count++;
 });
 }
 loadEvents();
 
+window.openEventModal=function(data){
+document.getElementById("modalTitle").textContent=data.title;
+document.getElementById("modalDescription").textContent=data.description||"";
+document.getElementById("modalDate").textContent=data.eventDate?.toDate?.().toLocaleDateString('en-IN')||"";
+document.getElementById("modalImage").src=data.imageUrl||"";
+document.getElementById("eventModal").style.display="flex";
+}
+
+window.closeEventModal=function(){
+document.getElementById("eventModal").style.display="none";
+}
+  
 async function loadSchemes(){
 
   const container = document.getElementById("schemeContainer");
@@ -1004,6 +1025,25 @@ document.getElementById("updated").textContent=new Date().toLocaleDateString('en
     animation:fadeIn 0.3s ease;
   ">
 
+</div>
+
+<div id="eventModal" style="
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.8);
+justify-content:center;
+align-items:center;
+z-index:9999;
+padding:20px;
+">
+<div style="background:white;padding:25px;border-radius:12px;max-width:600px;width:100%;position:relative;">
+<span onclick="closeEventModal()" style="position:absolute;right:15px;top:10px;cursor:pointer;font-size:20px;">✕</span>
+<h3 id="modalTitle"></h3>
+<p id="modalDate" style="font-size:13px;color:#777;"></p>
+<img id="modalImage" style="width:100%;margin:10px 0;border-radius:8px;">
+<p id="modalDescription"></p>
+</div>
 </div>
   
 </body>
