@@ -45,10 +45,11 @@ h1{
 .unread-badge{
   background:red;
   color:white;
-  padding:3px 8px;
+  padding:2px 7px;
   border-radius:20px;
-  font-size:12px;
-  margin-left:10px;
+  font-size:11px;
+  margin-left:6px;
+}
 }
 
 .message-card{
@@ -105,7 +106,10 @@ h1{
   <aside class="sidebar">
     <h2>Admin Panel</h2>
     <a href="admin-dashboard.html">Dashboard</a>
-    <a href="admin-messages.html">Contact Messages</a>
+   <a href="admin-messages.html">
+  Contact Messages 
+  <span id="sidebarUnreadBadge" class="unread-badge">0</span>
+</a>
     <a href="#" onclick="logout()">Logout</a>
   </aside>
 
@@ -133,6 +137,29 @@ onAuthStateChanged(auth, user=>{
   }
 });
 
+async function loadUnreadSidebarCount(){
+  const badge = document.getElementById("sidebarUnreadBadge");
+
+  const snap = await getDocs(collection(db,"contactMessages"));
+
+  let count = 0;
+
+  snap.forEach(doc=>{
+    if(doc.data().status === "unread"){
+      count++;
+    }
+  });
+
+  badge.textContent = count;
+
+  if(count === 0){
+    badge.style.display = "none";
+  } else {
+    badge.style.display = "inline-block";
+  }
+}
+loadUnreadSidebarCount();
+  
 /* LOAD MESSAGES */
 async function loadMessages(){
 const container=document.getElementById("messagesContainer");
@@ -197,7 +224,7 @@ await deleteDoc(doc(db,"contactMessages",id));
 loadMessages();
 }
 }
-
+deleteMessage()
 /* LOGOUT */
 window.logout=async()=>{
 await signOut(auth);
