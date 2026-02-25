@@ -205,55 +205,96 @@ footer{
 import { db } from "./js/firebase.js";
 import { collection, getDocs, query, orderBy }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+/* ===== PAGINATION SETTINGS ===== */
+let currentPage = 1;
+const perPage = 6;   // 6 events per page
+
 async function loadEvents(){
 
-const container=document.getElementById("eventsContainer");
-container.innerHTML="";
+  const container = document.getElementById("eventsContainer");
+  const paginationContainer = document.getElementById("pagination");
+  container.innerHTML = "";
+  paginationContainer.innerHTML = "";
 
-const q=query(collection(db,"events"),orderBy("eventDate","desc"));
-const snap=await getDocs(q);
+  const q = query(collection(db,"events"),orderBy("eventDate","desc"));
+  const snap = await getDocs(q);
 
-const events=[];
-snap.forEach(doc=>events.push(doc.data()));
+  const events = [];
+  snap.forEach(doc => events.push(doc.data()));
 
-const start=(currentPage-1)*perPage;
-const paginated=events.slice(start,start+perPage);
+  if(events.length === 0){
+    container.innerHTML = "<p>No events available.</p>";
+    return;
+  }
 
-paginated.forEach(d=>{
-const date=d.eventDate?.toDate().toLocaleDateString('en-IN');
+  const start = (currentPage - 1) * perPage;
+  const paginated = events.slice(start, start + perPage);
 
-container.innerHTML+=`
-<div class="event-card">
-${d.imageUrl?`<img src="${d.imageUrl}">`:""}
-<div class="event-content">
-<h4>${d.title}</h4>
-<div class="event-date">${date||""}</div>
-<p>${d.description||""}</p>
-</div>
-</div>`;
-});
+  paginated.forEach(d => {
 
-renderPagination(events.length);
+    const dateObj = d.eventDate?.toDate();
+    const formattedDate = dateObj 
+      ? dateObj.getDate().toString().padStart(2,'0') + "/" +
+        (dateObj.getMonth()+1).toString().padStart(2,'0') + "/" +
+        dateObj.getFullYear()
+      : "";
+
+    container.innerHTML += `
+      <div class="event-card">
+        ${d.imageUrl ? `<img src="${d.imageUrl}">` : ""}
+        <div class="event-content">
+          <h4>${d.title}</h4>
+          <div class="event-date">${formattedDate}</div>
+          <p>${d.description || ""}</p>
+        </div>
+      </div>
+    `;
+  });
+
+  renderPagination(events.length);
 }
 
 function renderPagination(total){
-const pages=Math.ceil(total/perPage);
-let html='<div style="text-align:center;margin-top:40px;">';
 
-for(let i=1;i<=pages;i++){
-html+=`<button onclick="changePage(${i})" style="margin:0 5px;padding:6px 12px;">${i}</button>`;
+  const pages = Math.ceil(total / perPage);
+  const paginationContainer = document.getElementById("pagination");
+
+  if(pages <= 1) return;
+
+  let html = '<div style="text-align:center;margin-top:40px;">';
+
+  for(let i = 1; i <= pages; i++){
+    html += `
+      <button 
+        onclick="changePage(${i})"
+        style="
+          margin:0 5px;
+          padding:6px 12px;
+          background:${i===currentPage ? '#1e3a8a' : '#eee'};
+          color:${i===currentPage ? '#fff' : '#000'};
+          border:none;
+          border-radius:6px;
+          cursor:pointer;
+        ">
+        ${i}
+      </button>
+    `;
+  }
+
+  html += '</div>';
+  paginationContainer.innerHTML = html;
 }
 
-html+='</div>';
-document.getElementById("eventsContainer").innerHTML+=html;
+window.changePage = function(page){
+  currentPage = page;
+  loadEvents();
 }
 
-window.changePage=function(page){
-currentPage=page;
+document.getElementById("year").textContent =
+  new Date().getFullYear();
+
 loadEvents();
-}
-document.getElementById("year").textContent=new Date().getFullYear();
 </script>
-
 </body>
 </html>
