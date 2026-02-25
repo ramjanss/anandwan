@@ -560,11 +560,63 @@ html {
   to{ opacity:1; transform:scale(1); }
 }
 /* FOOTER */
-footer{
-  background:var(--primary);
+.gov-footer{
+  background:#1e3a8a;
   color:white;
-  padding:30px 20px;
+  padding:50px 20px 20px;
+  font-family:'Noto Sans',sans-serif;
+}
+
+.footer-container{
+  max-width:1200px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:40px;
+}
+
+.footer-col h3{
+  margin-top:0;
+  font-family:'Noto Serif',serif;
+  font-size:20px;
+}
+
+.footer-col h4{
+  margin-bottom:10px;
+  font-size:16px;
+}
+
+.footer-col p{
+  font-size:14px;
+  line-height:1.6;
+}
+
+.footer-col ul{
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+
+.footer-col ul li{
+  margin-bottom:8px;
+}
+
+.footer-col a{
+  color:white;
+  text-decoration:none;
+  font-size:14px;
+}
+
+.footer-col a:hover{
+  text-decoration:underline;
+}
+
+.footer-bottom{
   text-align:center;
+  border-top:1px solid rgba(255,255,255,0.3);
+  margin-top:30px;
+  padding-top:15px;
+  font-size:13px;
 }
 </style>
 </head>
@@ -723,10 +775,6 @@ footer{
   <div id="galleryContainer" class="gallery-track"></div>
 </div>
 </section>
-
-<footer>
-© <span id="year"></span> Gram Panchayat Wandhali | Last Updated: <span id="updated"></span>
-</footer>
 
 <script type="module">
 import { db } from "./js/firebase.js";
@@ -991,11 +1039,6 @@ document.addEventListener("keydown",function(e){
   }
 });
   
-/* FOOTER DATE */
-document.getElementById("year").textContent=new Date().getFullYear();
-document.getElementById("updated").textContent=new Date().toLocaleDateString('en-IN');
-</script>
-
 <!-- GALLERY MODAL -->
 <div id="galleryModal" style="
   display:none;
@@ -1045,6 +1088,79 @@ padding:20px;
 <p id="modalDescription"></p>
 </div>
 </div>
+
+<footer class="gov-footer">
+
+  <div class="footer-container">
+
+    <!-- Column 1 -->
+    <div class="footer-col">
+      <h3>Gram Panchayat Wandhali</h3>
+      <p>
+        Official Digital Governance Portal providing
+        transparent services, grievance redressal,
+        and development updates to citizens.
+      </p>
+    </div>
+
+    <!-- Column 2 -->
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="about.html">About Village</a></li>
+        <li><a href="leadership.html">Leadership</a></li>
+        <li><a href="schemes.html">Government Schemes</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+      </ul>
+    </div>
+
+    <!-- Column 3 -->
+    <div class="footer-col">
+      <h4>Citizen Services</h4>
+      <ul>
+        <li><a href="complaint.html">Register Complaint</a></li>
+        <li><a href="track.html">Track Complaint</a></li>
+        <li><a href="notices.html">Public Notices</a></li>
+        <li><a href="contact.html">Contact Office</a></li>
+      </ul>
+    </div>
+
+    <!-- Column 4 -->
+    <div class="footer-col">
+      <h4>Contact Information</h4>
+      <p>
+        Gram Panchayat Office,<br>
+        Wandhali, Taluka Warora,<br>
+        District Chandrapur,<br>
+        Maharashtra – 442906
+      </p>
+      <p>
+        📞 +91 9764444266<br>
+        ✉ gpwandhali@gmail.com
+      </p>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+  © <span id="footerYear"></span> Gram Panchayat Wandhali |
+  Last Updated: <span id="footerUpdated"></span>
+  <br>
+  <span class="developer-credit">
+    Developed by <strong>Ramko Associates</strong>
+  </span>
+</div>
+
+</footer>
+
+<script>
+document.getElementById("footerYear").textContent =
+  new Date().getFullYear();
+
+document.getElementById("footerUpdated").textContent =
+  new Date().toLocaleDateString('en-IN');
+</script>
   
 </body>
 </html>
