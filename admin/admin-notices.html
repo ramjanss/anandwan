@@ -59,6 +59,9 @@ from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { ref, uploadBytes, getDownloadURL, deleteObject }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
+const noticeMsg = document.getElementById("noticeMsg");
+const noticeList = document.getElementById("noticeList");
+
 document.getElementById("addNoticeBtn").onclick = async () => {
 
   const title = document.getElementById("noticeTitle").value;
@@ -85,29 +88,31 @@ document.getElementById("addNoticeBtn").onclick = async () => {
     });
 
     alert("Notice uploaded successfully ✅");
-    location.reload();
+
+    document.getElementById("noticeTitle").value="";
+    document.getElementById("noticeFile").value="";
 
     loadNotices();
 
-  catch(error)
-  {
+  } catch(error) {
     console.error(error);
-    msg.textContent = "Upload failed ❌";
+    noticeMsg.textContent = "Upload failed ❌";
   }
 };
 
-async function loadNotices()
-{
+async function loadNotices(){
 
-  noticeList.innerHTML="";
+  noticeList.innerHTML="Loading...";
 
-  const q = query(collection(db,"notices"),orderBy("created","desc"));
+  const q = query(collection(db,"notices"),orderBy("createdAt","desc"));
   const snapshot = await getDocs(q);
 
   if(snapshot.empty){
     noticeList.innerHTML="<p>No notices found.</p>";
     return;
   }
+
+  noticeList.innerHTML="";
 
   snapshot.forEach(docSnap=>{
 
@@ -119,7 +124,6 @@ async function loadNotices()
 
     card.innerHTML=`
       <strong>${data.title}</strong><br>
-      ${data.description || ""}<br>
       ${data.fileUrl ? `<a href="${data.fileUrl}" target="_blank">📄 Download</a>` : ""}
       <br><br>
       <button style="
@@ -157,6 +161,5 @@ async function loadNotices()
 loadNotices();
 
 </script>
-
 </body>
 </html>
