@@ -1,6 +1,6 @@
 import { auth } from "../js/firebase.js";
-import { onAuthStateChanged, signOut } from 
-"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { onAuthStateChanged, signOut } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const allowedAdminEmail = "ramjansocial@gmail.com";
 
@@ -10,19 +10,18 @@ onAuthStateChanged(auth, (user)=>{
     return;
   }
 
-  if(user.email !== allowedAdminEmail){
+  if(!user.email || user.email.toLowerCase() !== allowedAdminEmail.toLowerCase()){
     alert("Access Denied");
     window.location.href = "../index.html";
   }
 });
 
-<script type="module">
-import { auth } from "../js/firebase.js";
-import { signOut } from 
-"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+// Logout button handler
+const logoutBtn = document.getElementById("logoutBtn");
 
-window.logout = async () => {
-  await signOut(auth);
-  window.location.href = "../login.html";
-};
-</script>
+if(logoutBtn){
+  logoutBtn.addEventListener("click", async ()=>{
+    await signOut(auth);
+    window.location.href = "../login.html";
+  });
+}
