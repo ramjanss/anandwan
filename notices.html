@@ -88,6 +88,16 @@ body{
   background:#dcdcdc;
 }
 
+.new-badge{
+  background:#dc2626;
+  color:white;
+  font-size:11px;
+  padding:3px 8px;
+  border-radius:20px;
+  margin-left:8px;
+  font-weight:600;
+}
+  
 /* ===== PAGE TITLE ===== */
 .page-title{
   background:var(--light);
@@ -233,28 +243,45 @@ return;
 container.innerHTML="";
 
 snap.forEach(doc=>{
-const d=doc.data();
+  const d = doc.data();
 
-let formattedDate="";
-if(d.createdAt?.toDate){
-const dateObj=d.createdAt.toDate();
-formattedDate=
-dateObj.getDate().toString().padStart(2,'0')+"/"+
-(dateObj.getMonth()+1).toString().padStart(2,'0')+"/"+
-dateObj.getFullYear();
-}
+  let formattedDate = "";
+  let isNew = false;
 
-container.innerHTML+=`
-<div class="notice-card">
-<div class="notice-left">
-<div class="notice-title">${d.title || "Untitled Notice"}</div>
-<div class="notice-date">${formattedDate}</div>
-</div>
-${d.fileUrl?`<a href="${d.fileUrl}" target="_blank" class="notice-link">Download</a>`:""}
-</div>
-`;
+  if(d.createdAt?.toDate){
+    const dateObj = d.createdAt.toDate();
+
+    // Format dd/mm/yyyy
+    formattedDate =
+      dateObj.getDate().toString().padStart(2,'0')+"/"+
+      (dateObj.getMonth()+1).toString().padStart(2,'0')+"/"+
+      dateObj.getFullYear();
+
+    // Check if within 7 days
+    const now = new Date();
+    const diffTime = now - dateObj;
+    const diffDays = diffTime / (1000 * 60 * 60 * 24);
+
+    if(diffDays <= 7){
+      isNew = true;
+    }
+  }
+
+  container.innerHTML += `
+  <div class="notice-card">
+    <div class="notice-left">
+      <div class="notice-title">
+        ${d.title || "Untitled Notice"}
+        ${isNew ? '<span class="new-badge">NEW</span>' : ''}
+      </div>
+      <div class="notice-date">${formattedDate}</div>
+    </div>
+    ${d.fileUrl ? 
+      `<a href="${d.fileUrl}" target="_blank" class="notice-link">Download</a>` 
+      : ""}
+  </div>
+  `;
 });
-
 }catch(error){
 console.error(error);
 container.innerHTML="<p>Failed to load notices.</p>";
