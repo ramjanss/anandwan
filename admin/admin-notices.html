@@ -87,16 +87,9 @@ document.getElementById("addNoticeBtn").onclick = async () => {
     alert("Notice uploaded successfully ✅");
     location.reload();
 
-  } catch(error){
-    console.error(error);
-    alert("Upload failed ❌");
-  }
-
-};
-
     loadNotices();
 
-  } catch(error){
+  catch(error){
     console.error(error);
     msg.textContent = "Upload failed ❌";
   }
