@@ -66,7 +66,7 @@ document.getElementById("addNoticeBtn").onclick = async () => {
 
   const title = document.getElementById("noticeTitle").value;
   const file = document.getElementById("noticeFile").files[0];
-
+  const description = document.getElementById("noticeDesc").value;
   if(!title || !file){
     alert("Title and PDF required");
     return;
