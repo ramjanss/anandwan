@@ -89,13 +89,15 @@ document.getElementById("addNoticeBtn").onclick = async () => {
 
     loadNotices();
 
-  catch(error){
+  catch(error)
+  {
     console.error(error);
     msg.textContent = "Upload failed ❌";
   }
 };
 
-async function loadNotices(){
+async function loadNotices()
+{
 
   noticeList.innerHTML="";
 
