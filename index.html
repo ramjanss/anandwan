@@ -327,51 +327,79 @@ html {
   color:var(--primary);
 }
 
-
 .citizen-services{
-  background:#f1f5f9;
+  padding:60px 20px;
 }
 
-.service-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:40px;
-  margin-top:40px;
-}
-
-.service-card{
-  background:white;
-  padding:40px;
-  border-radius:12px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.05);
+.section-title{
   text-align:center;
-  transition:0.3s;
-}
-
-.service-card:hover{
-  transform:translateY(-6px);
-}
-
-.service-card h3{
+  color:#1e3a8a;
+  margin-bottom:35px;
   font-family:'Noto Serif', serif;
+}
+
+.service-row{
+  display:flex;
+  gap:25px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+.mini-service-card{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  background:white;
+  padding:18px 22px;
+  border-radius:10px;
+  border:1px solid #e5e7eb;
+  width:420px;
+  transition:0.3s ease;
+}
+
+.mini-service-card:hover{
+  box-shadow:0 8px 20px rgba(0,0,0,0.06);
+  transform:translateY(-3px);
+}
+
+.service-icon{
+  font-size:26px;
+  background:#1e3a8a;
+  color:white;
+  width:45px;
+  height:45px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:8px;
+}
+
+.service-content h4{
+  margin:0;
+  font-size:16px;
   color:#1e3a8a;
 }
 
-.service-btn{
-  display:inline-block;
-  margin-top:15px;
-  padding:10px 20px;
+.service-content p{
+  margin:3px 0 0;
+  font-size:13px;
+  color:#555;
+}
+
+.mini-btn{
+  margin-left:auto;
   background:#1e3a8a;
   color:white;
-  text-decoration:none;
+  padding:6px 14px;
   border-radius:6px;
+  text-decoration:none;
+  font-size:13px;
   font-weight:600;
 }
 
-.service-btn:hover{
+.mini-btn:hover{
   background:#162f6a;
 }
-  
 /* =========================
    CLEAN GOVERNMENT LEADERSHIP
 ========================= */
@@ -795,20 +823,26 @@ html {
 </section>
 
 <section class="section citizen-services">
-  <h2>Citizen Services</h2>
-  
-  <div class="service-grid">
+  <h2 class="section-title">Citizen Services</h2>
 
-    <div class="service-card">
-      <h3>Register Complaint</h3>
-      <p>Submit your grievance online to Gram Panchayat office.</p>
-      <a href="complaint.html" class="service-btn">Register Now</a>
+  <div class="service-row">
+
+    <div class="mini-service-card">
+      <div class="service-icon">📝</div>
+      <div class="service-content">
+        <h4>Register Complaint</h4>
+        <p>Submit grievance to Gram Panchayat.</p>
+      </div>
+      <a href="complaint.html" class="mini-btn">Go</a>
     </div>
 
-    <div class="service-card">
-      <h3>Track Complaint</h3>
-      <p>Check the status of your registered complaint.</p>
-      <a href="track.html" class="service-btn">Track Status</a>
+    <div class="mini-service-card">
+      <div class="service-icon">🔍</div>
+      <div class="service-content">
+        <h4>Track Complaint</h4>
+        <p>Check complaint status online.</p>
+      </div>
+      <a href="track.html" class="mini-btn">Go</a>
     </div>
 
   </div>
