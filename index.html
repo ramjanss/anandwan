@@ -185,9 +185,7 @@ html {
 }
 
 /* ===== MEGA MENU ===== */
-
-/* ===== MEGA MENU FIXED ===== */
-
+  
 .mega-dropdown{
   position:relative;
 }
@@ -329,12 +327,14 @@ html {
 
 /* ===== CITIZEN STRIP MODERN ===== */
 
-.citizen-strip{
-  padding:50px 20px;
-  background:linear-gradient(to right,#f8fafc,#eef2f7);
+/* ===== GLASS CITIZEN STRIP ===== */
+
+.citizen-glass-strip{
+  padding:70px 20px;
+  background:linear-gradient(135deg,#1e3a8a,#0f172a);
 }
 
-.strip-container{
+.glass-container{
   max-width:1100px;
   margin:auto;
   display:flex;
@@ -343,71 +343,78 @@ html {
   justify-content:center;
 }
 
-.strip-card{
+.glass-card{
   flex:1;
   min-width:450px;
-  background:white;
-  padding:18px 22px;
+  display:flex;
+  align-items:center;
+  gap:20px;
+  padding:25px 30px;
+  border-radius:16px;
+
+  /* Glass effect */
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+
+  border:1px solid rgba(255,255,255,0.2);
+  box-shadow:0 15px 35px rgba(0,0,0,0.25);
+
+  transition:all 0.35s ease;
+}
+
+.glass-card:hover{
+  transform:translateY(-6px);
+  border-color:rgba(255,255,255,0.4);
+  box-shadow:0 20px 40px rgba(0,0,0,0.35);
+}
+
+.glass-icon{
+  background:rgba(255,255,255,0.15);
+  width:55px;
+  height:55px;
   border-radius:12px;
   display:flex;
   align-items:center;
-  gap:18px;
-  border:1px solid #e5e7eb;
-  transition:all 0.3s ease;
-}
-
-.strip-card:hover{
-  transform:translateY(-5px);
-  box-shadow:0 12px 25px rgba(0,0,0,0.08);
-  border-color:#1e3a8a;
-}
-
-.strip-icon{
-  background:#1e3a8a;
-  width:48px;
-  height:48px;
-  display:flex;
-  align-items:center;
   justify-content:center;
-  border-radius:10px;
   flex-shrink:0;
 }
 
-.strip-icon svg{
-  width:22px;
-  height:22px;
+.glass-icon svg{
+  width:24px;
+  height:24px;
 }
 
-.strip-content{
+.glass-content{
   flex:1;
-}
-
-.strip-content h4{
-  margin:0;
-  font-size:16px;
-  color:#1e3a8a;
-  font-weight:600;
-}
-
-.strip-content p{
-  margin:3px 0 0;
-  font-size:13px;
-  color:#555;
-}
-
-.strip-btn{
-  background:#1e3a8a;
   color:white;
-  padding:7px 16px;
-  border-radius:6px;
-  text-decoration:none;
-  font-size:13px;
-  font-weight:600;
-  transition:0.2s;
 }
 
-.strip-btn:hover{
-  background:#162f6a;
+.glass-content h4{
+  margin:0;
+  font-size:17px;
+  font-weight:600;
+}
+
+.glass-content p{
+  margin:4px 0 0;
+  font-size:13px;
+  opacity:0.85;
+}
+
+.glass-btn{
+  background:white;
+  color:#1e3a8a;
+  padding:8px 18px;
+  border-radius:8px;
+  font-size:13px;
+  font-weight:600;
+  text-decoration:none;
+  transition:0.25s;
+}
+
+.glass-btn:hover{
+  background:#f1f5f9;
 }
 /* =========================
    CLEAN GOVERNMENT LEADERSHIP
@@ -831,37 +838,39 @@ html {
 </div>
 </section>
 
-<section class="citizen-strip">
-  <div class="strip-container">
+<section class="citizen-glass-strip">
+  <div class="glass-container">
 
-    <div class="strip-card">
-      <div class="strip-icon">
-        <!-- Complaint Icon -->
+    <div class="glass-card">
+      <div class="glass-icon">
         <svg viewBox="0 0 24 24" fill="none">
           <path d="M4 4h16v16H4z" stroke="white" stroke-width="2"/>
           <path d="M8 8h8M8 12h6M8 16h4" stroke="white" stroke-width="2"/>
         </svg>
       </div>
-      <div class="strip-content">
+
+      <div class="glass-content">
         <h4>Register Complaint</h4>
         <p>Submit grievance to Gram Panchayat Office</p>
       </div>
-      <a href="complaint.html" class="strip-btn">Apply</a>
+
+      <a href="complaint.html" class="glass-btn">Apply</a>
     </div>
 
-    <div class="strip-card">
-      <div class="strip-icon">
-        <!-- Track Icon -->
+    <div class="glass-card">
+      <div class="glass-icon">
         <svg viewBox="0 0 24 24" fill="none">
           <circle cx="11" cy="11" r="7" stroke="white" stroke-width="2"/>
           <path d="M16.5 16.5L21 21" stroke="white" stroke-width="2"/>
         </svg>
       </div>
-      <div class="strip-content">
+
+      <div class="glass-content">
         <h4>Track Complaint</h4>
         <p>Check complaint status online</p>
       </div>
-      <a href="track.html" class="strip-btn">Track</a>
+
+      <a href="track.html" class="glass-btn">Track</a>
     </div>
 
   </div>
