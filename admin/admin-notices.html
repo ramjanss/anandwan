@@ -64,9 +64,10 @@ const noticeList = document.getElementById("noticeList");
 
 document.getElementById("addNoticeBtn").onclick = async () => {
 
-  const title = document.getElementById("noticeTitle").value;
+  const title = document.getElementById("noticeTitle").value.trim();
+  const description = document.getElementById("noticeDesc").value.trim();
   const file = document.getElementById("noticeFile").files[0];
-  const description = document.getElementById("noticeDesc").value;
+
   if(!title || !file){
     alert("Title and PDF required");
     return;
@@ -77,12 +78,12 @@ document.getElementById("addNoticeBtn").onclick = async () => {
     const storageRef = ref(storage,"notices/"+Date.now()+"_"+file.name);
 
     await uploadBytes(storageRef,file);
-
     const fileUrl = await getDownloadURL(storageRef);
 
     await addDoc(collection(db,"notices"),{
-      title:title,
-      fileUrl:fileUrl,
+      title,
+      description,   // ✅ now saving correctly
+      fileUrl,
       storagePath:storageRef.fullPath,
       createdAt:new Date()
     });
@@ -90,8 +91,8 @@ document.getElementById("addNoticeBtn").onclick = async () => {
     alert("Notice uploaded successfully ✅");
 
     document.getElementById("noticeTitle").value="";
+    document.getElementById("noticeDesc").value="";
     document.getElementById("noticeFile").value="";
-    document.getElementById("noticeDesc").value = "";
 
     loadNotices();
 
