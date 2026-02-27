@@ -280,22 +280,36 @@ snap.forEach(doc=>{
       isNew = true;
     }
   }
-
-  container.innerHTML += `
+container.innerHTML += `
   <div class="notice-card">
     <div class="notice-left">
+
       <div class="notice-title">
         ${d.title || "Untitled Notice"}
         ${isNew ? '<span class="new-badge">NEW</span>' : ''}
       </div>
+
       <div class="notice-date">${formattedDate}</div>
+
+      ${d.description ? `
+        <div style="
+          margin-top:8px;
+          font-size:14px;
+          color:#444;
+          line-height:1.5;
+        ">
+          ${d.description}
+        </div>
+      ` : ""}
+
     </div>
+
     ${d.fileUrl ? 
       `<a href="${d.fileUrl}" target="_blank" class="notice-link">Download</a>` 
       : ""}
   </div>
-  `;
-});
+`;
+ });
 }catch(error){
 console.error(error);
 container.innerHTML="<p>Failed to load notices.</p>";
