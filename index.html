@@ -327,77 +327,86 @@ html {
   color:var(--primary);
 }
 
-.citizen-services{
-  padding:60px 20px;
+/* ===== CITIZEN STRIP MODERN ===== */
+
+.citizen-strip{
+  padding:50px 20px;
+  background:linear-gradient(to right,#f8fafc,#eef2f7);
 }
 
-.section-title{
-  text-align:center;
-  color:#1e3a8a;
-  margin-bottom:35px;
-  font-family:'Noto Serif', serif;
-}
-
-.service-row{
+.strip-container{
+  max-width:1100px;
+  margin:auto;
   display:flex;
-  gap:25px;
-  justify-content:center;
+  gap:30px;
   flex-wrap:wrap;
+  justify-content:center;
 }
 
-.mini-service-card{
+.strip-card{
+  flex:1;
+  min-width:450px;
+  background:white;
+  padding:18px 22px;
+  border-radius:12px;
   display:flex;
   align-items:center;
   gap:18px;
-  background:white;
-  padding:18px 22px;
-  border-radius:10px;
   border:1px solid #e5e7eb;
-  width:420px;
-  transition:0.3s ease;
+  transition:all 0.3s ease;
 }
 
-.mini-service-card:hover{
-  box-shadow:0 8px 20px rgba(0,0,0,0.06);
-  transform:translateY(-3px);
+.strip-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 12px 25px rgba(0,0,0,0.08);
+  border-color:#1e3a8a;
 }
 
-.service-icon{
-  font-size:26px;
+.strip-icon{
   background:#1e3a8a;
-  color:white;
-  width:45px;
-  height:45px;
+  width:48px;
+  height:48px;
   display:flex;
   align-items:center;
   justify-content:center;
-  border-radius:8px;
+  border-radius:10px;
+  flex-shrink:0;
 }
 
-.service-content h4{
+.strip-icon svg{
+  width:22px;
+  height:22px;
+}
+
+.strip-content{
+  flex:1;
+}
+
+.strip-content h4{
   margin:0;
   font-size:16px;
   color:#1e3a8a;
+  font-weight:600;
 }
 
-.service-content p{
+.strip-content p{
   margin:3px 0 0;
   font-size:13px;
   color:#555;
 }
 
-.mini-btn{
-  margin-left:auto;
+.strip-btn{
   background:#1e3a8a;
   color:white;
-  padding:6px 14px;
+  padding:7px 16px;
   border-radius:6px;
   text-decoration:none;
   font-size:13px;
   font-weight:600;
+  transition:0.2s;
 }
 
-.mini-btn:hover{
+.strip-btn:hover{
   background:#162f6a;
 }
 /* =========================
@@ -822,27 +831,37 @@ html {
 </div>
 </section>
 
-<section class="section citizen-services">
-  <h2 class="section-title">Citizen Services</h2>
+<section class="citizen-strip">
+  <div class="strip-container">
 
-  <div class="service-row">
-
-    <div class="mini-service-card">
-      <div class="service-icon">📝</div>
-      <div class="service-content">
-        <h4>Register Complaint</h4>
-        <p>Submit grievance to Gram Panchayat.</p>
+    <div class="strip-card">
+      <div class="strip-icon">
+        <!-- Complaint Icon -->
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M4 4h16v16H4z" stroke="white" stroke-width="2"/>
+          <path d="M8 8h8M8 12h6M8 16h4" stroke="white" stroke-width="2"/>
+        </svg>
       </div>
-      <a href="complaint.html" class="mini-btn">Go</a>
+      <div class="strip-content">
+        <h4>Register Complaint</h4>
+        <p>Submit grievance to Gram Panchayat Office</p>
+      </div>
+      <a href="complaint.html" class="strip-btn">Apply</a>
     </div>
 
-    <div class="mini-service-card">
-      <div class="service-icon">🔍</div>
-      <div class="service-content">
-        <h4>Track Complaint</h4>
-        <p>Check complaint status online.</p>
+    <div class="strip-card">
+      <div class="strip-icon">
+        <!-- Track Icon -->
+        <svg viewBox="0 0 24 24" fill="none">
+          <circle cx="11" cy="11" r="7" stroke="white" stroke-width="2"/>
+          <path d="M16.5 16.5L21 21" stroke="white" stroke-width="2"/>
+        </svg>
       </div>
-      <a href="track.html" class="mini-btn">Go</a>
+      <div class="strip-content">
+        <h4>Track Complaint</h4>
+        <p>Check complaint status online</p>
+      </div>
+      <a href="track.html" class="strip-btn">Track</a>
     </div>
 
   </div>
