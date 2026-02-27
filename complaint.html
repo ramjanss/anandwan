@@ -2,77 +2,58 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>Register Complaint</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Register Complaint | Gram Panchayat Wandhali</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@600;700&family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --primary:#0f2f6f;
-  --light:#f8fafc;
-}
-
 body{
   margin:0;
-  font-family:'Noto Sans',sans-serif;
-  background:#f3f6fb;
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(135deg,#1e3a8a,#0f172a);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
 }
 
-/* Header */
-.page-header{
-  background:var(--primary);
-  color:white;
-  padding:40px 20px;
-  text-align:center;
-}
-
-.page-header h1{
-  margin:0;
-  font-family:'Noto Serif',serif;
-}
-
-/* Form Section */
-.section{
-  max-width:700px;
-  margin:60px auto;
+.form-container{
   background:white;
   padding:40px;
-  border-radius:14px;
-  box-shadow:0 20px 40px rgba(0,0,0,0.1);
+  border-radius:20px;
+  width:520px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.3);
 }
 
-.section h2{
-  margin-top:0;
-  color:var(--primary);
+h2{
+  text-align:center;
+  margin-bottom:25px;
 }
 
-.form-group{
-  margin-bottom:18px;
-}
-
-input, select, textarea{
+input, textarea{
   width:100%;
-  padding:10px;
-  border-radius:6px;
+  padding:12px;
+  border-radius:8px;
   border:1px solid #ccc;
-  font-family:'Noto Sans',sans-serif;
+  margin-bottom:15px;
+  font-family:'Poppins',sans-serif;
 }
 
 textarea{
   resize:none;
-  min-height:100px;
+  height:100px;
 }
 
 button{
   width:100%;
   padding:12px;
-  background:var(--primary);
-  color:white;
   border:none;
-  border-radius:6px;
-  font-weight:600;
+  background:#1e3a8a;
+  color:white;
+  border-radius:8px;
   cursor:pointer;
+  font-size:15px;
 }
 
 button:hover{
@@ -82,77 +63,52 @@ button:hover{
 .success-box{
   margin-top:20px;
   padding:15px;
-  background:#e0f2fe;
-  border-left:5px solid #0284c7;
-  border-radius:8px;
-}
-
-footer{
+  background:#dcfce7;
+  border-radius:12px;
+  color:#166534;
+  font-weight:600;
   text-align:center;
-  padding:30px;
-  background:#0f2f6f;
-  color:white;
-  margin-top:60px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="page-header">
-  <h1>Register Public Complaint</h1>
-</div>
+<div class="form-container">
 
-<div class="section">
+<h2>📝 Register Complaint</h2>
 
-  <h2>Complaint Form</h2>
+<input type="text" id="name" placeholder="Your Name">
+<input type="text" id="phone" placeholder="Mobile Number">
+<textarea id="message" placeholder="Describe your issue"></textarea>
 
-  <div class="form-group">
-    <input type="text" id="name" placeholder="Full Name">
-  </div>
+<button id="submitBtn">Submit Complaint</button>
 
-  <div class="form-group">
-    <input type="text" id="mobile" placeholder="Mobile Number">
-  </div>
-
-  <div class="form-group">
-    <select id="category">
-      <option value="">Select Category</option>
-      <option>Water Supply</option>
-      <option>Road</option>
-      <option>Electricity</option>
-      <option>Sanitation</option>
-      <option>Other</option>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <textarea id="description" placeholder="Describe your complaint"></textarea>
-  </div>
-
-  <button onclick="submitComplaint()">Submit Complaint</button>
-
-  <div id="successMessage"></div>
+<div id="result"></div>
 
 </div>
-
-<footer>
-© <span id="year"></span> Gram Panchayat Wandhali
-</footer>
 
 <script type="module">
+
 import { db } from "./js/firebase.js";
-import { collection, addDoc } 
+import { collection, addDoc }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-window.submitComplaint = async function(){
+const resultDiv = document.getElementById("result");
+
+document.getElementById("submitBtn").onclick = async () => {
 
   const name = document.getElementById("name").value.trim();
-  const phone = document.getElementById("mobile").value.trim();
-  const message = document.getElementById("description").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const message = document.getElementById("message").value.trim();
 
   if(!name || !phone || !message){
     alert("All fields are required.");
+    return;
+  }
+
+  if(phone.length < 10){
+    alert("Enter valid mobile number.");
     return;
   }
 
@@ -161,29 +117,35 @@ window.submitComplaint = async function(){
   try{
 
     await addDoc(collection(db,"complaints"),{
-      trackingId,
-      name,
-      phone,
-      message,
-      status:"Pending",
-      created:new Date()
+      trackingId: trackingId,
+      name: name,
+      phone: phone,
+      message: message,
+      status: "Submitted",
+      adminNote: "",
+      rejectReason: "",
+      createdAt: new Date(),
+      updatedAt: new Date()
     });
 
-    document.getElementById("successMessage").innerHTML = `
+    resultDiv.innerHTML = `
       <div class="success-box">
-        Complaint Registered Successfully.<br>
-        <strong>Your Tracking ID: ${trackingId}</strong>
+        Complaint Registered Successfully!<br><br>
+        Your Tracking ID:<br>
+        <strong>${trackingId}</strong>
       </div>
     `;
+
+    document.getElementById("name").value="";
+    document.getElementById("phone").value="";
+    document.getElementById("message").value="";
 
   }catch(error){
     alert("Failed to submit complaint.");
     console.error(error);
   }
-};
 
-document.getElementById("year").textContent =
-  new Date().getFullYear();
+};
 
 </script>
 
