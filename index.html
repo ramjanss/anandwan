@@ -380,95 +380,84 @@ html {
   font-size:14px;
   color:#555;
 }
-/* ===== GLASS CITIZEN STRIP ===== */
 
-.citizen-glass-strip{
-  padding:70px 20px;
-  background:linear-gradient(135deg,#1e3a8a,#0f172a);
+  /* ===== GRIEVANCE SECTION ===== */
+
+.grievance-section{
+  background:#0f2f6f;
+  padding:80px 20px;
 }
 
-.glass-container{
-  max-width:1100px;
+.grievance-container{
+  max-width:1200px;
   margin:auto;
-  display:flex;
-  gap:30px;
-  flex-wrap:wrap;
-  justify-content:center;
 }
 
-.glass-card{
-  flex:1;
-  min-width:450px;
-  display:flex;
-  align-items:center;
-  gap:20px;
-  padding:25px 30px;
-  border-radius:16px;
-
-  /* Glass effect */
-  background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-
-  border:1px solid rgba(255,255,255,0.2);
-  box-shadow:0 15px 35px rgba(0,0,0,0.25);
-
-  transition:all 0.35s ease;
-}
-
-.glass-card:hover{
-  transform:translateY(-6px);
-  border-color:rgba(255,255,255,0.4);
-  box-shadow:0 20px 40px rgba(0,0,0,0.35);
-}
-
-.glass-icon{
-  background:rgba(255,255,255,0.15);
-  width:55px;
-  height:55px;
-  border-radius:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-shrink:0;
-}
-
-.glass-icon svg{
-  width:24px;
-  height:24px;
-}
-
-.glass-content{
-  flex:1;
+.grievance-title{
+  text-align:center;
   color:white;
+  font-family:'Noto Serif', serif;
+  font-size:32px;
+  margin-bottom:50px;
 }
 
-.glass-content h4{
-  margin:0;
-  font-size:17px;
-  font-weight:600;
+.grievance-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(400px,1fr));
+  gap:40px;
 }
 
-.glass-content p{
-  margin:4px 0 0;
-  font-size:13px;
-  opacity:0.85;
-}
-
-.glass-btn{
+.grievance-card{
   background:white;
-  color:#1e3a8a;
-  padding:8px 18px;
-  border-radius:8px;
-  font-size:13px;
-  font-weight:600;
-  text-decoration:none;
-  transition:0.25s;
+  border-radius:14px;
+  padding:30px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.2);
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  transition:0.3s ease;
 }
 
-.glass-btn:hover{
-  background:#f1f5f9;
+.grievance-card:hover{
+  transform:translateY(-6px);
 }
+
+.grievance-card h3{
+  margin:0 0 10px;
+  color:#0f2f6f;
+  font-size:20px;
+}
+
+.grievance-card input,
+.grievance-card select,
+.grievance-card textarea{
+  padding:10px;
+  border:1px solid #d1d5db;
+  border-radius:6px;
+  font-family:'Noto Sans', sans-serif;
+}
+
+.grievance-card textarea{
+  resize:none;
+  min-height:90px;
+}
+
+.grievance-btn{
+  margin-top:10px;
+  text-align:center;
+  background:#0f2f6f;
+  color:white;
+  padding:10px;
+  border-radius:6px;
+  text-decoration:none;
+  font-weight:600;
+  transition:0.2s;
+}
+
+.grievance-btn:hover{
+  background:#0c2555;
+}
+
 /* =========================
    CLEAN GOVERNMENT LEADERSHIP
 ========================= */
@@ -925,44 +914,49 @@ html {
   </div>
 </section>
 
-<section class="citizen-glass-strip">
-  <div class="glass-container">
+<section class="grievance-section">
 
-    <div class="glass-card">
-      <div class="glass-icon">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M4 4h16v16H4z" stroke="white" stroke-width="2"/>
-          <path d="M8 8h8M8 12h6M8 16h4" stroke="white" stroke-width="2"/>
-        </svg>
+  <div class="grievance-container">
+
+    <h2 class="grievance-title">Citizen Grievance Portal</h2>
+
+    <div class="grievance-grid">
+
+      <!-- Register Complaint -->
+      <div class="grievance-card">
+        <h3>Register Complaint</h3>
+
+        <input type="text" placeholder="Full Name">
+        <input type="text" placeholder="Mobile Number">
+
+        <select>
+          <option>Select Category</option>
+          <option>Water Supply</option>
+          <option>Road</option>
+          <option>Electricity</option>
+          <option>Sanitation</option>
+          <option>Other</option>
+        </select>
+
+        <textarea placeholder="Complaint Description"></textarea>
+
+        <a href="complaint.html" class="grievance-btn">Proceed to Register</a>
       </div>
 
-      <div class="glass-content">
-        <h4>Register Complaint</h4>
-        <p>Submit grievance to Gram Panchayat Office</p>
+      <!-- Track Complaint -->
+      <div class="grievance-card">
+        <h3>Track Complaint</h3>
+
+        <input type="text" placeholder="Enter Complaint ID">
+
+        <a href="track.html" class="grievance-btn">Track Status</a>
       </div>
 
-      <a href="complaint.html" class="glass-btn">Apply</a>
-    </div>
-
-    <div class="glass-card">
-      <div class="glass-icon">
-        <svg viewBox="0 0 24 24" fill="none">
-          <circle cx="11" cy="11" r="7" stroke="white" stroke-width="2"/>
-          <path d="M16.5 16.5L21 21" stroke="white" stroke-width="2"/>
-        </svg>
-      </div>
-
-      <div class="glass-content">
-        <h4>Track Complaint</h4>
-        <p>Check complaint status online</p>
-      </div>
-
-      <a href="track.html" class="glass-btn">Track</a>
     </div>
 
   </div>
-</section>
-  
+
+</section>  
 <section class="section leadership-section" id="leadership">
 <h2>Leadership & Administration</h2>
 <h3>Main Officials</h3>
