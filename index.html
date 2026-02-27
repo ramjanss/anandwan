@@ -383,81 +383,96 @@ html {
 
   /* ===== GRIEVANCE SECTION ===== */
 
-.grievance-section{
+/* ===== CITIZEN ACTION SECTION ===== */
+
+.citizen-action-section{
   background:#0f2f6f;
-  padding:80px 20px;
+  padding:70px 20px;
 }
 
-.grievance-container{
+.citizen-action-container{
   max-width:1200px;
   margin:auto;
 }
 
-.grievance-title{
+.citizen-action-title{
   text-align:center;
   color:white;
   font-family:'Noto Serif', serif;
-  font-size:32px;
+  font-size:30px;
   margin-bottom:50px;
 }
 
-.grievance-grid{
+.citizen-action-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(400px,1fr));
-  gap:40px;
+  gap:35px;
 }
 
-.grievance-card{
+.action-card{
   background:white;
   border-radius:14px;
-  padding:30px;
-  box-shadow:0 20px 40px rgba(0,0,0,0.2);
+  padding:25px;
   display:flex;
-  flex-direction:column;
-  gap:14px;
+  align-items:center;
+  gap:20px;
+  box-shadow:0 15px 35px rgba(0,0,0,0.18);
   transition:0.3s ease;
 }
 
-.grievance-card:hover{
+.action-card:hover{
   transform:translateY(-6px);
 }
 
-.grievance-card h3{
-  margin:0 0 10px;
-  color:#0f2f6f;
-  font-size:20px;
+.action-icon{
+  font-size:28px;
+  width:55px;
+  height:55px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+  color:white;
 }
 
-.grievance-card input,
-.grievance-card select,
-.grievance-card textarea{
-  padding:10px;
-  border:1px solid #d1d5db;
-  border-radius:6px;
-  font-family:'Noto Sans', sans-serif;
+.action-card.register .action-icon{
+  background:#2563eb;
 }
 
-.grievance-card textarea{
-  resize:none;
-  min-height:90px;
+.action-card.track .action-icon{
+  background:#16a34a;
 }
 
-.grievance-btn{
-  margin-top:10px;
-  text-align:center;
+.action-content{
+  flex:1;
+}
+
+.action-content h3{
+  margin:0;
+  font-size:18px;
+  color:#0f172a;
+}
+
+.action-content p{
+  margin:4px 0 0;
+  font-size:14px;
+  color:#555;
+}
+
+.action-btn{
   background:#0f2f6f;
   color:white;
-  padding:10px;
+  padding:8px 18px;
   border-radius:6px;
   text-decoration:none;
   font-weight:600;
+  font-size:13px;
   transition:0.2s;
 }
 
-.grievance-btn:hover{
+.action-btn:hover{
   background:#0c2555;
 }
-
 /* =========================
    CLEAN GOVERNMENT LEADERSHIP
 ========================= */
@@ -914,49 +929,39 @@ html {
   </div>
 </section>
 
-<section class="grievance-section">
+<section class="citizen-action-section">
 
-  <div class="grievance-container">
+  <div class="citizen-action-container">
 
-    <h2 class="grievance-title">Citizen Grievance Portal</h2>
+    <h2 class="citizen-action-title">Citizen Grievance Services</h2>
 
-    <div class="grievance-grid">
+    <div class="citizen-action-grid">
 
       <!-- Register Complaint -->
-      <div class="grievance-card">
-        <h3>Register Complaint</h3>
-
-        <input type="text" placeholder="Full Name">
-        <input type="text" placeholder="Mobile Number">
-
-        <select>
-          <option>Select Category</option>
-          <option>Water Supply</option>
-          <option>Road</option>
-          <option>Electricity</option>
-          <option>Sanitation</option>
-          <option>Other</option>
-        </select>
-
-        <textarea placeholder="Complaint Description"></textarea>
-
-        <a href="complaint.html" class="grievance-btn">Proceed to Register</a>
+      <div class="action-card register">
+        <div class="action-icon">📝</div>
+        <div class="action-content">
+          <h3>Register Complaint</h3>
+          <p>Submit your grievance to Gram Panchayat Office</p>
+        </div>
+        <a href="complaint.html" class="action-btn">Register Now</a>
       </div>
 
       <!-- Track Complaint -->
-      <div class="grievance-card">
-        <h3>Track Complaint</h3>
-
-        <input type="text" placeholder="Enter Complaint ID">
-
-        <a href="track.html" class="grievance-btn">Track Status</a>
+      <div class="action-card track">
+        <div class="action-icon">🔎</div>
+        <div class="action-content">
+          <h3>Track Complaint</h3>
+          <p>Check the status of your registered complaint</p>
+        </div>
+        <a href="track.html" class="action-btn">Track Status</a>
       </div>
 
     </div>
 
   </div>
 
-</section>  
+</section>
 <section class="section leadership-section" id="leadership">
 <h2>Leadership & Administration</h2>
 <h3>Main Officials</h3>
