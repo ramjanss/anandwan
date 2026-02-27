@@ -148,40 +148,33 @@ from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 window.submitComplaint = async function(){
 
   const name = document.getElementById("name").value.trim();
-  const mobile = document.getElementById("mobile").value.trim();
-  const category = document.getElementById("category").value;
-  const description = document.getElementById("description").value.trim();
+  const phone = document.getElementById("mobile").value.trim();
+  const message = document.getElementById("description").value.trim();
 
-  if(!name || !mobile || !category || !description){
+  if(!name || !phone || !message){
     alert("All fields are required.");
     return;
   }
 
-  const complaintId = "GP" + Date.now();
+  const trackingId = "GP" + Date.now();
 
   try{
 
     await addDoc(collection(db,"complaints"),{
-      complaintId,
+      trackingId,
       name,
-      mobile,
-      category,
-      description,
+      phone,
+      message,
       status:"Pending",
-      createdAt:new Date()
+      created:new Date()
     });
 
     document.getElementById("successMessage").innerHTML = `
       <div class="success-box">
         Complaint Registered Successfully.<br>
-        <strong>Your Tracking ID: ${complaintId}</strong>
+        <strong>Your Tracking ID: ${trackingId}</strong>
       </div>
     `;
-
-    document.getElementById("name").value="";
-    document.getElementById("mobile").value="";
-    document.getElementById("category").value="";
-    document.getElementById("description").value="";
 
   }catch(error){
     alert("Failed to submit complaint.");
