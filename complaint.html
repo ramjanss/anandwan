@@ -2,278 +2,197 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Admin - Complaints</title>
-<link rel="stylesheet" href="admin.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register Complaint | Gram Panchayat Wandhali</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@600;700&family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --primary:#0f2f6f;
+  --light:#f8fafc;
+}
+
+body{
+  margin:0;
+  font-family:'Noto Sans',sans-serif;
+  background:#f3f6fb;
+}
+
+/* Header */
+.page-header{
+  background:var(--primary);
+  color:white;
+  padding:40px 20px;
+  text-align:center;
+}
+
+.page-header h1{
+  margin:0;
+  font-family:'Noto Serif',serif;
+}
+
+/* Form Section */
+.section{
+  max-width:700px;
+  margin:60px auto;
+  background:white;
+  padding:40px;
+  border-radius:14px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.1);
+}
+
+.section h2{
+  margin-top:0;
+  color:var(--primary);
+}
+
+.form-group{
+  margin-bottom:18px;
+}
+
+input, select, textarea{
+  width:100%;
+  padding:10px;
+  border-radius:6px;
+  border:1px solid #ccc;
+  font-family:'Noto Sans',sans-serif;
+}
+
+textarea{
+  resize:none;
+  min-height:100px;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  background:var(--primary);
+  color:white;
+  border:none;
+  border-radius:6px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+button:hover{
+  opacity:0.9;
+}
+
+.success-box{
+  margin-top:20px;
+  padding:15px;
+  background:#e0f2fe;
+  border-left:5px solid #0284c7;
+  border-radius:8px;
+}
+
+footer{
+  text-align:center;
+  padding:30px;
+  background:#0f2f6f;
+  color:white;
+  margin-top:60px;
+}
+</style>
 </head>
 
 <body>
 
-<div class="admin-container">
+<div class="page-header">
+  <h1>Register Public Complaint</h1>
+</div>
 
-  <aside class="sidebar">
-    <h2>Admin Panel</h2>
-    <a href="admin-dashboard.html">Dashboard</a>
-    <a href="admin-members.html">Members</a>
-    <a href="admin-notices.html">Notices</a>
-    <a href="admin-gallery.html">Gallery</a>
-    <a href="admin-complaints.html" class="active">Complaints</a>
-    <button id="logoutBtn">Logout</button>
-  </aside>
+<div class="section">
 
-  <main class="content">
+  <h2>Complaint Form</h2>
 
-    <h1>📨 Manage Complaints</h1>
+  <div class="form-group">
+    <input type="text" id="name" placeholder="Full Name">
+  </div>
 
-    <div style="margin-bottom:20px; display:flex; gap:15px; flex-wrap:wrap; align-items:center;">
+  <div class="form-group">
+    <input type="text" id="mobile" placeholder="Mobile Number">
+  </div>
 
-      <input 
-        type="text" 
-        id="searchInput"
-        placeholder="Search by Tracking ID or Name"
-        style="padding:8px 12px; border-radius:6px; border:1px solid #ccc; width:250px;"
-      >
+  <div class="form-group">
+    <select id="category">
+      <option value="">Select Category</option>
+      <option>Water Supply</option>
+      <option>Road</option>
+      <option>Electricity</option>
+      <option>Sanitation</option>
+      <option>Other</option>
+    </select>
+  </div>
 
-      <button onclick="filterComplaints('all')" class="filter-btn">All</button>
-      <button onclick="filterComplaints('Pending')" class="filter-btn">Pending</button>
-      <button onclick="filterComplaints('Resolved')" class="filter-btn">Resolved</button>
+  <div class="form-group">
+    <textarea id="description" placeholder="Describe your complaint"></textarea>
+  </div>
 
-    </div>
+  <button onclick="submitComplaint()">Submit Complaint</button>
 
-    <div id="complaintsContainer"></div>
-
-  </main>
+  <div id="successMessage"></div>
 
 </div>
 
-<script type="module" src="admin-auth.js"></script>
+<footer>
+© <span id="year"></span> Gram Panchayat Wandhali
+</footer>
 
 <script type="module">
-
-import { db } from "../js/firebase.js";
-import { collection, getDocs, updateDoc, doc, query, orderBy, addDoc }
+import { db } from "./js/firebase.js";
+import { collection, addDoc } 
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-const container = document.getElementById("complaintsContainer");
+window.submitComplaint = async function(){
 
-let allComplaints = [];
-let currentFilter = "all";
-let currentPage = 1;
-const itemsPerPage = 5;
+  const name = document.getElementById("name").value.trim();
+  const mobile = document.getElementById("mobile").value.trim();
+  const category = document.getElementById("category").value;
+  const description = document.getElementById("description").value.trim();
 
-/* ================= LOAD ================= */
-
-async function loadComplaints(){
-
-  container.innerHTML = "Loading...";
-
-  const q = query(collection(db,"complaints"), orderBy("createdAt","desc"));
-  const snapshot = await getDocs(q);
-
-  allComplaints = [];
-
-  snapshot.forEach(docSnap=>{
-    allComplaints.push({
-      id: docSnap.id,
-      ...docSnap.data()
-    });
-  });
-
-  currentPage = 1;
-  renderComplaints("all");
-}
-
-/* ================= FILTER FUNCTION ================= */
-
-window.filterComplaints = function(status){
-  currentPage = 1;
-  renderComplaints(status);
-};
-
-/* ================= RENDER ================= */
-
-function renderComplaints(filter){
-
-  currentFilter = filter;
-  container.innerHTML = "";
-
-  const searchValue = document
-    .getElementById("searchInput")
-    .value
-    .toLowerCase();
-
-  let filtered = filter === "all"
-    ? allComplaints
-    : allComplaints.filter(c => c.status === filter);
-
-  if(searchValue){
-    filtered = filtered.filter(c =>
-      (c.trackingId && c.trackingId.toLowerCase().includes(searchValue)) ||
-      (c.name && c.name.toLowerCase().includes(searchValue))
-    );
-  }
-
-  const totalPages = Math.ceil(filtered.length / itemsPerPage);
-  if(currentPage > totalPages) currentPage = 1;
-
-  const start = (currentPage - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
-  const paginatedData = filtered.slice(start, end);
-
-  if(paginatedData.length === 0){
-    container.innerHTML = "<p>No complaints found.</p>";
+  if(!name || !mobile || !category || !description){
+    alert("All fields are required.");
     return;
   }
 
-  paginatedData.forEach(c=>{
+  const complaintId = "GP" + Date.now();
 
-    const createdDate = c.createdAt?.toDate();
-    const formattedDate = createdDate
-      ? createdDate.toLocaleString()
-      : "N/A";
+  try{
 
-    const statusColor = c.status === "Resolved" ? "#16a34a" : "#f59e0b";
+    await addDoc(collection(db,"complaints"),{
+      complaintId,
+      name,
+      mobile,
+      category,
+      description,
+      status:"Pending",
+      createdAt:new Date()
+    });
 
-    const card = document.createElement("div");
-    card.style.background = "#fff";
-    card.style.padding = "20px";
-    card.style.borderRadius = "12px";
-    card.style.marginBottom = "20px";
-    card.style.boxShadow = "0 10px 25px rgba(0,0,0,0.08)";
-
-    card.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <strong>Tracking ID: ${c.trackingId || "N/A"}</strong>
-        <span style="
-          padding:6px 12px;
-          border-radius:20px;
-          font-size:12px;
-          background:${statusColor};
-          color:white;
-        ">
-          ${c.status}
-        </span>
+    document.getElementById("successMessage").innerHTML = `
+      <div class="success-box">
+        Complaint Registered Successfully.<br>
+        <strong>Your Tracking ID: ${complaintId}</strong>
       </div>
-
-      <hr style="margin:12px 0;">
-
-      <strong>Name:</strong> ${c.name} <br>
-      <strong>Phone:</strong> ${c.phone} <br>
-      <strong>Date:</strong> ${formattedDate} <br><br>
-
-      <strong>Message:</strong>
-      <div style="
-        background:#f3f4f6;
-        padding:10px;
-        border-radius:8px;
-        margin-top:5px;
-      ">
-        ${c.message}
-      </div>
-      <br>
     `;
 
-    if(c.status !== "Resolved"){
+    document.getElementById("name").value="";
+    document.getElementById("mobile").value="";
+    document.getElementById("category").value="";
+    document.getElementById("description").value="";
 
-      const btn = document.createElement("button");
-      btn.innerText = "Mark Resolved";
-      btn.style.background = "#1e3a8a";
-      btn.style.color = "white";
-      btn.style.padding = "8px 14px";
-      btn.style.border = "none";
-      btn.style.borderRadius = "6px";
-      btn.style.cursor = "pointer";
+  }catch(error){
+    alert("Failed to submit complaint.");
+    console.error(error);
+  }
+};
 
-      btn.onclick = async () => {
-
-        await updateDoc(doc(db,"complaints",c.id),{
-          status:"Resolved"
-        });
-
-        // SMS Simulation Log
-        await addDoc(collection(db,"smsLogs"),{
-          complaintId: c.trackingId,
-          phone: c.phone,
-          message: `Your complaint ${c.trackingId} has been resolved.`,
-          status: "Sent (Simulated)",
-          created: new Date()
-        });
-
-        loadComplaints();
-      };
-
-      card.appendChild(btn);
-    }
-
-    container.appendChild(card);
-  });
-
-  renderPagination(totalPages);
-}
-
-/* ================= PAGINATION ================= */
-
-function renderPagination(totalPages){
-
-  const existing = document.getElementById("pagination");
-  if(existing) existing.remove();
-
-  if(totalPages <= 1) return;
-
-  const pagination = document.createElement("div");
-  pagination.id = "pagination";
-  pagination.style.marginTop = "20px";
-  pagination.style.display = "flex";
-  pagination.style.gap = "10px";
-
-  const prevBtn = document.createElement("button");
-  prevBtn.innerText = "Previous";
-  prevBtn.disabled = currentPage === 1;
-  prevBtn.onclick = () => {
-    currentPage--;
-    renderComplaints(currentFilter);
-  };
-
-  const nextBtn = document.createElement("button");
-  nextBtn.innerText = "Next";
-  nextBtn.disabled = currentPage === totalPages;
-  nextBtn.onclick = () => {
-    currentPage++;
-    renderComplaints(currentFilter);
-  };
-
-  pagination.appendChild(prevBtn);
-  pagination.appendChild(nextBtn);
-
-  container.appendChild(pagination);
-}
-
-/* ================= SEARCH ================= */
-
-document.getElementById("searchInput")
-  .addEventListener("input", () => {
-    currentPage = 1;
-    renderComplaints(currentFilter);
-});
-
-/* ================= INIT ================= */
-
-loadComplaints();
+document.getElementById("year").textContent =
+  new Date().getFullYear();
 
 </script>
-
-<style>
-.filter-btn{
-  padding:8px 14px;
-  border:none;
-  border-radius:6px;
-  background:#1e3a8a;
-  color:white;
-  cursor:pointer;
-}
-.filter-btn:hover{
-  opacity:0.8;
-}
-</style>
 
 </body>
 </html>
