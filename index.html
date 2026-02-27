@@ -477,72 +477,98 @@ html {
    CLEAN GOVERNMENT LEADERSHIP
 ========================= */
 
+/* =========================
+   ENHANCED LEADERSHIP SECTION
+========================= */
+
 .leadership-section{
-  background:#f8fafc;
-  padding:80px 20px;
+  background:#f9fafc;
+  padding:100px 20px;
 }
 
-.section h3{
-  margin-top:60px;
-  margin-bottom:25px;
-  font-size:18px;
+.leadership-section h2{
+  text-align:center;
+  font-size:34px;
+  font-family:'Montserrat', sans-serif;
   color:#1e3a8a;
-  border-bottom:2px solid #e5e7eb;
-  padding-bottom:8px;
+  margin-bottom:70px;
+  position:relative;
 }
 
-/* GRID STRUCTURE */
+.leadership-section h2::after{
+  content:"";
+  width:80px;
+  height:3px;
+  background:#1e3a8a;
+  display:block;
+  margin:15px auto 0;
+  border-radius:3px;
+}
+
+/* Sub Headings */
+
+.leadership-section h3{
+  font-size:18px;
+  color:#334155;
+  margin-top:60px;
+  margin-bottom:30px;
+  font-weight:600;
+  letter-spacing:0.5px;
+}
+
+/* Grid Layout */
 
 #leaderContainer,
 #bodyContainer,
 #employeeContainer{
   display:grid;
-  gap:30px;
-  margin-top:30px;
+  gap:28px;
 }
 
 #leaderContainer{
-  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
 }
 
 #bodyContainer{
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
 }
 
 #employeeContainer{
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 }
 
-/* CARD STYLE */
+/* Card Design */
 
 .leader-card{
   background:white;
-  border-radius:20px;
-  padding:30px;
+  border-radius:16px;
+  padding:22px;
   display:flex;
   align-items:center;
-  gap:15px;
-  border:1px solid #e5e7eb;
-  transition:0.2s ease;
+  gap:18px;
+  border:1px solid #e2e8f0;
+  transition:all 0.3s ease;
 }
 
 .leader-card:hover{
-  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+  transform:translateY(-6px);
+  box-shadow:0 15px 35px rgba(0,0,0,0.08);
 }
 
-/* PHOTO */
+/* Photo */
 
 .leader-photo{
   width:80px;
   height:80px;
   border-radius:50%;
   overflow:hidden;
+  border:3px solid #1e3a8a;
   flex-shrink:0;
 }
 
 #leaderContainer .leader-photo{
-  width:110px;
-  height:110px;
+  width:100px;
+  height:100px;
 }
 
 .leader-photo img{
@@ -551,36 +577,37 @@ html {
   object-fit:cover;
 }
 
-/* TEXT BLOCK */
-
-.leader-info{
-  text-align:left;
-}
+/* Text Info */
 
 .leader-info h4{
-  margin:0 0 4px;
-  font-size:16px;
+  margin:0 0 6px;
+  font-size:17px;
   font-weight:600;
+  color:#111827;
 }
 
 .leader-info p{
   margin:0;
-  font-size:13px;
-  color:#555;
+  font-size:14px;
+  color:#64748b;
 }
 
-.contact-actions{
-  margin-top:6px;
-}
+/* Contact Button */
 
 .contact-btn{
-  font-size:11px;
-  padding:4px 10px;
-  border-radius:4px;
+  display:inline-block;
+  margin-top:8px;
+  font-size:12px;
+  padding:5px 12px;
+  border-radius:20px;
   background:#1e3a8a;
   color:white;
   text-decoration:none;
-  margin-right:5px;
+  transition:0.3s;
+}
+
+.contact-btn:hover{
+  background:#162f6a;
 }
 /* EVENTS */
 .events-grid{
