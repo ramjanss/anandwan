@@ -327,6 +327,51 @@ html {
   color:var(--primary);
 }
 
+
+.citizen-services{
+  background:#f1f5f9;
+}
+
+.service-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:40px;
+  margin-top:40px;
+}
+
+.service-card{
+  background:white;
+  padding:40px;
+  border-radius:12px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.05);
+  text-align:center;
+  transition:0.3s;
+}
+
+.service-card:hover{
+  transform:translateY(-6px);
+}
+
+.service-card h3{
+  font-family:'Noto Serif', serif;
+  color:#1e3a8a;
+}
+
+.service-btn{
+  display:inline-block;
+  margin-top:15px;
+  padding:10px 20px;
+  background:#1e3a8a;
+  color:white;
+  text-decoration:none;
+  border-radius:6px;
+  font-weight:600;
+}
+
+.service-btn:hover{
+  background:#162f6a;
+}
+  
 /* =========================
    CLEAN GOVERNMENT LEADERSHIP
 ========================= */
@@ -749,6 +794,26 @@ html {
 </div>
 </section>
 
+<section class="section citizen-services">
+  <h2>Citizen Services</h2>
+  
+  <div class="service-grid">
+
+    <div class="service-card">
+      <h3>Register Complaint</h3>
+      <p>Submit your grievance online to Gram Panchayat office.</p>
+      <a href="complaint.html" class="service-btn">Register Now</a>
+    </div>
+
+    <div class="service-card">
+      <h3>Track Complaint</h3>
+      <p>Check the status of your registered complaint.</p>
+      <a href="track.html" class="service-btn">Track Status</a>
+    </div>
+
+  </div>
+</section>
+  
 <section class="section leadership-section" id="leadership">
 <h2>Leadership & Administration</h2>
 <h3>Main Officials</h3>
