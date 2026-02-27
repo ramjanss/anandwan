@@ -1366,10 +1366,18 @@ padding:20px;
 </div>
 
 </footer>
-
 <script>
+function formatDateDDMMYYYY(date){
+  return date.getDate().toString().padStart(2,'0') + "/" +
+         (date.getMonth()+1).toString().padStart(2,'0') + "/" +
+         date.getFullYear();
+}
+
+document.getElementById("footerYear").textContent =
+  new Date().getFullYear();
+
 document.getElementById("footerUpdated").textContent =
- formatDateDDMMYYYY(new Date());
+  formatDateDDMMYYYY(new Date());
 </script>
   
 </body>
