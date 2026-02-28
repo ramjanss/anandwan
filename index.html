@@ -481,99 +481,117 @@ html {
    ENHANCED LEADERSHIP SECTION
 ========================= */
 
-/* =========================
-   EXECUTIVE LEADER CARDS
-========================= */
-
-#leaderContainer .leader-card{
-  background:linear-gradient(135deg,#ffffff,#f1f5f9);
-  border-radius:20px;
-  padding:28px;
-  display:flex;
-  align-items:center;
-  gap:25px;
-  border-left:6px solid #1e3a8a;
-  box-shadow:0 15px 35px rgba(0,0,0,0.06);
-  transition:all 0.35s ease;
+.leadership-section{
+  background:linear-gradient(to bottom,#f8fafc,#eef2ff);
+  padding:100px 20px;
+}
+  
+.leadership-section h2{
+  text-align:center;
+  font-size:34px;
+  font-family:'Montserrat', sans-serif;
+  color:#1e3a8a;
+  margin-bottom:70px;
   position:relative;
 }
 
-#leaderContainer .leader-card:hover{
-  transform:translateY(-8px);
-  box-shadow:0 20px 45px rgba(0,0,0,0.12);
+.leadership-section h2::after{
+  content:"";
+  width:80px;
+  height:3px;
+  background:#1e3a8a;
+  display:block;
+  margin:15px auto 0;
+  border-radius:3px;
 }
 
-/* Executive Photo */
+/* Sub Headings */
+
+.leadership-section h3{
+  font-size:18px;
+  color:#334155;
+  margin-top:60px;
+  margin-bottom:30px;
+  font-weight:600;
+  letter-spacing:0.5px;
+}
+
+/* Grid Layout */
+
+#leaderContainer,
+#bodyContainer,
+#employeeContainer{
+  display:grid;
+  gap:28px;
+}
+
+#leaderContainer{
+  grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
+}
+
+#bodyContainer{
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+}
+
+#employeeContainer{
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+}
+
+/* Card Design */
+
+.leader-card{
+  background:white;
+  border-radius:16px;
+  padding:22px;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  border:1px solid #e2e8f0;
+  transition:all 0.3s ease;
+}
+
+.leader-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 15px 35px rgba(0,0,0,0.08);
+}
+
+/* Photo */
+
+.leader-photo{
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  overflow:hidden;
+  border:3px solid #1e3a8a;
+  flex-shrink:0;
+}
 
 #leaderContainer .leader-photo{
-  width:120px;
-  height:120px;
-  border-radius:16px;
-  overflow:hidden;
-  border:4px solid #1e3a8a;
+  width:100px;
+  height:100px;
 }
 
-#leaderContainer .leader-photo img{
+.leader-photo img{
   width:100%;
   height:100%;
   object-fit:cover;
 }
 
-/* Executive Info Block */
+/* Text Info */
 
-#leaderContainer .leader-info{
-  flex:1;
-}
-
-#leaderContainer .leader-info h4{
-  font-size:20px;
-  font-weight:700;
-  margin-bottom:6px;
-  color:#0f172a;
-  font-family:'Montserrat', sans-serif;
-}
-
-#leaderContainer .leader-info p{
-  font-size:15px;
-  color:#475569;
-  margin-bottom:10px;
-}
-
-/* Designation Badge */
-
-#leaderContainer .leader-info p::before{
-  content:"Executive Role: ";
+.leader-info h4{
+  margin:0 0 6px;
+  font-size:17px;
   font-weight:600;
-  color:#1e3a8a;
+  color:#111827;
 }
 
-/* Call Button Upgrade */
-
-#leaderContainer .contact-btn{
-  padding:7px 16px;
-  border-radius:25px;
-  font-size:13px;
-  background:#1e3a8a;
-  transition:0.3s;
+.leader-info p{
+  margin:0;
+  font-size:14px;
+  color:#64748b;
 }
 
-#leaderContainer .contact-btn:hover{
-  background:#0f172a;
-}
-
-/* Responsive */
-
-@media(max-width:768px){
-  #leaderContainer .leader-card{
-    flex-direction:column;
-    text-align:center;
-  }
-
-  #leaderContainer .leader-photo{
-    width:100px;
-    height:100px;
-  }
-}
 /* Contact Button */
 
 .contact-btn{
