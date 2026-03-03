@@ -334,27 +334,34 @@ html {
 }
 
 .transparency-grid{
-  display:grid;
-  grid-template-columns:repeat(5, minmax(0,1fr));
+  display:flex;
+  justify-content:center;
   gap:30px;
-  width:100%;
+  flex-wrap:nowrap;
 }
 
-/* Tablet */
-@media(max-width:1100px){
+@media(max-width:1200px){
   .transparency-grid{
-    grid-template-columns:repeat(3, 1fr);
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  .stat-card{
+    flex:1 1 30%;
+    max-width:300px;
   }
 }
 
-/* Mobile */
 @media(max-width:768px){
-  .transparency-grid{
-    grid-template-columns:1fr;
+  .stat-card{
+    flex:1 1 100%;
+    max-width:100%;
   }
 }
 
 .stat-card{
+  flex:1;
+  min-width:0;
+  max-width:240px;
   background:white;
   border-radius:14px;
   padding:25px;
@@ -363,8 +370,6 @@ html {
   gap:20px;
   box-shadow:0 15px 35px rgba(0,0,0,0.15);
   transition:0.3s ease;
-  min-height:120px;
-  width:100%;
 }
 
 .stat-card.rejected .stat-icon{
