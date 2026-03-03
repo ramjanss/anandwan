@@ -594,46 +594,25 @@ html {
   grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
 }
 
-#bodyContainer{
+#bodyContainer,
+#employeeContainer{
   display:flex;
-  flex-wrap:wrap;
   gap:25px;
   overflow-x:auto;
-  padding-bottom:10px;
+  padding:10px 0 15px;
+  scroll-behavior:smooth;
 }
 
-#bodyContainer::-webkit-scrollbar{
+#bodyContainer::-webkit-scrollbar,
+#employeeContainer::-webkit-scrollbar{
   height:6px;
 }
 
-#bodyContainer::-webkit-scrollbar-thumb{
+#bodyContainer::-webkit-scrollbar-thumb,
+#employeeContainer::-webkit-scrollbar-thumb{
   background:#cbd5e1;
   border-radius:10px;
 }
-#bodyContainer .leader-normal{
-  min-width:260px;
-  flex-shrink:0;
-}    
-#bodyContainer{
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-}
-
-#employeeContainer{
-  display:flex;
-  gap:20px;
-  overflow-x:auto;
-  padding-bottom:10px;
-}
-
-#employeeContainer .employee-card{
-  min-width:120px;
-  flex-shrink:0;
-}
-    
-#employeeContainer{
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-}
-
 /* Card Design */
 
 .leader-feature{
@@ -701,6 +680,26 @@ html {
   border-radius:18px 18px 0 0;
 }
 
+#bodyContainer .leader-normal{
+  min-width:260px;
+  flex-shrink:0;
+}
+
+#employeeContainer .employee-card{
+  min-width:220px;
+  flex-shrink:0;
+}
+
+#bodyContainer,
+#employeeContainer{
+  scrollbar-width:none;
+}
+
+#bodyContainer::-webkit-scrollbar,
+#employeeContainer::-webkit-scrollbar{
+  display:none;
+}
+    
 .leader-normal{
   background:white;
   border-radius:14px;
