@@ -604,11 +604,11 @@ html {
 
 /* Card Design */
 
-.leader-card{
+.leader-feature{
   position:relative;
   background:white;
   border-radius:18px;
-  padding-top:120px;   /* space for floating photo */
+  padding-top:120px;
   padding-bottom:25px;
   text-align:center;
   box-shadow:0 20px 50px rgba(0,0,0,0.08);
@@ -616,14 +616,9 @@ html {
   overflow:visible;
 }
 
-.leader-card:hover{
-  transform:translateY(-8px);
-}
-/* Photo */
-
-.leader-photo{
+.leader-feature .leader-photo{
   position:absolute;
-  top:-100px;           /* move photo above card */
+  top:-100px;
   left:50%;
   transform:translateX(-50%);
   width:220px;
@@ -631,9 +626,12 @@ html {
   border-radius:18px;
   overflow:hidden;
   box-shadow:0 20px 40px rgba(0,0,0,0.2);
-  background:#1e3a8a;
 }
 
+.leader-card:hover{
+  transform:translateY(-8px);
+}
+/* Photo */
 .leader-photo img{
   width:100%;
   height:100%;
@@ -675,6 +673,50 @@ html {
   background:linear-gradient(to bottom,#1e3a8a,#ffffff);
   border-radius:18px 18px 0 0;
 }
+
+.leader-normal{
+  background:white;
+  border-radius:14px;
+  padding:20px;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.06);
+  transition:0.3s ease;
+}
+
+.leader-normal:hover{
+  transform:translateY(-5px);
+}
+
+.leader-normal .leader-photo{
+  position:relative;
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  overflow:hidden;
+  box-shadow:none;
+}
+
+.leader-normal .leader-info{
+  text-align:left;
+}
+
+.employee-card{
+  background:#f8fafc;
+  border-radius:10px;
+  padding:15px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  border:1px solid #e2e8f0;
+}
+
+.employee-card .leader-photo{
+  width:60px;
+  height:60px;
+  border-radius:50%;
+}    
     
 /* EVENTS */
 .events-grid{
@@ -1278,25 +1320,37 @@ const body=members.filter(m=>m.type==="body");
 const employees=members.filter(m=>m.type==="employee");
 
 function buildCard(d){
+
+  const role = d.role?.toLowerCase() || "";
+
+  let cardClass = "leader-normal";
+
+  if(
+    role.includes("sarpanch") ||
+    role.includes("upsarpanch") ||
+    role.includes("village development officer") ||
+    role.includes("vdo")
+  ){
+    cardClass = "leader-feature";
+  }
+
+  if(d.type === "employee"){
+    cardClass = "employee-card";
+  }
+
   return `
-  <div class="leader-card">
-    <div class="leader-photo">
-      <img src="${d.photoUrl || 'assets/default-user.png'}">
-    </div>
+    <div class="${cardClass}">
+      <div class="leader-photo">
+        <img src="${d.photoUrl || 'assets/default-user.png'}">
+      </div>
 
-    <div class="leader-info">
-      <h4>${d.name}</h4>
-      <p>${d.role}</p>
-
-      ${d.phone ? `
-      <div class="contact-actions">
-        <a href="tel:${d.phone}" class="contact-btn">Call</a>
-      </div>` : ""}
+      <div class="leader-info">
+        <h4>${d.name}</h4>
+        <p>${d.role}</p>
+      </div>
     </div>
-  </div>
   `;
 }
-
 leaders.forEach(d=>leaderContainer.innerHTML+=buildCard(d));
 body.forEach(d=>bodyContainer.innerHTML+=buildCard(d));
 employees.forEach(d=>employeeContainer.innerHTML+=buildCard(d));
