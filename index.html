@@ -977,6 +977,14 @@ html {
           <h3 id="pendingComplaints">0</h3>
           <p>Pending</p>
         </div>
+<div class="stat-card rejected">
+  <div class="stat-icon">❌</div>
+  <div class="stat-info">
+    <h3 id="rejectedComplaints">0</h3>
+    <p>Rejected</p>
+  </div>
+</div>
+        
       </div>
 
       <div class="stat-card notices">
@@ -1085,13 +1093,14 @@ setInterval(slideHero, 4000);
 
 /* DASHBOARD */
 
-  async function loadDashboard(){
+ async function loadDashboard(){
 
   const complaintsSnap = await getDocs(collection(db,"complaints"));
   const noticesSnap = await getDocs(collection(db,"notices"));
 
   let resolved = 0;
   let pending = 0;
+  let rejected = 0;
 
   complaintsSnap.forEach(doc => {
 
@@ -1100,12 +1109,10 @@ setInterval(slideHero, 4000);
     if(status === "resolved"){
       resolved++;
     }
-
-    if(
-      status === "submitted" ||
-      status === "accepted" ||
-      status === "in review"
-    ){
+    else if(status === "rejected"){
+      rejected++;
+    }
+    else{
       pending++;
     }
 
@@ -1120,12 +1127,15 @@ setInterval(slideHero, 4000);
   document.getElementById("pendingComplaints").textContent =
     pending;
 
-  document.getElementById("totalNotices").textContent =
-    noticesSnap.size;
+  document.getElementById("totalNotices").textContent = noticesSnap.size;
+ document.getElementById("rejectedComplaints").textContent = rejected;  
+
+   
+  console.log("Rejected:", rejected);
+
 }
 
 loadDashboard();
-
 
   
 async function loadWhatsNew(){
