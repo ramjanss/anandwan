@@ -593,6 +593,10 @@ html {
   gap:40px;
 }
 
+.leader-feature{
+  min-height:260px;
+}    
+    
 #bodyContainer{
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
 }
@@ -603,92 +607,50 @@ html {
 
 /* Card Design */
 
-.leader-sarpanch{
-  grid-column:1 / -1;
-  background:linear-gradient(135deg,#ffffff,#e0f2fe);
-  border-left:8px solid #15803d;
-  padding:40px;
-}
-
-.leader-sarpanch .leader-photo{
-  width:150px;
-  height:150px;
-  border:5px solid #15803d;
-}
-
-.leader-sarpanch h4{
-  font-size:26px;
-}
-
-.leader-sarpanch p{
-  font-size:17px;
-  font-weight:600;
-  color:#0f172a;
-}
-..leader-upsarpanch{
-  background:linear-gradient(135deg,#ffffff,#f1f5f9);
-  border-left:6px solid #1e3a8a;
-}
-
-.leader-upsarpanch .leader-photo{
-  width:130px;
-  height:130px;
-  border:4px solid #1e3a8a;
-}
-
-.leader-upsarpanch h4{
-  font-size:22px;
-}
-.leader-card.gramsevak{
-  padding:25px;
-  border-radius:18px;
-  background:#f8fafc;
-  border-left:5px solid #0f2f6f;
-  box-shadow:0 15px 35px rgba(0,0,0,0.08);
-}
-
-.leader-gramsevak{
-  background:#f8fafc;
-  border-left:6px solid #f59e0b;
-}
-
-.leader-gramsevak .leader-photo{
-  width:120px;
-  height:120px;
-  border:4px solid #f59e0b;
-}
-
-.leader-standard{
-  background:white;
-  border-left:4px solid #cbd5e1;
-}
-    
 .leader-card{
-  background:white;
-  border-radius:20px;
-  padding:30px;
   display:flex;
   align-items:center;
-  gap:25px;
-  border-left:6px solid #1e3a8a;
-  box-shadow:0 20px 50px rgba(0,0,0,0.12);
-  transition:all 0.4s ease;
+  gap:30px;
+  background:white;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 15px 40px rgba(0,0,0,0.08);
+  transition:0.3s ease;
 }
 
 .leader-card:hover{
-  transform:translateY(-10px);
-  box-shadow:0 25px 60px rgba(0,0,0,0.2);
+  transform:translateY(-6px);
 }
 
-/* Photo */
-
 .leader-photo{
-  width:120px;
-  height:120px;
-  border-radius:50%;
+  width:220px;
+  height:260px;
+  border-radius:0;
   overflow:hidden;
-  border:4px solid #1e3a8a;
   flex-shrink:0;
+}
+
+.leader-photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.leader-info{
+  padding-right:20px;
+}
+
+.leader-info h4{
+  margin:0 0 10px;
+  font-size:26px;
+  font-weight:700;
+  color:#0f172a;
+}
+
+.leader-info p{
+  margin:0 0 15px;
+  font-size:17px;
+  color:#475569;
 }
 
 #leaderContainer .leader-photo{
@@ -702,19 +664,6 @@ html {
   object-fit:cover;
 }
 
-/* Text Info */
-.leader-info h4{
-  margin:0 0 8px;
-  font-size:22px;
-  font-weight:700;
-  color:#0f172a;
-}
-
-.leader-info p{
-  font-size:15px;
-  font-weight:500;
-  color:#475569;
-}
 /* Contact Button */
 
 .contact-btn{
@@ -1344,16 +1293,12 @@ function buildCard(d){
 
   const role = d.role?.toLowerCase() || "";
 
-  if(role.includes("sarpanch")){
-    roleClass = "leader-sarpanch";
-  }
-  else if(role.includes("upsarpanch")){
-    roleClass = "leader-upsarpanch";
-  }
-  else if(role.includes("gramsevak") || role.includes("village development officer") || role.includes("vdo")){
-    roleClass = "leader-gramsevak";
-  }
-
+ if(role.includes("sarpanch") ||
+   role.includes("upsarpanch") ||
+   role.includes("village development officer") ||
+   role.includes("vdo")){
+  roleClass = "leader-feature";
+}
   return `
   <div class="leader-card ${roleClass}">
     <div class="leader-photo">
