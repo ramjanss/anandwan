@@ -1084,35 +1084,50 @@ function slideHero(){
 setInterval(slideHero, 4000);
 
 /* DASHBOARD */
-import { onSnapshot } from 
-"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-function loadDashboard(){
+  async function loadDashboard(){
 
-  onSnapshot(collection(db,"complaints"), (snapshot)=>{
+  const complaintsSnap = await getDocs(collection(db,"complaints"));
+  const noticesSnap = await getDocs(collection(db,"notices"));
 
-    let resolved = 0;
+  let resolved = 0;
+  let pending = 0;
 
-    snapshot.forEach(doc=>{
-      const status = doc.data().status;
-      if(status && status.toLowerCase().trim() === "resolved"){
-        resolved++;
-      }
-    });
+  complaintsSnap.forEach(doc => {
 
-    document.getElementById("totalComplaints").textContent = snapshot.size;
-    document.getElementById("resolvedComplaints").textContent = resolved;
-    document.getElementById("pendingComplaints").textContent =
-      snapshot.size - resolved;
+    const status = doc.data().status?.toLowerCase().trim();
+
+    if(status === "resolved"){
+      resolved++;
+    }
+
+    if(
+      status === "submitted" ||
+      status === "accepted" ||
+      status === "in review"
+    ){
+      pending++;
+    }
+
   });
 
-  onSnapshot(collection(db,"notices"), (snapshot)=>{
-    document.getElementById("totalNotices").textContent =
-      snapshot.size;
-  });
+  document.getElementById("totalComplaints").textContent =
+    complaintsSnap.size;
+
+  document.getElementById("resolvedComplaints").textContent =
+    resolved;
+
+  document.getElementById("pendingComplaints").textContent =
+    pending;
+
+  document.getElementById("totalNotices").textContent =
+    noticesSnap.size;
 }
 
 loadDashboard();
+
+
+  
 async function loadWhatsNew(){
 
   const container = document.getElementById("whatsNewTicker");
