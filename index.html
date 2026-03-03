@@ -593,19 +593,22 @@ html {
 #leaderContainer{
   grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
 }
-.leaderContainer:hover .leader-photo img{
-  transform:translateY(-5px);
+.leader-feature:hover{
+  transform:translateY(-8px);
 }
 
-    
-    
+.leader-feature:hover .leader-photo img{
+  transform:scale(1.05);
+  transition:0.4s ease;
+}
+
 #bodyContainer,
 #employeeContainer{
-  display:flex;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:25px;
-  overflow-x:auto;
-  padding:10px 0 15px;
-  scroll-behavior:smooth;
+  max-width:1200px;
+  margin:auto;
 }
 
 #bodyContainer::-webkit-scrollbar,
@@ -673,17 +676,6 @@ html {
   margin:0;
 }
 
-.leader-card::before{
-  content:"";
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:80px;
-  background:linear-gradient(to bottom,#1e3a8a,#ffffff);
-  border-radius:18px 18px 0 0;
-}
-
 #bodyContainer .leader-normal{
   min-width:260px;
   flex-shrink:0;
@@ -706,26 +698,30 @@ html {
     
 .leader-normal{
   background:white;
-  border-radius:14px;
+  border-radius:16px;
   padding:20px;
-  display:flex;
-  align-items:center;
-  gap:18px;
+  text-align:center;
   box-shadow:0 10px 25px rgba(0,0,0,0.06);
   transition:0.3s ease;
+  min-width:220px;
 }
 
 .leader-normal:hover{
-  transform:translateY(-5px);
+  transform:translateY(-6px);
 }
 
 .leader-normal .leader-photo{
-  position:relative;
-  width:80px;
-  height:80px;
+  width:110px;
+  height:110px;
   border-radius:50%;
   overflow:hidden;
-  box-shadow:none;
+  margin:0 auto 15px;
+}
+
+.leader-normal .leader-photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
 .leader-normal .leader-info{
@@ -734,19 +730,16 @@ html {
 
 .employee-card{
   background:#f8fafc;
-  border-radius:10px;
+  border-radius:12px;
   padding:15px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  border:1px solid #e2e8f0;
+  text-align:center;
+  transition:0.3s ease;
+  min-width:180px;
 }
 
-.employee-card .leader-photo{
-  width:80px;
-  height:80px;
-  border-radius:50%;
-}    
+.employee-card:hover{
+  transform:translateY(-5px);
+}
     
 /* EVENTS */
 .events-grid{
