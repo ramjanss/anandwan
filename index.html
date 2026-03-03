@@ -302,9 +302,12 @@ html {
 }
 /* SECTION */
 .section{
-  padding:110px 60px;
-  width:100%;
-  box-sizing:border-box;
+  padding:110px 40px;
+}
+
+.section-inner{
+  max-width:1400px;
+  margin:auto;
 }
 
 .section h2{
@@ -1094,8 +1097,10 @@ html {
 </section>
 
 <section class="section" id="events">
-<h2>Recent Events</h2>
-<div id="eventsContainer" class="events-grid"></div>
+  <div class="section-inner">
+    <h2>Recent Events</h2>
+    <div id="eventsContainer"></div>
+  </div>
 </section>
 
 <section class="section" id="schemes">
