@@ -603,47 +603,42 @@ html {
 
 /* Card Design */
 
-.leader-card.sarpanch{
-  display:flex;
-  align-items:center;
-  gap:40px;
+.leader-sarpanch{
+  grid-column:1 / -1;
+  background:linear-gradient(135deg,#ffffff,#e0f2fe);
+  border-left:8px solid #15803d;
   padding:40px;
-  border-radius:24px;
-  background:linear-gradient(135deg,#eef2ff,#ffffff);
-  border-left:10px solid #15803d;
-  box-shadow:0 25px 60px rgba(0,0,0,0.15);
 }
 
-.leader-card.sarpanch .leader-photo{
-  width:160px;
-  height:160px;
+.leader-sarpanch .leader-photo{
+  width:150px;
+  height:150px;
   border:5px solid #15803d;
 }
 
-.leader-card.sarpanch h4{
-  font-size:28px;
-  font-weight:800;
+.leader-sarpanch h4{
+  font-size:26px;
 }
 
-.leader-card.upsarpanch{
-  padding:30px;
-  border-radius:20px;
-  background:white;
+.leader-sarpanch p{
+  font-size:17px;
+  font-weight:600;
+  color:#0f172a;
+}
+..leader-upsarpanch{
+  background:linear-gradient(135deg,#ffffff,#f1f5f9);
   border-left:6px solid #1e3a8a;
-  box-shadow:0 20px 45px rgba(0,0,0,0.12);
 }
 
-.leader-card.upsarpanch .leader-photo{
+.leader-upsarpanch .leader-photo{
   width:130px;
   height:130px;
   border:4px solid #1e3a8a;
 }
 
-.leader-card.upsarpanch h4{
+.leader-upsarpanch h4{
   font-size:22px;
-  font-weight:700;
 }
-
 .leader-card.gramsevak{
   padding:25px;
   border-radius:18px;
@@ -652,14 +647,20 @@ html {
   box-shadow:0 15px 35px rgba(0,0,0,0.08);
 }
 
-.leader-card.gramsevak .leader-photo{
-  width:110px;
-  height:110px;
-  border:3px solid #0f2f6f;
+.leader-gramsevak{
+  background:#f8fafc;
+  border-left:6px solid #f59e0b;
 }
 
-.leader-card.gramsevak h4{
-  font-size:20px;
+.leader-gramsevak .leader-photo{
+  width:120px;
+  height:120px;
+  border:4px solid #f59e0b;
+}
+
+.leader-standard{
+  background:white;
+  border-left:4px solid #cbd5e1;
 }
     
 .leader-card{
@@ -1339,18 +1340,18 @@ const employees=members.filter(m=>m.type==="employee");
 
 function buildCard(d){
 
-  let roleClass = "";
+  let roleClass = "leader-standard";
 
   const role = d.role?.toLowerCase() || "";
 
   if(role.includes("sarpanch")){
-    roleClass = "sarpanch";
+    roleClass = "leader-sarpanch";
   }
   else if(role.includes("upsarpanch")){
-    roleClass = "upsarpanch";
+    roleClass = "leader-upsarpanch";
   }
   else if(role.includes("gramsevak") || role.includes("village development officer") || role.includes("vdo")){
-    roleClass = "gramsevak";
+    roleClass = "leader-gramsevak";
   }
 
   return `
@@ -1371,7 +1372,6 @@ function buildCard(d){
   </div>
   `;
 }
-
 leaders.forEach(d=>leaderContainer.innerHTML+=buildCard(d));
 body.forEach(d=>bodyContainer.innerHTML+=buildCard(d));
 employees.forEach(d=>employeeContainer.innerHTML+=buildCard(d));
