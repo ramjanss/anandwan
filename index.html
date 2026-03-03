@@ -882,32 +882,37 @@ html {
 .gov-footer{
   background:#1e3a8a;
   color:white;
-  padding:50px 20px 20px;
+  padding:60px 20px 20px;
   font-family:'Noto Sans',sans-serif;
 }
 
 .footer-container{
-  max-width:100%;
+  max-width:1300px;
   margin:auto;
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
   gap:40px;
 }
 
 .footer-col h3{
-  margin-top:0;
   font-family:'Noto Serif',serif;
-  font-size:20px;
+  font-size:22px;
+  margin-bottom:15px;
 }
 
 .footer-col h4{
-  margin-bottom:10px;
-  font-size:16px;
+  font-size:17px;
+  margin-bottom:15px;
+  position:relative;
 }
 
-.footer-col p{
-  font-size:14px;
-  line-height:1.6;
+.footer-col h4::after{
+  content:"";
+  width:40px;
+  height:2px;
+  background:#fbbf24;
+  display:block;
+  margin-top:6px;
 }
 
 .footer-col ul{
@@ -917,24 +922,26 @@ html {
 }
 
 .footer-col ul li{
-  margin-bottom:8px;
+  margin-bottom:10px;
 }
 
 .footer-col a{
-  color:white;
+  color:#e2e8f0;
   text-decoration:none;
   font-size:14px;
+  transition:0.3s;
 }
 
 .footer-col a:hover{
-  text-decoration:underline;
+  color:white;
+  padding-left:5px;
 }
 
 .footer-bottom{
   text-align:center;
   border-top:1px solid rgba(255,255,255,0.3);
-  margin-top:30px;
-  padding-top:15px;
+  margin-top:40px;
+  padding-top:20px;
   font-size:13px;
 }
 
@@ -1593,11 +1600,7 @@ padding:20px;
 
     <!-- Column 1 -->
     <div class="footer-col">
-     <h3
-  data-en="Gram Panchayat Wandhali"
-  data-mr="ग्रामपंचायत वंधली">
-  Gram Panchayat Wandhali
-</h3>
+      <h3>Gram Panchayat Wandhali</h3>
       <p>
         Official Digital Governance Portal providing
         transparent services, grievance redressal,
@@ -1607,24 +1610,26 @@ padding:20px;
 
     <!-- Column 2 -->
     <div class="footer-col">
-      <h4>Quick Links</h4>
+      <h4>Important Links</h4>
       <ul>
-        <li><a href="about.html">About Village</a></li>
-        <li><a href="members.html">Leadership</a></li>
+        <li><a href="members.html">Leadership & Administration</a></li>
         <li><a href="schemes.html">Government Schemes</a></li>
-        <li><a href="events.html#events">Events</a></li>
-        <li><a href="index.html#gallery">Gallery</a></li>
+        <li><a href="events.html">Events & Activities</a></li>
+        <li><a href="notices.html">Public Notices</a></li>
+        <li><a href="complaint.html">Register Complaint</a></li>
+        <li><a href="track.html">Track Complaint</a></li>
       </ul>
     </div>
 
     <!-- Column 3 -->
     <div class="footer-col">
-      <h4>Citizen Services</h4>
+      <h4>Government Important Websites</h4>
       <ul>
-        <li><a href="complaint.html">Register Complaint</a></li>
-        <li><a href="track.html">Track Complaint</a></li>
-        <li><a href="notices.html">Public Notices</a></li>
-        <li><a href="contact.html">Contact Office</a></li>
+        <li><a href="https://www.india.gov.in" target="_blank">National Portal of India</a></li>
+        <li><a href="https://maharashtra.gov.in" target="_blank">Government of Maharashtra</a></li>
+        <li><a href="https://rdd.maharashtra.gov.in" target="_blank">Rural Development Dept.</a></li>
+        <li><a href="https://panchayat.gov.in" target="_blank">Ministry of Panchayati Raj</a></li>
+        <li><a href="https://uidai.gov.in" target="_blank">UIDAI (Aadhaar)</a></li>
       </ul>
     </div>
 
@@ -1646,13 +1651,13 @@ padding:20px;
   </div>
 
   <div class="footer-bottom">
-  © <span id="footerYear"></span> Gram Panchayat Wandhali |
-  Last Updated: <span id="footerUpdated"></span>
-  <br>
-  <span class="developer-credit">
-    Developed by <strong>Ramko Associates</strong>
-  </span>
-</div>
+    © <span id="footerYear"></span> Gram Panchayat Wandhali |
+    Last Updated: <span id="footerUpdated"></span>
+    <br>
+    <span class="developer-credit">
+      Developed by <strong>Ramko Associates</strong>
+    </span>
+  </div>
 
 </footer>
 <script>
