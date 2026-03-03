@@ -1189,47 +1189,7 @@ setInterval(slideHero, 4000);
 
 /* DASHBOARD */
 
- async function loadDashboard(){
-
-  const complaintsSnap = await getDocs(collection(db,"complaints"));
-  const noticesSnap = await getDocs(collection(db,"notices"));
-
-  let resolved = 0;
-  let pending = 0;
-  let rejected = 0;
-
-  complaintsSnap.forEach(doc => {
-
-    const status = doc.data().status?.toLowerCase().trim();
-
-    if(status === "resolved"){
-      resolved++;
-    }
-    else if(status === "rejected"){
-      rejected++;
-    }
-    else{
-      pending++;
-    }
-
-  });
-
-  document.getElementById("totalComplaints").textContent =
-    complaintsSnap.size;
-
-  document.getElementById("resolvedComplaints").textContent =
-    resolved;
-
-  document.getElementById("pendingComplaints").textContent =
-    pending;
-
-  document.getElementById("totalNotices").textContent = noticesSnap.size;
- document.getElementById("rejectedComplaints").textContent = rejected;  
-}
-
-loadDashboard();
-
-  function animateCounter(id, target){
+ function animateCounter(id, target){
   let count = 0;
   const speed = 20;
   const increment = Math.ceil(target / 30);
@@ -1249,6 +1209,8 @@ animateCounter("pendingComplaints", pending);
 animateCounter("rejectedComplaints", rejected);
 animateCounter("totalNotices", noticesSnap.size);
   
+
+ 
 async function loadWhatsNew(){
 
   const container = document.getElementById("whatsNewTicker");
