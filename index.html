@@ -1084,18 +1084,35 @@ function slideHero(){
 setInterval(slideHero, 4000);
 
 /* DASHBOARD */
-async function loadDashboard(){
-const complaints=await getDocs(collection(db,"complaints"));
-const notices=await getDocs(collection(db,"notices"));
-let resolved=0;
-complaints.forEach(d=>{if(d.data().status==="Resolved")resolved++;});
-document.getElementById("totalComplaints").textContent=complaints.size;
-document.getElementById("resolvedComplaints").textContent=resolved;
-document.getElementById("pendingComplaints").textContent=complaints.size-resolved;
-document.getElementById("totalNotices").textContent=notices.size;
-}
-loadDashboard();
+import { onSnapshot } from 
+"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+function loadDashboard(){
+
+  onSnapshot(collection(db,"complaints"), (snapshot)=>{
+
+    let resolved = 0;
+
+    snapshot.forEach(doc=>{
+      const status = doc.data().status;
+      if(status && status.toLowerCase().trim() === "resolved"){
+        resolved++;
+      }
+    });
+
+    document.getElementById("totalComplaints").textContent = snapshot.size;
+    document.getElementById("resolvedComplaints").textContent = resolved;
+    document.getElementById("pendingComplaints").textContent =
+      snapshot.size - resolved;
+  });
+
+  onSnapshot(collection(db,"notices"), (snapshot)=>{
+    document.getElementById("totalNotices").textContent =
+      snapshot.size;
+  });
+}
+
+loadDashboard();
 async function loadWhatsNew(){
 
   const container = document.getElementById("whatsNewTicker");
