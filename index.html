@@ -593,7 +593,12 @@ html {
 #leaderContainer{
   grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
 }
+.leaderContainer:hover .leader-photo img{
+  transform:translateY(-5px);
+}
 
+    
+    
 #bodyContainer,
 #employeeContainer{
   display:flex;
@@ -644,9 +649,6 @@ html {
   width:100%;
   height:100%;
   object-fit:cover;
-}
-.leader-feature:hover .leader-photo img{
-  transform:translateY(-5px);
 }
 
 
