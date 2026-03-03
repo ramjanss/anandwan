@@ -335,8 +335,9 @@ html {
 
 .transparency-grid{
   display:grid;
-  grid-template-columns:repeat(5, 1fr);
+  grid-template-columns:repeat(5, minmax(0,1fr));
   gap:30px;
+  width:100%;
 }
 
 /* Tablet */
@@ -363,6 +364,7 @@ html {
   box-shadow:0 15px 35px rgba(0,0,0,0.15);
   transition:0.3s ease;
   min-height:120px;
+  width:100%;
 }
 
 .stat-card.rejected .stat-icon{
