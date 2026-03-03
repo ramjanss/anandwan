@@ -582,21 +582,17 @@ html {
 
 /* Grid Layout */
 
-#leaderContainer{
+#leaderContainer,
+#bodyContainer,
+#employeeContainer{
   display:grid;
-  gap:40px;
+  gap:28px;
 }
 
 #leaderContainer{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:40px;
+  grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
 }
 
-.leader-feature{
-  min-height:260px;
-}    
-    
 #bodyContainer{
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
 }
@@ -608,49 +604,30 @@ html {
 /* Card Design */
 
 .leader-card{
+  background:white;
+  border-radius:16px;
+  padding:22px;
   display:flex;
   align-items:center;
-  gap:30px;
-  background:white;
-  border-radius:12px;
-  overflow:hidden;
-  box-shadow:0 15px 40px rgba(0,0,0,0.08);
-  transition:0.3s ease;
+  gap:18px;
+  border:1px solid #e2e8f0;
+  transition:all 0.3s ease;
 }
 
 .leader-card:hover{
   transform:translateY(-6px);
+  box-shadow:0 15px 35px rgba(0,0,0,0.08);
 }
+
+/* Photo */
 
 .leader-photo{
-  width:220px;
-  height:260px;
-  border-radius:0;
+  width:80px;
+  height:80px;
+  border-radius:50%;
   overflow:hidden;
+  border:3px solid #1e3a8a;
   flex-shrink:0;
-}
-
-.leader-photo img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.leader-info{
-  padding-right:20px;
-}
-
-.leader-info h4{
-  margin:0 0 10px;
-  font-size:26px;
-  font-weight:700;
-  color:#0f172a;
-}
-
-.leader-info p{
-  margin:0 0 15px;
-  font-size:17px;
-  color:#475569;
 }
 
 #leaderContainer .leader-photo{
@@ -662,6 +639,21 @@ html {
   width:100%;
   height:100%;
   object-fit:cover;
+}
+
+/* Text Info */
+
+.leader-info h4{
+  margin:0 0 6px;
+  font-size:17px;
+  font-weight:600;
+  color:#111827;
+}
+
+.leader-info p{
+  margin:0;
+  font-size:14px;
+  color:#64748b;
 }
 
 /* Contact Button */
@@ -680,11 +672,6 @@ html {
 
 .contact-btn:hover{
   background:#162f6a;
-}
-
-.leader-card:first-child{
-  background:linear-gradient(135deg,#ffffff,#eef2ff);
-  border-left:8px solid #15803d;
 }
 /* EVENTS */
 .events-grid{
@@ -1288,19 +1275,8 @@ const body=members.filter(m=>m.type==="body");
 const employees=members.filter(m=>m.type==="employee");
 
 function buildCard(d){
-
-  let roleClass = "leader-standard";
-
-  const role = d.role?.toLowerCase() || "";
-
- if(role.includes("sarpanch") ||
-   role.includes("upsarpanch") ||
-   role.includes("village development officer") ||
-   role.includes("vdo")){
-  roleClass = "leader-feature";
-}
   return `
-  <div class="leader-card ${roleClass}">
+  <div class="leader-card">
     <div class="leader-photo">
       <img src="${d.photoUrl || 'assets/default-user.png'}">
     </div>
@@ -1317,6 +1293,7 @@ function buildCard(d){
   </div>
   `;
 }
+
 leaders.forEach(d=>leaderContainer.innerHTML+=buildCard(d));
 body.forEach(d=>bodyContainer.innerHTML+=buildCard(d));
 employees.forEach(d=>employeeContainer.innerHTML+=buildCard(d));
