@@ -316,10 +316,22 @@ html {
 /* ===== TRANSPARENCY DASHBOARD ===== */
 
 .transparency-section{
-  background:#0f2f6f;
-  padding:70px 20px;
+  background:linear-gradient(135deg,#0f2f6f,#1e3a8a);
+  padding:90px 20px;
+  position:relative;
+  overflow:hidden;
 }
 
+.transparency-section::before{
+  content:"";
+  position:absolute;
+  width:500px;
+  height:500px;
+  background:rgba(255,255,255,0.05);
+  border-radius:50%;
+  top:-150px;
+  right:-150px;
+}
 .transparency-container{
   max-width:1200px;
   margin:auto;
@@ -362,33 +374,91 @@ html {
   flex:1;
   min-width:0;
   max-width:240px;
-  background:white;
-  border-radius:14px;
-  padding:25px;
+  background:rgba(255,255,255,0.95);
+  backdrop-filter:blur(8px);
+  border-radius:18px;
+  padding:28px;
   display:flex;
   align-items:center;
   gap:20px;
-  box-shadow:0 15px 35px rgba(0,0,0,0.15);
-  transition:0.3s ease;
+  box-shadow:0 20px 40px rgba(0,0,0,0.15);
+  transition:all 0.35s ease;
+  position:relative;
+  overflow:hidden;
+}
+
+.stat-card::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:0;
+  height:4px;
+  width:100%;
+  background:linear-gradient(90deg,#2563eb,#16a34a);
+  opacity:0;
+  transition:0.3s;
+}
+
+.stat-card:hover{
+  transform:translateY(-8px);
+  box-shadow:0 25px 60px rgba(0,0,0,0.25);
+}
+
+.stat-card:hover::after{
+  opacity:1;
 }
 
 .stat-card.rejected .stat-icon{
   background:#dc2626;
 }    
-.stat-card:hover{
-  transform:translateY(-6px);
-}
 .stat-icon{
-  font-size:30px;
-  width:55px;
-  height:55px;
+  font-size:26px;
+  width:60px;
+  height:60px;
   display:flex;
   align-items:center;
   justify-content:center;
-  border-radius:12px;
+  border-radius:16px;
   color:white;
+  box-shadow:0 8px 20px rgba(0,0,0,0.2);
 }
 
+.stat-info h3{
+  margin:0;
+  font-size:34px;
+  font-weight:800;
+  letter-spacing:1px;
+}
+
+.stat-info p{
+  margin-top:6px;
+  font-size:13px;
+  font-weight:500;
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+  opacity:0.7;
+}
+
+.stat-card.total .stat-icon{
+  background:linear-gradient(135deg,#2563eb,#3b82f6);
+}
+
+.stat-card.resolved .stat-icon{
+  background:linear-gradient(135deg,#16a34a,#22c55e);
+}
+
+.stat-card.pending .stat-icon{
+  background:linear-gradient(135deg,#f59e0b,#f97316);
+}
+
+.stat-card.rejected .stat-icon{
+  background:linear-gradient(135deg,#dc2626,#ef4444);
+}
+
+.stat-card.notices .stat-icon{
+  background:linear-gradient(135deg,#f59e0b,#fbbf24);
+}
+    
 /* Color Variations */
 .stat-card.total .stat-icon{
   background:#2563eb;
@@ -1159,6 +1229,25 @@ setInterval(slideHero, 4000);
 
 loadDashboard();
 
+  function animateCounter(id, target){
+  let count = 0;
+  const speed = 20;
+  const increment = Math.ceil(target / 30);
+
+  const interval = setInterval(()=>{
+    count += increment;
+    if(count >= target){
+      count = target;
+      clearInterval(interval);
+    }
+    document.getElementById(id).textContent = count;
+  }, speed);
+}
+animateCounter("totalComplaints", complaintsSnap.size);
+animateCounter("resolvedComplaints", resolved);
+animateCounter("pendingComplaints", pending);
+animateCounter("rejectedComplaints", rejected);
+animateCounter("totalNotices", noticesSnap.size);
   
 async function loadWhatsNew(){
 
