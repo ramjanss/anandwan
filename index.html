@@ -855,6 +855,37 @@ html {
   padding-top:15px;
   font-size:13px;
 }
+
+/* ===== HEADING MICRO ANIMATION ===== */
+
+.section h2{
+  opacity:0;
+  transform:translateY(30px);
+  transition:all 0.8s ease;
+}
+
+/* When visible */
+.section h2.reveal{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* Underline animation */
+.section h2::after{
+  content:"";
+  width:0;
+  height:4px;
+  background:linear-gradient(90deg,#1e3a8a,#15803d);
+  display:block;
+  margin:18px auto 0;
+  border-radius:4px;
+  transition:width 0.8s ease;
+}
+
+.section h2.reveal::after{
+  width:120px;
+}
+    
 </style>
 </head>
 
@@ -1560,6 +1591,24 @@ document.getElementById("langToggle").onclick = function(){
   this.textContent = currentLang === "en" ? "मराठी" : "English";
 };
 </script>  
+
+ <script>
+const headings = document.querySelectorAll(".section h2");
+
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add("reveal");
+    }
+  });
+},{
+  threshold:0.2
+});
+
+headings.forEach(h=>{
+  observer.observe(h);
+});
+</script> 
   
 </body>
 </html>
