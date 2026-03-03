@@ -582,11 +582,9 @@ html {
 
 /* Grid Layout */
 
-#leaderContainer,
-#bodyContainer,
-#employeeContainer{
+#leaderContainer{
   display:grid;
-  gap:28px;
+  gap:40px;
 }
 
 #leaderContainer{
@@ -605,6 +603,65 @@ html {
 
 /* Card Design */
 
+.leader-card.sarpanch{
+  display:flex;
+  align-items:center;
+  gap:40px;
+  padding:40px;
+  border-radius:24px;
+  background:linear-gradient(135deg,#eef2ff,#ffffff);
+  border-left:10px solid #15803d;
+  box-shadow:0 25px 60px rgba(0,0,0,0.15);
+}
+
+.leader-card.sarpanch .leader-photo{
+  width:160px;
+  height:160px;
+  border:5px solid #15803d;
+}
+
+.leader-card.sarpanch h4{
+  font-size:28px;
+  font-weight:800;
+}
+
+.leader-card.upsarpanch{
+  padding:30px;
+  border-radius:20px;
+  background:white;
+  border-left:6px solid #1e3a8a;
+  box-shadow:0 20px 45px rgba(0,0,0,0.12);
+}
+
+.leader-card.upsarpanch .leader-photo{
+  width:130px;
+  height:130px;
+  border:4px solid #1e3a8a;
+}
+
+.leader-card.upsarpanch h4{
+  font-size:22px;
+  font-weight:700;
+}
+
+.leader-card.gramsevak{
+  padding:25px;
+  border-radius:18px;
+  background:#f8fafc;
+  border-left:5px solid #0f2f6f;
+  box-shadow:0 15px 35px rgba(0,0,0,0.08);
+}
+
+.leader-card.gramsevak .leader-photo{
+  width:110px;
+  height:110px;
+  border:3px solid #0f2f6f;
+}
+
+.leader-card.gramsevak h4{
+  font-size:20px;
+}
+    
 .leader-card{
   background:white;
   border-radius:20px;
@@ -1281,8 +1338,23 @@ const body=members.filter(m=>m.type==="body");
 const employees=members.filter(m=>m.type==="employee");
 
 function buildCard(d){
+
+  let roleClass = "";
+
+  const role = d.role?.toLowerCase() || "";
+
+  if(role.includes("sarpanch")){
+    roleClass = "sarpanch";
+  }
+  else if(role.includes("upsarpanch")){
+    roleClass = "upsarpanch";
+  }
+  else if(role.includes("gramsevak") || role.includes("village development officer") || role.includes("vdo")){
+    roleClass = "gramsevak";
+  }
+
   return `
-  <div class="leader-card">
+  <div class="leader-card ${roleClass}">
     <div class="leader-photo">
       <img src="${d.photoUrl || 'assets/default-user.png'}">
     </div>
