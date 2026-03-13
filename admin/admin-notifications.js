@@ -4,7 +4,7 @@ from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 let previousUnreadCount = 0;
 
-const GP_ID = "wandhali";
+const GP_ID = "anandwangp";
 
 export function initAdminNotifications() {
 
@@ -13,7 +13,7 @@ export function initAdminNotifications() {
 
   const q = query(
     collection(db,"contactMessages"),
-    where("gpId","==",GP_ID),
+    where("gpid","==",GP_ID),
     orderBy("createdAt","desc")
   );
 
