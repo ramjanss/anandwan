@@ -16,6 +16,8 @@ import {
   getDownloadURL
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
+const GP_ID = "wandhali";
+
 const storage = getStorage();
 
 const form = document.getElementById("memberForm");
@@ -43,7 +45,8 @@ form.addEventListener("submit", async (e) => {
     phone,
     type,
     order,
-    photoUrl
+    photoUrl,
+    gpid: GP_ID
   });
 
   alert("Member Added Successfully!");
@@ -56,7 +59,13 @@ form.addEventListener("submit", async (e) => {
 async function loadMembers() {
   membersList.innerHTML = "";
 
-  const q = query(collection(db, "members"), orderBy("order"));
+  import { where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const q = query(
+  collection(db, "members"),
+  where("gpid","==",GP_ID),
+  orderBy("order")
+);
   const snapshot = await getDocs(q);
 
   snapshot.forEach(docSnap => {
