@@ -1283,9 +1283,9 @@ html {
 
 <script type="module">
 import { db } from "./js/firebase.js";
-import { collection, getDocs, query, orderBy }
+import { collection, getDocs, query, orderBy, where }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
+const GP_ID = "wandhali";
 /* HERO */
 const slider = document.getElementById("heroSlider");
 const totalSlides = document.querySelectorAll(".hero-slide").length;
@@ -1308,7 +1308,9 @@ setInterval(slideHero, 4000);
 
  async function loadDashboard(){
 
-  const complaintsSnap = await getDocs(collection(db,"complaints"));
+  const complaintsSnap = await getDocs(
+  query(collection(db,"complaints"), where("gpid","==",GP_ID))
+);
   const noticesSnap = await getDocs(collection(db,"notices"));
 
   let resolved = 0;
@@ -1353,9 +1355,11 @@ async function loadWhatsNew(){
   container.innerHTML = "";
 
   const snap = await getDocs(
-    query(collection(db,"notices"), orderBy("createdAt","desc"))
-  );
-
+   query(
+  collection(db,"notices"),
+  where("gpid","==",GP_ID),
+  orderBy("createdAt","desc")
+)
   if(snap.empty){
     container.innerHTML = "No new updates.";
     return;
@@ -1383,7 +1387,12 @@ async function loadWhatsNew(){
 loadWhatsNew();  
 /* LEADERSHIP WITH PHOTOS */
 async function loadLeadership(){
-const snap=await getDocs(collection(db,"members"));
+const q = query(
+  collection(db,"members"),
+  where("gpid","==",GP_ID)
+);
+
+const snap = await getDocs(q);
 
 const leaderContainer=document.getElementById("leaderContainer");
 const bodyContainer=document.getElementById("bodyContainer");
@@ -1448,7 +1457,11 @@ async function loadEvents(){
 const container=document.getElementById("eventsContainer");
 container.innerHTML="";
 
-const q=query(collection(db,"events"),orderBy("eventDate","desc"));
+const q=query(
+  collection(db,"events"),
+  where("gpid","==",GP_ID),
+  orderBy("eventDate","desc")
+)
 const snap=await getDocs(q);
 
 let count=0;
@@ -1489,7 +1502,11 @@ async function loadSchemes(){
   container.innerHTML = "";
 
   const snap = await getDocs(
-    query(collection(db,"schemes"), orderBy("updatedAt","desc"))
+    query(
+  collection(db,"schemes"),
+  where("gpid","==",GP_ID),
+  orderBy("updatedAt","desc")
+)
   );
 
   if(snap.empty){
@@ -1532,7 +1549,9 @@ async function loadGallery(){
   const container = document.getElementById("galleryContainer");
   container.innerHTML = "";
 
-  const snap = await getDocs(collection(db,"gallery"));
+  const snap = await getDocs(
+  query(collection(db,"gallery"), where("gpid","==",GP_ID))
+)
 
   let images = [];
 
