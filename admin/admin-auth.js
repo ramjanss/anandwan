@@ -1,45 +1,27 @@
-import { db } from "../js/firebase.js";
-import { collection, onSnapshot, query, orderBy, where }
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { auth } from "../js/firebase.js";
+import { onAuthStateChanged, signOut } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-let previousUnreadCount = 0;
+const allowedAdminEmail = "ramjansocial@gmail.com";
 
-const GP_ID = "anandwangp";
+onAuthStateChanged(auth, (user)=>{
+  if(!user){
+    window.location.href = "../login.html";
+    return;
+  }
 
-export function initAdminNotifications() {
+  if(!user.email || user.email.toLowerCase() !== allowedAdminEmail.toLowerCase()){
+    alert("Access Denied");
+    window.location.href = "../index.html";
+  }
+});
 
-  const badge = document.getElementById("sidebarUnreadBadge");
-  const sound = new Audio("../assets/notification.mp3");
+// Logout button handler
+const logoutBtn = document.getElementById("logoutBtn");
 
-  const q = query(
-    collection(db,"contactMessages"),
-    where("gpid","==",GP_ID),
-    orderBy("createdAt","desc")
-  );
-
-  onSnapshot(q, (snapshot)=>{
-
-    let unreadCount = 0;
-
-    snapshot.forEach(doc=>{
-      if(doc.data().status === "unread"){
-        unreadCount++;
-      }
-    });
-
-    // Update badge
-    if(badge){
-      badge.textContent = unreadCount;
-      badge.style.display = unreadCount > 0 ? "inline-block" : "none";
-    }
-
-    // Play sound if new unread message arrives
-    if(unreadCount > previousUnreadCount){
-      sound.play();
-    }
-
-    previousUnreadCount = unreadCount;
-
+if(logoutBtn){
+  logoutBtn.addEventListener("click", async ()=>{
+    await signOut(auth);
+    window.location.href = "../login.html";
   });
-
 }
