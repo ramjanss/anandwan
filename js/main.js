@@ -5,7 +5,6 @@ import {
   query,
   orderBy
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-const GP_ID = "wandhali";
 /* ================= LOAD MEMBERS ================= */
 
 async function loadMembers() {
@@ -17,13 +16,8 @@ async function loadMembers() {
 
   if (!sarpanchBlock) return;
 
-  const q = query(
-  collection(db,"members"),
-  where("gpid","==",GP_ID)
-);
+  const snapshot = await getDocs(collection(db, "members"));
 
-const snapshot = await getDocs(q);
-  
   let members = [];
   snapshot.forEach(docSnap => {
     members.push(docSnap.data());
@@ -104,19 +98,9 @@ async function loadDashboardStats(){
 
   try {
 
-   const complaintQuery = query(
-  collection(db,"complaints"),
-  where("gpid","==",GP_ID)
-);
+    const complaintSnap = await getDocs(collection(db, "complaints"));
+    const noticeSnap = await getDocs(collection(db, "notices"));
 
-const noticeQuery = query(
-  collection(db,"notices"),
-  where("gpid","==",GP_ID)
-);
-
-const complaintSnap = await getDocs(complaintQuery);
-const noticeSnap = await getDocs(noticeQuery);
-    
     let totalComplaints = complaintSnap.size;
     let resolvedCount = 0;
     let pendingCount = 0;
