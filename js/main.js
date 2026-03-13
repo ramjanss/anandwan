@@ -19,7 +19,7 @@ async function loadMembers() {
 
   const q = query(
   collection(db,"members"),
-  where("gpId","==",GP_ID)
+  where("gpid","==",GP_ID)
 );
 
 const snapshot = await getDocs(q);
@@ -106,12 +106,12 @@ async function loadDashboardStats(){
 
    const complaintQuery = query(
   collection(db,"complaints"),
-  where("gpId","==",GP_ID)
+  where("gpid","==",GP_ID)
 );
 
 const noticeQuery = query(
   collection(db,"notices"),
-  where("gpId","==",GP_ID)
+  where("gpid","==",GP_ID)
 );
 
 const complaintSnap = await getDocs(complaintQuery);
