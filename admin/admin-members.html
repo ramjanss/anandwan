@@ -82,12 +82,13 @@ button{
 <script type="module">
 
 import { db, storage } from "../js/firebase.js";
-import { collection, addDoc, getDocs, deleteDoc, doc }
+import { collection, addDoc, getDocs, deleteDoc, doc, query, where }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 import { ref, uploadBytes, getDownloadURL, deleteObject }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
+const GP_ID = "wandhali";
 const memberList = document.getElementById("memberList");
 const msg = document.getElementById("msg");
 
@@ -116,12 +117,12 @@ document.getElementById("addBtn").onclick = async () => {
     }
 
     await addDoc(collection(db,"members"),{
-      name,
-      role,
-      type,
-      photoUrl,
-      createdAt: new Date()
-    });
+  name: name,
+  role: role,
+  type: type,
+  photoUrl: photoUrl,
+  gpid: GP_ID
+});
 
     msg.textContent = "Member added successfully ✅";
 
@@ -143,7 +144,12 @@ async function loadMembers(){
 
   memberList.innerHTML = "Loading...";
 
-  const snap = await getDocs(collection(db,"members"));
+ const q = query(
+  collection(db,"members"),
+  where("gpid","==",GP_ID)
+);
+
+const snap = await getDocs(q);
 
   if(snap.empty){
     memberList.innerHTML = "<p>No members found.</p>";
