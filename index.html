@@ -1,430 +1,1172 @@
-<!doctype html>
-<html lang="mr">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ग्रामपंचायत वंधली (Wandhali)</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <style>
-    :root{--accent:#0b5ed7;--muted:#6b7280;--bg:#f9fafb}
-    body{margin:0;font-family:'Noto Sans',system-ui,sans-serif;background:var(--bg);color:#111}
-    header.hero{position:relative;height:280px;display:flex;align-items:center;justify-content:center;color:#fff;background:url('images/banner.jpg') center/cover}
-    header.hero::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,0.38)}
-    header.hero .content{position:relative;z-index:1;text-align:center}
-    header.hero h1{font-size:32px;margin:0;font-weight:700}
-    header.hero p{margin:6px 0 0}
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gram Panchayat Wandhali
+<p class="official-badge">Official Website of Gram Panchayat Wandhali</p>
+</title>
 
-    nav{background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.1);padding:10px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
-    nav a{margin-left:12px;text-decoration:none;color:var(--accent);font-weight:600}
-    .wrap{max-width:1100px;margin:0 auto;padding:20px}
-    h2{margin-top:28px;font-size:22px;color:var(--accent)}
-
-    /* rotating ring + thumbnails */
-    .thumb-card{display:flex;gap:12px;align-items:center}
-    .rotor{position:relative; width:2in; height:2in; display:inline-block; flex-shrink:0}
-    .rotor .thumb{width:1.80in;height:1.80in;border-radius:50%;object-fit:cover;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:1;box-shadow:0 1px 16px rgba(16,24,40,0.08)}
-    .rotor .ring{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:2.2in;height:2.2in;z-index:2;pointer-events:none;animation:ring-rotate 6s linear infinite}
-    @keyframes ring-rotate{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
-
-    /* member grid */
-    .member-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:10px}
-    .member{display:flex;align-items:center;gap:10px;background:#fff;padding:10px;border-radius:10px;box-shadow:0 1px 6px rgba(16,24,40,0.04)}
-    .member img{width:64px;height:64px;border-radius:8px;object-fit:cover}
-    .mname{font-weight:600;font-size:14px}
-    .msub{font-size:13px;color:var(--muted)}
-
-    /* notices auto-scroll */
-    .notice-container{height:120px;overflow:hidden;position:relative;background:#fff;padding:10px;border-radius:10px;box-shadow:0 1px 6px rgba(0,0,0,0.05)}
-    .notice-list{list-style:none;padding:0;margin:0;animation:scroll-up 12s linear infinite}
-    .notice-list li{margin-bottom:6px;font-size:14px}
-    .notice-list li a{text-decoration:none;color:var(--accent)}
-    .notice-container:hover .notice-list{animation-play-state:paused}
-    @keyframes scroll-up{0%{transform:translateY(0)}100%{transform:translateY(-50%)}}
-
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-/* ==== Horizontal Scroll Container ==== */
-.schemes-wrapper {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  padding: 20px 0;
+
+/* ================= ROOT ================= */
+
+:root{
+  --gov-blue:#1e3a8a;
+  --gov-green:#15803d;
+  --gov-saffron:#f97316;
+  --light-bg:#f4f6fb;
+  --soft-blue:#eef2ff;
 }
 
-/* Scrollable Container */
-.schemes-container {
-  display: flex;
-  gap: 20px;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  padding: 0 40px; /* space for arrows */
+body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background:white;
+  color:#1f2937;
+  line-height:1.6;
 }
 
-/* Hide scrollbar */
-.schemes-container::-webkit-scrollbar { display: none; }
+ .official-badge{
+  font-size:12px;
+  color:#64748b;
+  letter-spacing:0.5px;
+  margin-top:4px;
+} 
+/* ================= HEADER ================= */
 
-/* Individual Scheme Card */
-.scheme {
-  flex: 0 0 250px; /* width of each card */
-  background: #f9fafb;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 20px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
-  transition: 0.3s ease;
-  font-family: "Noto Sans Devanagari", sans-serif;
+  /* ===== TRICOLOR STRIP ===== */
+
+.gov-strip{
+  height:6px;
+  background: linear-gradient(
+    to right,
+    #ff9933 33%,
+    white 33% 66%,
+    #138808 66%
+  );
+}
+  
+/* ===== GOVERNMENT HEADER ===== */
+
+.gov-header{
+  background:#f8fafc;
+  padding:20px 5%;
+  border-bottom:1px solid #e2e8f0;
+  box-shadow:0 4px 8px rgba(0,0,0,0.04);
 }
 
-.scheme:hover {
-  background: #ffffff;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
-  transform: translateY(-4px);
+.gov-logos{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:40px;
+  flex-wrap:wrap;
+  text-align:center;
 }
 
-/* Scheme Title */
-.scheme h4 { font-size: 18px; color: #1a237e; margin-bottom: 8px; }
-.scheme p { font-size: 14px; color: #333; line-height: 1.5; margin: 5px 0; }
-.scheme ul { margin-left: 18px; list-style-type: "✅ "; }
-.scheme li { margin: 4px 0; font-size: 14px; }
-.scheme a { color: #0d47a1; text-decoration: none; font-weight: bold; }
-.scheme a:hover { text-decoration: underline; }
-
-/* Color Themes */
-.scheme:nth-child(1) { border-top: 5px solid #2196f3; background: #e3f2fd; }
-.scheme:nth-child(2) { border-top: 5px solid #4caf50; background: #e8f5e9; }
-.scheme:nth-child(3) { border-top: 5px solid #ff9800; background: #fff3e0; }
-.scheme:nth-child(4) { border-top: 5px solid #9c27b0; background: #f3e5f5; }
-.scheme:nth-child(5) { border-top: 5px solid #00bcd4; background: #e0f7fa; }
-.scheme:nth-child(6) { border-top: 5px solid #ffc107; background: #fff8e1; }
-
-/* Arrows */
-.scroll-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0,0,0,0.5);
-  color: #fff;
-  border: none;
-  font-size: 24px;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 50%;
-  z-index: 10;
+.gov-logos img{
+  height:70px;
+  object-fit:contain;
 }
-.scroll-left { left: 10px; }
-.scroll-right { right: 10px; }
+
+.gov-title h2{
+  font-size:16px;
+  color:#1e3a8a;
+  margin:0;
+  font-weight:600;
+}
+
+.gov-title h1{
+  font-size:26px;
+  margin:5px 0;
+  color:#111827;
+}
+
+.gov-title p{
+  font-size:14px;
+  color:#475569;
+  margin:0;
+}
+
+.header{
+  background:var(--gov-blue);
+  color:white;
+  padding:10px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.header-left{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.header-left img{
+  height:55px;
+}
+
+.header h1{
+  margin:0;
+  font-size:18px;
+  font-weight:600;
+  letter-spacing:0.5px;
+}
+
+.nav{
+  display:flex;
+  gap:25px;
+}
+
+.nav a{
+  color:white;
+  text-decoration:none;
+  font-size:14px;
+  font-weight:500;
+}
+
+/* Tricolor strip */
+.tricolor{
+  height:6px;
+  background:linear-gradient(to right,
+    var(--gov-saffron) 33%,
+    white 33% 66%,
+    var(--gov-green) 66%);
+}
+
+/* ================= HERO ================= */
+
+.hero{
+  position:relative;
+  height:460px;
+  overflow:hidden;
+  color:white;
+}
+
+.slides{
+  position:absolute;
+  width:100%;
+  height:100%;
+}
+
+.slide{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background-size:cover;
+  background-position:center;
+  opacity:0;
+  transition:opacity 1s ease-in-out;
+}
+
+.slide.active{
+  opacity:1;
+}
+
+/* ================= HERO SECTION ================= */
+
+.hero{
+  position:relative;
+  height:85vh;
+  background:url("assets/slide1.jpg") center/cover no-repeat;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:white;
+}
+
+.hero-overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    rgba(0,0,0,0.55),
+    rgba(0,0,0,0.65)
+  );
+}
+
+.hero-content{
+  position:relative;
+  max-width:900px;
+  padding:20px;
+  z-index:2;
+}
+
+.hero h1{
+  font-size:42px;
+  font-weight:700;
+  margin-bottom:12px;
+  letter-spacing:1px;
+}
+
+.hero h2{
+  font-size:20px;
+  font-weight:500;
+  margin-bottom:18px;
+  color:#e2e8f0;
+}
+
+.hero p{
+  font-size:15px;
+  line-height:1.7;
+  margin-bottom:30px;
+  color:#f1f5f9;
+}
+
+.hero-buttons{
+  display:flex;
+  justify-content:center;
+  gap:18px;
+  flex-wrap:wrap;
+}
+
+.hero-btn{
+  padding:12px 22px;
+  border-radius:6px;
+  font-size:14px;
+  text-decoration:none;
+  transition:0.3s ease;
+}
+
+.hero-btn.primary{
+  background:#1e3a8a;
+  color:white;
+}
+
+.hero-btn.primary:hover{
+  background:#142e6e;
+}
+
+.hero-btn.secondary{
+  border:1px solid white;
+  color:white;
+}
+
+.hero-btn.secondary:hover{
+  background:white;
+  color:#1e3a8a;
+}
 
 /* Responsive */
-@media (max-width: 768px) {
-  .scheme { flex: 0 0 200px; padding: 15px; }
-  .scheme h4 { font-size: 16px; }
-  .scheme p, .scheme li { font-size: 13px; }
-  .scroll-btn { font-size: 20px; padding: 8px; }
+
+@media(max-width:768px){
+  .hero h1{
+    font-size:28px;
+  }
+
+  .hero h2{
+    font-size:16px;
+  }
+
+  .hero p{
+    font-size:13px;
+  }
+}
+/* ================= CREDIBILITY SECTION ================= */
+
+.credibility-section{
+  padding:90px 8%;
+  background:#ffffff;
 }
 
-<div class="schemes-wrapper">
-  <button class="scroll-btn scroll-left">&#10094;</button>
-  <div class="schemes-container">
-    <!-- Scheme 1 -->
-    <div class="scheme"> ... Ayushman Bharat ... </div>
-    <!-- Scheme 2 -->
-    <div class="scheme"> ... PMAY ... </div>
-    <!-- Scheme 3 -->
-    <div class="scheme"> ... MGNREGA ... </div>
-    <!-- Scheme 4 -->
-    <div class="scheme"> ... Swachh Bharat ... </div>
-    <!-- Scheme 5 -->
-    <div class="scheme"> ... Extra Scheme ... </div>
-    <!-- Scheme 6 -->
-    <div class="scheme"> ... Extra Scheme ... </div>
+.credibility-container{
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:60px;
+  align-items:center;
+}
+
+.credibility-left h2{
+  font-size:28px;
+  margin-bottom:20px;
+  color:#1e3a8a;
+}
+
+.credibility-left p{
+  font-size:15px;
+  color:#475569;
+  line-height:1.8;
+  margin-bottom:30px;
+}
+
+.credibility-points{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:15px;
+}
+
+.credibility-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.credibility-item span{
+  color:#15803d;
+  font-weight:bold;
+  font-size:16px;
+}
+
+.credibility-item p{
+  font-size:14px;
+  margin:0;
+  color:#374151;
+}
+
+.credibility-right{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.credibility-card{
+  background:#f1f5f9;
+  padding:25px;
+  border-radius:12px;
+  border-left:5px solid #1e3a8a;
+  box-shadow:0 6px 15px rgba(0,0,0,0.05);
+}
+
+.credibility-card h3{
+  margin-bottom:10px;
+  color:#1e3a8a;
+}
+
+.credibility-card p{
+  font-size:14px;
+  color:#475569;
+  line-height:1.6;
+}
+
+/* ===== Responsive ===== */
+
+@media(max-width:992px){
+  .credibility-container{
+    grid-template-columns:1fr;
+  }
+}
+
+/* ================= IMPORTANT LINKS STRIP ================= */
+
+.important-links{
+  background:#1e3a8a;
+  padding:20px 5%;
+}
+
+.links-container{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:20px;
+}
+
+.imp-link{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  text-decoration:none;
+  color:white;
+  font-size:13px;
+  padding:8px 14px;
+  border-radius:6px;
+  transition:0.3s ease;
+}
+
+.imp-link:hover{
+  background:rgba(255,255,255,0.15);
+}
+
+.imp-icon{
+  font-size:16px;
+}
+
+/* Responsive */
+
+@media(max-width:900px){
+  .links-container{
+    justify-content:center;
+  }
+}
+  
+  /* ================= SECTION ================= */
+
+.section{
+  padding:70px 40px;
+}
+
+.section h2{
+  text-align:center;
+  margin-bottom:50px;
+  font-size:24px;
+  color:var(--gov-blue);
+}
+
+/* ================= DASHBOARD PROFESSIONAL ================= */
+
+.dashboard-section{
+  background:#eef2f8;
+  padding:60px 8%;
+  text-align:center;
+}
+
+.dashboard-section h2{
+  color:#1e3a8a;
+  margin-bottom:40px;
+  font-size:26px;
+}
+
+.dashboard-grid{
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  flex-wrap:wrap;
+}
+
+.dashboard-card{
+  background:white;
+  padding:30px 40px;
+  border-radius:8px;
+  width:250px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.06);
+  transition:0.3s ease;
+}
+
+.dashboard-card:hover{
+  transform:translateY(-5px);
+}
+
+.dashboard-card h3{
+  font-size:40px;
+  color:#1e3a8a;
+  margin-bottom:10px;
+}
+
+.dashboard-card p{
+  font-size:15px;
+  color:#555;
+}
+
+/* ================= SERVICES SECTION ================= */
+/* ================= ULTRA CLEAN COMPACT SERVICES ================= */
+
+.services-grid{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:18px;
+}
+
+.service-card{
+  background:white;
+  padding:16px;                /* reduced */
+  border-radius:10px;
+  text-decoration:none;
+  color:#111827;
+  box-shadow:0 5px 14px rgba(0,0,0,0.04);
+  border:1px solid #e2e8f0;
+  transition:all 0.25s ease;
+
+  display:flex;
+  flex-direction:column;
+  min-height:150px;            /* tighter */
+}
+
+.service-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 18px rgba(0,0,0,0.07);
+}
+
+.service-icon{
+  font-size:22px;              /* smaller */
+  margin-bottom:6px;
+}
+
+.service-card h3{
+  font-size:14px;
+  margin-bottom:6px;
+  color:#1e3a8a;
+  min-height:30px;
+}
+
+.service-card p{
+  font-size:11.5px;
+  color:#64748b;
+  line-height:1.4;
+  margin:0;
+}
+
+/* Responsive */
+
+@media(max-width:1100px){
+  .services-grid{
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media(max-width:600px){
+  .services-grid{
+    grid-template-columns: 1fr;
+  }
+}
+/* ================= LEADERSHIP STRUCTURE ================= */
+
+.leadership{
+  background:#f5f7fb;
+  padding:40px 8%;
+}
+
+.leadership h2{
+  text-align:center;
+  margin-bottom:25px;
+  color:#1e3a8a;
+  font-size:24px;
+}
+
+.sub-heading{
+  text-align:center;
+  margin-top:35px;
+  margin-bottom:15px;
+  font-size:18px;
+  color:#1e3a8a;
+}
+
+/* ===== SARPANCH ===== */
+
+.sarpanch-block{
+  display:flex;
+  gap:25px;
+  align-items:center;
+  background:white;
+  padding:22px;
+  border-radius:6px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.05);
+  margin-bottom:30px;
+}
+
+.sarpanch-block img{
+  width:150px;
+  height:190px;
+  object-fit:cover;
+  border-radius:4px;
+}
+
+.sarpanch-details h3{
+  font-size:20px;
+  margin-bottom:6px;
+  color:#1e3a8a;
+}
+
+.sarpanch-details p{
+  margin:3px 0;
+  font-size:13px;
+  line-height:1.4;
+}
+
+.designation-label{
+  display:inline-block;
+  background:#ff7a00;
+  color:white;
+  font-size:10px;
+  padding:3px 7px;
+  border-radius:3px;
+  margin-bottom:6px;
+}
+
+/* ===== SECONDARY LEADERS ===== */
+
+.leaders-grid{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
+
+.leader-card{
+  background:white;
+  padding:12px;
+  width:170px;
+  border-radius:6px;
+  text-align:center;
+  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+
+.leader-card img{
+  width:80px;
+  height:100px;
+  object-fit:cover;
+  border-radius:4px;
+  margin-bottom:6px;
+}
+
+.leader-card h4{
+  font-size:14px;
+  margin-bottom:4px;
+}
+
+.leader-card p{
+  font-size:12px;
+}
+
+/* ===== BODY & EMPLOYEE GRID ===== */
+
+.member-grid{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr); /* fixed 4 per row desktop */
+  gap:18px;
+  margin-top:5px;
+}
+
+.member-card{
+  background:white;
+  padding:12px;
+  border-radius:6px;
+  text-align:center;
+  box-shadow:0 3px 10px rgba(0,0,0,0.05);
+}
+
+.member-card img{
+  width:75px;
+  height:95px;
+  object-fit:cover;
+  border-radius:4px;
+  margin-bottom:6px;
+}
+
+.member-card h5{
+  font-size:13px;
+  margin-bottom:3px;
+}
+
+.member-card p{
+  font-size:11px;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media(max-width:992px){
+  .member-grid{
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sarpanch-block{
+    flex-direction:column;
+    text-align:center;
+  }
+}
+
+@media(max-width:600px){
+  .member-grid{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ================= NOTICES SECTION ================= */
+
+.notices-section{
+  background:#f8fafc;
+  padding:80px 8%;
+}
+
+.notice-list{
+  max-width:900px;
+  margin:40px auto 20px auto;
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+.notice-item{
+  background:white;
+  padding:18px 22px;
+  border-radius:8px;
+  border-left:4px solid #1e3a8a;
+  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  transition:0.2s ease;
+}
+
+.notice-item:hover{
+  background:#f1f5f9;
+}
+
+.notice-title{
+  font-size:14px;
+  font-weight:500;
+  color:#1e3a8a;
+}
+
+.notice-date{
+  font-size:12px;
+  color:#64748b;
+}
+
+.notice-footer{
+  text-align:center;
+  margin-top:30px;
+}
+
+.view-all-btn{
+  padding:8px 18px;
+  background:#1e3a8a;
+  color:white;
+  font-size:13px;
+  border-radius:5px;
+  text-decoration:none;
+  transition:0.3s;
+}
+
+.view-all-btn:hover{
+  background:#16307a;
+}
+
+  
+ /* ================= TWO-TONE GOVERNMENT FOOTER ================= */
+
+footer{
+  margin-top:80px;
+}
+
+.footer-top{
+  background:#1e3a8a;
+  color:white;
+  padding:50px 8%;
+}
+
+.footer-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap:40px;
+}
+
+.footer-col h4{
+  margin-bottom:15px;
+  font-size:16px;
+  font-weight:600;
+}
+
+.footer-col p{
+  font-size:13px;
+  line-height:1.6;
+  margin-bottom:8px;
+  color:#e5e7eb;
+}
+
+.footer-col ul{
+  list-style:none;
+  padding:0;
+}
+
+.footer-col ul li{
+  margin-bottom:8px;
+}
+
+.footer-col ul li a{
+  color:#e5e7eb;
+  text-decoration:none;
+  font-size:13px;
+  transition:0.3s;
+}
+
+.footer-col ul li a:hover{
+  color:white;
+}
+
+.footer-bottom{
+  background:#0f172a;
+  color:#cbd5e1;
+  text-align:center;
+  padding:18px;
+  font-size:12px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= GOVERNMENT AUTHORITY HEADER ================= -->
+
+<div class="gov-strip"></div>
+
+<div class="gov-header">
+
+  <div class="gov-logos">
+    <img src="assets/india-emblem.png" alt="Government of India">
+    
+    <div class="gov-title">
+      <h2>Government of Maharashtra</h2>
+      <h1>Gram Panchayat Wandhali</h1>
+      <p>Taluka Warora | District Chandrapur</p>
+    </div>
+
+    <img src="assets/maharashtra-logo.png" alt="Government of Maharashtra">
   </div>
-  <button class="scroll-btn scroll-right">&#10095;</button>
+
 </div>
+  <div class="nav">
+    <a href="#">Home</a>
+    <a href="complaint.html">Complaint</a>
+    <a href="track.html">Track</a>
+    <a href="login.html">Admin</a>
+  </div>
+</div>
+
+<div class="tricolor"></div>
+
+<!-- HERO -->
+<!-- ================= HERO SECTION ================= -->
+
+<section class="hero">
+
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+
+    <h1>
+      Gram Panchayat Wandhali
+    </h1>
+
+    <h2>
+      Official Digital Governance Portal
+    </h2>
+
+    <p>
+      Delivering Transparent Administration, Public Services
+      and Rural Development for the Citizens of Wandhali.
+    </p>
+
+    <div class="hero-buttons">
+      <a href="complaint.html" class="hero-btn primary">
+        Register Complaint
+      </a>
+
+      <a href="track.html" class="hero-btn secondary">
+        Track Complaint
+      </a>
+    </div>
+
+  </div>
+
+</section>
+  <!-- ================= PANCHAYAT CREDIBILITY BLOCK ================= -->
+
+<section class="credibility-section">
+
+  <div class="credibility-container">
+
+    <div class="credibility-left">
+      <h2>Committed to Transparent & Accountable Governance</h2>
+      <p>
+        Gram Panchayat Wandhali is dedicated to strengthening rural development
+        through transparent administration, citizen participation, and digital governance.
+        Our elected body works to ensure efficient service delivery and inclusive growth
+        for every household in the village.
+      </p>
+
+      <div class="credibility-points">
+        <div class="credibility-item">
+          <span>✔</span>
+          <p>Digitally Managed Public Services</p>
+        </div>
+
+        <div class="credibility-item">
+          <span>✔</span>
+          <p>Time-bound Grievance Redressal</p>
+        </div>
+
+        <div class="credibility-item">
+          <span>✔</span>
+          <p>Transparency in Public Notices & Schemes</p>
+        </div>
+
+        <div class="credibility-item">
+          <span>✔</span>
+          <p>Citizen-Centric Rural Development Planning</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="credibility-right">
+      <div class="credibility-card">
+        <h3>Our Vision</h3>
+        <p>
+          To build a progressive, self-reliant and digitally empowered village
+          ensuring quality infrastructure, social welfare, and sustainable development.
+        </p>
+      </div>
+
+      <div class="credibility-card">
+        <h3>Our Mission</h3>
+        <p>
+          To deliver transparent governance, strengthen public participation,
+          and implement government schemes effectively for the benefit of all citizens.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ================= IMPORTANT LINKS STRIP ================= -->
+
+<section class="important-links">
+
+  <div class="links-container">
+
+    <a href="#" class="imp-link">
+      <div class="imp-icon">📘</div>
+      <span>RTI Information</span>
+    </a>
+
+    <a href="#" class="imp-link">
+      <div class="imp-icon">📜</div>
+      <span>Public Documents</span>
+    </a>
+
+    <a href="#" class="imp-link">
+      <div class="imp-icon">🏛</div>
+      <span>Government Schemes</span>
+    </a>
+
+    <a href="#" class="imp-link">
+      <div class="imp-icon">🧾</div>
+      <span>Tax & Revenue</span>
+    </a>
+
+    <a href="#" class="imp-link">
+      <div class="imp-icon">📢</div>
+      <span>Announcements</span>
+    </a>
+
+    <a href="#" class="imp-link">
+      <div class="imp-icon">📞</div>
+      <span>Emergency Contact</span>
+    </a>
+
+  </div>
+
+</section>
+  
+<!-- TRANSPARENCY -->
+<section class="dashboard-section">
+  <h2>Transparency Dashboard</h2>
+
+  <div class="dashboard-grid" id="dashboardGrid">
+
+    <div class="dashboard-card">
+      <h3 id="totalComplaints">0</h3>
+      <p>Total Complaints</p>
+    </div>
+
+    <div class="dashboard-card">
+      <h3 id="resolvedComplaints">0</h3>
+      <p>Resolved Complaints</p>
+    </div>
+
+    <div class="dashboard-card">
+      <h3 id="totalNotices">0</h3>
+      <p>Notices Issued</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= CITIZEN SERVICES ================= -->
+<div class="services-grid">
+
+  <a href="complaint.html" class="service-card">
+    <div class="service-icon">📝</div>
+    <h3>Register Complaint</h3>
+    <p>Submit public grievances digitally for quick resolution.</p>
+  </a>
+
+  <a href="track.html" class="service-card">
+    <div class="service-icon">🔎</div>
+    <h3>Track Complaint</h3>
+    <p>Track status of your registered grievance online.</p>
+  </a>
+
+  <div class="service-card">
+    <div class="service-icon">📄</div>
+    <h3>Download Notices</h3>
+    <p>View and download official public notices and circulars.</p>
+  </div>
+
+  <div class="service-card">
+    <div class="service-icon">🏠</div>
+    <h3>Housing Schemes</h3>
+    <p>Information about PM Awas Yojana and other housing programs.</p>
+  </div>
+
+  <div class="service-card">
+    <div class="service-icon">💧</div>
+    <h3>Water & Sanitation</h3>
+    <p>Details about Jal Jeevan Mission and sanitation services.</p>
+  </div>
+
+  <div class="service-card">
+    <div class="service-icon">📢</div>
+    <h3>Public Announcements</h3>
+    <p>Latest updates and official communications.</p>
+  </div>
+
+  <!-- NEW 1 -->
+  <div class="service-card">
+    <div class="service-icon">📜</div>
+    <h3>Birth & Death Certificates</h3>
+    <p>Information and application process for certificates.</p>
+  </div>
+
+  <!-- NEW 2 -->
+  <div class="service-card">
+    <div class="service-icon">🏘</div>
+    <h3>Property Tax Services</h3>
+    <p>House tax information and payment details.</p>
+  </div>
+
+</div>
+
+  <!-- ================= LATEST NOTICES ================= -->
+
+<!-- ================= LATEST NOTICES PREVIEW ================= -->
+
+<section class="notices-section" id="notices">
+
+  <div class="section-header">
+    <h2>Latest Notices</h2>
+    <p>Official announcements and public updates</p>
+  </div>
+
+  <div class="notice-list">
+
+    <div class="notice-item">
+      <div class="notice-title">
+        ग्रामसभा बैठक सूचना – 25 March 2026
+      </div>
+      <div class="notice-date">20 Mar 2026</div>
+    </div>
+
+    <div class="notice-item">
+      <div class="notice-title">
+        जल जीवन मिशन कार्याबाबत माहिती
+      </div>
+      <div class="notice-date">15 Mar 2026</div>
+    </div>
+
+    <div class="notice-item">
+      <div class="notice-title">
+        मालमत्ता कर भरणा अंतिम दिनांक
+      </div>
+      <div class="notice-date">10 Mar 2026</div>
+    </div>
+
+  </div>
+
+  <div class="notice-footer">
+    <a href="notices.html" class="view-all-btn">
+      View All Notices
+    </a>
+  </div>
+
+</section>
+
+<!-- ================= LEADERSHIP SECTION ================= -->
+
+<section class="section leadership">
+
+  <h2>Leadership & Administration</h2>
+
+  <!-- Sarpanch Main Block -->
+  <div id="sarpanchBlock" class="sarpanch-block"></div>
+
+  <!-- Secondary Leaders -->
+  <div id="leadersContainer" class="leaders-grid"></div>
+
+  <h3 class="sub-heading">Elected Body Members</h3>
+  <div id="bodyMembersContainer" class="member-grid"></div>
+
+  <h3 class="sub-heading">Administrative Staff</h3>
+  <div id="employeesContainer" class="member-grid"></div>
+
+</section>
+  
+<!-- ================= PROFESSIONAL TWO-TONE FOOTER ================= -->
+
+<footer>
+
+  <!-- TOP GOVERNMENT BAND -->
+  <div class="footer-top">
+
+    <div class="footer-grid">
+
+      <div class="footer-col">
+        <h4>About Gram Panchayat</h4>
+        <p>
+          Gram Panchayat Wandhali is committed to transparent,
+          accountable and citizen-focused governance for rural development.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="complaint.html">Register Complaint</a></li>
+          <li><a href="track.html">Track Complaint</a></li>
+          <li><a href="#notices">Public Notices</a></li>
+          <li><a href="#schemes">Government Schemes</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact Information</h4>
+        <p>Gram Panchayat Wandhali</p>
+        <p>Taluka: Warora</p>
+        <p>District: Chandrapur</p>
+        <p>Phone: +91-9764444266</p>
+        <p>Email: gpwandhali@gmail.com</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Office Hours</h4>
+        <p>Monday – Friday</p>
+        <p>10:00 AM – 5:00 PM</p>
+        <p>Saturday (Half Day)</p>
+        <p>Closed on Government Holidays</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- BOTTOM DARK BAND -->
+  <div class="footer-bottom">
+   <p>
+  © 2026 Gram Panchayat Wandhali |
+  Official Rural Governance Portal | Developed by Ramko Associates |
+  Last Updated: <span id="lastUpdated"></span>
+</p>
+  </div>
+
+</footer>
+<script type="module" src="js/main.js"></script>
 
 <script>
-const container = document.querySelector('.schemes-container');
-const btnLeft = document.querySelector('.scroll-left');
-const btnRight = document.querySelector('.scroll-right');
-
-btnLeft.addEventListener('click', () => {
-  container.scrollBy({ left: -300, behavior: 'smooth' });
-});
-btnRight.addEventListener('click', () => {
-  container.scrollBy({ left: 300, behavior: 'smooth' });
-});
-</script>
-
-
-    /* gallery */
-    .gallery{display:flex;overflow-x:auto;gap:10px;padding:6px 0}
-    .gallery img{width:240px;height:140px;object-fit:cover;border-radius:12px;flex-shrink:0}
-    .gallery img{width:240px;height:140px}
-    
-
-	#map{height:250px;border-radius:12px;margin-top:6px}
-    footer{background:#111;color:#eee;padding:20px;margin-top:30px;font-size:14px;text-align:center}
-    @media(max-width:800px){
-      .member-grid{grid-template-columns:repeat(auto-fit,minmax(140px,1fr));}
-      #map{height:220px}
-      
-    }
-  </style>
-</head>
-<body>
-  <header class="hero">
-    <div class="content">
-      <h1>ग्रामपंचायत वंधली</h1>
-      <p>Taluka Warora • District Chandrapur • Maharashtra</p>
-    </div>
-  </header>
-
-  <nav>
-    <div><strong>Wandhali GP</strong></div>
-    <div>
-      <a href="#members">Members</a>
-      <a href="#schemes">Schemes</a>
-      <a href="#gallery">Gallery</a>
-      <a href="#map-section">Map</a>
-      <a href="#contact">Contact</a>
-	<a href="login.html" target="_blank" rel="noopener noreferrer">Staff Login</a>
-
-    </div>
-  </nav>
-
-  <div class="wrap">
-    <!-- Key People -->
-    <h2 id="members">Sarpanch & Gram Sevak</h2>
-    <div style="display:flex;gap:28px;align-items:center;flex-wrap:wrap">
-      <div class="thumb-card">
-        <div class="rotor">
-          <img src="images/sarpanch.jpg" alt="Sarpanch" class="thumb">
-          <svg class="ring" viewBox="0 0 100 100">
-            <defs><linearGradient id="g1"><stop offset="0%" stop-color="#0b5ed7"/><stop offset="50%" stop-color="#06b6d4"/><stop offset="100%" stop-color="#0b5ed7"/></linearGradient></defs>
-            <circle cx="50" cy="50" r="44" stroke="url(#g1)" stroke-width="6" fill="none" stroke-dasharray="120 80"/>
-          </svg>
-        </div>
-        <div><strong>Mr. Pravin M. Bhoyar</strong><div class="msub">Sarpanch • 7588972246</div></div>
-      </div>
-      <div class="thumb-card">
-        <div class="rotor">
-          <img src="images/gram-sevak.jpg" alt="Gram Sevak" class="thumb">
-          <svg class="ring" viewBox="0 0 100 100">
-            <defs><linearGradient id="g2"><stop offset="0%" stop-color="#0b5ed7"/><stop offset="50%" stop-color="#06b6d4"/><stop offset="100%" stop-color="#0b5ed7"/></linearGradient></defs>
-            <circle cx="50" cy="50" r="44" stroke="url(#g2)" stroke-width="6" fill="none" stroke-dasharray="120 80"/>
-          </svg>
-        </div>
-        <div><strong>Mrs. Sunita Rajput</strong><div class="msub">Gram Sevak • +91-9834481324</div></div>
-      </div>
-    </div>
-
-    <!-- Committee Members -->
-    <h2>Committee Members</h2>
-    <div class="member-grid">
-      <div class="member"><img src="images/member1.jpg"><div><div class="mname">Mr. Anil Sheshrao Thawri</div><div class="msub">Up-Sarpanch</div></div></div>
-      <div class="member"><img src="images/member2.jpg"><div><div class="mname">Mrs. Sanghamitra Anand Bhalerao</div><div class="msub">Member</div></div></div>
-      <div class="member"><img src="images/member3.jpg"><div><div class="mname">Mrs. Sharda Vilas Choudhari</div><div class="msub">Member</div></div></div>
-      <div class="member"><img src="images/member4.jpg"><div><div class="mname">Mrs. Rupatai Manohar Dhote</div><div class="msub">Member</div></div></div>
-      <div class="member"><img src="images/member5.jpg"><div><div class="mname">Mrs. Suchita Ananta Kumre</div><div class="msub">Member</div></div></div>
-      <div class="member"><img src="images/member6.jpg"><div><div class="mname">Mrs. Mayatai Bajirao Tekam</div><div class="msub">Member</div></div></div>
-      <div class="member"><img src="images/member7.jpg"><div><div class="mname">Mr. Sagar Sanjay Bhoyar</div><div class="msub">Member</div></div></div>
-      <div class="member"><img src="images/member8.jpg"><div><div class="mname">Mr. Shubham Ramdas Somalkar</div><div class="msub">Member</div></div></div>
-    </div>
-
-    <!-- About Us -->
-    <h2>वंधली ग्रामपंचायतची ओळख</h2>
-    <p><h2>🌾 वंधली ग्रामपंचायत – प्रगतशीलतेचा आदर्श नमुना</h2></p>
-
-<p>चंद्रपूर जिल्ह्यातील वंधली ही एक प्रगतशील व ग्रामीण भागातील आदर्श ग्रामपंचायत म्हणून ओळखली जाते. वंधली ग्रामपंचायतीने गेल्या काही वर्षांत गावाच्या सर्वांगीण विकासासाठी अनेक नावीन्यपूर्ण उपक्रम राबविले आहेत. गावाच्या विकासाचा पाया म्हणजे लोकसहभाग, पारदर्शक प्रशासन आणि सतत प्रगतीचा संकल्प.</p>
-
-<p><h2>📚 शिक्षण क्षेत्र<p></h2>
-
-<p>गावात दर्जेदार शिक्षणावर विशेष भर दिला जातो. प्राथमिक व माध्यमिक शाळांमध्ये आधुनिक शिक्षणसुविधा, संगणक शिक्षण, डिजिटल वर्ग (Smart Classroom) यांचा अवलंब करण्यात आला आहे. शाळा सोडून गेलेल्या विद्यार्थ्यांना पुन्हा शिक्षणाच्या प्रवाहात आणण्यासाठी विशेष मोहिमा राबविल्या जातात.</p>
-
-<p><h2>🏥 आरोग्य व स्वच्छता</h2></p>
-
-ग्रामपंचायतीच्या पुढाकाराने नियमित आरोग्य शिबिरे, रक्तदान शिबिरे आणि महिला व बालकांच्या आरोग्यविषयक जनजागृती कार्यक्रम घेतले जातात. गावात स्वच्छ भारत अभियानाअंतर्गत शौचालयांचे 100% बांधकाम पूर्ण झाले असून, गाव “स्वच्छ आणि निरोगी ग्राम” म्हणून ओळखले जाते.</p>
-
-<p><h2>🚜 शेती आणि ग्रामीण अर्थव्यवस्था</h2></p>
-
-शेती हा गावाचा मुख्य व्यवसाय असून, शेतकऱ्यांसाठी नवीन कृषी तंत्रज्ञान, सेंद्रिय शेती, ठिबक सिंचन आणि पीक विमा योजनांविषयी मार्गदर्शन करण्यात येते. महिला बचत गट आणि युवक मंडळे यांना स्वावलंबनासाठी प्रशिक्षण देऊन स्वरोजगाराच्या संधी निर्माण केल्या आहेत.</p>
-
-<p><h2>💧 पाणीपुरवठा आणि पर्यावरण</h2></p>
-
-गावात शुद्ध पिण्याच्या पाण्यासाठी फिल्टर प्लांट कार्यरत आहे. वृक्षलागवड मोहिमा आणि पाणी अडवून ठेवण्याचे जलसंधारण प्रकल्प राबवले जातात. “हरित वंधली, स्वच्छ वंधली” ही ग्रामपंचायतीची ओळख बनली आहे.</p>
-
-<p><h2>💻 डिजिटल उपक्रम</h2></p>
-
-वंधली ग्रामपंचायत पूर्णपणे डिजिटल ग्रामपंचायत होण्याच्या दिशेने वाटचाल करत आहे. सर्व शासकीय सेवा ऑनलाइन उपलब्ध करण्यात येत आहेत — जसे की जन्म-मृत्यू नोंद, प्रमाणपत्रे, करभरणा, आणि नागरिकांच्या तक्रारींचे ऑनलाइन निवारण.</p>
-
-<p><h2>👥 लोकसहभाग व पारदर्शकता</h2></p>
-
-ग्रामपंचायत नियमित ग्रामसभा घेऊन नागरिकांच्या मतांना प्राधान्य देते. विकास कामांमध्ये पारदर्शकता राखण्यासाठी सर्व माहिती सार्वजनिक फलकावर तसेच डिजिटल प्लॅटफॉर्मवर उपलब्ध करून दिली जाते.</p>
-
-<p><h2>🏡 भविष्यातील दृष्टीकोन</h2></p>
-
-वंधली ग्रामपंचायतीचे उद्दिष्ट आहे की गावाला “स्मार्ट ग्राम” बनवणे — जिथे प्रत्येक नागरिक शिक्षित, निरोगी, सुरक्षित आणि स्वावलंबी असेल. पर्यावरणपूरक तंत्रज्ञान, स्वच्छ ऊर्जा, आणि नव्या योजनांचा लाभ घेत ग्रामीण विकासाचे नवीन मानदंड निर्माण करणे हा ग्रामपंचायतीचा संकल्प आहे.</p>
-
-    <!-- Latest Notices (keep old + add new) -->
-    <h2>📢 Latest Notices</h2>
-    <div class="notice-container">
-      <ul class="notice-list" id="noticeList">
-        <li><a href="https://drive.google.com/file/d/1QBYQku5wX6crDfmu_cH6QhVE1Y2vcnvK/view?usp=drive_link">ग्रामसभा बैठक - 15 Aug 2025 (PDF)</a></li>
-        <li><a href="https://drive.google.com/file/d/1gCZJe3xccNvRJQOJtgd-Ue5bMJpmbq4q/view?usp=sharing">जाहीरनामा - ३० सप्टेंबर २०२५ </a></li>
-        <li><a href="https://drive.google.com/file/d/1MGJeqzsNASqHEgiih05vflEp1nCOj3FC/view?usp=sharing">मुख्यमंत्री समृद्ध पंचायत राज अभियान | भव्य दिव्य ऑफर - ३० सप्टेंबर २०२५</a></li>
-        <li><a href="#">Road repair tender - 10 Jun 2025</a></li>
-      </ul>
-    </div>
-
-    <!-- Government Schemes -->
-    <h2 id="schemes">📜 Government Schemes</h2>
-    <div class="schemes" id="schemeGrid">
-      <div class="scheme"><h4>🏠 प्रधानमंत्री आवास योजना </h4><p><b>“सर्वांसाठी घर” हा शासनाचा संकल्प</b></p>
-	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;या योजनेअंतर्गत घर नसलेल्या किंवा कच्च्या घरात राहणाऱ्या कुटुंबांना <b>आवास बांधणीसाठी आर्थिक मदत</b> दिली जाते. लाभार्थ्यांना सुमारे <b>₹1.50 लाखांपर्यंत अनुदान</b> मिळते आणि निधी थेट बँक 	खात्यात जमा केला जातो.</p>
-	<p><h4>पात्रता:</h4></p>
-
-<ul>
-	<p><li>स्वतःचे पक्के घर नसलेले ग्रामीण कुटुंब</li></p>
-	<p><li>SECC 2011 यादीतील नाव असणे आवश्यक</li></p>
-	<p><li>महिला प्रमुख कुटुंबांना प्राधान्य</li></p>
-</ul>
-	<p><h4>अर्ज प्रक्रिया:</h4></p>
-	<p>ग्रामपंचायतीमार्फत अर्ज सादर करून, ग्रामसभेत मंजुरी मिळाल्यानंतर निधी टप्प्याटप्प्याने दिला जातो.</p>
-
-	<p><b>👉 अधिक माहितीसाठी भेट द्या: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<a href="https://pmayg.nic.in" target="_blank">https://pmayg.nic.in</a></b></p>
-
-	<p><b>📍 संपर्क: वंधली ग्रामपंचायत &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;कार्यालय </b></p>
-</div>
-      		<div class="scheme"><h4>🏥 आयुष्मान भारत योजना</h4><p><b>“सर्वांसाठी आरोग्य सुरक्षा”</b></p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;आयुष्मान भारत योजना ही भारत सरकारची महत्वाकांक्षी योजना आहे, ज्याअंतर्गत गरीब व गरजू कुटुंबांना <b>मोफत उपचार सुविधा</b> दिली जाते. प्रत्येक पात्र कुटुंबाला <b>₹5 लाखांपर्यंतचे आरोग्य 		विमा</b> संरक्षण मिळते.</p>
-		<p><h4>योजनेची वैशिष्ट्ये:</h4></p>
-<ul>
-	<p><li>शासकीय व मान्यताप्राप्त खाजगी रुग्णालयांमध्ये मोफत उपचार</li></p>
-	<p><li>हॉस्पिटलायझेशनपूर्व आणि नंतरचे खर्च समाविष्ट</li></p>
-	<p><li>कुटुंबातील सर्व सदस्यांसाठी विमा संरक्षण</li></p>
-</ul>
-	<p><h4>पात्रता:</h4></p>
-
-<ul>
-	<p><li>SECC 2011 यादीतील लाभार्थी</li></p>
-	<p><li>गरिबी रेषेखालील कुटुंबांना प्राधान्य</li></p>
-</ul>
-
-	<p><b>👉 अधिक माहितीसाठी भेट द्या: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<a href="https://pmjay.gov.in" target="_blank">https://pmjay.gov.in</a></b></p>
-	<p><b>📍 संपर्क: वंधली ग्रामपंचायत / &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;आरोग्य केंद्र</b></p>
-	
-</div>
-      <div class="scheme">
-  <h4>⚒️ महात्मा गांधी राष्ट्रीय ग्रामीण रोजगार हमी योजना (MGNREGA)</h4>
-  <p><b>“ग्रामीण भागात रोजगाराची हमी”</b></p>
-  
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ही योजना <b>दरवर्षी किमान 100 दिवसांचा रोजगार</b> उपलब्ध करून देण्यासाठी आहेत. 
-  <b>रस्ते, जलसंधारण, वृक्षलागवड आणि ग्रामविकास</b> यांसारखी कामे केली जातात.</p>
-  
-  <p><h4>योजनेची वैशिष्ट्ये:</h4></p>
-  <ul>
-    <p><li>प्रत्येक ग्रामीण घरातील प्रौढ व्यक्तीस कामाची हमी</li></p>
-    <p><li>मजुरांचे वेतन थेट बँक खात्यात जमा</li></p>
-    <p><li>ग्रामपंचायतीमार्फत कामांची निवड व अंमलबजावणी</li></p>
-  </ul>
-
-  <p><h4>उद्दिष्ट:</h4></p>
-  <ul>
-    <p><li>ग्रामीण भागात रोजगार निर्मिती व गरिबी निर्मूलन</li></p>
-    <p><li>स्थानिक पातळीवर विकास कामांना गती देणे</li></p>
-  </ul>
-
-  <p><b>👉 अधिक माहितीसाठी भेट द्या: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://nrega.nic.in" target="_blank">https://nrega.nic.in</a></b></p>
-
-  <p><b>📍 संपर्क: वंधली ग्रामपंचायत कार्यालय</b></p>
-</div>
-
-      <div class="scheme">
-  <h4>🚽 स्वच्छ भारत मिशन (ग्रामीण)</h4>
-  <p><b>“ग्रामीण स्वच्छतेसाठी जनजागृती आणि सुविधा”</b></p>
-
-  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;स्वच्छ भारत मिशन योजना ज्याचा उद्देश 
-  ग्रामीण भागात <b>शौचालय बांधणी, कचरा व्यवस्थापन</b> आणि <b>स्वच्छतेविषयी जनजागृती</b> निर्माण करणे हा आहे.</p>
-
-  <p><h4>योजनेची वैशिष्ट्ये:</h4></p>
-  <ul>
-    <p><li>प्रत्येक घरात स्वतंत्र शौचालय बांधणीसाठी अनुदान</li></p>
-    <p><li>घन आणि द्रव कचरा व्यवस्थापनासाठी सुविधा</li></p>
-    <p><li>गावात स्वच्छता रॅली, अभियान आणि जनजागृती कार्यक्रम</li></p>
-  </ul>
-
-  <p><h4>उद्दिष्ट:</h4></p>
-  <ul>
-    <p><li>गाव स्वच्छ, निरोगी आणि पर्यावरणपूरक बनवणे</li></p>
-    <p><li>सर्वांसाठी स्वच्छता आणि आरोग्याची हमी देणे</li></p>
-  </ul>
-
-  <p><b>👉 अधिक माहितीसाठी भेट द्या: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://swachhbharatmission.gov.in" target="_blank">https://swachhbharatmission.gov.in</a></b></p>
-
-  <p><b>📍 संपर्क: वंधली ग्रामपंचायत / स्वच्छता विभाग</b></p>
-</div>
-
-
-    <!-- Gallery -->
-    <h2 id="gallery">Photo Gallery</h2>
-    <div class="gallery">
-      <img src="images/gallery1.jpg" alt="Panchayat Bhavan"/>
-      <img src="images/gallery2.jpg" alt="School"/>
-      <img src="images/gallery3.jpg" alt="Temple"/>
-      <img src="images/gallery4.jpg" alt="Village scene"/>
-    </div>
-
-    <!-- Map -->
-    <h2 id="map-section">Village Map</h2>
-    <div id="map"></div>
-
-    <!-- Contact -->
-    <h2 id="contact">Contact</h2>
-    <p><strong>Office Address:</strong> Main Road, Gram Panchayat Wandhali, Taluka Warora, District Chandrapur, Maharashtra 442907</p>
-    <p><strong>Phone:</strong> +91-9834481324, +91-7588972246</p>
-  </div>
-
-  <footer>
-    &copy; 2025 Gram Panchayat Wandhali • Prototype site (Marathi default)
-  </footer>
-
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script>
-    // Map
-    const center = [20.2977836,78.8903199];
-    const map = L.map('map').setView(center,14);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(map);
-    L.marker(center).addTo(map).bindPopup('Wandhali');
-    const offset=0.0018;
-    const poly=[[center[0]-offset,center[1]-offset],[center[0]-offset,center[1]+offset],[center[0]+offset,center[1]+offset],[center[0]+offset,center[1]-offset]];
-    L.polygon(poly,{color:'#ff7800',weight:2,fillOpacity:0.06}).addTo(map).bindPopup('Approximate boundary');
-
-    // Add admin notices dynamically without removing old
-    const oldNoticeList = document.getElementById('noticeList');
-    const newNotices = JSON.parse(localStorage.getItem('gpNotices') || "[]");
-    newNotices.forEach(n => {
-      const li = document.createElement('li');
-      if(n.url){
-        li.innerHTML = `<a href="${n.url}" target="_blank">${n.title}</a>`;
-      } else {
-        li.textContent = n.title;
-      }
-      oldNoticeList.appendChild(li);
+  const today = new Date();
+  document.getElementById("lastUpdated").innerText =
+    today.toLocaleDateString("en-IN", {
+      day:"2-digit",
+      month:"long",
+      year:"numeric"
     });
-
-    // Add admin schemes dynamically
-    const schemeGrid = document.getElementById('schemeGrid');
-    const newSchemes = JSON.parse(localStorage.getItem('gpSchemes') || "[]");
-    newSchemes.forEach(s => {
-      const div = document.createElement('div');
-      div.className = "scheme";
-      div.innerHTML = `<h4>${s.title}</h4><p>${s.desc}</p>`;
-      schemeGrid.appendChild(div);
-    });
-  </script>
+</script>  
 </body>
 </html>
