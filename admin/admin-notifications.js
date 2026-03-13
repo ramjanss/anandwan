@@ -1,15 +1,21 @@
 import { db } from "../js/firebase.js";
-import { collection, onSnapshot, query, orderBy } 
+import { collection, onSnapshot, query, orderBy, where }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 let previousUnreadCount = 0;
+
+const GP_ID = "wandhali";
 
 export function initAdminNotifications() {
 
   const badge = document.getElementById("sidebarUnreadBadge");
   const sound = new Audio("../assets/notification.mp3");
 
-  const q = query(collection(db,"contactMessages"),orderBy("createdAt","desc"));
+  const q = query(
+    collection(db,"contactMessages"),
+    where("gpId","==",GP_ID),
+    orderBy("createdAt","desc")
+  );
 
   onSnapshot(q, (snapshot)=>{
 
