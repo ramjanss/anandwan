@@ -211,6 +211,8 @@ async function loadGallery(firstLoad = true){
   });
 
 }
+  loadGallery();
+
   document.getElementById("loadMoreBtn").onclick = () => {
   loadGallery(false);
 };
