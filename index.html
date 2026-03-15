@@ -1505,7 +1505,11 @@ async function loadSchemes(){
   container.innerHTML = "";
 
   const snap = await getDocs(
-    query(collection(db,"schemes"), orderBy("updatedAt","desc"))
+    query(
+      collection(db,"schemes"),
+      where("villageId","==","anandwangp"),
+      orderBy("updatedAt","desc")
+    )
   );
 
   if(snap.empty){
@@ -1525,7 +1529,7 @@ async function loadSchemes(){
         <span class="scheme-category ${categoryClass}">
           ${d.category || "Local"}
         </span>
-
+        <img src="${d.imageUrl}" class="scheme-image">
         <h4>${d.title}</h4>
         <p>${d.description || ""}</p>
 
