@@ -788,6 +788,13 @@ html {
 
 /* ===== GOVERNMENT SCHEMES ===== */
 
+.scheme-image{
+  width:100%;
+  height:160px;
+  object-fit:cover;
+  border-radius:8px 8px 0 0;
+}
+
 .scheme-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
@@ -1301,6 +1308,7 @@ import { db } from "./js/firebase.js";
 import { collection, getDocs, query, where, orderBy }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+  
 /* HERO */
 const slider = document.getElementById("heroSlider");
 const totalSlides = document.querySelectorAll(".hero-slide").length;
