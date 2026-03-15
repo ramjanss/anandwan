@@ -785,6 +785,16 @@ html {
   object-fit:cover;
   border-radius:8px;
 }
+    .scheme-btn{
+display:inline-block;
+margin-top:10px;
+background:#1e3a8a;
+color:white;
+padding:6px 12px;
+border-radius:6px;
+text-decoration:none;
+font-size:13px;
+}
 
 /* ===== GOVERNMENT SCHEMES ===== */
 
@@ -1299,16 +1309,12 @@ html {
 <div id="eventsContainer" class="events-grid"></div>
 </section>
 <section class="section" id="schemes">
-  <h2>Government Schemes</h2>
 
-  <div id="schemeContainer" style="
-   #schemeContainer{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-  gap:25px;
-}
-  "></div>
+<h2>Government Schemes</h2>
 
+<div id="schemeContainer" class="events-grid"></div>
+
+</section>
 </section>
 
     ${d.imageUrl ? `
@@ -1552,33 +1558,42 @@ document.getElementById("eventModal").style.display="none";
   
 async function loadSchemes(){
 
-  const container = document.getElementById("schemeContainer");
-  if(!container) return;
+const container = document.getElementById("schemeContainer");
+container.innerHTML = "";
 
-  container.innerHTML = "";
+const snap = await getDocs(
+  query(
+    collection(db,"schemes"),
+    where("villageId","==","anandwangp"),
+    orderBy("updatedAt","desc")
+  )
+);
 
-  const snap = await getDocs(
-    query(
-      collection(db,"schemes"),
-      where("villageId","==","anandwangp"),
-      orderBy("updatedAt","desc")
-    )
-  );
+snap.forEach(doc=>{
 
-  snap.forEach(doc=>{
-    const d = doc.data();
+const d = doc.data();
 
-    container.innerHTML += `
-      <div class="scheme-card">
-        ${d.imageUrl ? `<img src="${d.imageUrl}" class="scheme-image">` : ""}
+container.innerHTML += `
 
-        <h4>${d.title}</h4>
-        <p>${(d.description || "").substring(0,120)}...</p>
+<div class="event-card">
 
-        ${d.link ? `<a href="${d.link}" target="_blank" class="scheme-btn">View Details</a>` : ""}
-      </div>
-    `;
-  });
+${d.imageUrl ? `<img src="${d.imageUrl}">` : ""}
+
+<h4>${d.title}</h4>
+
+<p>${(d.description || "").substring(0,140)}...</p>
+
+${d.link ? `
+<a href="${d.link}" target="_blank" class="scheme-btn">
+View Details
+</a>
+` : ""}
+
+</div>
+
+`;
+
+});
 
 }
 
