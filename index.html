@@ -1300,8 +1300,16 @@ html {
 </section>
 <section class="section" id="schemes">
   <h2>Government Schemes</h2>
- container.innerHTML += `
-  <div class="scheme-card">
+
+  <div id="schemeContainer" style="
+   #schemeContainer{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:25px;
+}
+  "></div>
+
+</section>
 
     ${d.imageUrl ? `
       <div class="scheme-image-wrapper">
