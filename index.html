@@ -1548,7 +1548,12 @@ async function loadGallery(){
   const container = document.getElementById("galleryContainer");
   container.innerHTML = "";
 
-  const snap = await getDocs(collection(db,"gallery"));
+  const q = query(
+    collection(db,"gallery"),
+    where("villageId","==","wandhali")
+  );
+
+  const snap = await getDocs(q);
 
   let images = [];
 
@@ -1561,13 +1566,10 @@ async function loadGallery(){
     return;
   }
 
-  const allImages = [...images, ...images]; // duplicate for smooth loop
-
-  allImages.forEach(url=>{
+  images.forEach(url=>{
     container.innerHTML += `<img src="${url}" class="gallery-img">`;
   });
 
-  // Add click event for modal
   document.querySelectorAll(".gallery-img").forEach(img=>{
     img.addEventListener("click",()=>{
       openGalleryModal(img.src);
@@ -1575,8 +1577,10 @@ async function loadGallery(){
   });
 
 }
+
 loadGallery();
 
+  
 const modal = document.getElementById("galleryModal");
 const modalImg = document.getElementById("modalGalleryImage");
 const closeBtn = document.getElementById("closeGalleryModal");
