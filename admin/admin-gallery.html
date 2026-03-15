@@ -41,10 +41,11 @@
   ">
     Upload Image
   </button>
-
+  
   <p id="msg"></p>
 </div>
 
+    
 <h3>All Images</h3>
 <div id="galleryGrid" style="
   display:grid;
@@ -52,7 +53,18 @@
   gap:20px;
 "></div>
 ```
-
+<div style="margin-top:20px;text-align:center;">
+  <button id="loadMoreBtn" style="
+    padding:8px 14px;
+    background:#1e3a8a;
+    color:white;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+  ">
+    Load More
+  </button>
+</div>
   </main>
 
 </div>
@@ -60,7 +72,9 @@
 <script type="module" src="admin-auth.js"></script>
 
 <script type="module">
-
+let lastDoc = null;
+const PAGE_SIZE = 12;
+  
 import { db, storage } from "../js/firebase.js";
 
 import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, where, serverTimestamp } 
@@ -132,52 +146,50 @@ uploadBtn.onclick = async () => {
 
 /* LOAD GALLERY */
 
-async function loadGallery(){
+async function loadGallery(firstLoad = true){
 
-  galleryGrid.innerHTML="Loading images...";
+  if(firstLoad){
+    galleryGrid.innerHTML = "";
+    lastDoc = null;
+  }
 
-  const q = query(
-    collection(db,"gallery"),
-    where("villageId","==",villageId),
-    orderBy("created","desc")
-  );
+  let q;
+
+  if(lastDoc){
+    q = query(
+      collection(db,"gallery"),
+      where("villageId","==","wandhali"),
+      orderBy("created","desc"),
+      startAfter(lastDoc),
+      limit(PAGE_SIZE)
+    );
+  }else{
+    q = query(
+      collection(db,"gallery"),
+      where("villageId","==","wandhali"),
+      orderBy("created","desc"),
+      limit(PAGE_SIZE)
+    );
+  }
 
   const snapshot = await getDocs(q);
 
   if(snapshot.empty){
-    galleryGrid.innerHTML="<p>No images found.</p>";
+    document.getElementById("loadMoreBtn").style.display = "none";
     return;
   }
 
-  galleryGrid.innerHTML="";
+  lastDoc = snapshot.docs[snapshot.docs.length - 1];
 
-  snapshot.forEach(docSnap=>{
+  snapshot.forEach(docSnap => {
 
     const data = docSnap.data();
 
     const card = document.createElement("div");
-    card.style.background="#fff";
-    card.style.padding="10px";
-    card.style.borderRadius="10px";
-    card.style.boxShadow="0 8px 20px rgba(0,0,0,0.1)";
-    card.style.textAlign="center";
 
-    card.innerHTML=`
-      <img src="${data.imageUrl}" style="
-        width:100%;
-        height:150px;
-        object-fit:cover;
-        border-radius:8px;
-        margin-bottom:10px;
-      ">
-      <button style="
-        background:#ef4444;
-        color:white;
-        border:none;
-        padding:6px 12px;
-        border-radius:6px;
-        cursor:pointer;
-      ">
+    card.innerHTML = `
+      <img src="${data.imageUrl}" style="width:100%;height:150px;object-fit:cover;border-radius:8px;margin-bottom:10px;">
+      <button style="background:#ef4444;color:white;border:none;padding:6px 12px;border-radius:6px;">
         Delete
       </button>
     `;
@@ -186,21 +198,12 @@ async function loadGallery(){
 
       if(!confirm("Delete this image?")) return;
 
-      try{
-
-        if(data.storagePath){
-          await deleteObject(ref(storage,data.storagePath));
-        }
-
-        await deleteDoc(doc(db,"gallery",docSnap.id));
-
-        loadGallery();
-
-      }catch(error){
-        console.error(error);
-        alert("Delete failed ❌");
+      if(data.storagePath){
+        await deleteObject(ref(storage,data.storagePath));
       }
 
+      await deleteDoc(doc(db,"gallery",docSnap.id));
+      loadGallery(true);
     };
 
     galleryGrid.appendChild(card);
@@ -208,9 +211,10 @@ async function loadGallery(){
   });
 
 }
-
-loadGallery();
-
+  document.getElementById("loadMoreBtn").onclick = () => {
+  loadGallery(false);
+};
+loadGallery(true);
 </script>
 
 </body>
