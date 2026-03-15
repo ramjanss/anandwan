@@ -203,7 +203,6 @@ async function loadGallery(firstLoad = true){
       }
 
       await deleteDoc(doc(db,"gallery",docSnap.id));
-      loadGallery(true);
     };
 
     galleryGrid.appendChild(card);
@@ -211,7 +210,6 @@ async function loadGallery(firstLoad = true){
   });
 
 }
-  loadGallery();
 
   document.getElementById("loadMoreBtn").onclick = () => {
   loadGallery(false);
