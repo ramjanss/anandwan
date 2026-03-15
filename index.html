@@ -1317,14 +1317,14 @@ font-size:13px;
 </section>
 </section>
 
-    ${d.imageUrl ? `
+  
       <div class="scheme-image-wrapper">
         <span class="scheme-category ${categoryClass}">
           ${d.category || "Local"}
         </span>
 
       </div>
-    ` : ""}
+ 
 
     <div class="scheme-content">
       <h4>${d.title}</h4>
@@ -1574,7 +1574,6 @@ snap.forEach(doc=>{
 const d = doc.data();
 
 container.innerHTML += `
-
 <div class="event-card">
 
 ${d.imageUrl ? `<img src="${d.imageUrl}">` : ""}
@@ -1590,7 +1589,6 @@ View Details
 ` : ""}
 
 </div>
-
 `;
 
 });
