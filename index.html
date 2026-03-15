@@ -1545,6 +1545,8 @@ document.getElementById("eventModal").style.display="none";
 async function loadSchemes(){
 
   const container = document.getElementById("schemeContainer");
+  if(!container) return;
+
   container.innerHTML = "";
 
   const snap = await getDocs(
@@ -1555,32 +1557,17 @@ async function loadSchemes(){
     )
   );
 
-  if(snap.empty){
-    container.innerHTML = "<p>No schemes available.</p>";
-    return;
-  }
-
   snap.forEach(doc=>{
     const d = doc.data();
 
-    let categoryClass = "category-local";
-    if(d.category === "Central") categoryClass = "category-central";
-    if(d.category === "State") categoryClass = "category-state";
-
     container.innerHTML += `
       <div class="scheme-card">
-        <span class="scheme-category ${categoryClass}">
-          ${d.category || "Local"}
-        </span>
-        <img src="${d.imageUrl}" class="scheme-image">
-        <h4>${d.title}</h4>
-        <p>${d.description || ""}</p>
+        ${d.imageUrl ? `<img src="${d.imageUrl}" class="scheme-image">` : ""}
 
-        ${d.link ? `
-          <a href="${d.link}" target="_blank" class="scheme-link">
-            View Details
-          </a>
-        ` : ""}
+        <h4>${d.title}</h4>
+        <p>${(d.description || "").substring(0,120)}...</p>
+
+        ${d.link ? `<a href="${d.link}" target="_blank" class="scheme-btn">View Details</a>` : ""}
       </div>
     `;
   });
